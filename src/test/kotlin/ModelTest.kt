@@ -1,13 +1,4 @@
-import com.github.howard12721.trakt.websocket.Channel
-import com.github.howard12721.trakt.websocket.DeletedDirectMessage
-import com.github.howard12721.trakt.websocket.DeletedMessage
-import com.github.howard12721.trakt.websocket.Embedded
-import com.github.howard12721.trakt.websocket.Message
-import com.github.howard12721.trakt.websocket.ReactionStamp
-import com.github.howard12721.trakt.websocket.RoledUserGroupMember
-import com.github.howard12721.trakt.websocket.User
-import com.github.howard12721.trakt.websocket.UserGroup
-import com.github.howard12721.trakt.websocket.UserGroupMember
+import com.github.howard12721.trakt.websocket.*
 import kotlinx.serialization.json.Json
 import kotlin.test.Test
 
