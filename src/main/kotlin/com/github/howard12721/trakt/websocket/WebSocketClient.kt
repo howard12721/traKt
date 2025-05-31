@@ -20,6 +20,10 @@ import kotlin.uuid.Uuid
 internal data class WebSocketClientData(
     val origin: String = "wss://q.trap.jp",
     val disableAutoReconnect: Boolean = false,
+    val client: HttpClient = HttpClient(CIO) {
+        install(WebSockets)
+    },
+    val eventFlow: MutableSharedFlow<Event> = MutableSharedFlow(extraBufferCapacity = Int.MAX_VALUE)
 )
 
 @Serializable
@@ -36,12 +40,7 @@ internal class WebSocketClient(
 
     override val coroutineContext: CoroutineContext = SupervisorJob() + Dispatchers.Default
 
-    private val client = HttpClient(CIO) {
-        install(WebSockets)
-    }
-
-    private val eventFlow = MutableSharedFlow<Event>(extraBufferCapacity = Int.MAX_VALUE)
-    val events: SharedFlow<Event> = eventFlow.asSharedFlow()
+    val events: SharedFlow<Event> = data.eventFlow.asSharedFlow()
 
     val logger: Logger by lazy { LoggerFactory.getLogger(WebSocketClient::class.java) }
 
@@ -62,7 +61,7 @@ internal class WebSocketClient(
     private lateinit var session: DefaultClientWebSocketSession
 
     suspend fun start() {
-        session = client.webSocketSession {
+        session = data.client.webSocketSession {
             url("${data.origin}$TRAQ_GATEWAY_PATH")
             header("Authorization", "Bearer $token")
         }
@@ -88,7 +87,7 @@ internal class WebSocketClient(
 
         if (::session.isInitialized && session.isActive) {
             try {
-                eventFlow.emit(Event.Close)
+                data.eventFlow.emit(Event.Close)
                 session.close(CloseReason(CloseReason.Codes.NORMAL, "Client requested disconnect"))
                 logger.info("WebSocket session closed successfully")
             } catch (e: Exception) {
@@ -128,7 +127,7 @@ internal class WebSocketClient(
             val request = Json.decodeFromString<Request>(frameData)
             logger.info("Received frame: $frameData")
             val event = Event.decodeEvent(request.type, request.body)
-            eventFlow.emit(event)
+            data.eventFlow.emit(event)
         }.onFailure { error ->
             logger.error("Failed to process frame: $frameData", error)
         }
