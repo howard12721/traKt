@@ -12,6 +12,8 @@ internal sealed interface Event {
 
     object Unknown : Event
 
+    object Close : Event
+
     companion object {
         fun decodeEvent(type: String, body: JsonElement): Event = when (type) {
             "PING" -> Json.decodeFromJsonElement<Ping>(body)

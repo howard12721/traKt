@@ -88,6 +88,7 @@ internal class WebSocketClient(
 
         if (::session.isInitialized && session.isActive) {
             try {
+                eventFlow.emit(Event.Close)
                 session.close(CloseReason(CloseReason.Codes.NORMAL, "Client requested disconnect"))
                 logger.info("WebSocket session closed successfully")
             } catch (e: Exception) {
