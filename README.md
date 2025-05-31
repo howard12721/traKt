@@ -1,3 +1,3 @@
 # traKt
 
-KotlinによるtraQボット開発のためのtraQ APIラッパー
+Kotlinによる[traQ](https://github.com/traptitech/traQ)ボット開発のためのtraQ APIラッパー
