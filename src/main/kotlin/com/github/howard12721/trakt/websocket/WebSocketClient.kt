@@ -74,11 +74,7 @@ internal class WebSocketClient(
         }
 
         withContext(Dispatchers.Default) {
-            try {
-                processMessages()
-            } catch (e: Exception) {
-                logger.error("Error in WebSocket message processing", e)
-            }
+            processMessages()
         }
     }
 
@@ -100,6 +96,13 @@ internal class WebSocketClient(
         coroutineContext.cancelChildren()
 
         logger.info("WebSocket client stopped")
+    }
+
+    suspend fun sendCommand(command: String) {
+        if (!session.isActive) {
+            logger.warn("WebSocket session is not active. Cannot send command: $command")
+        }
+        session.send(command)
     }
 
     private suspend fun processMessages() {
