@@ -19,7 +19,6 @@ import kotlin.uuid.Uuid
 
 internal data class WebSocketClientData(
     val origin: String = "wss://q.trap.jp",
-    val disableAutoReconnect: Boolean = false,
     val client: HttpClient = HttpClient(CIO) {
         install(WebSockets)
     },
