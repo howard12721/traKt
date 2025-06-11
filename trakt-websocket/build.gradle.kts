@@ -38,6 +38,16 @@ kotlin {
 }
 
 publishing {
+    publications {
+        create<MavenPublication>("maven") {
+            groupId = project.group.toString()
+            artifactId = "trakt-websocket"
+            version = project.version.toString()
+
+            from(components["kotlin"])
+        }
+    }
+
     repositories {
         maven {
             name = "GitHubPackages"

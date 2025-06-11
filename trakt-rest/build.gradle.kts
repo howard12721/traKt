@@ -35,6 +35,17 @@ kotlin {
 }
 
 publishing {
+    publications {
+        create<MavenPublication>("maven") {
+            groupId = project.group.toString()
+            artifactId = "trakt-rest"
+            version = project.version.toString()
+
+            from(components["kotlin"])
+        }
+    }
+
+
     repositories {
         maven {
             name = "GitHubPackages"
