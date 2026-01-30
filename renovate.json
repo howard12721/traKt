@@ -1,0 +1,18 @@
+{
+  "extends": [
+    "config:base",
+    ":dependencyDashboard"
+  ],
+  "timezone": "Asia/Tokyo",
+  "schedule": ["before 5am on Monday"],
+  "prConcurrentLimit": 5,
+  "labels": ["dependencies"],
+  "rangeStrategy": "bump",
+  "packageRules": [
+    {
+      "matchManagers": ["gradle"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "groupName": "gradle minor/patch"
+    }
+  ]
+}
