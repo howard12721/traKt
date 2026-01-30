@@ -1,2 +1,2 @@
-group = "com.github.howard12721"
+group = "jp.xhw"
 version = "1.0.0"

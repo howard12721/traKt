@@ -4,5 +4,4 @@ plugins {
 rootProject.name = "trakt"
 
 include("trakt-websocket")
-include("trakt-rest")
 include("trakt-bot")
