@@ -32,15 +32,17 @@ dependencies {
 
 val generatedTraqClientDir: Provider<Directory> = layout.buildDirectory.dir("generated/traq-client")
 val apiSpecUrl = "https://raw.githubusercontent.com/traPtitech/traQ/master/docs/v3-api.yaml"
-val apiSpecFile: Provider<RegularFile> = layout.buildDirectory.file("downloaded-specs/v3-api.yaml")
-val apiSpecPath: Provider<String> = apiSpecFile.map { it.asFile.absolutePath }
+val apiSpecFile = layout.projectDirectory.file("spec/v3-api.yaml")
+val apiSpecPath = apiSpecFile.asFile.absolutePath
 
-val downloadApiSpecTask: TaskProvider<Task> =
-    tasks.register("downloadApiSpec") {
+val refreshApiSpecTask: TaskProvider<Task> =
+    tasks.register("refreshApiSpec") {
+        group = "build setup"
+        description = "Refreshes the bundled traQ OpenAPI spec used for code generation."
         outputs.file(apiSpecFile)
 
         doLast {
-            val targetFile = apiSpecFile.get().asFile
+            val targetFile = apiSpecFile.asFile
             targetFile.parentFile.mkdirs()
 
             URI.create(apiSpecUrl).toURL().openStream().use { input ->
@@ -55,7 +57,7 @@ openApiGenerate {
     globalProperties.set(
         mapOf(
             "apis" to
-                "Activity,Authentication,Bot,Clip,Public,Star,Group,Notification,Ogp,Pin,UserTag,Webrtc,User,Me,Message,Channel,File,Stamp,Webhook,Oauth2",
+                "Activity,Authentication,Bot,Clip,Public,Star,Group,Notification,Ogp,Pin,UserTag,User,Me,Message,Channel,File,Stamp,Webhook",
             "models" to "",
             "supportingFiles" to "",
         ),
@@ -82,11 +84,15 @@ openApiGenerate {
 }
 
 tasks.openApiGenerate {
-    dependsOn(downloadApiSpecTask)
+    inputs.file(apiSpecFile)
 }
 
 sourceSets.main {
     kotlin.srcDir(generatedTraqClientDir.map { it.dir("src/commonMain/kotlin") })
+}
+
+tasks.named("compileKotlin") {
+    dependsOn(tasks.openApiGenerate)
 }
 
 tasks.test {
@@ -105,7 +111,7 @@ publishing {
     publications {
         create<MavenPublication>("maven") {
             groupId = project.group.toString()
-            artifactId = "trakt-websocket"
+            artifactId = "trakt-bot"
             version = project.version.toString()
 
             from(components["kotlin"])
