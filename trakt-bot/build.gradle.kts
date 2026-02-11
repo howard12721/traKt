@@ -3,10 +3,10 @@ import java.nio.file.Files
 import java.nio.file.StandardCopyOption
 
 plugins {
-    alias(libs.plugins.kotlin.jvm)
-    alias(libs.plugins.kotlin.serialization)
-    alias(libs.plugins.maven.publish)
-    alias(libs.plugins.openapi.generator)
+    id("org.jetbrains.kotlin.jvm")
+    id("org.jetbrains.kotlin.plugin.serialization")
+    id("maven-publish")
+    id("org.openapi.generator")
 }
 
 group = "jp.xhw"
