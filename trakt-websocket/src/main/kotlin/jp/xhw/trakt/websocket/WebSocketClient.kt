@@ -6,7 +6,7 @@ import io.ktor.client.plugins.websocket.*
 import io.ktor.client.request.*
 import io.ktor.websocket.*
 import kotlinx.coroutines.*
-import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.*
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
@@ -17,13 +17,20 @@ import kotlin.coroutines.CoroutineContext
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
+private const val DEFAULT_EVENT_BUFFER_CAPACITY = 256
+
 data class WebSocketClientData(
     val origin: String = "wss://q.trap.jp",
     val client: HttpClient =
         HttpClient(CIO) {
             install(WebSockets)
         },
-    val eventFlow: MutableSharedFlow<Event> = MutableSharedFlow(extraBufferCapacity = Int.MAX_VALUE),
+    val eventFlow: MutableSharedFlow<Event> =
+        MutableSharedFlow(
+            replay = 0,
+            extraBufferCapacity = DEFAULT_EVENT_BUFFER_CAPACITY,
+            onBufferOverflow = BufferOverflow.SUSPEND,
+        ),
 )
 
 @Serializable
@@ -53,83 +60,100 @@ class WebSocketClient(
         crossinline block: suspend T.() -> Unit,
     ): Job =
         events
-            .buffer(Channel.UNLIMITED)
             .filterIsInstance<T>()
-            .onEach {
-                launch {
-                    runCatching { it.block() }
-                        .onFailure { error -> logger.error("Error processing event", error) }
+            .onEach { event ->
+                scope.launch {
+                    try {
+                        event.block()
+                    } catch (e: CancellationException) {
+                        throw e
+                    } catch (e: Exception) {
+                        logger.error("Error processing event", e)
+                    }
                 }
             }.launchIn(scope)
 
-    private lateinit var session: DefaultClientWebSocketSession
+    private var session: DefaultClientWebSocketSession? = null
 
     suspend fun start() {
-        session =
+        check(session?.isActive != true) { "WebSocket client is already started" }
+        val openedSession =
             data.client.webSocketSession {
                 url("${data.origin}$TRAQ_GATEWAY_PATH")
                 header("Authorization", "Bearer $token")
             }
+        session = openedSession
 
-        if (session.isActive) {
+        if (openedSession.isActive) {
             logger.info("WebSocket session established successfully")
         } else {
             logger.error("Failed to establish WebSocket session")
+            session = null
             throw WebSocketException("Failed to establish WebSocket session")
         }
 
-        withContext(Dispatchers.Default) {
-            processMessages()
+        try {
+            withContext(Dispatchers.Default) {
+                processMessages(openedSession)
+            }
+        } finally {
+            session = null
         }
     }
 
     suspend fun stop() {
         logger.info("Stopping WebSocket client...")
 
-        if (::session.isInitialized && session.isActive) {
+        val currentSession = session
+        if (currentSession?.isActive == true) {
             try {
-                data.eventFlow.emit(Event.Close)
-                session.close(CloseReason(CloseReason.Codes.NORMAL, "Client requested disconnect"))
+                data.eventFlow.tryEmit(Event.Close)
+                currentSession.close(CloseReason(CloseReason.Codes.NORMAL, "Client requested disconnect"))
                 logger.info("WebSocket session closed successfully")
             } catch (e: Exception) {
                 logger.error("Error while closing WebSocket session", e)
             }
         }
 
-        delay(1500)
-
+        session = null
         coroutineContext.cancelChildren()
-
         logger.info("WebSocket client stopped")
     }
 
-    suspend fun sendCommand(command: String) {
-        if (!session.isActive) {
-            logger.warn("WebSocket session is not active. Cannot send command: $command")
-        }
-        session.send(command)
+    fun close() {
+        coroutineContext.cancelChildren()
+        runCatching { data.client.close() }
+            .onFailure { error -> logger.error("Error while closing WebSocket HttpClient", error) }
     }
 
-    private suspend fun processMessages() {
-        while (session.isActive) {
-            try {
-                session.incoming
-                    .receiveAsFlow()
-                    .buffer(Channel.UNLIMITED)
-                    .collect { frame ->
-                        when (frame) {
-                            is Frame.Text -> {
-                                handleTextFrame(frame)
-                            }
+    suspend fun sendCommand(command: String) {
+        val currentSession = session
+        if (currentSession?.isActive != true) {
+            logger.warn("WebSocket session is not active. Cannot send command: $command")
+            return
+        }
+        currentSession.send(command)
+    }
 
-                            else -> { // ignore other frame types
-                                logger.info("Received non-text frame: {}", frame)
-                            }
+    private suspend fun processMessages(session: DefaultClientWebSocketSession) {
+        try {
+            session.incoming
+                .receiveAsFlow()
+                .collect { frame ->
+                    when (frame) {
+                        is Frame.Text -> {
+                            handleTextFrame(frame)
+                        }
+
+                        else -> { // ignore other frame types
+                            logger.info("Received non-text frame: {}", frame)
                         }
                     }
-            } catch (e: Exception) {
-                logger.error("Error processing WebSocket messages", e)
-            }
+                }
+        } catch (e: CancellationException) {
+            throw e
+        } catch (e: Exception) {
+            logger.error("Error processing WebSocket messages", e)
         }
     }
 
