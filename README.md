@@ -63,7 +63,6 @@ suspend fun main() {
 - Snapshot: `ChannelSnapshot`, `MessageSnapshot`, `UserSnapshot`
 
 更新系操作は `Message` / `MessageSnapshot` どちらからでも呼べます。
-`update` は必ず `content` 指定が必要です。
 
 ## API Spec
 
