@@ -104,7 +104,7 @@ kotlin {
         freeCompilerArgs.add("-opt-in=kotlin.uuid.ExperimentalUuidApi")
         freeCompilerArgs.add("-opt-in=io.ktor.utils.io.InternalAPI")
     }
-    jvmToolchain(25)
+    jvmToolchain(21)
 }
 
 publishing {
