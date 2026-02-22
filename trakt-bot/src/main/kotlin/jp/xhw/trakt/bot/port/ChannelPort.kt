@@ -27,6 +27,10 @@ internal interface ChannelPort {
         subscribers: List<UserId>,
     )
 
+    suspend fun fetchViewers(channelId: ChannelId): List<ChannelViewer>
+
+    suspend fun fetchBots(channelId: ChannelId): List<Bot>
+
     suspend fun fetchChannelPins(channelId: ChannelId): List<Pin>
 
     suspend fun fetchChannelStats(channelId: ChannelId): ChannelStats

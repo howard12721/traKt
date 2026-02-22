@@ -38,6 +38,22 @@ data class ChannelStats(
     val datetime: Instant,
 )
 
+enum class ChannelViewState {
+    NONE,
+    STALE_VIEWING,
+    MONITORING,
+    EDITING,
+}
+
+data class ChannelViewer(
+    val userId: UserId,
+    val state: ChannelViewState,
+    val updatedAt: Instant,
+) {
+    val user: UserHandle
+        get() = UserHandle(userId)
+}
+
 sealed interface Channel {
     val id: ChannelId
 

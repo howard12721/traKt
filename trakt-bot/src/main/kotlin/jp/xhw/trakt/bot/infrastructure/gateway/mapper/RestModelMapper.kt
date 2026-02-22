@@ -3,6 +3,8 @@ package jp.xhw.trakt.bot.infrastructure.gateway.mapper
 import jp.xhw.trakt.bot.model.*
 import jp.xhw.trakt.rest.models.Channel as RestChannel
 import jp.xhw.trakt.rest.models.ChannelList as RestChannelList
+import jp.xhw.trakt.rest.models.ChannelViewState as RestChannelViewState
+import jp.xhw.trakt.rest.models.ChannelViewer as RestChannelViewer
 import jp.xhw.trakt.rest.models.DMChannel as RestDMChannel
 import jp.xhw.trakt.rest.models.FileInfo as RestFileInfo
 import jp.xhw.trakt.rest.models.Message as RestMessage
@@ -44,6 +46,23 @@ internal fun RestDMChannel.toModel(): Channel.DirectMessage =
         id = ChannelId(id),
         userId = UserId(userId),
     )
+
+// ── Channel Viewer ──
+
+internal fun RestChannelViewer.toViewerModel(): ChannelViewer =
+    ChannelViewer(
+        userId = UserId(userId),
+        state = state.toModel(),
+        updatedAt = updatedAt,
+    )
+
+internal fun RestChannelViewState.toModel(): ChannelViewState =
+    when (this) {
+        RestChannelViewState.NONE -> ChannelViewState.NONE
+        RestChannelViewState.STALE_VIEWING -> ChannelViewState.STALE_VIEWING
+        RestChannelViewState.MONITORING -> ChannelViewState.MONITORING
+        RestChannelViewState.EDITING -> ChannelViewState.EDITING
+    }
 
 // ── Message ──
 

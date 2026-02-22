@@ -46,6 +46,21 @@ suspend fun ChannelHandle.setSubscribers(subscribers: List<UserId>) {
 }
 
 context(scope: BotScope)
+suspend fun ChannelHandle.fetchViewers(): List<ChannelViewer> = scope.context.channelPort.fetchViewers(id)
+
+context(scope: BotScope)
+suspend fun ChannelHandle.fetchBots(): List<Bot> = scope.context.channelPort.fetchBots(id)
+
+context(scope: BotScope)
+suspend fun Channel.fetchSubscribers(): List<UserId> = handle.fetchSubscribers()
+
+context(scope: BotScope)
+suspend fun Channel.fetchViewers(): List<ChannelViewer> = handle.fetchViewers()
+
+context(scope: BotScope)
+suspend fun Channel.fetchBots(): List<Bot> = handle.fetchBots()
+
+context(scope: BotScope)
 suspend fun ChannelHandle.fetchPins(): List<Pin> = scope.context.channelPort.fetchChannelPins(id)
 
 context(scope: BotScope)

@@ -3,6 +3,7 @@ package jp.xhw.trakt.bot.infrastructure.gateway
 import jp.xhw.trakt.bot.infrastructure.gateway.mapper.toDetail
 import jp.xhw.trakt.bot.infrastructure.gateway.mapper.toDirectory
 import jp.xhw.trakt.bot.infrastructure.gateway.mapper.toModel
+import jp.xhw.trakt.bot.infrastructure.gateway.mapper.toViewerModel
 import jp.xhw.trakt.bot.model.*
 import jp.xhw.trakt.bot.port.ChannelPort
 import jp.xhw.trakt.rest.apis.ChannelApi
@@ -73,6 +74,18 @@ internal class TraqChannelPort(
                         on = subscribers.map { it.value },
                     ),
             ).requireSuccess(operation = "setSubscribers(channelId=${channelId.value})")
+    }
+
+    override suspend fun fetchViewers(channelId: ChannelId): List<ChannelViewer> {
+        val response = apiGateway.channelApi.getChannelViewers(channelId.value)
+        return response.bodyOrThrow(operation = "fetchViewers(channelId=${channelId.value})").map { it.toViewerModel() }
+    }
+
+    override suspend fun fetchBots(channelId: ChannelId): List<Bot> {
+        val response = apiGateway.channelApi.getChannelBots(channelId.value)
+        return response
+            .bodyOrThrow(operation = "fetchBots(channelId=${channelId.value})")
+            .map { Bot(botId = BotId(it.id), userId = UserId(it.botUserId)) }
     }
 
     override suspend fun fetchChannelPins(channelId: ChannelId): List<Pin> {
