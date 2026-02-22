@@ -1,6 +1,6 @@
-package jp.xhw.trakt.bot.gateway
+package jp.xhw.trakt.bot.infrastructure.gateway
 
-import io.ktor.client.statement.bodyAsText
+import io.ktor.client.statement.*
 import jp.xhw.trakt.rest.infrastructure.HttpResponse
 
 internal class TraqApiException(
@@ -16,10 +16,7 @@ internal class TraqApiException(
             status: Int,
             responseBody: String?,
         ): String {
-            val preview =
-                responseBody
-                    ?.takeIf { it.isNotBlank() }
-                    ?.take(MAX_BODY_PREVIEW_LENGTH)
+            val preview = responseBody?.takeIf { it.isNotBlank() }?.take(MAX_BODY_PREVIEW_LENGTH)
             return if (preview == null) {
                 "traQ API call failed: operation=$operation status=$status"
             } else {

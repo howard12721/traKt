@@ -1,14 +1,5 @@
-package jp.xhw.trakt.bot.event
+package jp.xhw.trakt.bot.model
 
-import jp.xhw.trakt.bot.model.Channel
-import jp.xhw.trakt.bot.model.ChannelId
-import jp.xhw.trakt.bot.model.ChannelSnapshot
-import jp.xhw.trakt.bot.model.MessageId
-import jp.xhw.trakt.bot.model.MessageSnapshot
-import jp.xhw.trakt.bot.model.StampSnapshot
-import jp.xhw.trakt.bot.model.User
-import jp.xhw.trakt.bot.model.UserSnapshot
-import jp.xhw.trakt.bot.model.UserTagId
 import kotlin.time.Instant
 
 sealed interface Event {
@@ -16,27 +7,27 @@ sealed interface Event {
 }
 
 sealed interface MessageEvent : Event {
-    val message: MessageSnapshot
+    val message: Message
 }
 
 data class MessageCreated(
     override val occurredAt: Instant,
-    override val message: MessageSnapshot,
+    override val message: Message,
 ) : MessageEvent
 
 data class MessageUpdated(
     override val occurredAt: Instant,
-    override val message: MessageSnapshot,
+    override val message: Message,
 ) : MessageEvent
 
 data class DirectMessageCreated(
     override val occurredAt: Instant,
-    override val message: MessageSnapshot,
+    override val message: Message,
 ) : MessageEvent
 
 data class DirectMessageUpdated(
     override val occurredAt: Instant,
-    override val message: MessageSnapshot,
+    override val message: Message,
 ) : MessageEvent
 
 data class MessageDeleted(
@@ -51,50 +42,52 @@ data class DirectMessageDeleted(
     val channelId: ChannelId,
 ) : Event
 
-data class Joined(
+data class BotJoinedChannel(
     override val occurredAt: Instant,
-    val channel: Channel,
+    val channelId: ChannelId,
 ) : Event {
-    val channelId: ChannelId
-        get() = channel.id
+    val channel: ChannelHandle
+        get() = ChannelHandle(channelId)
 }
 
-data class Left(
+data class BotLeftChannel(
     override val occurredAt: Instant,
-    val channel: Channel,
+    val channelId: ChannelId,
 ) : Event {
-    val channelId: ChannelId
-        get() = channel.id
+    val channel: ChannelHandle
+        get() = ChannelHandle(channelId)
 }
 
 data class ChannelCreated(
     override val occurredAt: Instant,
-    val channel: ChannelSnapshot,
-) : Event {
-    val handle: Channel
-        get() = channel.channel
-}
+    val channel: Channel.Meta,
+) : Event
 
 data class ChannelTopicChanged(
     override val occurredAt: Instant,
-    val channel: Channel,
+    val channelId: ChannelId,
     val topic: String,
-    val updater: User,
-) : Event
+    val updaterId: UserId,
+) : Event {
+    val channel: ChannelHandle
+        get() = ChannelHandle(channelId)
+    val updater: UserHandle
+        get() = UserHandle(updaterId)
+}
 
 data class UserCreated(
     override val occurredAt: Instant,
-    val user: UserSnapshot,
+    val user: User.Minimal,
 ) : Event
 
 data class UserActivated(
     override val occurredAt: Instant,
-    val user: UserSnapshot,
+    val user: User.Minimal,
 ) : Event
 
 data class StampCreated(
     override val occurredAt: Instant,
-    val stamp: StampSnapshot,
+    val stamp: Stamp.Basic,
 ) : Event
 
 data class TagAdded(

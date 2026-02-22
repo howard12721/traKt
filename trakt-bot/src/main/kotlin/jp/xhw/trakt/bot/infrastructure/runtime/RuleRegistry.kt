@@ -1,6 +1,7 @@
-package jp.xhw.trakt.bot.runtime
+package jp.xhw.trakt.bot.infrastructure.runtime
 
-import jp.xhw.trakt.bot.event.Event
+import jp.xhw.trakt.bot.infrastructure.runtime.mapper.toEventOrNull
+import jp.xhw.trakt.bot.model.Event
 import jp.xhw.trakt.bot.scope.BotScope
 import jp.xhw.trakt.websocket.WebSocketClient
 import kotlinx.coroutines.CancellationException

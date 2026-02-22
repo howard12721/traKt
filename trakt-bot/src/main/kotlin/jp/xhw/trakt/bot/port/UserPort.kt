@@ -1,78 +1,30 @@
 package jp.xhw.trakt.bot.port
 
-import jp.xhw.trakt.bot.model.CreateUserRequest
-import jp.xhw.trakt.bot.model.DirectMessageChannelSnapshot
-import jp.xhw.trakt.bot.model.EditUserRequest
-import jp.xhw.trakt.bot.model.MessageHistoryQuery
-import jp.xhw.trakt.bot.model.MessageSnapshot
-import jp.xhw.trakt.bot.model.User
-import jp.xhw.trakt.bot.model.UserIconUpload
-import jp.xhw.trakt.bot.model.UserId
-import jp.xhw.trakt.bot.model.UserSnapshot
-import jp.xhw.trakt.bot.model.UserStatsSnapshot
-import jp.xhw.trakt.bot.model.UserTagId
-import jp.xhw.trakt.bot.model.UserTagSnapshot
+import jp.xhw.trakt.bot.model.*
 
 internal interface UserPort {
-    suspend fun getUser(userId: UserId): User?
+    suspend fun fetchUser(userId: UserId): User.Detail
 
-    suspend fun getSnapshot(userId: UserId): UserSnapshot?
-
-    suspend fun listUsers(
+    suspend fun fetchUsers(
         includeSuspended: Boolean = false,
         name: String? = null,
-    ): List<UserSnapshot>
+    ): List<User.Basic>
 
-    suspend fun createUser(request: CreateUserRequest): UserSnapshot
+    suspend fun fetchUserIcon(userId: UserId): ByteArray
 
-    suspend fun editUser(
-        userId: UserId,
-        request: EditUserRequest,
-    )
+    suspend fun fetchDirectMessageChannel(userId: UserId): Channel.DirectMessage
 
-    suspend fun changePassword(
-        userId: UserId,
-        newPassword: String,
-    )
+    suspend fun fetchUserStats(userId: UserId): UserStats
 
-    suspend fun changeIcon(
-        userId: UserId,
-        icon: UserIconUpload,
-    )
+    suspend fun fetchUserTags(userId: UserId): List<UserTag>
 
-    suspend fun getIcon(userId: UserId): ByteArray?
-
-    suspend fun getDirectMessageChannel(userId: UserId): DirectMessageChannelSnapshot?
-
-    suspend fun getDirectMessages(
-        userId: UserId,
-        query: MessageHistoryQuery = MessageHistoryQuery(),
-    ): List<MessageSnapshot>
-
-    suspend fun postDirectMessage(
-        userId: UserId,
-        content: String,
-        embed: Boolean = false,
-        nonce: String? = null,
-    ): MessageSnapshot
-
-    suspend fun getTags(userId: UserId): List<UserTagSnapshot>
-
-    suspend fun addTag(
+    suspend fun addUserTag(
         userId: UserId,
         tag: String,
-    ): UserTagSnapshot
+    ): UserTag
 
-    suspend fun editTag(
-        userId: UserId,
-        tagId: UserTagId,
-        isLocked: Boolean,
-    )
-
-    suspend fun removeTag(
+    suspend fun removeUserTag(
         userId: UserId,
         tagId: UserTagId,
     )
-
-    suspend fun getStats(userId: UserId): UserStatsSnapshot?
 }

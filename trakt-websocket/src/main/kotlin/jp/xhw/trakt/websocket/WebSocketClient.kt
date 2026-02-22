@@ -19,7 +19,7 @@ import kotlin.uuid.Uuid
 
 private const val DEFAULT_EVENT_BUFFER_CAPACITY = 256
 
-data class WebSocketClientData(
+data class WebSocketClientConfig(
     val origin: String = "wss://q.trap.jp",
     val client: HttpClient =
         HttpClient(CIO) {
@@ -35,7 +35,7 @@ data class WebSocketClientData(
 
 @Serializable
 @OptIn(ExperimentalUuidApi::class)
-data class Request(
+data class GatewayEventEnvelope(
     val type: String,
     val reqId: Uuid,
     val body: JsonElement,
@@ -43,7 +43,7 @@ data class Request(
 
 class WebSocketClient(
     private val token: String,
-    private val data: WebSocketClientData = WebSocketClientData(),
+    private val config: WebSocketClientConfig = WebSocketClientConfig(),
 ) : CoroutineScope {
     companion object {
         private const val TRAQ_GATEWAY_PATH = "/api/v3/bots/ws"
@@ -51,7 +51,7 @@ class WebSocketClient(
 
     override val coroutineContext: CoroutineContext = SupervisorJob() + Dispatchers.Default
 
-    val events: SharedFlow<Event> = data.eventFlow.asSharedFlow()
+    val events: SharedFlow<Event> = config.eventFlow.asSharedFlow()
 
     val logger: Logger by lazy { LoggerFactory.getLogger(WebSocketClient::class.java) }
 
@@ -78,8 +78,8 @@ class WebSocketClient(
     suspend fun start() {
         check(session?.isActive != true) { "WebSocket client is already started" }
         val openedSession =
-            data.client.webSocketSession {
-                url("${data.origin}$TRAQ_GATEWAY_PATH")
+            config.client.webSocketSession {
+                url("${config.origin}$TRAQ_GATEWAY_PATH")
                 header("Authorization", "Bearer $token")
             }
         session = openedSession
@@ -107,7 +107,7 @@ class WebSocketClient(
         val currentSession = session
         if (currentSession?.isActive == true) {
             try {
-                data.eventFlow.tryEmit(Event.Close)
+                config.eventFlow.tryEmit(Event.Close)
                 currentSession.close(CloseReason(CloseReason.Codes.NORMAL, "Client requested disconnect"))
                 logger.info("WebSocket session closed successfully")
             } catch (e: Exception) {
@@ -122,7 +122,7 @@ class WebSocketClient(
 
     fun close() {
         coroutineContext.cancelChildren()
-        runCatching { data.client.close() }
+        runCatching { config.client.close() }
             .onFailure { error -> logger.error("Error while closing WebSocket HttpClient", error) }
     }
 
@@ -160,10 +160,10 @@ class WebSocketClient(
     private suspend fun handleTextFrame(frame: Frame.Text) {
         val frameData = frame.data.decodeToString()
         runCatching {
-            val request = Json.decodeFromString<Request>(frameData)
+            val envelope = Json.decodeFromString<GatewayEventEnvelope>(frameData)
             logger.info("Received frame: $frameData")
-            val event = Event.decodeEvent(request.type, request.body)
-            data.eventFlow.emit(event)
+            val event = Event.decodeEvent(envelope.type, envelope.body)
+            config.eventFlow.emit(event)
         }.onFailure { error ->
             logger.error("Failed to process frame: $frameData", error)
         }

@@ -105,6 +105,11 @@ kotlin {
         freeCompilerArgs.add("-opt-in=io.ktor.utils.io.InternalAPI")
     }
     jvmToolchain(21)
+    sourceSets {
+        all {
+            languageSettings.enableLanguageFeature("ContextParameters")
+        }
+    }
 }
 
 publishing {

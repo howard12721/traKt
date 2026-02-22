@@ -177,13 +177,13 @@ data class UserGroupMemberRemoved(
 @Serializable
 data class UserGroupAdminAdded(
     val eventTime: Instant,
-    val userGroup: UserGroupMember,
+    val member: UserGroupMember,
 ) : Event
 
 @Serializable
 data class UserGroupAdminRemoved(
     val eventTime: Instant,
-    val userGroup: UserGroupMember,
+    val member: UserGroupMember,
 ) : Event
 
 @Serializable

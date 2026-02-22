@@ -3,21 +3,51 @@ package jp.xhw.trakt.bot.model
 import kotlin.time.Instant
 import kotlin.uuid.Uuid
 
-data class StampId(
+@JvmInline
+value class StampId(
     val value: Uuid,
 )
 
-data class Stamp(
+@JvmInline
+value class StampHandle(
     val id: StampId,
 )
 
-data class StampSnapshot(
-    val stamp: Stamp,
-    val name: String,
-    val creator: User? = null,
-    val file: File? = null,
-    val createdAt: Instant? = null,
-    val updatedAt: Instant? = null,
-    val isUnicode: Boolean? = null,
-    val hasThumbnail: Boolean? = null,
-)
+sealed interface Stamp {
+    val id: StampId
+    val name: String
+    val creatorId: UserId
+    val fileId: FileId
+
+    val handle: StampHandle
+        get() = StampHandle(id)
+
+    val creator: UserHandle
+        get() = UserHandle(creatorId)
+
+    val fileHandle: FileHandle
+        get() = FileHandle(fileId)
+
+    data class Basic(
+        override val id: StampId,
+        override val name: String,
+        override val creatorId: UserId,
+        override val fileId: FileId,
+    ) : Stamp
+
+    data class Detail(
+        override val id: StampId,
+        override val name: String,
+        override val creatorId: UserId,
+        override val fileId: FileId,
+        val createdAt: Instant,
+        val updatedAt: Instant,
+        val isUnicode: Boolean,
+    ) : Stamp
+}
+
+enum class StampType {
+    UNICODE,
+    ORIGINAL,
+}
+

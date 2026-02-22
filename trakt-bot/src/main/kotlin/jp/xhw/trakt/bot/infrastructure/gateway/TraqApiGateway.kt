@@ -1,4 +1,4 @@
-package jp.xhw.trakt.bot.gateway
+package jp.xhw.trakt.bot.infrastructure.gateway
 
 import io.ktor.client.*
 import io.ktor.client.engine.cio.*
@@ -7,7 +7,7 @@ import io.ktor.serialization.kotlinx.json.*
 import jp.xhw.trakt.rest.apis.*
 import jp.xhw.trakt.rest.infrastructure.ApiClient
 import jp.xhw.trakt.websocket.WebSocketClient
-import jp.xhw.trakt.websocket.WebSocketClientData
+import jp.xhw.trakt.websocket.WebSocketClientConfig
 import kotlinx.serialization.json.Json
 
 internal class TraqApiGateway(
@@ -28,7 +28,7 @@ internal class TraqApiGateway(
             }
         }
 
-    val ws: WebSocketClient = WebSocketClient(token, WebSocketClientData(origin = "wss://$origin"))
+    val ws: WebSocketClient = WebSocketClient(token, WebSocketClientConfig(origin = "wss://$origin"))
 
     val activityApi = api(::ActivityApi)
     val botApi = api(::BotApi)

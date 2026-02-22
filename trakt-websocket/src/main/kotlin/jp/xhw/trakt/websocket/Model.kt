@@ -14,7 +14,7 @@ data class UserGroupMember(
 
 @Serializable
 @OptIn(ExperimentalUuidApi::class)
-data class RoledUserGroupMember(
+data class UserGroupMemberWithRole(
     val groupId: Uuid,
     val userId: Uuid,
     val role: String,
@@ -72,7 +72,7 @@ data class UserGroup(
     val type: String,
     val icon: Uuid,
     val admins: List<UserGroupMember>,
-    val members: List<RoledUserGroupMember>,
+    val members: List<UserGroupMemberWithRole>,
     val createdAt: Instant,
     val updatedAt: Instant,
 )

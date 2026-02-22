@@ -1,27 +1,16 @@
 package jp.xhw.trakt.bot.port
 
-import jp.xhw.trakt.bot.model.ChannelId
-import jp.xhw.trakt.bot.model.Message
-import jp.xhw.trakt.bot.model.MessageClipSnapshot
-import jp.xhw.trakt.bot.model.MessageHistoryQuery
-import jp.xhw.trakt.bot.model.MessageId
-import jp.xhw.trakt.bot.model.MessagePinSnapshot
-import jp.xhw.trakt.bot.model.MessageSearchQuery
-import jp.xhw.trakt.bot.model.MessageSearchResult
-import jp.xhw.trakt.bot.model.MessageSnapshot
-import jp.xhw.trakt.bot.model.MessageStampSnapshot
-import jp.xhw.trakt.bot.model.StampId
-import jp.xhw.trakt.bot.model.UserId
+import jp.xhw.trakt.bot.model.*
+import kotlin.time.Instant
 
 internal interface MessagePort {
-    suspend fun getMessage(messageId: MessageId): Message?
-
-    suspend fun getSnapshot(messageId: MessageId): MessageSnapshot?
+    suspend fun fetchMessage(messageId: MessageId): Message
 
     suspend fun editMessage(
         messageId: MessageId,
         content: String,
         embed: Boolean = false,
+        nonce: String? = null,
     )
 
     suspend fun deleteMessage(messageId: MessageId)
@@ -37,32 +26,47 @@ internal interface MessagePort {
         stampId: StampId,
     )
 
-    suspend fun getStamps(messageId: MessageId): List<MessageStampSnapshot>
+    suspend fun fetchStamps(messageId: MessageId): List<MessageStamp>
 
-    suspend fun getClips(messageId: MessageId): List<MessageClipSnapshot>
+    suspend fun fetchPinInfo(messageId: MessageId): PinInfo
 
-    suspend fun createPin(messageId: MessageId): MessagePinSnapshot
-
-    suspend fun getPin(messageId: MessageId): MessagePinSnapshot?
+    suspend fun createPin(messageId: MessageId): PinInfo
 
     suspend fun removePin(messageId: MessageId)
 
-    suspend fun getChannelMessages(
-        channelId: ChannelId,
-        query: MessageHistoryQuery = MessageHistoryQuery(),
-    ): List<MessageSnapshot>
-
-    suspend fun getDirectMessages(
-        userId: UserId,
-        query: MessageHistoryQuery = MessageHistoryQuery(),
-    ): List<MessageSnapshot>
-
-    suspend fun postDirectMessage(
+    suspend fun sendDirectMessage(
         userId: UserId,
         content: String,
         embed: Boolean = false,
         nonce: String? = null,
-    ): MessageSnapshot
+    ): Message
 
-    suspend fun searchMessages(query: MessageSearchQuery = MessageSearchQuery()): MessageSearchResult
+    suspend fun fetchDirectMessages(
+        userId: UserId,
+        limit: Int? = null,
+        offset: Int = 0,
+        since: Instant? = null,
+        until: Instant? = null,
+        inclusive: Boolean = false,
+        order: SortDirection = SortDirection.DESCENDING,
+    ): List<Message>
+
+    suspend fun searchMessages(
+        word: String? = null,
+        after: Instant? = null,
+        before: Instant? = null,
+        inChannel: ChannelId? = null,
+        to: List<UserId>? = null,
+        from: List<UserId>? = null,
+        citation: MessageId? = null,
+        bot: Boolean? = null,
+        hasUrl: Boolean? = null,
+        hasAttachments: Boolean? = null,
+        hasImage: Boolean? = null,
+        hasVideo: Boolean? = null,
+        hasAudio: Boolean? = null,
+        limit: Int? = null,
+        offset: Int? = null,
+        sort: SortDirection = SortDirection.DESCENDING,
+    ): SearchResult
 }
