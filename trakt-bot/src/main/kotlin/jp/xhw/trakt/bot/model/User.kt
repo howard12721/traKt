@@ -26,8 +26,13 @@ enum class UserState(
     SUSPENDED(2),
 }
 
+@JvmInline
+value class BotId(
+    val value: Uuid,
+)
+
 data class Bot(
-    val botId: Uuid,
+    val botId: BotId,
     val userId: UserId,
 ) {
     val user: UserHandle

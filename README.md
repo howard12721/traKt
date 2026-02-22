@@ -34,7 +34,7 @@ suspend fun main() {
     val token = System.getenv("TRAQ_BOT_TOKEN")
     require(!token.isNullOrBlank()) { "TRAQ_BOT_TOKEN is required" }
 
-    val client = trakt(token = token) {
+    val client = trakt(token = token, botId = Uuid.parse("019c4cd4-7c4f-77d5-b316-8ae4b28b4abc")) {
         on<MessageCreated> { event ->
             if (event.message.content.trim() == "ping") {
                 event.message.reply("pong")
@@ -66,10 +66,11 @@ trakt(token) { ... }   ← TraktClient 生成 + イベントハンドラ登録
 
 `trakt()` ファクトリ関数のパラメータ：
 
-| パラメータ         | 型                 | デフォルト値          | 説明                                         |
-| ------------------ | ------------------ | --------------------- | -------------------------------------------- |
-| `token`            | `String`           | (必須)                | Bot アクセストークン                         |
-| `origin`           | `String`           | `"q.trap.jp"`         | traQ サーバーのホスト名                      |
+| パラメータ              | 型                  | デフォルト値          | 説明                     |
+|--------------------|--------------------| --------------------- |------------------------|
+| `token`            | `String`           | (必須)                | Bot アクセストークン           |
+| `botId`            | `Uuid`             | (必須)                | Bot ID                 |
+| `origin`           | `String`           | `"q.trap.jp"`         | traQ サーバーのホスト名         |
 | `coroutineContext` | `CoroutineContext` | `Dispatchers.Default` | イベント処理に使用するコルーチンコンテキスト |
 
 ## 環境変数で管理する例

@@ -3,16 +3,19 @@ package jp.xhw.trakt.bot
 import jp.xhw.trakt.bot.dsl.TraktDsl
 import jp.xhw.trakt.bot.infrastructure.gateway.*
 import jp.xhw.trakt.bot.infrastructure.runtime.RuleRegistry
+import jp.xhw.trakt.bot.model.BotId
 import jp.xhw.trakt.bot.model.Event
 import jp.xhw.trakt.bot.port.BotRuntimeContext
 import jp.xhw.trakt.bot.scope.BotScope
 import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
 import kotlin.reflect.KClass
+import kotlin.uuid.Uuid
 
 @TraktDsl
 class TraktClient(
     token: String,
+    botId: Uuid,
     origin: String = "q.trap.jp",
     coroutineContext: CoroutineContext = Dispatchers.Default,
 ) {
@@ -23,6 +26,7 @@ class TraktClient(
 
     private val context =
         BotRuntimeContext(
+            botId = BotId(botId),
             origin = origin,
             channelPort = TraqChannelPort(apiGateway),
             messagePort = TraqMessagePort(apiGateway),
@@ -30,6 +34,7 @@ class TraktClient(
             stampPort = TraqStampPort(apiGateway),
             groupPort = TraqGroupPort(apiGateway),
             filePort = TraqFilePort(apiGateway),
+            botPort = TraqBotPort(apiGateway),
         )
     private val bot = BotScope(context)
     private var subscriptions: List<Job> = emptyList()
