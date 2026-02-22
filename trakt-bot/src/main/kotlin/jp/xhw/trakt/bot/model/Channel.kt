@@ -14,21 +14,6 @@ value class ChannelPath(
 )
 
 @JvmInline
-value class ChannelViewers(
-    val value: List<User>,
-)
-
-@JvmInline
-value class ChannelSubscribers(
-    val value: List<UserId>,
-)
-
-@JvmInline
-value class JoinedBots(
-    val value: List<Bot>,
-)
-
-@JvmInline
 value class ChannelTopic(
     val value: String,
 )
