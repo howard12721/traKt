@@ -33,8 +33,10 @@ import jp.xhw.trakt.bot.trakt
 suspend fun main() {
     val token = System.getenv("TRAQ_BOT_TOKEN")
     require(!token.isNullOrBlank()) { "TRAQ_BOT_TOKEN is required" }
+    val botId = System.getenv("TRAQ_BOT_ID")
+    require(!botId.isNullOrBlank()) { "TRAQ_BOT_ID is required" }
 
-    val client = trakt(token = token, botId = Uuid.parse("019c4cd4-7c4f-77d5-b316-8ae4b28b4abc")) {
+    val client = trakt(token = token, botId = Uuid.parse(botId)) {
         on<MessageCreated> { event ->
             if (event.message.content.trim() == "ping") {
                 event.message.reply("pong")
