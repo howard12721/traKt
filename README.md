@@ -2,75 +2,83 @@
 
 Kotlin で [traQ](https://github.com/traptitech/traQ) Bot を書くための API ラッパーです。
 
-## Quick Start
+# クイックスタート
+
+## 前提
+
+- **JDK 21** 以上
+- **Gradle**
+
+## 依存関係の追加
+
+Gradle プロジェクトに以下の依存関係を追加してください。
 
 ```kotlin
-import jp.xhw.trakt.bot.event.MessageCreated
-import jp.xhw.trakt.bot.model.MessageHistoryQuery
-import jp.xhw.trakt.bot.model.MessageSearchQuery
-import jp.xhw.trakt.bot.runTrakt
+repositories {
+    maven("https://jitpack.io")
+}
+
+dependencies {
+    implementation("com.github.howard12721.traKt:trakt-bot:1.0.0")
+}
+```
+
+## Bot を動かしてみる
+
+```kotlin
+import jp.xhw.trakt.bot.model.MessageCreated
+import jp.xhw.trakt.bot.scope.reply
+import jp.xhw.trakt.bot.trakt
 
 suspend fun main() {
     val token = System.getenv("TRAQ_BOT_TOKEN")
     require(!token.isNullOrBlank()) { "TRAQ_BOT_TOKEN is required" }
 
-    runTrakt(token = token) {
+    val client = trakt(token = token) {
         on<MessageCreated> { event ->
-            when (val content = event.message.content.trim()) {
-                "ping" -> event.message.sendReply("pong")
-
-                "!whoami" -> {
-                    val me = event.message.author.getSnapshot() ?: return@on
-                    event.message.sendReply("you are ${me.displayName} (@${me.name})")
-                }
-
-                "!dm-me" -> {
-                    event.message.author.sendDirectMessage("hello from bot")
-                }
-
-                "!edit-me" -> {
-                    val sent = event.message.sendReply("draft")
-                    sent.update(content = "final")
-                }
-
-                "!recent" -> {
-                    val recent = event.message.channel.getMessages(MessageHistoryQuery(limit = 5))
-                    event.message.sendReply("recent messages: ${recent.size}")
-                }
-
-                else -> {
-                    if (content.startsWith("!find ")) {
-                        val result =
-                            searchMessages(
-                                MessageSearchQuery(
-                                    word = content.removePrefix("!find ").trim(),
-                                    inChannel = event.message.channel,
-                                    limit = 3,
-                                ),
-                            )
-                        event.message.sendReply("hits=${result.totalHits}")
-                    }
-                }
+            if (event.message.content.trim() == "ping") {
+                event.message.reply("pong")
             }
         }
+    }
+
+    try {
+        client.start()
+    } finally {
+        client.stop()
     }
 }
 ```
 
-## Model Design
+## 起動の流れ
 
-- Handle: `Channel`, `Message`, `User`
-- Snapshot: `ChannelSnapshot`, `MessageSnapshot`, `UserSnapshot`
+```
+trakt(token) { ... }   ← TraktClient 生成 + イベントハンドラ登録
+        ↓
+    client.start()      ← WebSocket 接続 & イベントループ開始
+        ↓
+    (イベント受信)       ← ハンドラが BotScope 内で実行される
+        ↓
+    client.stop()        ← 接続切断 & リソース解放
+```
 
-更新系操作は `Message` / `MessageSnapshot` どちらからでも呼べます。
+## コンフィグ
 
-## API Spec
+`trakt()` ファクトリ関数のパラメータ：
 
-OpenAPI spec は再現性のため `trakt-bot/spec/v3-api.yaml` を使用します。
-通常のビルドで毎回ダウンロードはしません。
+| パラメータ         | 型                 | デフォルト値          | 説明                                         |
+| ------------------ | ------------------ | --------------------- | -------------------------------------------- |
+| `token`            | `String`           | (必須)                | Bot アクセストークン                         |
+| `origin`           | `String`           | `"q.trap.jp"`         | traQ サーバーのホスト名                      |
+| `coroutineContext` | `CoroutineContext` | `Dispatchers.Default` | イベント処理に使用するコルーチンコンテキスト |
 
-spec を更新したい場合のみ、以下を実行してください。
+## 環境変数で管理する例
 
 ```bash
-bash ./gradlew :trakt-bot:refreshApiSpec
+export TRAQ_BOT_TOKEN="your-bot-token-here"
+```
+
+```kotlin
+val token = System.getenv("TRAQ_BOT_TOKEN")
+    ?: error("TRAQ_BOT_TOKEN environment variable is required")
 ```
