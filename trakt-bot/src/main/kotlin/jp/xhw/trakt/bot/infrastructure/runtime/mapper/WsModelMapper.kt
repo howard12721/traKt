@@ -70,7 +70,7 @@ internal fun WebSocketEvent.toEventOrNull(): Event? =
         is WsChannelTopicChanged -> {
             ChannelTopicChanged(
                 occurredAt = eventTime,
-                channelId = channel.id(),
+                channel = channel.toModel(),
                 topic = topic,
                 updaterId = updater.id(),
             )

@@ -65,12 +65,10 @@ data class ChannelCreated(
 
 data class ChannelTopicChanged(
     override val occurredAt: Instant,
-    val channelId: ChannelId,
+    val channel: Channel.Meta,
     val topic: String,
     val updaterId: UserId,
 ) : Event {
-    val channel: ChannelHandle
-        get() = ChannelHandle(channelId)
     val updater: UserHandle
         get() = UserHandle(updaterId)
 }
