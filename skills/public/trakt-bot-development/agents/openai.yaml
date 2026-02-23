@@ -1,0 +1,4 @@
+interface:
+  display_name: "traKt Bot Development"
+  short_description: "Build bots with Kotlin traQ wrapper"
+  default_prompt: "Use $trakt-bot-development to implement a traQ bot feature with this library."
