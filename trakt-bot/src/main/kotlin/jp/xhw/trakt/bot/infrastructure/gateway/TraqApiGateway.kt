@@ -13,6 +13,7 @@ import kotlinx.serialization.json.Json
 internal class TraqApiGateway(
     private val token: String,
     private val origin: String = "q.trap.jp",
+    private val debugMode: Boolean = false,
 ) {
     val serializer =
         Json {
@@ -28,7 +29,14 @@ internal class TraqApiGateway(
             }
         }
 
-    val ws: WebSocketClient = WebSocketClient(token, WebSocketClientConfig(origin = "wss://$origin"))
+    val ws: WebSocketClient =
+        WebSocketClient(
+            token,
+            WebSocketClientConfig(
+                origin = "wss://$origin",
+                debugMode = debugMode,
+            ),
+        )
 
     val activityApi = api(::ActivityApi)
     val botApi = api(::BotApi)

@@ -74,6 +74,7 @@ trakt(token) { ... }   ← TraktClient 生成 + イベントハンドラ登録
 | `botId`            | `Uuid`             | (必須)                | Bot ID                 |
 | `origin`           | `String`           | `"q.trap.jp"`         | traQ サーバーのホスト名         |
 | `coroutineContext` | `CoroutineContext` | `Dispatchers.Default` | イベント処理に使用するコルーチンコンテキスト |
+| `debugMode`        | `Boolean`          | `false`               | WebSocket の DEBUG ログ出力を有効化 |
 
 ## 環境変数で管理する例
 

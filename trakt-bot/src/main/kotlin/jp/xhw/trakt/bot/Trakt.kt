@@ -14,6 +14,7 @@ import kotlin.uuid.Uuid
  * @param botId Bot の UUID
  * @param origin traQ サーバーのホスト名
  * @param coroutineContext イベント処理に使うコルーチンコンテキスト
+ * @param debugMode DEBUG ログを有効にするかどうか
  * @param block クライアント初期化時に実行する設定ブロック
  * @return 設定済みの [TraktClient]
  */
@@ -22,6 +23,7 @@ fun trakt(
     botId: Uuid,
     origin: String = "q.trap.jp",
     coroutineContext: CoroutineContext = Dispatchers.Default,
+    debugMode: Boolean = false,
     block: TraktClient.() -> Unit = {},
 ): TraktClient =
     TraktClient(
@@ -29,4 +31,5 @@ fun trakt(
         botId = botId,
         origin = origin,
         coroutineContext = coroutineContext,
+        debugMode = debugMode,
     ).apply(block)

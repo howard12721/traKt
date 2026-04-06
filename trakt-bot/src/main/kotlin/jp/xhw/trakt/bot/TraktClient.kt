@@ -22,6 +22,7 @@ import kotlin.uuid.Uuid
  * @param botId Bot の UUID
  * @param origin traQ サーバーのホスト名
  * @param coroutineContext イベント処理に使うコルーチンコンテキスト
+ * @param debugMode DEBUG ログを有効にするかどうか
  */
 @TraktDsl
 class TraktClient(
@@ -29,8 +30,9 @@ class TraktClient(
     botId: Uuid,
     origin: String = "q.trap.jp",
     coroutineContext: CoroutineContext = Dispatchers.Default,
+    debugMode: Boolean = false,
 ) {
-    private val apiGateway = TraqApiGateway(token = token, origin = origin)
+    private val apiGateway = TraqApiGateway(token = token, origin = origin, debugMode = debugMode)
     private val ruleRegistry = RuleRegistry()
     private val supervisorJob = SupervisorJob()
     private val runtimeScope = CoroutineScope(supervisorJob + coroutineContext)

@@ -22,6 +22,7 @@ private const val DEFAULT_RECONNECT_DELAY_MILLIS = 5_000L
 
 data class WebSocketClientConfig(
     val origin: String = "wss://q.trap.jp",
+    val debugMode: Boolean = false,
     val client: HttpClient =
         HttpClient(CIO) {
             install(WebSockets)
@@ -197,7 +198,9 @@ class WebSocketClient(
                         }
 
                         else -> { // ignore other frame types
-                            logger.info("Received non-text frame: {}", frame)
+                            if (config.debugMode) {
+                                logger.debug("Received non-text frame: {}", frame)
+                            }
                         }
                     }
                 }
@@ -213,7 +216,9 @@ class WebSocketClient(
         val frameData = frame.data.decodeToString()
         runCatching {
             val envelope = Json.decodeFromString<GatewayEventEnvelope>(frameData)
-            logger.info("Received frame: $frameData")
+            if (config.debugMode) {
+                logger.debug("Received frame: {}", frameData)
+            }
             val event = Event.decodeEvent(envelope.type, envelope.body)
             config.eventFlow.emit(event)
         }.onFailure { error ->
