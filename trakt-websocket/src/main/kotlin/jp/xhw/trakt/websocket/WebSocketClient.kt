@@ -18,6 +18,7 @@ import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
 private const val DEFAULT_EVENT_BUFFER_CAPACITY = 256
+private const val DEFAULT_RECONNECT_DELAY_MILLIS = 5_000L
 
 data class WebSocketClientConfig(
     val origin: String = "wss://q.trap.jp",
@@ -31,6 +32,7 @@ data class WebSocketClientConfig(
             extraBufferCapacity = DEFAULT_EVENT_BUFFER_CAPACITY,
             onBufferOverflow = BufferOverflow.SUSPEND,
         ),
+    val reconnectDelayMillis: Long = DEFAULT_RECONNECT_DELAY_MILLIS,
 )
 
 @Serializable
@@ -73,36 +75,58 @@ class WebSocketClient(
                 }
             }.launchIn(scope)
 
+    @Volatile
     private var session: DefaultClientWebSocketSession? = null
 
-    suspend fun start() {
-        check(session?.isActive != true) { "WebSocket client is already started" }
-        val openedSession =
-            config.client.webSocketSession {
-                url("${config.origin}$TRAQ_GATEWAY_PATH")
-                header("Authorization", "Bearer $token")
-            }
-        session = openedSession
+    @Volatile
+    private var started = false
 
-        if (openedSession.isActive) {
-            logger.info("WebSocket session established successfully")
-        } else {
-            logger.error("Failed to establish WebSocket session")
-            session = null
-            throw WebSocketException("Failed to establish WebSocket session")
-        }
+    @Volatile
+    private var stopping = false
+
+    suspend fun start() {
+        check(!started) { "WebSocket client is already started" }
+        started = true
+        stopping = false
 
         try {
-            withContext(Dispatchers.Default) {
-                processMessages(openedSession)
+            while (currentCoroutineContext().isActive && !stopping) {
+                val openedSession =
+                    try {
+                        openSession()
+                    } catch (e: CancellationException) {
+                        throw e
+                    } catch (e: Exception) {
+                        if (stopping) {
+                            break
+                        }
+                        logger.error("Failed to establish WebSocket session", e)
+                        waitForReconnect()
+                        continue
+                    }
+
+                try {
+                    withContext(Dispatchers.Default) {
+                        processMessages(openedSession)
+                    }
+
+                    if (!stopping) {
+                        logger.warn("WebSocket session closed. Scheduling reconnect")
+                        waitForReconnect()
+                    }
+                } finally {
+                    session = null
+                }
             }
         } finally {
             session = null
+            started = false
         }
     }
 
     suspend fun stop() {
         logger.info("Stopping WebSocket client...")
+        stopping = true
 
         val currentSession = session
         if (currentSession?.isActive == true) {
@@ -121,6 +145,7 @@ class WebSocketClient(
     }
 
     fun close() {
+        stopping = true
         coroutineContext.cancelChildren()
         runCatching { config.client.close() }
             .onFailure { error -> logger.error("Error while closing WebSocket HttpClient", error) }
@@ -133,6 +158,32 @@ class WebSocketClient(
             return
         }
         currentSession.send(command)
+    }
+
+    private suspend fun openSession(): DefaultClientWebSocketSession {
+        val openedSession =
+            config.client.webSocketSession {
+                url("${config.origin}$TRAQ_GATEWAY_PATH")
+                header("Authorization", "Bearer $token")
+            }
+
+        if (!openedSession.isActive) {
+            session = null
+            throw WebSocketException("Failed to establish WebSocket session")
+        }
+
+        session = openedSession
+        logger.info("WebSocket session established successfully")
+        return openedSession
+    }
+
+    private suspend fun waitForReconnect() {
+        if (stopping) {
+            return
+        }
+
+        logger.info("Retrying WebSocket connection in {} ms", config.reconnectDelayMillis)
+        delay(config.reconnectDelayMillis)
     }
 
     private suspend fun processMessages(session: DefaultClientWebSocketSession) {
@@ -150,6 +201,7 @@ class WebSocketClient(
                         }
                     }
                 }
+            logger.info("WebSocket incoming channel closed")
         } catch (e: CancellationException) {
             throw e
         } catch (e: Exception) {
