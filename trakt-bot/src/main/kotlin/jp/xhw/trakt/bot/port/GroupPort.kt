@@ -3,6 +3,7 @@ package jp.xhw.trakt.bot.port
 import jp.xhw.trakt.bot.model.Group
 import jp.xhw.trakt.bot.model.GroupId
 import jp.xhw.trakt.bot.model.GroupMember
+import jp.xhw.trakt.bot.model.UserId
 
 internal interface GroupPort {
     /**
@@ -27,4 +28,28 @@ internal interface GroupPort {
      * @return メンバー一覧
      */
     suspend fun fetchMembers(groupId: GroupId): List<GroupMember>
+
+    /**
+     * グループへメンバーを追加します。
+     *
+     * @param groupId 追加対象グループ
+     * @param userId 追加するユーザー
+     * @param role 追加時に設定するロール
+     */
+    suspend fun addMember(
+        groupId: GroupId,
+        userId: UserId,
+        role: String,
+    )
+
+    /**
+     * グループへ管理者を追加します。
+     *
+     * @param groupId 追加対象グループ
+     * @param userId 追加するユーザー
+     */
+    suspend fun addAdmin(
+        groupId: GroupId,
+        userId: UserId,
+    )
 }
