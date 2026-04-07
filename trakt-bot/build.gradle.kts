@@ -10,7 +10,7 @@ plugins {
 }
 
 group = "jp.xhw"
-version = "1.1.1"
+version = "1.2.0"
 
 repositories {
     mavenCentral()
@@ -103,13 +103,9 @@ kotlin {
         freeCompilerArgs.add("-opt-in=kotlin.time.ExperimentalTime")
         freeCompilerArgs.add("-opt-in=kotlin.uuid.ExperimentalUuidApi")
         freeCompilerArgs.add("-opt-in=io.ktor.utils.io.InternalAPI")
+        freeCompilerArgs.add("-Xcontext-parameters")
     }
     jvmToolchain(21)
-    sourceSets {
-        all {
-            languageSettings.enableLanguageFeature("ContextParameters")
-        }
-    }
 }
 
 publishing {
