@@ -11,7 +11,7 @@ import kotlin.uuid.Uuid
  * `block` で `on<Event>` ハンドラを登録して利用します。
  *
  * @param token traQ Bot アクセストークン
- * @param botId Bot の UUID
+ * @param botId Bot の UUID。Bot 固有アクションを使う場合に指定
  * @param origin traQ サーバーのホスト名
  * @param coroutineContext イベント処理に使うコルーチンコンテキスト
  * @param debugMode DEBUG ログを有効にするかどうか
@@ -20,7 +20,7 @@ import kotlin.uuid.Uuid
  */
 fun trakt(
     token: String,
-    botId: Uuid,
+    botId: Uuid? = null,
     origin: String = "q.trap.jp",
     coroutineContext: CoroutineContext = Dispatchers.Default,
     debugMode: Boolean = false,

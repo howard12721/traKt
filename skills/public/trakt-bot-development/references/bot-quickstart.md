@@ -15,7 +15,7 @@ dependencies {
 ## 2. Configuration input (example: environment variables)
 
 The library does not require environment variables specifically.  
-It only requires `token` and `botId` values to be passed to `trakt(...)`.
+It always requires `token`, and accepts `botId` when you need bot-specific actions such as channel join/leave.
 
 Common env-var convention:
 
@@ -34,9 +34,9 @@ suspend fun main() {
     val token = System.getenv("TRAQ_BOT_TOKEN")
     require(!token.isNullOrBlank()) { "TRAQ_BOT_TOKEN is required" }
 
-    val botIdRaw = System.getenv("TRAQ_BOT_ID")
-    require(!botIdRaw.isNullOrBlank()) { "TRAQ_BOT_ID is required" }
-    val botId = Uuid.parse(botIdRaw)
+    val botId = System.getenv("TRAQ_BOT_ID")
+        ?.takeUnless(String::isBlank)
+        ?.let(Uuid::parse)
 
     val client = trakt(token = token, botId = botId) {
         on<MessageCreated> { event ->

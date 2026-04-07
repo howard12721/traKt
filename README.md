@@ -29,14 +29,15 @@ dependencies {
 import jp.xhw.trakt.bot.model.MessageCreated
 import jp.xhw.trakt.bot.scope.reply
 import jp.xhw.trakt.bot.trakt
+import kotlin.uuid.Uuid
 
 suspend fun main() {
     val token = System.getenv("TRAQ_BOT_TOKEN")
     require(!token.isNullOrBlank()) { "TRAQ_BOT_TOKEN is required" }
-    val botId = System.getenv("TRAQ_BOT_ID")
-    require(!botId.isNullOrBlank()) { "TRAQ_BOT_ID is required" }
 
-    val client = trakt(token = token, botId = Uuid.parse(botId)) {
+    val botId = System.getenv("TRAQ_BOT_ID")?.takeUnless(String::isBlank)?.let(Uuid::parse)
+
+    val client = trakt(token = token, botId = botId) {
         on<MessageCreated> { event ->
             if (event.message.content.trim() == "ping") {
                 event.message.reply("pong")
@@ -71,7 +72,7 @@ trakt(token) { ... }   ← TraktClient 生成 + イベントハンドラ登録
 | パラメータ              | 型                  | デフォルト値          | 説明                     |
 |--------------------|--------------------| --------------------- |------------------------|
 | `token`            | `String`           | (必須)                | Bot アクセストークン           |
-| `botId`            | `Uuid`             | (必須)                | Bot ID                 |
+| `botId`            | `Uuid?`            | `null`                | Bot ID。`channel.join` など Bot 固有アクションを使う場合に必要 |
 | `origin`           | `String`           | `"q.trap.jp"`         | traQ サーバーのホスト名         |
 | `coroutineContext` | `CoroutineContext` | `Dispatchers.Default` | イベント処理に使用するコルーチンコンテキスト |
 | `debugMode`        | `Boolean`          | `false`               | WebSocket の DEBUG ログ出力を有効化 |
@@ -80,9 +81,14 @@ trakt(token) { ... }   ← TraktClient 生成 + イベントハンドラ登録
 
 ```bash
 export TRAQ_BOT_TOKEN="your-bot-token-here"
+export TRAQ_BOT_ID="your-bot-id-here"
 ```
 
 ```kotlin
 val token = System.getenv("TRAQ_BOT_TOKEN")
     ?: error("TRAQ_BOT_TOKEN environment variable is required")
+
+val botId = System.getenv("TRAQ_BOT_ID")
+    ?.takeUnless(String::isBlank)
+    ?.let(Uuid::parse)
 ```

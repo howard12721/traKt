@@ -19,7 +19,7 @@ import kotlin.uuid.Uuid
  * ハンドラ登録は [start] 呼び出し前に完了させる必要があります。
  *
  * @param token traQ Bot アクセストークン
- * @param botId Bot の UUID
+ * @param botId Bot の UUID。Bot 固有アクションを使う場合に指定
  * @param origin traQ サーバーのホスト名
  * @param coroutineContext イベント処理に使うコルーチンコンテキスト
  * @param debugMode DEBUG ログを有効にするかどうか
@@ -27,7 +27,7 @@ import kotlin.uuid.Uuid
 @TraktDsl
 class TraktClient(
     token: String,
-    botId: Uuid,
+    botId: Uuid? = null,
     origin: String = "q.trap.jp",
     coroutineContext: CoroutineContext = Dispatchers.Default,
     debugMode: Boolean = false,
@@ -39,7 +39,7 @@ class TraktClient(
 
     private val context =
         BotRuntimeContext(
-            botId = BotId(botId),
+            botId = botId?.let(::BotId),
             origin = origin,
             channelPort = TraqChannelPort(apiGateway),
             messagePort = TraqMessagePort(apiGateway),
