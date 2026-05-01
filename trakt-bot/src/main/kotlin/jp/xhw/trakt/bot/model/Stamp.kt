@@ -76,8 +76,8 @@ enum class StampType {
     ORIGINAL,
 }
 
-fun stampHandle(id: StampId) = StampHandle(id)
+fun stamp(id: StampId) = StampHandle(id)
 
-fun stampHandle(id: Uuid) = stampHandle(StampId(id))
+fun stamp(id: Uuid) = stamp(StampId(id))
 
-fun stampHandle(id: String) = stampHandle(Uuid.parse(id))
+fun stamp(id: String) = stamp(Uuid.parse(id))
