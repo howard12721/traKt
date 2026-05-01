@@ -30,7 +30,7 @@ suspend fun fetchUser(userId: Uuid): User.Detail = fetchUser(UserId(userId))
  * @return ユーザー情報
  */
 context(ctx: BaseContext)
-suspend fun UserHandle.resolve(): User = ctx.userPort.fetchUser(id)
+suspend fun UserHandle.fetch(): User = ctx.userPort.fetchUser(id)
 
 /**
  * ユーザー情報を再取得します。
@@ -38,7 +38,7 @@ suspend fun UserHandle.resolve(): User = ctx.userPort.fetchUser(id)
  * @return ユーザー情報
  */
 context(ctx: BaseContext)
-suspend fun User.Minimal.resolve(): User = handle.resolve()
+suspend fun User.Minimal.fetch(): User = handle.fetch()
 
 /**
  * ユーザー情報を再取得します。
@@ -46,7 +46,7 @@ suspend fun User.Minimal.resolve(): User = handle.resolve()
  * @return ユーザー情報
  */
 context(ctx: BaseContext)
-suspend fun User.Basic.resolve(): User = handle.resolve()
+suspend fun User.Basic.fetch(): User = handle.fetch()
 
 /**
  * ユーザー詳細情報を再取得します。
@@ -54,7 +54,7 @@ suspend fun User.Basic.resolve(): User = handle.resolve()
  * @return ユーザー情報
  */
 context(ctx: BaseContext)
-suspend fun User.Detail.refresh(): User = handle.resolve()
+suspend fun User.Detail.refresh(): User = handle.fetch()
 
 /**
  * ユーザー一覧を取得します。

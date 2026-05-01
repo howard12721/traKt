@@ -40,7 +40,7 @@ suspend fun fetchStamp(stampId: String): Detail = fetchStamp(Uuid.parse(stampId)
  * @return スタンプ詳細情報
  */
 context(ctx: BaseContext)
-suspend fun StampHandle.resolve(): Detail = ctx.stampPort.fetchStamp(id)
+suspend fun StampHandle.fetch(): Detail = ctx.stampPort.fetchStamp(id)
 
 /**
  * スタンプ一覧を取得します。
@@ -59,7 +59,7 @@ suspend fun fetchStamps(type: StampType? = null): List<Detail> = ctx.stampPort.f
  * @return スタンプ詳細情報
  */
 context(ctx: BaseContext)
-suspend fun Stamp.resolve(): Detail = this as? Detail ?: handle.resolve()
+suspend fun Stamp.fetch(): Detail = this as? Detail ?: handle.fetch()
 
 /**
  * スタンプ詳細を再取得します。
@@ -67,4 +67,4 @@ suspend fun Stamp.resolve(): Detail = this as? Detail ?: handle.resolve()
  * @return 最新のスタンプ詳細情報
  */
 context(ctx: BaseContext)
-suspend fun Detail.refresh(): Detail = handle.resolve()
+suspend fun Detail.refresh(): Detail = handle.fetch()

@@ -17,7 +17,7 @@ suspend fun fetchGroup(groupId: GroupId): Group = ctx.groupPort.fetchGroup(group
  * @return グループ詳細情報
  */
 context(ctx: BaseContext)
-suspend fun GroupHandle.resolve(): Group = ctx.groupPort.fetchGroup(id)
+suspend fun GroupHandle.fetch(): Group = ctx.groupPort.fetchGroup(id)
 
 /**
  * グループ一覧を取得します。
@@ -105,7 +105,7 @@ suspend fun GroupHandle.addAdmin(user: User) = addAdmin(user.id)
  * @return 最新のグループ情報
  */
 context(ctx: BaseContext)
-suspend fun Group.refresh(): Group = handle.resolve()
+suspend fun Group.refresh(): Group = handle.fetch()
 
 /**
  * グループへメンバーを追加します。

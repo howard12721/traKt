@@ -31,7 +31,7 @@ suspend fun fetchChannel(channelId: Uuid): Detail = fetchChannel(ChannelId(chann
  * @return チャンネル詳細情報
  */
 context(ctx: BaseContext)
-suspend fun ChannelHandle.resolve(): Detail = ctx.channelPort.fetchChannel(id)
+suspend fun ChannelHandle.fetch(): Detail = ctx.channelPort.fetchChannel(id)
 
 /**
  * チャンネルを詳細型として解決します。
@@ -41,7 +41,7 @@ suspend fun ChannelHandle.resolve(): Detail = ctx.channelPort.fetchChannel(id)
  * @return チャンネル詳細情報
  */
 context(ctx: BaseContext)
-suspend fun Channel.resolve(): Detail = this as? Detail ?: handle.resolve()
+suspend fun Channel.fetch(): Detail = this as? Detail ?: handle.fetch()
 
 /**
  * チャンネル詳細を再取得します。
@@ -49,7 +49,7 @@ suspend fun Channel.resolve(): Detail = this as? Detail ?: handle.resolve()
  * @return 最新のチャンネル詳細情報
  */
 context(ctx: BaseContext)
-suspend fun Detail.refresh(): Detail = handle.resolve()
+suspend fun Detail.refresh(): Detail = handle.fetch()
 
 /**
  * チャンネル一覧を取得します。

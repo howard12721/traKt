@@ -30,7 +30,7 @@ suspend fun fetchMessage(messageId: Uuid): Message = fetchMessage(MessageId(mess
  * @return メッセージ情報
  */
 context(ctx: BaseContext)
-suspend fun MessageHandle.resolve(): Message = ctx.messagePort.fetchMessage(id)
+suspend fun MessageHandle.fetch(): Message = ctx.messagePort.fetchMessage(id)
 
 /**
  * メッセージに付与されたスタンプ一覧を取得します。
@@ -242,7 +242,7 @@ suspend fun MessageHandle.reply(
     content: String,
     embed: Boolean = false,
     nonce: String? = null,
-): Message = resolve().channel.sendMessage(content + "\n${url()}", embed, nonce)
+): Message = fetch().channel.sendMessage(content + "\n${url()}", embed, nonce)
 
 // --- Message convenience extensions ---
 
@@ -252,7 +252,7 @@ suspend fun MessageHandle.reply(
  * @return 最新のメッセージ情報
  */
 context(ctx: BaseContext)
-suspend fun Message.refresh(): Message = handle.resolve()
+suspend fun Message.refresh(): Message = handle.fetch()
 
 /**
  * メッセージに付与されたスタンプ一覧を取得します。
