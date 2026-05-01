@@ -2,7 +2,7 @@ package jp.xhw.trakt.bot.infrastructure.runtime
 
 import jp.xhw.trakt.bot.infrastructure.runtime.mapper.toEventOrNull
 import jp.xhw.trakt.bot.model.Event
-import jp.xhw.trakt.bot.scope.BotScope
+import jp.xhw.trakt.bot.scope.bot.BotContext
 import jp.xhw.trakt.websocket.WebSocketClient
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
@@ -25,8 +25,8 @@ internal class RuleRegistry {
 
     fun <T : Event> on(
         eventClass: KClass<T>,
-        bot: BotScope,
-        handler: suspend BotScope.(T) -> Unit,
+        bot: BotContext,
+        handler: suspend BotContext.(T) -> Unit,
     ) {
         installers += { client, scope ->
             client.events

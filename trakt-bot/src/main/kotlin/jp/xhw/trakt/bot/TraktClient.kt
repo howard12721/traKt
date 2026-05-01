@@ -5,8 +5,7 @@ import jp.xhw.trakt.bot.infrastructure.gateway.*
 import jp.xhw.trakt.bot.infrastructure.runtime.RuleRegistry
 import jp.xhw.trakt.bot.model.BotId
 import jp.xhw.trakt.bot.model.Event
-import jp.xhw.trakt.bot.port.BotRuntimeContext
-import jp.xhw.trakt.bot.scope.BotScope
+import jp.xhw.trakt.bot.scope.bot.BotContext
 import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
 import kotlin.reflect.KClass
@@ -37,8 +36,8 @@ class TraktClient(
     private val supervisorJob = SupervisorJob()
     private val runtimeScope = CoroutineScope(supervisorJob + coroutineContext)
 
-    private val context =
-        BotRuntimeContext(
+    private val bot =
+        BotContext(
             botId = botId?.let(::BotId),
             origin = origin,
             channelPort = TraqChannelPort(apiGateway),
@@ -49,7 +48,6 @@ class TraktClient(
             filePort = TraqFilePort(apiGateway),
             botPort = TraqBotPort(apiGateway),
         )
-    private val bot = BotScope(context)
     private var subscriptions: List<Job> = emptyList()
 
     /**
@@ -59,7 +57,7 @@ class TraktClient(
      *
      * @param handler イベント受信時に実行するハンドラ
      */
-    inline fun <reified T : Event> on(noinline handler: suspend BotScope.(T) -> Unit) {
+    inline fun <reified T : Event> on(noinline handler: suspend BotContext.(T) -> Unit) {
         on(T::class, handler)
     }
 
@@ -72,28 +70,28 @@ class TraktClient(
     @PublishedApi
     internal fun <T : Event> on(
         eventClass: KClass<T>,
-        handler: suspend BotScope.(T) -> Unit,
+        handler: suspend BotContext.(T) -> Unit,
     ) {
         check(subscriptions.isEmpty()) { "Handlers must be registered before start()" }
         ruleRegistry.on(eventClass, bot, handler)
     }
 
     /**
-     * 現在の [BotScope] で単発処理を実行します。
+     * 現在の [BotContext] で単発処理を実行します。
      *
      * @param block 実行する処理
      */
-    suspend fun execute(block: suspend BotScope.() -> Unit) {
+    suspend fun execute(block: suspend BotContext.() -> Unit) {
         bot.block()
     }
 
     /**
-     * 現在の [BotScope] で非同期に単発処理を実行し、[Job] を返します。
+     * 現在の [BotContext] で非同期に単発処理を実行し、[Job] を返します。
      *
      * @param block 実行する処理
      * @return 実行中処理を表す [Job]
      */
-    fun launchAndExecute(block: suspend BotScope.() -> Unit): Job =
+    fun launchAndExecute(block: suspend BotContext.() -> Unit): Job =
         runtimeScope.launch {
             bot.block()
         }

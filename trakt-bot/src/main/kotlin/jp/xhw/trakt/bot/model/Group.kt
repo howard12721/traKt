@@ -49,7 +49,7 @@ value class GroupHandle internal constructor(
             message = "Replace with group method instead.",
             replaceWith = ReplaceWith("group(String)"),
         )
-        fun of(id: String): GroupHandle = of(Uuid.parse(id))
+        fun of(id: String): GroupHandle = GroupHandle(GroupId(Uuid.parse(id)))
     }
 }
 

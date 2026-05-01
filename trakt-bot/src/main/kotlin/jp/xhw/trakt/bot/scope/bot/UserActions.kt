@@ -1,4 +1,4 @@
-package jp.xhw.trakt.bot.scope
+package jp.xhw.trakt.bot.scope.bot
 
 import jp.xhw.trakt.bot.model.*
 import kotlin.time.Instant
@@ -12,8 +12,8 @@ import kotlin.uuid.Uuid
  * @param userId 取得対象ユーザーID
  * @return ユーザー詳細情報
  */
-context(scope: BotScope)
-suspend fun fetchUser(userId: UserId): User.Detail = scope.context.userPort.fetchUser(userId)
+context(ctx: BotContext)
+suspend fun fetchUser(userId: UserId): User.Detail = ctx.userPort.fetchUser(userId)
 
 /**
  * ユーザー詳細を取得します。
@@ -21,7 +21,7 @@ suspend fun fetchUser(userId: UserId): User.Detail = scope.context.userPort.fetc
  * @param userId 取得対象ユーザーID(UUID)
  * @return ユーザー詳細情報
  */
-context(scope: BotScope)
+context(ctx: BotContext)
 suspend fun fetchUser(userId: Uuid): User.Detail = fetchUser(UserId(userId))
 
 /**
@@ -29,15 +29,15 @@ suspend fun fetchUser(userId: Uuid): User.Detail = fetchUser(UserId(userId))
  *
  * @return ユーザー情報
  */
-context(scope: BotScope)
-suspend fun UserHandle.resolve(): User = scope.context.userPort.fetchUser(id)
+context(ctx: BotContext)
+suspend fun UserHandle.resolve(): User = ctx.userPort.fetchUser(id)
 
 /**
  * ユーザー情報を再取得します。
  *
  * @return ユーザー情報
  */
-context(scope: BotScope)
+context(ctx: BotContext)
 suspend fun User.Minimal.resolve(): User = handle.resolve()
 
 /**
@@ -45,7 +45,7 @@ suspend fun User.Minimal.resolve(): User = handle.resolve()
  *
  * @return ユーザー情報
  */
-context(scope: BotScope)
+context(ctx: BotContext)
 suspend fun User.Basic.resolve(): User = handle.resolve()
 
 /**
@@ -53,7 +53,7 @@ suspend fun User.Basic.resolve(): User = handle.resolve()
  *
  * @return ユーザー情報
  */
-context(scope: BotScope)
+context(ctx: BotContext)
 suspend fun User.Detail.refresh(): User = handle.resolve()
 
 /**
@@ -63,27 +63,27 @@ suspend fun User.Detail.refresh(): User = handle.resolve()
  * @param name 指定時は名前一致ユーザーのみ取得します
  * @return ユーザー基本情報の一覧
  */
-context(scope: BotScope)
+context(ctx: BotContext)
 suspend fun fetchUsers(
     includeSuspended: Boolean = false,
     name: String? = null,
-): List<User.Basic> = scope.context.userPort.fetchUsers(includeSuspended, name)
+): List<User.Basic> = ctx.userPort.fetchUsers(includeSuspended, name)
 
 /**
  * ユーザーアイコンをダウンロードします。
  *
  * @return アイコン画像のバイト列
  */
-context(scope: BotScope)
-suspend fun UserHandle.downloadIcon(): ByteArray = scope.context.userPort.fetchUserIcon(id)
+context(ctx: BotContext)
+suspend fun UserHandle.downloadIcon(): ByteArray = ctx.userPort.fetchUserIcon(id)
 
 /**
  * 指定ユーザーとの DM チャンネル情報を取得します。
  *
  * @return DM チャンネル
  */
-context(scope: BotScope)
-suspend fun UserHandle.fetchDirectMessageChannel(): Channel.DirectMessage = scope.context.userPort.fetchDirectMessageChannel(id)
+context(ctx: BotContext)
+suspend fun UserHandle.fetchDirectMessageChannel(): Channel.DirectMessage = ctx.userPort.fetchDirectMessageChannel(id)
 
 /**
  * 指定ユーザーとの DM メッセージを取得します。
@@ -96,7 +96,7 @@ suspend fun UserHandle.fetchDirectMessageChannel(): Channel.DirectMessage = scop
  * @param order 並び順
  * @return DM メッセージ一覧
  */
-context(scope: BotScope)
+context(ctx: BotContext)
 suspend fun UserHandle.fetchDirectMessages(
     limit: Int? = null,
     offset: Int = 0,
@@ -105,7 +105,7 @@ suspend fun UserHandle.fetchDirectMessages(
     inclusive: Boolean = false,
     order: SortDirection = SortDirection.DESCENDING,
 ): List<Message> =
-    scope.context.messagePort.fetchDirectMessages(
+    ctx.messagePort.fetchDirectMessages(
         id,
         limit,
         offset,
@@ -123,12 +123,12 @@ suspend fun UserHandle.fetchDirectMessages(
  * @param nonce 重複送信防止に使う任意文字列
  * @return 送信されたメッセージ
  */
-context(scope: BotScope)
+context(ctx: BotContext)
 suspend fun UserHandle.sendDirectMessage(
     content: String,
     embed: Boolean = false,
     nonce: String? = null,
-): Message = scope.context.messagePort.sendDirectMessage(id, content, embed, nonce)
+): Message = ctx.messagePort.sendDirectMessage(id, content, embed, nonce)
 
 /**
  * 指定ユーザーへダイレクトメッセージを送信します。
@@ -138,7 +138,7 @@ suspend fun UserHandle.sendDirectMessage(
  * @param nonce 重複送信防止に使う任意文字列
  * @return 送信されたメッセージ
  */
-context(scope: BotScope)
+context(ctx: BotContext)
 suspend fun User.sendDirectMessage(
     content: String,
     embed: Boolean = false,
@@ -152,8 +152,8 @@ suspend fun User.sendDirectMessage(
  *
  * @return ユーザータグ一覧
  */
-context(scope: BotScope)
-suspend fun UserHandle.fetchTags(): List<UserTag> = scope.context.userPort.fetchUserTags(id)
+context(ctx: BotContext)
+suspend fun UserHandle.fetchTags(): List<UserTag> = ctx.userPort.fetchUserTags(id)
 
 /**
  * ユーザーへタグを追加します。
@@ -161,16 +161,16 @@ suspend fun UserHandle.fetchTags(): List<UserTag> = scope.context.userPort.fetch
  * @param tag 追加するタグ文字列
  * @return 追加後のタグ情報
  */
-context(scope: BotScope)
-suspend fun UserHandle.tag(tag: String): UserTag = scope.context.userPort.addUserTag(id, tag)
+context(ctx: BotContext)
+suspend fun UserHandle.tag(tag: String): UserTag = ctx.userPort.addUserTag(id, tag)
 
 /**
  * ユーザーからタグを削除します。
  *
  * @param tagId 削除するタグID
  */
-context(scope: BotScope)
-suspend fun UserHandle.untag(tagId: UserTagId) = scope.context.userPort.removeUserTag(id, tagId)
+context(ctx: BotContext)
+suspend fun UserHandle.untag(tagId: UserTagId) = ctx.userPort.removeUserTag(id, tagId)
 
 // --- Stats ---
 
@@ -179,8 +179,8 @@ suspend fun UserHandle.untag(tagId: UserTagId) = scope.context.userPort.removeUs
  *
  * @return ユーザー統計情報
  */
-context(scope: BotScope)
-suspend fun UserHandle.fetchStats(): UserStats = scope.context.userPort.fetchUserStats(id)
+context(ctx: BotContext)
+suspend fun UserHandle.fetchStats(): UserStats = ctx.userPort.fetchUserStats(id)
 
 // --- User convenience extensions ---
 
@@ -189,7 +189,7 @@ suspend fun UserHandle.fetchStats(): UserStats = scope.context.userPort.fetchUse
  *
  * @return アイコン画像のバイト列
  */
-context(scope: BotScope)
+context(ctx: BotContext)
 suspend fun User.downloadIcon(): ByteArray = handle.downloadIcon()
 
 /**
@@ -197,7 +197,7 @@ suspend fun User.downloadIcon(): ByteArray = handle.downloadIcon()
  *
  * @return DM チャンネル
  */
-context(scope: BotScope)
+context(ctx: BotContext)
 suspend fun User.fetchDirectMessageChannel(): Channel.DirectMessage = handle.fetchDirectMessageChannel()
 
 /**
@@ -211,7 +211,7 @@ suspend fun User.fetchDirectMessageChannel(): Channel.DirectMessage = handle.fet
  * @param order 並び順
  * @return DM メッセージ一覧
  */
-context(scope: BotScope)
+context(ctx: BotContext)
 suspend fun User.fetchDirectMessages(
     limit: Int? = null,
     offset: Int = 0,
@@ -226,7 +226,7 @@ suspend fun User.fetchDirectMessages(
  *
  * @return ユーザータグ一覧
  */
-context(scope: BotScope)
+context(ctx: BotContext)
 suspend fun User.fetchTags(): List<UserTag> = handle.fetchTags()
 
 /**
@@ -235,7 +235,7 @@ suspend fun User.fetchTags(): List<UserTag> = handle.fetchTags()
  * @param tag 追加するタグ文字列
  * @return 追加後のタグ情報
  */
-context(scope: BotScope)
+context(ctx: BotContext)
 suspend fun User.tag(tag: String): UserTag = handle.tag(tag)
 
 /**
@@ -243,7 +243,7 @@ suspend fun User.tag(tag: String): UserTag = handle.tag(tag)
  *
  * @param tagId 削除するタグID
  */
-context(scope: BotScope)
+context(ctx: BotContext)
 suspend fun User.untag(tagId: UserTagId) = handle.untag(tagId)
 
 /**
@@ -251,5 +251,5 @@ suspend fun User.untag(tagId: UserTagId) = handle.untag(tagId)
  *
  * @return ユーザー統計情報
  */
-context(scope: BotScope)
+context(ctx: BotContext)
 suspend fun User.fetchStats(): UserStats = handle.fetchStats()

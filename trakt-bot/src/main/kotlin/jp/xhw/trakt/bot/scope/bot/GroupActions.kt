@@ -1,4 +1,4 @@
-package jp.xhw.trakt.bot.scope
+package jp.xhw.trakt.bot.scope.bot
 
 import jp.xhw.trakt.bot.model.Group
 import jp.xhw.trakt.bot.model.GroupHandle
@@ -14,32 +14,32 @@ import jp.xhw.trakt.bot.model.UserId
  * @param groupId 取得対象グループID
  * @return グループ詳細情報
  */
-context(scope: BotScope)
-suspend fun fetchGroup(groupId: GroupId): Group = scope.context.groupPort.fetchGroup(groupId)
+context(ctx: BotContext)
+suspend fun fetchGroup(groupId: GroupId): Group = ctx.groupPort.fetchGroup(groupId)
 
 /**
  * このハンドルが指すグループ詳細を取得します。
  *
  * @return グループ詳細情報
  */
-context(scope: BotScope)
-suspend fun GroupHandle.resolve(): Group = scope.context.groupPort.fetchGroup(id)
+context(ctx: BotContext)
+suspend fun GroupHandle.resolve(): Group = ctx.groupPort.fetchGroup(id)
 
 /**
  * グループ一覧を取得します。
  *
  * @return グループ一覧
  */
-context(scope: BotScope)
-suspend fun fetchGroups(): List<Group> = scope.context.groupPort.fetchGroups()
+context(ctx: BotContext)
+suspend fun fetchGroups(): List<Group> = ctx.groupPort.fetchGroups()
 
 /**
  * グループメンバー一覧を取得します。
  *
  * @return グループメンバー一覧
  */
-context(scope: BotScope)
-suspend fun GroupHandle.fetchMembers(): List<GroupMember> = scope.context.groupPort.fetchMembers(id)
+context(ctx: BotContext)
+suspend fun GroupHandle.fetchMembers(): List<GroupMember> = ctx.groupPort.fetchMembers(id)
 
 /**
  * グループへメンバーを追加します。
@@ -47,12 +47,12 @@ suspend fun GroupHandle.fetchMembers(): List<GroupMember> = scope.context.groupP
  * @param userId 追加するユーザーID
  * @param role 追加時に設定するロール
  */
-context(scope: BotScope)
+context(ctx: BotContext)
 suspend fun GroupHandle.addMember(
     userId: UserId,
     role: String = "",
 ) {
-    scope.context.groupPort.addMember(id, userId, role)
+    ctx.groupPort.addMember(id, userId, role)
 }
 
 /**
@@ -61,7 +61,7 @@ suspend fun GroupHandle.addMember(
  * @param user 追加するユーザー
  * @param role 追加時に設定するロール
  */
-context(scope: BotScope)
+context(ctx: BotContext)
 suspend fun GroupHandle.addMember(
     user: UserHandle,
     role: String = "",
@@ -73,7 +73,7 @@ suspend fun GroupHandle.addMember(
  * @param user 追加するユーザー
  * @param role 追加時に設定するロール
  */
-context(scope: BotScope)
+context(ctx: BotContext)
 suspend fun GroupHandle.addMember(
     user: User,
     role: String = "",
@@ -84,9 +84,9 @@ suspend fun GroupHandle.addMember(
  *
  * @param userId 追加するユーザーID
  */
-context(scope: BotScope)
+context(ctx: BotContext)
 suspend fun GroupHandle.addAdmin(userId: UserId) {
-    scope.context.groupPort.addAdmin(id, userId)
+    ctx.groupPort.addAdmin(id, userId)
 }
 
 /**
@@ -94,7 +94,7 @@ suspend fun GroupHandle.addAdmin(userId: UserId) {
  *
  * @param user 追加するユーザー
  */
-context(scope: BotScope)
+context(ctx: BotContext)
 suspend fun GroupHandle.addAdmin(user: UserHandle) = addAdmin(user.id)
 
 /**
@@ -102,7 +102,7 @@ suspend fun GroupHandle.addAdmin(user: UserHandle) = addAdmin(user.id)
  *
  * @param user 追加するユーザー
  */
-context(scope: BotScope)
+context(ctx: BotContext)
 suspend fun GroupHandle.addAdmin(user: User) = addAdmin(user.id)
 
 /**
@@ -110,7 +110,7 @@ suspend fun GroupHandle.addAdmin(user: User) = addAdmin(user.id)
  *
  * @return 最新のグループ情報
  */
-context(scope: BotScope)
+context(ctx: BotContext)
 suspend fun Group.refresh(): Group = handle.resolve()
 
 /**
@@ -119,7 +119,7 @@ suspend fun Group.refresh(): Group = handle.resolve()
  * @param userId 追加するユーザーID
  * @param role 追加時に設定するロール
  */
-context(scope: BotScope)
+context(ctx: BotContext)
 suspend fun Group.addMember(
     userId: UserId,
     role: String = "",
@@ -131,7 +131,7 @@ suspend fun Group.addMember(
  * @param user 追加するユーザー
  * @param role 追加時に設定するロール
  */
-context(scope: BotScope)
+context(ctx: BotContext)
 suspend fun Group.addMember(
     user: UserHandle,
     role: String = "",
@@ -143,7 +143,7 @@ suspend fun Group.addMember(
  * @param user 追加するユーザー
  * @param role 追加時に設定するロール
  */
-context(scope: BotScope)
+context(ctx: BotContext)
 suspend fun Group.addMember(
     user: User,
     role: String = "",
@@ -154,7 +154,7 @@ suspend fun Group.addMember(
  *
  * @param userId 追加するユーザーID
  */
-context(scope: BotScope)
+context(ctx: BotContext)
 suspend fun Group.addAdmin(userId: UserId) = handle.addAdmin(userId)
 
 /**
@@ -162,7 +162,7 @@ suspend fun Group.addAdmin(userId: UserId) = handle.addAdmin(userId)
  *
  * @param user 追加するユーザー
  */
-context(scope: BotScope)
+context(ctx: BotContext)
 suspend fun Group.addAdmin(user: UserHandle) = handle.addAdmin(user)
 
 /**
@@ -170,5 +170,5 @@ suspend fun Group.addAdmin(user: UserHandle) = handle.addAdmin(user)
  *
  * @param user 追加するユーザー
  */
-context(scope: BotScope)
+context(ctx: BotContext)
 suspend fun Group.addAdmin(user: User) = handle.addAdmin(user)

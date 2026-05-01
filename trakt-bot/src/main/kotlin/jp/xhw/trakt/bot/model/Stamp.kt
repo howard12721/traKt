@@ -49,7 +49,7 @@ value class StampHandle internal constructor(
             message = "Replace with stamp method instead.",
             replaceWith = ReplaceWith("stamp(String)"),
         )
-        fun of(id: String): StampHandle = of(Uuid.parse(id))
+        fun of(id: String): StampHandle = StampHandle(StampId(Uuid.parse(id)))
     }
 }
 
