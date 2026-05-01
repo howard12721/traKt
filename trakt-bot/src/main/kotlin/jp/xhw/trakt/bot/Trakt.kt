@@ -41,7 +41,7 @@ fun trakt(
 /**
  * traQ User token で動くセルフボット用クライアントを構築します。
  *
- * `block` で [jp.xhw.trakt.websocket.user.UserEvent] のハンドラを登録し、
+ * `block` で [jp.xhw.trakt.bot.model.UserEvent] のハンドラを登録し、
  * 返り値の [SelfTraktClient] に対して [SelfTraktClient.start] / [SelfTraktClient.stop]
  * を呼び出して利用します。
  *

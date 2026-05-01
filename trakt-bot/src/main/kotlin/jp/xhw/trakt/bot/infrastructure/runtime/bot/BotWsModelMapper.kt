@@ -21,7 +21,7 @@ import jp.xhw.trakt.websocket.bot.User as WsUser
 import jp.xhw.trakt.websocket.bot.UserActivated as WsUserActivated
 import jp.xhw.trakt.websocket.bot.UserCreated as WsUserCreated
 
-internal fun WebSocketEvent.toEventOrNull(): Event? =
+internal fun WebSocketEvent.toEventOrNull(): BotEvent? =
     when (this) {
         is WsMessageCreated -> {
             MessageCreated(occurredAt = eventTime, message = message.toModel())

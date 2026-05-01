@@ -1,0 +1,29 @@
+package jp.xhw.trakt.bot.context.user
+
+import jp.xhw.trakt.bot.context.base.BaseContext
+import jp.xhw.trakt.bot.dsl.TraktDsl
+import jp.xhw.trakt.bot.port.*
+
+/**
+ * User token で実行されるセルフボット用 context。
+ *
+ * Bot 固有の `channel.join` / `channel.leave` を除く、通常の traQ 操作を利用できます。
+ */
+@TraktDsl
+class UserContext internal constructor(
+    origin: String,
+    channelPort: ChannelPort,
+    messagePort: MessagePort,
+    userPort: UserPort,
+    stampPort: StampPort,
+    groupPort: GroupPort,
+    filePort: FilePort,
+) : BaseContext(
+        origin,
+        channelPort,
+        messagePort,
+        userPort,
+        stampPort,
+        groupPort,
+        filePort,
+    )

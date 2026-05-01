@@ -4,14 +4,14 @@ import jp.xhw.trakt.bot.context.RuntimeContext
 import jp.xhw.trakt.bot.context.bot.BotContext
 import jp.xhw.trakt.bot.context.user.UserContext
 import jp.xhw.trakt.bot.dsl.TraktDsl
-import jp.xhw.trakt.bot.model.Event
-import jp.xhw.trakt.websocket.user.UserEvent
+import jp.xhw.trakt.bot.model.BotEvent
+import jp.xhw.trakt.bot.model.UserEvent
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
 import kotlin.coroutines.CoroutineContext
 import kotlin.reflect.KClass
 
-typealias TraktClient = Runtime<BotContext, Event>
+typealias TraktClient = Runtime<BotContext, BotEvent>
 
 typealias SelfTraktClient = Runtime<UserContext, UserEvent>
 

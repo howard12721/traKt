@@ -2,13 +2,19 @@ package jp.xhw.trakt.bot.model
 
 import kotlin.time.Instant
 
-/** WebSocket から配信される Bot イベントの共通型。 */
-sealed interface Event {
+/** WebSocket から配信されるイベントの共通型。 */
+sealed interface Event
+
+/** Bot token の WebSocket から配信されるイベントの共通型。 */
+sealed interface BotEvent : Event
+
+/** 発生時刻を持つイベントの共通型。 */
+sealed interface TimedEvent : Event {
     val occurredAt: Instant
 }
 
 /** メッセージ本体を含むイベントの共通型。 */
-sealed interface MessageEvent : Event {
+sealed interface MessageEvent : BotEvent, TimedEvent {
     val message: Message
 }
 
@@ -46,7 +52,7 @@ data class MessageDeleted internal constructor(
     override val occurredAt: Instant,
     val messageId: MessageId,
     val channelId: ChannelId,
-) : Event
+) : BotEvent, TimedEvent
 
 /** DM のメッセージが削除されたときのイベント。 */
 @ConsistentCopyVisibility
@@ -54,14 +60,14 @@ data class DirectMessageDeleted internal constructor(
     override val occurredAt: Instant,
     val messageId: MessageId,
     val channelId: ChannelId,
-) : Event
+) : BotEvent, TimedEvent
 
 /** Bot がチャンネルへ追加されたときのイベント。 */
 @ConsistentCopyVisibility
 data class BotJoinedChannel internal constructor(
     override val occurredAt: Instant,
     val channelId: ChannelId,
-) : Event {
+) : BotEvent, TimedEvent {
     /** 追加先チャンネルのハンドル。 */
     val channel: ChannelHandle
         get() = ChannelHandle(channelId)
@@ -72,7 +78,7 @@ data class BotJoinedChannel internal constructor(
 data class BotLeftChannel internal constructor(
     override val occurredAt: Instant,
     val channelId: ChannelId,
-) : Event {
+) : BotEvent, TimedEvent {
     /** 削除元チャンネルのハンドル。 */
     val channel: ChannelHandle
         get() = ChannelHandle(channelId)
@@ -83,7 +89,7 @@ data class BotLeftChannel internal constructor(
 data class ChannelCreated internal constructor(
     override val occurredAt: Instant,
     val channel: Channel.Meta,
-) : Event
+) : BotEvent, TimedEvent
 
 /** チャンネルトピックが変更されたときのイベント。 */
 @ConsistentCopyVisibility
@@ -92,7 +98,7 @@ data class ChannelTopicChanged internal constructor(
     val channel: Channel.Meta,
     val topic: String,
     val updaterId: UserId,
-) : Event {
+) : BotEvent, TimedEvent {
     /** 更新実行ユーザーのハンドル。 */
     val updater: UserHandle
         get() = UserHandle(updaterId)
@@ -103,21 +109,21 @@ data class ChannelTopicChanged internal constructor(
 data class UserCreated internal constructor(
     override val occurredAt: Instant,
     val user: User.Minimal,
-) : Event
+) : BotEvent, TimedEvent
 
 /** ユーザーが有効化されたときのイベント。 */
 @ConsistentCopyVisibility
 data class UserActivated internal constructor(
     override val occurredAt: Instant,
     val user: User.Minimal,
-) : Event
+) : BotEvent, TimedEvent
 
 /** スタンプが作成されたときのイベント。 */
 @ConsistentCopyVisibility
 data class StampCreated internal constructor(
     override val occurredAt: Instant,
     val stamp: Stamp.Basic,
-) : Event
+) : BotEvent, TimedEvent
 
 /** ユーザータグが追加されたときのイベント。 */
 @ConsistentCopyVisibility
@@ -125,7 +131,7 @@ data class TagAdded internal constructor(
     override val occurredAt: Instant,
     val tagId: UserTagId,
     val tag: String,
-) : Event
+) : BotEvent, TimedEvent
 
 /** ユーザータグが削除されたときのイベント。 */
 @ConsistentCopyVisibility
@@ -133,4 +139,4 @@ data class TagRemoved internal constructor(
     override val occurredAt: Instant,
     val tagId: UserTagId,
     val tag: String,
-) : Event
+) : BotEvent, TimedEvent
