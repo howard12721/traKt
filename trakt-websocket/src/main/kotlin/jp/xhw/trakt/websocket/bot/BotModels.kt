@@ -1,4 +1,4 @@
-package jp.xhw.trakt.websocket
+package jp.xhw.trakt.websocket.bot
 
 import kotlinx.serialization.Serializable
 import kotlin.time.Instant

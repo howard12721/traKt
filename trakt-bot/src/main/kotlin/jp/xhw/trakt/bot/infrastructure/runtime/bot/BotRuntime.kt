@@ -7,10 +7,10 @@ import jp.xhw.trakt.bot.infrastructure.runtime.Runtime
 import jp.xhw.trakt.bot.infrastructure.runtime.RuntimeLifecycle
 import jp.xhw.trakt.bot.infrastructure.runtime.TraktClient
 import jp.xhw.trakt.bot.model.BotId
+import jp.xhw.trakt.websocket.bot.BotEvent
 import kotlinx.coroutines.Dispatchers
 import kotlin.coroutines.CoroutineContext
 import kotlin.uuid.Uuid
-import jp.xhw.trakt.websocket.Event as WebSocketEvent
 
 /** Bot token 用の context、Port、イベントソース、lifecycle を組み立てます。 */
 internal fun createBotClient(
@@ -50,7 +50,7 @@ internal fun createBotClient(
         context = ctx,
         ruleRegistry =
             RuleRegistry(
-                eventMapper = { event -> (event as? WebSocketEvent)?.toEventOrNull() },
+                eventMapper = { event -> (event as? BotEvent)?.toEventOrNull() },
             ),
         eventSource = apiGateway.ws.events,
         lifecycle = lifecycle,

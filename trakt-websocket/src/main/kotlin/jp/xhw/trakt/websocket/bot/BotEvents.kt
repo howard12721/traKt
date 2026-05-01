@@ -1,5 +1,6 @@
-package jp.xhw.trakt.websocket
+package jp.xhw.trakt.websocket.bot
 
+import jp.xhw.trakt.websocket.WsEventDecoder
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonElement
@@ -8,16 +9,18 @@ import kotlin.time.Instant
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
-sealed interface Event {
-    object Unknown : Event
-
-    object Close : Event
-
+sealed interface BotEvent {
     companion object {
-        fun decodeEvent(
+        val decoder: WsEventDecoder<BotEvent> =
+            WsEventDecoder { frameData ->
+                val envelope = Json.decodeFromString<BotEventEnvelope>(frameData)
+                decodeEventOrNull(envelope.type, envelope.body)
+            }
+
+        fun decodeEventOrNull(
             type: String,
             body: JsonElement,
-        ): Event =
+        ): BotEvent? =
             when (type) {
                 "PING" -> Json.decodeFromJsonElement<Ping>(body)
                 "JOINED" -> Json.decodeFromJsonElement<Joined>(body)
@@ -44,63 +47,71 @@ sealed interface Event {
                 "STAMP_CREATED" -> Json.decodeFromJsonElement<StampCreated>(body)
                 "TAG_ADDED" -> Json.decodeFromJsonElement<TagAdded>(body)
                 "TAG_REMOVED" -> Json.decodeFromJsonElement<TagRemoved>(body)
-                else -> Unknown
+                else -> null
             }
     }
 }
 
 @Serializable
+@OptIn(ExperimentalUuidApi::class)
+private data class BotEventEnvelope(
+    val type: String,
+    val reqId: Uuid,
+    val body: JsonElement,
+)
+
+@Serializable
 data class Ping(
     val eventTime: Instant,
-) : Event
+) : BotEvent
 
 @Serializable
 data class Joined(
     val eventTime: Instant,
     val channel: Channel,
-) : Event
+) : BotEvent
 
 @Serializable
 data class Left(
     val eventTime: Instant,
     val channel: Channel,
-) : Event
+) : BotEvent
 
 @Serializable
 data class MessageCreated(
     val eventTime: Instant,
     val message: Message,
-) : Event
+) : BotEvent
 
 @Serializable
 data class MessageDeleted(
     val eventTime: Instant,
     val message: DeletedMessage,
-) : Event
+) : BotEvent
 
 @Serializable
 data class MessageUpdated(
     val eventTime: Instant,
     val message: Message,
-) : Event
+) : BotEvent
 
 @Serializable
 data class DirectMessageCreated(
     val eventTime: Instant,
     val message: Message,
-) : Event
+) : BotEvent
 
 @Serializable
 data class DirectMessageDeleted(
     val eventTime: Instant,
     val message: DeletedDirectMessage,
-) : Event
+) : BotEvent
 
 @Serializable
 data class DirectMessageUpdated(
     val eventTime: Instant,
     val message: Message,
-) : Event
+) : BotEvent
 
 @Serializable
 @OptIn(ExperimentalUuidApi::class)
@@ -108,13 +119,13 @@ data class BotMessageStampsUpdated(
     val eventTime: Instant,
     val messageId: Uuid,
     val stamps: List<ReactionStamp>,
-) : Event
+) : BotEvent
 
 @Serializable
 data class ChannelCreated(
     val eventTime: Instant,
     val channel: Channel,
-) : Event
+) : BotEvent
 
 @Serializable
 data class ChannelTopicChanged(
@@ -122,69 +133,69 @@ data class ChannelTopicChanged(
     val channel: Channel,
     val topic: String,
     val updater: User,
-) : Event
+) : BotEvent
 
 @Serializable
 data class UserCreated(
     val eventTime: Instant,
     val user: User,
-) : Event
+) : BotEvent
 
 @Serializable
 data class UserActivated(
     val eventTime: Instant,
     val user: User,
-) : Event
+) : BotEvent
 
 @Serializable
 data class UserGroupCreated(
     val eventTime: Instant,
     val group: UserGroup,
-) : Event
+) : BotEvent
 
 @Serializable
 @OptIn(ExperimentalUuidApi::class)
 data class UserGroupUpdated(
     val eventTime: Instant,
     val groupId: Uuid,
-) : Event
+) : BotEvent
 
 @Serializable
 @OptIn(ExperimentalUuidApi::class)
 data class UserGroupDeleted(
     val eventTime: Instant,
     val groupId: Uuid,
-) : Event
+) : BotEvent
 
 @Serializable
 data class UserGroupMemberAdded(
     val eventTime: Instant,
     val groupMember: UserGroupMember,
-) : Event
+) : BotEvent
 
 @Serializable
 data class UserGroupMemberUpdated(
     val eventTime: Instant,
     val groupMember: UserGroupMember,
-) : Event
+) : BotEvent
 
 @Serializable
 data class UserGroupMemberRemoved(
     val eventTime: Instant,
     val groupMember: UserGroupMember,
-) : Event
+) : BotEvent
 
 @Serializable
 data class UserGroupAdminAdded(
     val eventTime: Instant,
     val member: UserGroupMember,
-) : Event
+) : BotEvent
 
 @Serializable
 data class UserGroupAdminRemoved(
     val eventTime: Instant,
     val member: UserGroupMember,
-) : Event
+) : BotEvent
 
 @Serializable
 @OptIn(ExperimentalUuidApi::class)
@@ -194,7 +205,7 @@ data class StampCreated(
     val name: String,
     val fileId: Uuid,
     val creator: User,
-) : Event
+) : BotEvent
 
 @Serializable
 @OptIn(ExperimentalUuidApi::class)
@@ -202,7 +213,7 @@ data class TagAdded(
     val eventTime: Instant,
     val tagId: Uuid,
     val tag: String,
-) : Event
+) : BotEvent
 
 @Serializable
 @OptIn(ExperimentalUuidApi::class)
@@ -210,4 +221,4 @@ data class TagRemoved(
     val eventTime: Instant,
     val tagId: Uuid,
     val tag: String,
-) : Event
+) : BotEvent

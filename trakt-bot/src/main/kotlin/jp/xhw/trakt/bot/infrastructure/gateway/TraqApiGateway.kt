@@ -8,6 +8,7 @@ import jp.xhw.trakt.rest.apis.*
 import jp.xhw.trakt.rest.infrastructure.ApiClient
 import jp.xhw.trakt.websocket.WebSocketClient
 import jp.xhw.trakt.websocket.WebSocketClientConfig
+import jp.xhw.trakt.websocket.bot.BotEvent
 import kotlinx.serialization.json.Json
 
 internal class TraqApiGateway(
@@ -29,12 +30,13 @@ internal class TraqApiGateway(
             }
         }
 
-    val ws: WebSocketClient =
+    val ws: WebSocketClient<BotEvent> =
         WebSocketClient(
             token,
             WebSocketClientConfig(
                 origin = "wss://$origin",
                 debugMode = debugMode,
+                eventDecoders = listOf(BotEvent.decoder),
             ),
         )
 

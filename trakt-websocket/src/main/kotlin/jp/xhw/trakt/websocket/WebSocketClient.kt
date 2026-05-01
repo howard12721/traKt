@@ -8,26 +8,24 @@ import io.ktor.websocket.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.*
-import kotlinx.serialization.Serializable
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonElement
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import kotlin.coroutines.CoroutineContext
-import kotlin.uuid.ExperimentalUuidApi
-import kotlin.uuid.Uuid
+import kotlin.time.Duration.Companion.milliseconds
 
 private const val DEFAULT_EVENT_BUFFER_CAPACITY = 256
 private const val DEFAULT_RECONNECT_DELAY_MILLIS = 5_000L
 
-data class WebSocketClientConfig(
+data class WebSocketClientConfig<E : Any>(
     val origin: String = "wss://q.trap.jp",
+    val path: String = "/api/v3/bots/ws",
     val debugMode: Boolean = false,
+    val eventDecoders: List<WsEventDecoder<E>> = emptyList(),
     val client: HttpClient =
         HttpClient(CIO) {
             install(WebSockets)
         },
-    val eventFlow: MutableSharedFlow<Event> =
+    val eventFlow: MutableSharedFlow<E> =
         MutableSharedFlow(
             replay = 0,
             extraBufferCapacity = DEFAULT_EVENT_BUFFER_CAPACITY,
@@ -36,29 +34,17 @@ data class WebSocketClientConfig(
     val reconnectDelayMillis: Long = DEFAULT_RECONNECT_DELAY_MILLIS,
 )
 
-@Serializable
-@OptIn(ExperimentalUuidApi::class)
-data class GatewayEventEnvelope(
-    val type: String,
-    val reqId: Uuid,
-    val body: JsonElement,
-)
-
-class WebSocketClient(
+class WebSocketClient<E : Any>(
     private val token: String,
-    private val config: WebSocketClientConfig = WebSocketClientConfig(),
+    private val config: WebSocketClientConfig<E> = WebSocketClientConfig(),
 ) : CoroutineScope {
-    companion object {
-        private const val TRAQ_GATEWAY_PATH = "/api/v3/bots/ws"
-    }
-
     override val coroutineContext: CoroutineContext = SupervisorJob() + Dispatchers.Default
 
-    val events: SharedFlow<Event> = config.eventFlow.asSharedFlow()
+    val events: SharedFlow<E> = config.eventFlow.asSharedFlow()
 
     val logger: Logger by lazy { LoggerFactory.getLogger(WebSocketClient::class.java) }
 
-    inline fun <reified T : Event> on(
+    inline fun <reified T : E> on(
         scope: CoroutineScope = this,
         crossinline block: suspend T.() -> Unit,
     ): Job =
@@ -132,7 +118,6 @@ class WebSocketClient(
         val currentSession = session
         if (currentSession?.isActive == true) {
             try {
-                config.eventFlow.tryEmit(Event.Close)
                 currentSession.close(CloseReason(CloseReason.Codes.NORMAL, "Client requested disconnect"))
                 logger.info("WebSocket session closed successfully")
             } catch (e: Exception) {
@@ -148,8 +133,12 @@ class WebSocketClient(
     fun close() {
         stopping = true
         coroutineContext.cancelChildren()
-        runCatching { config.client.close() }
-            .onFailure { error -> logger.error("Error while closing WebSocket HttpClient", error) }
+        runCatching { config.client.close() }.onFailure { error ->
+            logger.error(
+                "Error while closing WebSocket HttpClient",
+                error,
+            )
+        }
     }
 
     suspend fun sendCommand(command: String) {
@@ -164,7 +153,7 @@ class WebSocketClient(
     private suspend fun openSession(): DefaultClientWebSocketSession {
         val openedSession =
             config.client.webSocketSession {
-                url("${config.origin}$TRAQ_GATEWAY_PATH")
+                url("${config.origin}${config.path}")
                 header("Authorization", "Bearer $token")
             }
 
@@ -184,26 +173,24 @@ class WebSocketClient(
         }
 
         logger.info("Retrying WebSocket connection in {} ms", config.reconnectDelayMillis)
-        delay(config.reconnectDelayMillis)
+        delay(config.reconnectDelayMillis.milliseconds)
     }
 
     private suspend fun processMessages(session: DefaultClientWebSocketSession) {
         try {
-            session.incoming
-                .receiveAsFlow()
-                .collect { frame ->
-                    when (frame) {
-                        is Frame.Text -> {
-                            handleTextFrame(frame)
-                        }
+            session.incoming.receiveAsFlow().collect { frame ->
+                when (frame) {
+                    is Frame.Text -> {
+                        handleTextFrame(frame)
+                    }
 
-                        else -> { // ignore other frame types
-                            if (config.debugMode) {
-                                logger.debug("Received non-text frame: {}", frame)
-                            }
+                    else -> { // ignore other frame types
+                        if (config.debugMode) {
+                            logger.debug("Received non-text frame: {}", frame)
                         }
                     }
                 }
+            }
             logger.info("WebSocket incoming channel closed")
         } catch (e: CancellationException) {
             throw e
@@ -215,12 +202,19 @@ class WebSocketClient(
     private suspend fun handleTextFrame(frame: Frame.Text) {
         val frameData = frame.data.decodeToString()
         runCatching {
-            val envelope = Json.decodeFromString<GatewayEventEnvelope>(frameData)
             if (config.debugMode) {
                 logger.debug("Received frame: {}", frameData)
             }
-            val event = Event.decodeEvent(envelope.type, envelope.body)
-            config.eventFlow.emit(event)
+            val event =
+                config.eventDecoders.firstNotNullOfOrNull { decoder ->
+                    decoder.decode(frameData)
+                }
+
+            if (event != null) {
+                config.eventFlow.emit(event)
+            } else {
+                logger.warn("Received unknown WebSocket event")
+            }
         }.onFailure { error ->
             logger.error("Failed to process frame: $frameData", error)
         }

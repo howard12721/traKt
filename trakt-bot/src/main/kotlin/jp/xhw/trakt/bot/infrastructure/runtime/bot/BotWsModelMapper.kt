@@ -1,22 +1,25 @@
 package jp.xhw.trakt.bot.infrastructure.runtime.bot
 
 import jp.xhw.trakt.bot.model.*
-import jp.xhw.trakt.websocket.ChannelCreated as WsChannelCreated
-import jp.xhw.trakt.websocket.ChannelTopicChanged as WsChannelTopicChanged
-import jp.xhw.trakt.websocket.DirectMessageCreated as WsDirectMessageCreated
-import jp.xhw.trakt.websocket.DirectMessageDeleted as WsDirectMessageDeleted
-import jp.xhw.trakt.websocket.DirectMessageUpdated as WsDirectMessageUpdated
-import jp.xhw.trakt.websocket.Event as WebSocketEvent
-import jp.xhw.trakt.websocket.Joined as WsJoined
-import jp.xhw.trakt.websocket.Left as WsLeft
-import jp.xhw.trakt.websocket.MessageCreated as WsMessageCreated
-import jp.xhw.trakt.websocket.MessageDeleted as WsMessageDeleted
-import jp.xhw.trakt.websocket.MessageUpdated as WsMessageUpdated
-import jp.xhw.trakt.websocket.StampCreated as WsStampCreated
-import jp.xhw.trakt.websocket.TagAdded as WsTagAdded
-import jp.xhw.trakt.websocket.TagRemoved as WsTagRemoved
-import jp.xhw.trakt.websocket.UserActivated as WsUserActivated
-import jp.xhw.trakt.websocket.UserCreated as WsUserCreated
+import jp.xhw.trakt.websocket.bot.Channel as WsChannel
+import jp.xhw.trakt.websocket.bot.ChannelCreated as WsChannelCreated
+import jp.xhw.trakt.websocket.bot.ChannelTopicChanged as WsChannelTopicChanged
+import jp.xhw.trakt.websocket.bot.DirectMessageCreated as WsDirectMessageCreated
+import jp.xhw.trakt.websocket.bot.DirectMessageDeleted as WsDirectMessageDeleted
+import jp.xhw.trakt.websocket.bot.DirectMessageUpdated as WsDirectMessageUpdated
+import jp.xhw.trakt.websocket.bot.BotEvent as WebSocketEvent
+import jp.xhw.trakt.websocket.bot.Joined as WsJoined
+import jp.xhw.trakt.websocket.bot.Left as WsLeft
+import jp.xhw.trakt.websocket.bot.Message as WsMessage
+import jp.xhw.trakt.websocket.bot.MessageCreated as WsMessageCreated
+import jp.xhw.trakt.websocket.bot.MessageDeleted as WsMessageDeleted
+import jp.xhw.trakt.websocket.bot.MessageUpdated as WsMessageUpdated
+import jp.xhw.trakt.websocket.bot.StampCreated as WsStampCreated
+import jp.xhw.trakt.websocket.bot.TagAdded as WsTagAdded
+import jp.xhw.trakt.websocket.bot.TagRemoved as WsTagRemoved
+import jp.xhw.trakt.websocket.bot.User as WsUser
+import jp.xhw.trakt.websocket.bot.UserActivated as WsUserActivated
+import jp.xhw.trakt.websocket.bot.UserCreated as WsUserCreated
 
 internal fun WebSocketEvent.toEventOrNull(): Event? =
     when (this) {
@@ -124,9 +127,9 @@ internal fun WebSocketEvent.toEventOrNull(): Event? =
         }
     }
 
-private fun jp.xhw.trakt.websocket.Message.id(): MessageId = MessageId(id)
+private fun WsMessage.id(): MessageId = MessageId(id)
 
-private fun jp.xhw.trakt.websocket.Message.toModel(): Message =
+private fun WsMessage.toModel(): Message =
     Message(
         id = id(),
         authorId = user.id(),
@@ -139,9 +142,9 @@ private fun jp.xhw.trakt.websocket.Message.toModel(): Message =
         threadId = null,
     )
 
-private fun jp.xhw.trakt.websocket.User.id(): UserId = UserId(id)
+private fun WsUser.id(): UserId = UserId(id)
 
-private fun jp.xhw.trakt.websocket.User.toModel(): User.Minimal =
+private fun WsUser.toModel(): User.Minimal =
     User.Minimal(
         id = id(),
         name = name,
@@ -150,9 +153,9 @@ private fun jp.xhw.trakt.websocket.User.toModel(): User.Minimal =
         isBot = bot,
     )
 
-private fun jp.xhw.trakt.websocket.Channel.id(): ChannelId = ChannelId(id)
+private fun WsChannel.id(): ChannelId = ChannelId(id)
 
-private fun jp.xhw.trakt.websocket.Channel.toModel(): Channel.Meta =
+private fun WsChannel.toModel(): Channel.Meta =
     Channel.Meta(
         id = id(),
         parentId = ChannelId(parentId),
