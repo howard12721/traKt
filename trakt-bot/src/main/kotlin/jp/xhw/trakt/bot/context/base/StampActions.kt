@@ -5,6 +5,7 @@ import jp.xhw.trakt.bot.model.Stamp.Detail
 import jp.xhw.trakt.bot.model.StampHandle
 import jp.xhw.trakt.bot.model.StampId
 import jp.xhw.trakt.bot.model.StampType
+import kotlin.uuid.Uuid
 
 /**
  * スタンプ詳細を取得します。
@@ -14,6 +15,24 @@ import jp.xhw.trakt.bot.model.StampType
  */
 context(ctx: BaseContext)
 suspend fun fetchStamp(stampId: StampId): Detail = ctx.stampPort.fetchStamp(stampId)
+
+/**
+ * スタンプ詳細を取得します。
+ *
+ * @param stampId 取得対象スタンプID(UUID)
+ * @return スタンプ詳細情報
+ */
+context(ctx: BaseContext)
+suspend fun fetchStamp(stampId: Uuid): Detail = fetchStamp(StampId(stampId))
+
+/**
+ * スタンプ詳細を取得します。
+ *
+ * @param stampId 取得対象スタンプID(UUID文字列)
+ * @return スタンプ詳細情報
+ */
+context(ctx: BaseContext)
+suspend fun fetchStamp(stampId: String): Detail = fetchStamp(Uuid.parse(stampId))
 
 /**
  * このハンドルが指すスタンプ詳細を取得します。

@@ -39,7 +39,7 @@ class Runtime<R : RuntimeContext, E : Any> internal constructor(
     /**
      * 指定イベント型のハンドラを登録します。
      *
-     * 例: `on<MessageCreated> { ... }`
+     * 例: `on<BotMessageCreated> { ... }`
      *
      * @param handler イベント受信時に実行するハンドラ
      */

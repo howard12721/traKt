@@ -13,45 +13,7 @@ value class UserId(
 @JvmInline
 value class UserHandle internal constructor(
     val id: UserId,
-) {
-    companion object {
-        /**
-         * [UserId] から [UserHandle] を生成します。
-         *
-         * @param id ユーザーID
-         * @return 生成されたユーザーハンドル
-         */
-        @Deprecated(
-            message = "Replace with user method instead.",
-            replaceWith = ReplaceWith("user(UserId)"),
-        )
-        fun of(id: UserId): UserHandle = UserHandle(id)
-
-        /**
-         * [Uuid] から [UserHandle] を生成します。
-         *
-         * @param id ユーザーID(UUID)
-         * @return 生成されたユーザーハンドル
-         */
-        @Deprecated(
-            message = "Replace with user method instead.",
-            replaceWith = ReplaceWith("user(Uuid)"),
-        )
-        fun of(id: Uuid): UserHandle = UserHandle(UserId(id))
-
-        /**
-         * UUID 文字列から [UserHandle] を生成します。
-         *
-         * @param id ユーザーID(UUID文字列)
-         * @return 生成されたユーザーハンドル
-         */
-        @Deprecated(
-            message = "Replace with user method instead.",
-            replaceWith = ReplaceWith("user(String)"),
-        )
-        fun of(id: String): UserHandle = UserHandle(UserId(Uuid.parse(id)))
-    }
-}
+)
 
 /** ユーザータグID。 */
 @JvmInline

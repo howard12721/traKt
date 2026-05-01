@@ -13,45 +13,7 @@ value class MessageId(
 @JvmInline
 value class MessageHandle internal constructor(
     val id: MessageId,
-) {
-    companion object {
-        /**
-         * [MessageId] から [MessageHandle] を生成します。
-         *
-         * @param id メッセージID
-         * @return 生成されたメッセージハンドル
-         */
-        @Deprecated(
-            "Replace with message method instead.",
-            ReplaceWith("message(MessageId)"),
-        )
-        fun of(id: MessageId): MessageHandle = MessageHandle(id)
-
-        /**
-         * [Uuid] から [MessageHandle] を生成します。
-         *
-         * @param id メッセージID(UUID)
-         * @return 生成されたメッセージハンドル
-         */
-        @Deprecated(
-            "Replace with message method instead.",
-            ReplaceWith("message(uuid)"),
-        )
-        fun of(id: Uuid): MessageHandle = MessageHandle(MessageId(id))
-
-        /**
-         * UUID 文字列から [MessageHandle] を生成します。
-         *
-         * @param id メッセージID(UUID文字列)
-         * @return 生成されたメッセージハンドル
-         */
-        @Deprecated(
-            "Replace with message method instead.",
-            ReplaceWith("message(String)"),
-        )
-        fun of(id: String): MessageHandle = MessageHandle(MessageId(Uuid.parse(id)))
-    }
-}
+)
 
 /** メッセージ本文とメタ情報。 */
 class Message internal constructor(

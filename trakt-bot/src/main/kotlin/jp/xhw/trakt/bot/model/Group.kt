@@ -13,45 +13,7 @@ value class GroupId(
 @JvmInline
 value class GroupHandle internal constructor(
     val id: GroupId,
-) {
-    companion object {
-        /**
-         * [GroupId] から [GroupHandle] を生成します。
-         *
-         * @param id グループID
-         * @return 生成されたグループハンドル
-         */
-        @Deprecated(
-            message = "Replace with group method instead.",
-            replaceWith = ReplaceWith("group(GroupId)"),
-        )
-        fun of(id: GroupId): GroupHandle = GroupHandle(id)
-
-        /**
-         * [Uuid] から [GroupHandle] を生成します。
-         *
-         * @param id グループID(UUID)
-         * @return 生成されたグループハンドル
-         */
-        @Deprecated(
-            message = "Replace with group method instead.",
-            replaceWith = ReplaceWith("group(Uuid)"),
-        )
-        fun of(id: Uuid): GroupHandle = GroupHandle(GroupId(id))
-
-        /**
-         * UUID 文字列から [GroupHandle] を生成します。
-         *
-         * @param id グループID(UUID文字列)
-         * @return 生成されたグループハンドル
-         */
-        @Deprecated(
-            message = "Replace with group method instead.",
-            replaceWith = ReplaceWith("group(String)"),
-        )
-        fun of(id: String): GroupHandle = GroupHandle(GroupId(Uuid.parse(id)))
-    }
-}
+)
 
 /** グループ詳細情報。 */
 class Group internal constructor(

@@ -13,45 +13,7 @@ value class StampId(
 @JvmInline
 value class StampHandle internal constructor(
     val id: StampId,
-) {
-    companion object {
-        /**
-         * [StampId] から [StampHandle] を生成します。
-         *
-         * @param id スタンプID
-         * @return 生成されたスタンプハンドル
-         */
-        @Deprecated(
-            message = "Replace with stamp method instead.",
-            replaceWith = ReplaceWith("stamp(StampId)"),
-        )
-        fun of(id: StampId): StampHandle = StampHandle(id)
-
-        /**
-         * [Uuid] から [StampHandle] を生成します。
-         *
-         * @param id スタンプID(UUID)
-         * @return 生成されたスタンプハンドル
-         */
-        @Deprecated(
-            message = "Replace with stamp method instead.",
-            replaceWith = ReplaceWith("stamp(Uuid)"),
-        )
-        fun of(id: Uuid): StampHandle = StampHandle(StampId(id))
-
-        /**
-         * UUID 文字列から [StampHandle] を生成します。
-         *
-         * @param id スタンプID(UUID文字列)
-         * @return 生成されたスタンプハンドル
-         */
-        @Deprecated(
-            message = "Replace with stamp method instead.",
-            replaceWith = ReplaceWith("stamp(String)"),
-        )
-        fun of(id: String): StampHandle = StampHandle(StampId(Uuid.parse(id)))
-    }
-}
+)
 
 /** スタンプ。 */
 sealed interface Stamp {
@@ -114,8 +76,8 @@ enum class StampType {
     ORIGINAL,
 }
 
-fun stamp(id: StampId) = StampHandle(id)
+fun stampHandle(id: StampId) = StampHandle(id)
 
-fun stamp(id: Uuid) = stamp(StampId(id))
+fun stampHandle(id: Uuid) = stampHandle(StampId(id))
 
-fun stamp(id: String) = stamp(Uuid.parse(id))
+fun stampHandle(id: String) = stampHandle(Uuid.parse(id))

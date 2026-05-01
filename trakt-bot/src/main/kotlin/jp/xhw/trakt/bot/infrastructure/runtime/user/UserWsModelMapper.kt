@@ -200,37 +200,37 @@ internal fun WebSocketEvent.toEventOrNull(): UserEvent? =
         }
 
         is WsClipFolderCreated -> {
-            ClipFolderCreated(clipFolderId = id.clipFolderId())
+            UserClipFolderCreated(clipFolderId = id.clipFolderId())
         }
 
         is WsClipFolderUpdated -> {
-            ClipFolderUpdated(clipFolderId = id.clipFolderId())
+            UserClipFolderUpdated(clipFolderId = id.clipFolderId())
         }
 
         is WsClipFolderDeleted -> {
-            ClipFolderDeleted(clipFolderId = id.clipFolderId())
+            UserClipFolderDeleted(clipFolderId = id.clipFolderId())
         }
 
         is WsClipFolderMessageDeleted -> {
-            ClipFolderMessageDeleted(
+            UserClipFolderMessageDeleted(
                 clipFolderId = folderId.clipFolderId(),
                 messageId = messageId.messageId(),
             )
         }
 
         is WsClipFolderMessageAdded -> {
-            ClipFolderMessageAdded(
+            UserClipFolderMessageAdded(
                 clipFolderId = folderId.clipFolderId(),
                 messageId = messageId.messageId(),
             )
         }
 
         is WsQallRoomStateChanged -> {
-            QallRoomStateChanged(roomStates = roomStates.map { it.toModel() })
+            UserQallRoomStateChanged(roomStates = roomStates.map { it.toModel() })
         }
 
         is WsQallSoundboardItemCreated -> {
-            QallSoundboardItemCreated(
+            UserQallSoundboardItemCreated(
                 soundId = soundId.qallSoundId(),
                 name = name,
                 creatorId = creatorId.userId(),
@@ -238,7 +238,7 @@ internal fun WebSocketEvent.toEventOrNull(): UserEvent? =
         }
 
         is WsQallSoundboardItemDeleted -> {
-            QallSoundboardItemDeleted(soundId = soundId.qallSoundId())
+            UserQallSoundboardItemDeleted(soundId = soundId.qallSoundId())
         }
     }
 

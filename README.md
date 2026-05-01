@@ -26,8 +26,8 @@ dependencies {
 ## Bot を動かしてみる
 
 ```kotlin
-import jp.xhw.trakt.bot.model.MessageCreated
-import jp.xhw.trakt.bot.scope.reply
+import jp.xhw.trakt.bot.model.BotMessageCreated
+import jp.xhw.trakt.bot.context.base.reply
 import jp.xhw.trakt.bot.trakt
 import kotlin.uuid.Uuid
 
@@ -38,7 +38,7 @@ suspend fun main() {
     val botId = System.getenv("TRAQ_BOT_ID")?.takeUnless(String::isBlank)?.let(Uuid::parse)
 
     val client = trakt(token = token, botId = botId) {
-        on<MessageCreated> { event ->
+        on<BotMessageCreated> { event ->
             if (event.message.content.trim() == "ping") {
                 event.message.reply("pong")
             }
@@ -60,7 +60,7 @@ trakt(token) { ... }   ← TraktClient 生成 + イベントハンドラ登録
         ↓
     client.start()      ← WebSocket 接続 & イベントループ開始
         ↓
-    (イベント受信)       ← ハンドラが BotScope 内で実行される
+    (イベント受信)       ← ハンドラが BotContext 内で実行される
         ↓
     client.stop()        ← 接続切断 & リソース解放
 ```

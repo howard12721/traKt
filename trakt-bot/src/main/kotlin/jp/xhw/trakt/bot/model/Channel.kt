@@ -25,45 +25,7 @@ value class ChannelTopic internal constructor(
 @JvmInline
 value class ChannelHandle internal constructor(
     val id: ChannelId,
-) {
-    companion object {
-        /**
-         * [ChannelId] から [ChannelHandle] を生成します。
-         *
-         * @param id チャンネルID
-         * @return 生成されたチャンネルハンドル
-         */
-        @Deprecated(
-            message = "Replace with channel method instead.",
-            replaceWith = ReplaceWith("channel(ChannelId)"),
-        )
-        fun of(id: ChannelId): ChannelHandle = ChannelHandle(id)
-
-        /**
-         * [Uuid] から [ChannelHandle] を生成します。
-         *
-         * @param id チャンネルID(UUID)
-         * @return 生成されたチャンネルハンドル
-         */
-        @Deprecated(
-            message = "Replace with channel method instead.",
-            replaceWith = ReplaceWith("channel(Uuid)"),
-        )
-        fun of(id: Uuid): ChannelHandle = ChannelHandle(ChannelId(id))
-
-        /**
-         * UUID 文字列から [ChannelHandle] を生成します。
-         *
-         * @param id チャンネルID(UUID文字列)
-         * @return 生成されたチャンネルハンドル
-         */
-        @Deprecated(
-            message = "Replace with channel method instead.",
-            replaceWith = ReplaceWith("channel(String)"),
-        )
-        fun of(id: String): ChannelHandle = ChannelHandle(ChannelId(Uuid.parse(id)))
-    }
-}
+)
 
 /** チャンネルの統計情報。 */
 @ConsistentCopyVisibility

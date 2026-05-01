@@ -8,66 +8,74 @@ sealed interface Event
 /** Bot token の WebSocket から配信されるイベントの共通型。 */
 sealed interface BotEvent : Event
 
+/** Bot token のイベントであることを型名から判別しやすい共通型。 */
+typealias BotDomainEvent = BotEvent
+
 /** 発生時刻を持つイベントの共通型。 */
 sealed interface TimedEvent : Event {
     val occurredAt: Instant
 }
 
-/** メッセージ本体を含むイベントの共通型。 */
-sealed interface MessageEvent : BotEvent, TimedEvent {
+/** Bot token のメッセージ本体を含むイベントの共通型。 */
+sealed interface BotMessageEvent :
+    BotEvent,
+    TimedEvent {
     val message: Message
 }
 
 /** パブリックチャンネルにメッセージが投稿されたときのイベント。 */
 @ConsistentCopyVisibility
-data class MessageCreated internal constructor(
+data class BotMessageCreated internal constructor(
     override val occurredAt: Instant,
     override val message: Message,
-) : MessageEvent
+) : BotMessageEvent
 
 /** パブリックチャンネルのメッセージが更新されたときのイベント。 */
 @ConsistentCopyVisibility
-data class MessageUpdated internal constructor(
+data class BotMessageUpdated internal constructor(
     override val occurredAt: Instant,
     override val message: Message,
-) : MessageEvent
+) : BotMessageEvent
 
 /** DM にメッセージが投稿されたときのイベント。 */
 @ConsistentCopyVisibility
-data class DirectMessageCreated internal constructor(
+data class BotDirectMessageCreated internal constructor(
     override val occurredAt: Instant,
     override val message: Message,
-) : MessageEvent
+) : BotMessageEvent
 
 /** DM のメッセージが更新されたときのイベント。 */
 @ConsistentCopyVisibility
-data class DirectMessageUpdated internal constructor(
+data class BotDirectMessageUpdated internal constructor(
     override val occurredAt: Instant,
     override val message: Message,
-) : MessageEvent
+) : BotMessageEvent
 
 /** パブリックチャンネルのメッセージが削除されたときのイベント。 */
 @ConsistentCopyVisibility
-data class MessageDeleted internal constructor(
+data class BotMessageDeleted internal constructor(
     override val occurredAt: Instant,
     val messageId: MessageId,
     val channelId: ChannelId,
-) : BotEvent, TimedEvent
+) : BotEvent,
+    TimedEvent
 
 /** DM のメッセージが削除されたときのイベント。 */
 @ConsistentCopyVisibility
-data class DirectMessageDeleted internal constructor(
+data class BotDirectMessageDeleted internal constructor(
     override val occurredAt: Instant,
     val messageId: MessageId,
     val channelId: ChannelId,
-) : BotEvent, TimedEvent
+) : BotEvent,
+    TimedEvent
 
 /** Bot がチャンネルへ追加されたときのイベント。 */
 @ConsistentCopyVisibility
 data class BotJoinedChannel internal constructor(
     override val occurredAt: Instant,
     val channelId: ChannelId,
-) : BotEvent, TimedEvent {
+) : BotEvent,
+    TimedEvent {
     /** 追加先チャンネルのハンドル。 */
     val channel: ChannelHandle
         get() = ChannelHandle(channelId)
@@ -78,7 +86,8 @@ data class BotJoinedChannel internal constructor(
 data class BotLeftChannel internal constructor(
     override val occurredAt: Instant,
     val channelId: ChannelId,
-) : BotEvent, TimedEvent {
+) : BotEvent,
+    TimedEvent {
     /** 削除元チャンネルのハンドル。 */
     val channel: ChannelHandle
         get() = ChannelHandle(channelId)
@@ -86,19 +95,21 @@ data class BotLeftChannel internal constructor(
 
 /** パブリックチャンネルが作成されたときのイベント。 */
 @ConsistentCopyVisibility
-data class ChannelCreated internal constructor(
+data class BotChannelCreated internal constructor(
     override val occurredAt: Instant,
     val channel: Channel.Meta,
-) : BotEvent, TimedEvent
+) : BotEvent,
+    TimedEvent
 
 /** チャンネルトピックが変更されたときのイベント。 */
 @ConsistentCopyVisibility
-data class ChannelTopicChanged internal constructor(
+data class BotChannelTopicChanged internal constructor(
     override val occurredAt: Instant,
     val channel: Channel.Meta,
     val topic: String,
     val updaterId: UserId,
-) : BotEvent, TimedEvent {
+) : BotEvent,
+    TimedEvent {
     /** 更新実行ユーザーのハンドル。 */
     val updater: UserHandle
         get() = UserHandle(updaterId)
@@ -106,37 +117,42 @@ data class ChannelTopicChanged internal constructor(
 
 /** ユーザーが作成されたときのイベント。 */
 @ConsistentCopyVisibility
-data class UserCreated internal constructor(
+data class BotUserCreated internal constructor(
     override val occurredAt: Instant,
     val user: User.Minimal,
-) : BotEvent, TimedEvent
+) : BotEvent,
+    TimedEvent
 
 /** ユーザーが有効化されたときのイベント。 */
 @ConsistentCopyVisibility
-data class UserActivated internal constructor(
+data class BotUserActivated internal constructor(
     override val occurredAt: Instant,
     val user: User.Minimal,
-) : BotEvent, TimedEvent
+) : BotEvent,
+    TimedEvent
 
 /** スタンプが作成されたときのイベント。 */
 @ConsistentCopyVisibility
-data class StampCreated internal constructor(
+data class BotStampCreated internal constructor(
     override val occurredAt: Instant,
     val stamp: Stamp.Basic,
-) : BotEvent, TimedEvent
+) : BotEvent,
+    TimedEvent
 
 /** ユーザータグが追加されたときのイベント。 */
 @ConsistentCopyVisibility
-data class TagAdded internal constructor(
+data class BotTagAdded internal constructor(
     override val occurredAt: Instant,
     val tagId: UserTagId,
     val tag: String,
-) : BotEvent, TimedEvent
+) : BotEvent,
+    TimedEvent
 
 /** ユーザータグが削除されたときのイベント。 */
 @ConsistentCopyVisibility
-data class TagRemoved internal constructor(
+data class BotTagRemoved internal constructor(
     override val occurredAt: Instant,
     val tagId: UserTagId,
     val tag: String,
-) : BotEvent, TimedEvent
+) : BotEvent,
+    TimedEvent

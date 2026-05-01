@@ -5,6 +5,9 @@ import kotlin.uuid.Uuid
 
 sealed interface UserEvent : Event
 
+/** User token のイベントであることを型名から判別しやすい共通型。 */
+typealias UserDomainEvent = UserEvent
+
 @JvmInline
 value class StampPaletteId(
     val value: Uuid,
@@ -349,22 +352,22 @@ data class UserStampPaletteDeleted internal constructor(
 ) : UserEvent
 
 @ConsistentCopyVisibility
-data class ClipFolderCreated internal constructor(
+data class UserClipFolderCreated internal constructor(
     val clipFolderId: ClipFolderId,
 ) : UserEvent
 
 @ConsistentCopyVisibility
-data class ClipFolderUpdated internal constructor(
+data class UserClipFolderUpdated internal constructor(
     val clipFolderId: ClipFolderId,
 ) : UserEvent
 
 @ConsistentCopyVisibility
-data class ClipFolderDeleted internal constructor(
+data class UserClipFolderDeleted internal constructor(
     val clipFolderId: ClipFolderId,
 ) : UserEvent
 
 @ConsistentCopyVisibility
-data class ClipFolderMessageDeleted internal constructor(
+data class UserClipFolderMessageDeleted internal constructor(
     val clipFolderId: ClipFolderId,
     val messageId: MessageId,
 ) : UserEvent {
@@ -373,7 +376,7 @@ data class ClipFolderMessageDeleted internal constructor(
 }
 
 @ConsistentCopyVisibility
-data class ClipFolderMessageAdded internal constructor(
+data class UserClipFolderMessageAdded internal constructor(
     val clipFolderId: ClipFolderId,
     val messageId: MessageId,
 ) : UserEvent {
@@ -382,12 +385,12 @@ data class ClipFolderMessageAdded internal constructor(
 }
 
 @ConsistentCopyVisibility
-data class QallRoomStateChanged internal constructor(
+data class UserQallRoomStateChanged internal constructor(
     val roomStates: List<QallRoomWithParticipants>,
 ) : UserEvent
 
 @ConsistentCopyVisibility
-data class QallSoundboardItemCreated internal constructor(
+data class UserQallSoundboardItemCreated internal constructor(
     val soundId: QallSoundId,
     val name: String,
     val creatorId: UserId,
@@ -397,6 +400,6 @@ data class QallSoundboardItemCreated internal constructor(
 }
 
 @ConsistentCopyVisibility
-data class QallSoundboardItemDeleted internal constructor(
+data class UserQallSoundboardItemDeleted internal constructor(
     val soundId: QallSoundId,
 ) : UserEvent
