@@ -1,4 +1,4 @@
-package jp.xhw.trakt.bot.context.bot
+package jp.xhw.trakt.bot.context.base
 
 import jp.xhw.trakt.bot.model.*
 import jp.xhw.trakt.bot.model.Channel.Detail
@@ -13,8 +13,8 @@ import kotlin.uuid.Uuid
  * @param channelId 取得対象チャンネルID
  * @return チャンネル詳細情報
  */
-context(ctx: BotContext)
-suspend fun fetchChannel(channelId: ChannelId): Channel.Detail = ctx.channelPort.fetchChannel(channelId)
+context(ctx: BaseContext)
+suspend fun fetchChannel(channelId: ChannelId): Detail = ctx.channelPort.fetchChannel(channelId)
 
 /**
  * チャンネル詳細を取得します。
@@ -22,16 +22,16 @@ suspend fun fetchChannel(channelId: ChannelId): Channel.Detail = ctx.channelPort
  * @param channelId 取得対象チャンネルID(UUID)
  * @return チャンネル詳細情報
  */
-context(ctx: BotContext)
-suspend fun fetchChannel(channelId: Uuid): Channel.Detail = fetchChannel(ChannelId(channelId))
+context(ctx: BaseContext)
+suspend fun fetchChannel(channelId: Uuid): Detail = fetchChannel(ChannelId(channelId))
 
 /**
  * このハンドルが指すチャンネル詳細を取得します。
  *
  * @return チャンネル詳細情報
  */
-context(ctx: BotContext)
-suspend fun ChannelHandle.resolve(): Channel.Detail = ctx.channelPort.fetchChannel(id)
+context(ctx: BaseContext)
+suspend fun ChannelHandle.resolve(): Detail = ctx.channelPort.fetchChannel(id)
 
 /**
  * チャンネルを詳細型として解決します。
@@ -40,16 +40,16 @@ suspend fun ChannelHandle.resolve(): Channel.Detail = ctx.channelPort.fetchChann
  *
  * @return チャンネル詳細情報
  */
-context(ctx: BotContext)
-suspend fun Channel.resolve(): Channel.Detail = this as? Channel.Detail ?: handle.resolve()
+context(ctx: BaseContext)
+suspend fun Channel.resolve(): Detail = this as? Detail ?: handle.resolve()
 
 /**
  * チャンネル詳細を再取得します。
  *
  * @return 最新のチャンネル詳細情報
  */
-context(ctx: BotContext)
-suspend fun Channel.Detail.refresh(): Channel.Detail = handle.resolve()
+context(ctx: BaseContext)
+suspend fun Detail.refresh(): Detail = handle.resolve()
 
 /**
  * チャンネル一覧を取得します。
@@ -58,7 +58,7 @@ suspend fun Channel.Detail.refresh(): Channel.Detail = handle.resolve()
  * @param path 指定した場合は一致するパスのチャンネルのみ取得します
  * @return チャンネル一覧
  */
-context(ctx: BotContext)
+context(ctx: BaseContext)
 suspend fun fetchChannels(
     includeDirectMessages: Boolean = false,
     path: String? = null,
@@ -69,7 +69,7 @@ suspend fun fetchChannels(
  *
  * @return チャンネルパス
  */
-context(ctx: BotContext)
+context(ctx: BaseContext)
 suspend fun ChannelHandle.fetchPath(): ChannelPath = ctx.channelPort.fetchChannelPath(id)
 
 /**
@@ -77,7 +77,7 @@ suspend fun ChannelHandle.fetchPath(): ChannelPath = ctx.channelPort.fetchChanne
  *
  * @return チャンネルトピック文字列
  */
-context(ctx: BotContext)
+context(ctx: BaseContext)
 suspend fun ChannelHandle.fetchTopic(): String = ctx.channelPort.fetchChannelTopic(id)
 
 /**
@@ -85,7 +85,7 @@ suspend fun ChannelHandle.fetchTopic(): String = ctx.channelPort.fetchChannelTop
  *
  * @param topic 新しいトピック文字列
  */
-context(ctx: BotContext)
+context(ctx: BaseContext)
 suspend fun ChannelHandle.setTopic(topic: String) {
     ctx.channelPort.setChannelTopic(id, topic)
 }
@@ -95,7 +95,7 @@ suspend fun ChannelHandle.setTopic(topic: String) {
  *
  * @return 購読ユーザーID一覧
  */
-context(ctx: BotContext)
+context(ctx: BaseContext)
 suspend fun ChannelHandle.fetchSubscribers(): List<UserId> = ctx.channelPort.fetchSubscribers(id)
 
 /**
@@ -103,7 +103,7 @@ suspend fun ChannelHandle.fetchSubscribers(): List<UserId> = ctx.channelPort.fet
  *
  * @param subscribers 設定する購読ユーザーID一覧
  */
-context(ctx: BotContext)
+context(ctx: BaseContext)
 suspend fun ChannelHandle.setSubscribers(subscribers: List<UserId>) {
     ctx.channelPort.setSubscribers(id, subscribers)
 }
@@ -113,7 +113,7 @@ suspend fun ChannelHandle.setSubscribers(subscribers: List<UserId>) {
  *
  * @return 閲覧状態付きユーザー一覧
  */
-context(ctx: BotContext)
+context(ctx: BaseContext)
 suspend fun ChannelHandle.fetchViewers(): List<ChannelViewer> = ctx.channelPort.fetchViewers(id)
 
 /**
@@ -121,7 +121,7 @@ suspend fun ChannelHandle.fetchViewers(): List<ChannelViewer> = ctx.channelPort.
  *
  * @return Bot 一覧
  */
-context(ctx: BotContext)
+context(ctx: BaseContext)
 suspend fun ChannelHandle.fetchBots(): List<Bot> = ctx.channelPort.fetchBots(id)
 
 /**
@@ -129,7 +129,7 @@ suspend fun ChannelHandle.fetchBots(): List<Bot> = ctx.channelPort.fetchBots(id)
  *
  * @return 購読ユーザーID一覧
  */
-context(ctx: BotContext)
+context(ctx: BaseContext)
 suspend fun Channel.fetchSubscribers(): List<UserId> = handle.fetchSubscribers()
 
 /**
@@ -137,7 +137,7 @@ suspend fun Channel.fetchSubscribers(): List<UserId> = handle.fetchSubscribers()
  *
  * @return 閲覧状態付きユーザー一覧
  */
-context(ctx: BotContext)
+context(ctx: BaseContext)
 suspend fun Channel.fetchViewers(): List<ChannelViewer> = handle.fetchViewers()
 
 /**
@@ -145,7 +145,7 @@ suspend fun Channel.fetchViewers(): List<ChannelViewer> = handle.fetchViewers()
  *
  * @return Bot 一覧
  */
-context(ctx: BotContext)
+context(ctx: BaseContext)
 suspend fun Channel.fetchBots(): List<Bot> = handle.fetchBots()
 
 /**
@@ -153,7 +153,7 @@ suspend fun Channel.fetchBots(): List<Bot> = handle.fetchBots()
  *
  * @return ピン情報一覧
  */
-context(ctx: BotContext)
+context(ctx: BaseContext)
 suspend fun ChannelHandle.fetchPins(): List<Pin> = ctx.channelPort.fetchChannelPins(id)
 
 /**
@@ -161,7 +161,7 @@ suspend fun ChannelHandle.fetchPins(): List<Pin> = ctx.channelPort.fetchChannelP
  *
  * @return チャンネル統計情報
  */
-context(ctx: BotContext)
+context(ctx: BaseContext)
 suspend fun ChannelHandle.fetchStats(): ChannelStats = ctx.channelPort.fetchChannelStats(id)
 
 /**
@@ -175,7 +175,7 @@ suspend fun ChannelHandle.fetchStats(): ChannelStats = ctx.channelPort.fetchChan
  * @param order 並び順
  * @return メッセージ一覧
  */
-context(ctx: BotContext)
+context(ctx: BaseContext)
 suspend fun ChannelHandle.fetchMessages(
     limit: Int? = null,
     offset: Int = 0,
@@ -195,7 +195,7 @@ suspend fun ChannelHandle.fetchMessages(
  * @param nonce 重複送信防止に使う任意文字列
  * @return 送信されたメッセージ
  */
-context(ctx: BotContext)
+context(ctx: BaseContext)
 suspend fun ChannelHandle.sendMessage(
     content: String,
     embed: Boolean = false,
@@ -210,7 +210,7 @@ suspend fun ChannelHandle.sendMessage(
  * @param nonce 重複送信防止に使う任意文字列
  * @return 送信されたメッセージ
  */
-context(ctx: BotContext)
+context(ctx: BaseContext)
 suspend fun Channel.sendMessage(
     content: String,
     embed: Boolean = false,

@@ -36,12 +36,12 @@ internal fun createBotClient(
     val lifecycle =
         object : RuntimeLifecycle {
             override suspend fun start() {
-                apiGateway.ws.start()
+                apiGateway.botWs.start()
             }
 
             override suspend fun stop() {
-                apiGateway.ws.stop()
-                apiGateway.ws.close()
+                apiGateway.botWs.stop()
+                apiGateway.botWs.close()
                 apiGateway.httpClient.close()
             }
         }
@@ -52,7 +52,7 @@ internal fun createBotClient(
             RuleRegistry(
                 eventMapper = { event -> (event as? BotEvent)?.toEventOrNull() },
             ),
-        eventSource = apiGateway.ws.events,
+        eventSource = apiGateway.botWs.events,
         lifecycle = lifecycle,
         coroutineContext = coroutineContext,
     )

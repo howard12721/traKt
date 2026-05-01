@@ -1,4 +1,4 @@
-package jp.xhw.trakt.bot.context.bot
+package jp.xhw.trakt.bot.context.base
 
 import jp.xhw.trakt.bot.model.*
 import kotlin.time.Instant
@@ -12,7 +12,7 @@ import kotlin.uuid.Uuid
  * @param userId 取得対象ユーザーID
  * @return ユーザー詳細情報
  */
-context(ctx: BotContext)
+context(ctx: BaseContext)
 suspend fun fetchUser(userId: UserId): User.Detail = ctx.userPort.fetchUser(userId)
 
 /**
@@ -21,7 +21,7 @@ suspend fun fetchUser(userId: UserId): User.Detail = ctx.userPort.fetchUser(user
  * @param userId 取得対象ユーザーID(UUID)
  * @return ユーザー詳細情報
  */
-context(ctx: BotContext)
+context(ctx: BaseContext)
 suspend fun fetchUser(userId: Uuid): User.Detail = fetchUser(UserId(userId))
 
 /**
@@ -29,7 +29,7 @@ suspend fun fetchUser(userId: Uuid): User.Detail = fetchUser(UserId(userId))
  *
  * @return ユーザー情報
  */
-context(ctx: BotContext)
+context(ctx: BaseContext)
 suspend fun UserHandle.resolve(): User = ctx.userPort.fetchUser(id)
 
 /**
@@ -37,7 +37,7 @@ suspend fun UserHandle.resolve(): User = ctx.userPort.fetchUser(id)
  *
  * @return ユーザー情報
  */
-context(ctx: BotContext)
+context(ctx: BaseContext)
 suspend fun User.Minimal.resolve(): User = handle.resolve()
 
 /**
@@ -45,7 +45,7 @@ suspend fun User.Minimal.resolve(): User = handle.resolve()
  *
  * @return ユーザー情報
  */
-context(ctx: BotContext)
+context(ctx: BaseContext)
 suspend fun User.Basic.resolve(): User = handle.resolve()
 
 /**
@@ -53,7 +53,7 @@ suspend fun User.Basic.resolve(): User = handle.resolve()
  *
  * @return ユーザー情報
  */
-context(ctx: BotContext)
+context(ctx: BaseContext)
 suspend fun User.Detail.refresh(): User = handle.resolve()
 
 /**
@@ -63,7 +63,7 @@ suspend fun User.Detail.refresh(): User = handle.resolve()
  * @param name 指定時は名前一致ユーザーのみ取得します
  * @return ユーザー基本情報の一覧
  */
-context(ctx: BotContext)
+context(ctx: BaseContext)
 suspend fun fetchUsers(
     includeSuspended: Boolean = false,
     name: String? = null,
@@ -74,7 +74,7 @@ suspend fun fetchUsers(
  *
  * @return アイコン画像のバイト列
  */
-context(ctx: BotContext)
+context(ctx: BaseContext)
 suspend fun UserHandle.downloadIcon(): ByteArray = ctx.userPort.fetchUserIcon(id)
 
 /**
@@ -82,7 +82,7 @@ suspend fun UserHandle.downloadIcon(): ByteArray = ctx.userPort.fetchUserIcon(id
  *
  * @return DM チャンネル
  */
-context(ctx: BotContext)
+context(ctx: BaseContext)
 suspend fun UserHandle.fetchDirectMessageChannel(): Channel.DirectMessage = ctx.userPort.fetchDirectMessageChannel(id)
 
 /**
@@ -96,7 +96,7 @@ suspend fun UserHandle.fetchDirectMessageChannel(): Channel.DirectMessage = ctx.
  * @param order 並び順
  * @return DM メッセージ一覧
  */
-context(ctx: BotContext)
+context(ctx: BaseContext)
 suspend fun UserHandle.fetchDirectMessages(
     limit: Int? = null,
     offset: Int = 0,
@@ -123,7 +123,7 @@ suspend fun UserHandle.fetchDirectMessages(
  * @param nonce 重複送信防止に使う任意文字列
  * @return 送信されたメッセージ
  */
-context(ctx: BotContext)
+context(ctx: BaseContext)
 suspend fun UserHandle.sendDirectMessage(
     content: String,
     embed: Boolean = false,
@@ -138,7 +138,7 @@ suspend fun UserHandle.sendDirectMessage(
  * @param nonce 重複送信防止に使う任意文字列
  * @return 送信されたメッセージ
  */
-context(ctx: BotContext)
+context(ctx: BaseContext)
 suspend fun User.sendDirectMessage(
     content: String,
     embed: Boolean = false,
@@ -152,7 +152,7 @@ suspend fun User.sendDirectMessage(
  *
  * @return ユーザータグ一覧
  */
-context(ctx: BotContext)
+context(ctx: BaseContext)
 suspend fun UserHandle.fetchTags(): List<UserTag> = ctx.userPort.fetchUserTags(id)
 
 /**
@@ -161,7 +161,7 @@ suspend fun UserHandle.fetchTags(): List<UserTag> = ctx.userPort.fetchUserTags(i
  * @param tag 追加するタグ文字列
  * @return 追加後のタグ情報
  */
-context(ctx: BotContext)
+context(ctx: BaseContext)
 suspend fun UserHandle.tag(tag: String): UserTag = ctx.userPort.addUserTag(id, tag)
 
 /**
@@ -169,7 +169,7 @@ suspend fun UserHandle.tag(tag: String): UserTag = ctx.userPort.addUserTag(id, t
  *
  * @param tagId 削除するタグID
  */
-context(ctx: BotContext)
+context(ctx: BaseContext)
 suspend fun UserHandle.untag(tagId: UserTagId) = ctx.userPort.removeUserTag(id, tagId)
 
 // --- Stats ---
@@ -179,7 +179,7 @@ suspend fun UserHandle.untag(tagId: UserTagId) = ctx.userPort.removeUserTag(id, 
  *
  * @return ユーザー統計情報
  */
-context(ctx: BotContext)
+context(ctx: BaseContext)
 suspend fun UserHandle.fetchStats(): UserStats = ctx.userPort.fetchUserStats(id)
 
 // --- User convenience extensions ---
@@ -189,7 +189,7 @@ suspend fun UserHandle.fetchStats(): UserStats = ctx.userPort.fetchUserStats(id)
  *
  * @return アイコン画像のバイト列
  */
-context(ctx: BotContext)
+context(ctx: BaseContext)
 suspend fun User.downloadIcon(): ByteArray = handle.downloadIcon()
 
 /**
@@ -197,7 +197,7 @@ suspend fun User.downloadIcon(): ByteArray = handle.downloadIcon()
  *
  * @return DM チャンネル
  */
-context(ctx: BotContext)
+context(ctx: BaseContext)
 suspend fun User.fetchDirectMessageChannel(): Channel.DirectMessage = handle.fetchDirectMessageChannel()
 
 /**
@@ -211,7 +211,7 @@ suspend fun User.fetchDirectMessageChannel(): Channel.DirectMessage = handle.fet
  * @param order 並び順
  * @return DM メッセージ一覧
  */
-context(ctx: BotContext)
+context(ctx: BaseContext)
 suspend fun User.fetchDirectMessages(
     limit: Int? = null,
     offset: Int = 0,
@@ -226,7 +226,7 @@ suspend fun User.fetchDirectMessages(
  *
  * @return ユーザータグ一覧
  */
-context(ctx: BotContext)
+context(ctx: BaseContext)
 suspend fun User.fetchTags(): List<UserTag> = handle.fetchTags()
 
 /**
@@ -235,7 +235,7 @@ suspend fun User.fetchTags(): List<UserTag> = handle.fetchTags()
  * @param tag 追加するタグ文字列
  * @return 追加後のタグ情報
  */
-context(ctx: BotContext)
+context(ctx: BaseContext)
 suspend fun User.tag(tag: String): UserTag = handle.tag(tag)
 
 /**
@@ -243,7 +243,7 @@ suspend fun User.tag(tag: String): UserTag = handle.tag(tag)
  *
  * @param tagId 削除するタグID
  */
-context(ctx: BotContext)
+context(ctx: BaseContext)
 suspend fun User.untag(tagId: UserTagId) = handle.untag(tagId)
 
 /**
@@ -251,5 +251,5 @@ suspend fun User.untag(tagId: UserTagId) = handle.untag(tagId)
  *
  * @return ユーザー統計情報
  */
-context(ctx: BotContext)
+context(ctx: BaseContext)
 suspend fun User.fetchStats(): UserStats = handle.fetchStats()

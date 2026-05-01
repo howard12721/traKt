@@ -14,20 +14,20 @@ import jp.xhw.trakt.bot.port.*
 @TraktDsl
 class BotContext internal constructor(
     internal val botId: BotId?,
-    internal val origin: String,
+    origin: String,
+    internal val botPort: BotPort,
     channelPort: ChannelPort,
     messagePort: MessagePort,
     userPort: UserPort,
     stampPort: StampPort,
     groupPort: GroupPort,
     filePort: FilePort,
-    botPort: BotPort,
 ) : BaseContext(
+        origin,
         channelPort,
         messagePort,
         userPort,
         stampPort,
         groupPort,
         filePort,
-        botPort,
     )

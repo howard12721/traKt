@@ -1,4 +1,4 @@
-package jp.xhw.trakt.bot.context.bot
+package jp.xhw.trakt.bot.context.base
 
 import jp.xhw.trakt.bot.model.*
 import kotlin.time.Instant
@@ -12,7 +12,7 @@ import kotlin.uuid.Uuid
  * @param messageId 取得対象メッセージID
  * @return メッセージ情報
  */
-context(ctx: BotContext)
+context(ctx: BaseContext)
 suspend fun fetchMessage(messageId: MessageId): Message = ctx.messagePort.fetchMessage(messageId)
 
 /**
@@ -21,7 +21,7 @@ suspend fun fetchMessage(messageId: MessageId): Message = ctx.messagePort.fetchM
  * @param messageId 取得対象メッセージID(UUID)
  * @return メッセージ情報
  */
-context(ctx: BotContext)
+context(ctx: BaseContext)
 suspend fun fetchMessage(messageId: Uuid): Message = fetchMessage(MessageId(messageId))
 
 /**
@@ -29,7 +29,7 @@ suspend fun fetchMessage(messageId: Uuid): Message = fetchMessage(MessageId(mess
  *
  * @return メッセージ情報
  */
-context(ctx: BotContext)
+context(ctx: BaseContext)
 suspend fun MessageHandle.resolve(): Message = ctx.messagePort.fetchMessage(id)
 
 /**
@@ -37,7 +37,7 @@ suspend fun MessageHandle.resolve(): Message = ctx.messagePort.fetchMessage(id)
  *
  * @return スタンプ情報一覧
  */
-context(ctx: BotContext)
+context(ctx: BaseContext)
 suspend fun MessageHandle.fetchStamps(): List<MessageStamp> = ctx.messagePort.fetchStamps(id)
 
 /**
@@ -45,7 +45,7 @@ suspend fun MessageHandle.fetchStamps(): List<MessageStamp> = ctx.messagePort.fe
  *
  * @return ピン情報
  */
-context(ctx: BotContext)
+context(ctx: BaseContext)
 suspend fun MessageHandle.fetchPinInfo(): PinInfo = ctx.messagePort.fetchPinInfo(id)
 
 // --- Edit / Delete ---
@@ -57,7 +57,7 @@ suspend fun MessageHandle.fetchPinInfo(): PinInfo = ctx.messagePort.fetchPinInfo
  * @param embed `true` の場合に埋め込み展開を有効化します
  * @param nonce 重複送信防止に使う任意文字列
  */
-context(ctx: BotContext)
+context(ctx: BaseContext)
 suspend fun MessageHandle.update(
     content: String,
     embed: Boolean = false,
@@ -65,7 +65,7 @@ suspend fun MessageHandle.update(
 ) = ctx.messagePort.editMessage(id, content, embed, nonce)
 
 /** メッセージを削除します。 */
-context(ctx: BotContext)
+context(ctx: BaseContext)
 suspend fun MessageHandle.delete() = ctx.messagePort.deleteMessage(id)
 
 // --- Stamps ---
@@ -76,7 +76,7 @@ suspend fun MessageHandle.delete() = ctx.messagePort.deleteMessage(id)
  * @param stampId 付与するスタンプID
  * @param count 追加個数
  */
-context(ctx: BotContext)
+context(ctx: BaseContext)
 suspend fun MessageHandle.stamp(
     stampId: StampId,
     count: Int = 1,
@@ -87,7 +87,7 @@ suspend fun MessageHandle.stamp(
  *
  * @param stampId 削除するスタンプID
  */
-context(ctx: BotContext)
+context(ctx: BaseContext)
 suspend fun MessageHandle.unstamp(stampId: StampId) = ctx.messagePort.removeStamp(id, stampId)
 
 // --- Pins ---
@@ -97,11 +97,11 @@ suspend fun MessageHandle.unstamp(stampId: StampId) = ctx.messagePort.removeStam
  *
  * @return 作成されたピン情報
  */
-context(ctx: BotContext)
+context(ctx: BaseContext)
 suspend fun MessageHandle.pin(): PinInfo = ctx.messagePort.createPin(id)
 
 /** メッセージのピン留めを解除します。 */
-context(ctx: BotContext)
+context(ctx: BaseContext)
 suspend fun MessageHandle.unpin() = ctx.messagePort.removePin(id)
 
 // --- Search ---
@@ -127,7 +127,7 @@ suspend fun MessageHandle.unpin() = ctx.messagePort.removePin(id)
  * @param sort 並び順
  * @return 検索結果
  */
-context(ctx: BotContext)
+context(ctx: BaseContext)
 suspend fun searchMessages(
     word: String? = null,
     after: Instant? = null,
@@ -177,7 +177,7 @@ suspend fun searchMessages(
  * @param nonce 重複送信防止に使う任意文字列
  * @return 送信された返信メッセージ
  */
-context(ctx: BotContext)
+context(ctx: BaseContext)
 suspend fun MessageHandle.reply(
     content: String,
     embed: Boolean = false,
@@ -191,7 +191,7 @@ suspend fun MessageHandle.reply(
  *
  * @return 最新のメッセージ情報
  */
-context(ctx: BotContext)
+context(ctx: BaseContext)
 suspend fun Message.refresh(): Message = handle.resolve()
 
 /**
@@ -199,7 +199,7 @@ suspend fun Message.refresh(): Message = handle.resolve()
  *
  * @return スタンプ情報一覧
  */
-context(ctx: BotContext)
+context(ctx: BaseContext)
 suspend fun Message.fetchStamps(): List<MessageStamp> = handle.fetchStamps()
 
 /**
@@ -207,7 +207,7 @@ suspend fun Message.fetchStamps(): List<MessageStamp> = handle.fetchStamps()
  *
  * @return ピン情報
  */
-context(ctx: BotContext)
+context(ctx: BaseContext)
 suspend fun Message.fetchPinInfo(): PinInfo = handle.fetchPinInfo()
 
 /**
@@ -217,7 +217,7 @@ suspend fun Message.fetchPinInfo(): PinInfo = handle.fetchPinInfo()
  * @param embed `true` の場合に埋め込み展開を有効化します
  * @param nonce 重複送信防止に使う任意文字列
  */
-context(ctx: BotContext)
+context(ctx: BaseContext)
 suspend fun Message.update(
     content: String,
     embed: Boolean = false,
@@ -225,7 +225,7 @@ suspend fun Message.update(
 ) = handle.update(content, embed, nonce)
 
 /** メッセージを削除します。 */
-context(ctx: BotContext)
+context(ctx: BaseContext)
 suspend fun Message.delete() = handle.delete()
 
 /**
@@ -234,7 +234,7 @@ suspend fun Message.delete() = handle.delete()
  * @param stampId 付与するスタンプID
  * @param count 追加個数
  */
-context(ctx: BotContext)
+context(ctx: BaseContext)
 suspend fun Message.stamp(
     stampId: StampId,
     count: Int = 1,
@@ -245,7 +245,7 @@ suspend fun Message.stamp(
  *
  * @param stampId 削除するスタンプID
  */
-context(ctx: BotContext)
+context(ctx: BaseContext)
 suspend fun Message.unstamp(stampId: StampId) = handle.unstamp(stampId)
 
 /**
@@ -253,11 +253,11 @@ suspend fun Message.unstamp(stampId: StampId) = handle.unstamp(stampId)
  *
  * @return 作成されたピン情報
  */
-context(ctx: BotContext)
+context(ctx: BaseContext)
 suspend fun Message.pin(): PinInfo = handle.pin()
 
 /** メッセージのピン留めを解除します。 */
-context(ctx: BotContext)
+context(ctx: BaseContext)
 suspend fun Message.unpin() = handle.unpin()
 
 /**
@@ -270,7 +270,7 @@ suspend fun Message.unpin() = handle.unpin()
  * @param nonce 重複送信防止に使う任意文字列
  * @return 送信された返信メッセージ
  */
-context(ctx: BotContext)
+context(ctx: BaseContext)
 suspend fun Message.reply(
     content: String,
     embed: Boolean = false,
@@ -278,9 +278,9 @@ suspend fun Message.reply(
 ): Message = channel.sendMessage(content + "\n${url()}", embed, nonce)
 
 /** メッセージ URL を生成します。 */
-context(ctx: BotContext)
+context(ctx: BaseContext)
 private fun MessageHandle.url(): String = "https://${ctx.origin}/messages/${id.value}"
 
 /** メッセージ URL を生成します。 */
-context(ctx: BotContext)
+context(ctx: BaseContext)
 private fun Message.url(): String = handle.url()

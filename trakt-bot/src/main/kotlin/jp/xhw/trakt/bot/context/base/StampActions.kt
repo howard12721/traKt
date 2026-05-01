@@ -1,4 +1,4 @@
-package jp.xhw.trakt.bot.context.bot
+package jp.xhw.trakt.bot.context.base
 
 import jp.xhw.trakt.bot.model.Stamp
 import jp.xhw.trakt.bot.model.Stamp.Detail
@@ -12,16 +12,16 @@ import jp.xhw.trakt.bot.model.StampType
  * @param stampId 取得対象スタンプID
  * @return スタンプ詳細情報
  */
-context(ctx: BotContext)
-suspend fun fetchStamp(stampId: StampId): Stamp.Detail = ctx.stampPort.fetchStamp(stampId)
+context(ctx: BaseContext)
+suspend fun fetchStamp(stampId: StampId): Detail = ctx.stampPort.fetchStamp(stampId)
 
 /**
  * このハンドルが指すスタンプ詳細を取得します。
  *
  * @return スタンプ詳細情報
  */
-context(ctx: BotContext)
-suspend fun StampHandle.resolve(): Stamp.Detail = ctx.stampPort.fetchStamp(id)
+context(ctx: BaseContext)
+suspend fun StampHandle.resolve(): Detail = ctx.stampPort.fetchStamp(id)
 
 /**
  * スタンプ一覧を取得します。
@@ -29,8 +29,8 @@ suspend fun StampHandle.resolve(): Stamp.Detail = ctx.stampPort.fetchStamp(id)
  * @param type 取得対象のスタンプ種別。`null` の場合は全種別
  * @return スタンプ詳細一覧
  */
-context(ctx: BotContext)
-suspend fun fetchStamps(type: StampType? = null): List<Stamp.Detail> = ctx.stampPort.fetchStamps(type)
+context(ctx: BaseContext)
+suspend fun fetchStamps(type: StampType? = null): List<Detail> = ctx.stampPort.fetchStamps(type)
 
 /**
  * スタンプを詳細型として解決します。
@@ -39,13 +39,13 @@ suspend fun fetchStamps(type: StampType? = null): List<Stamp.Detail> = ctx.stamp
  *
  * @return スタンプ詳細情報
  */
-context(ctx: BotContext)
-suspend fun Stamp.resolve(): Stamp.Detail = this as? Stamp.Detail ?: handle.resolve()
+context(ctx: BaseContext)
+suspend fun Stamp.resolve(): Detail = this as? Detail ?: handle.resolve()
 
 /**
  * スタンプ詳細を再取得します。
  *
  * @return 最新のスタンプ詳細情報
  */
-context(ctx: BotContext)
-suspend fun Stamp.Detail.refresh(): Stamp.Detail = handle.resolve()
+context(ctx: BaseContext)
+suspend fun Detail.refresh(): Detail = handle.resolve()

@@ -2,14 +2,18 @@ package jp.xhw.trakt.bot.infrastructure.runtime
 
 import jp.xhw.trakt.bot.context.RuntimeContext
 import jp.xhw.trakt.bot.context.bot.BotContext
+import jp.xhw.trakt.bot.context.user.UserContext
 import jp.xhw.trakt.bot.dsl.TraktDsl
 import jp.xhw.trakt.bot.model.Event
+import jp.xhw.trakt.websocket.user.UserEvent
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
 import kotlin.coroutines.CoroutineContext
 import kotlin.reflect.KClass
 
-typealias TraktClient = Runtime<BotContext>
+typealias TraktClient = Runtime<BotContext, Event>
+
+typealias SelfTraktClient = Runtime<UserContext, UserEvent>
 
 /**
  * context、イベント購読、lifecycle を組み合わせて実行するクライアント。
@@ -20,9 +24,9 @@ typealias TraktClient = Runtime<BotContext>
  * @param coroutineContext イベント処理に使うコルーチンコンテキスト
  */
 @TraktDsl
-class Runtime<R : RuntimeContext> internal constructor(
+class Runtime<R : RuntimeContext, E : Any> internal constructor(
     internal val context: R,
-    internal val ruleRegistry: RuleRegistry<R>,
+    internal val ruleRegistry: RuleRegistry<R, E>,
     internal val eventSource: Flow<*>,
     private val lifecycle: RuntimeLifecycle = RuntimeLifecycle.Noop,
     coroutineContext: CoroutineContext = Dispatchers.Default,
@@ -39,7 +43,7 @@ class Runtime<R : RuntimeContext> internal constructor(
      *
      * @param handler イベント受信時に実行するハンドラ
      */
-    inline fun <reified T : Event> on(noinline handler: suspend R.(T) -> Unit) {
+    inline fun <reified T : E> on(noinline handler: suspend R.(T) -> Unit) {
         on(T::class, handler)
     }
 
@@ -50,7 +54,7 @@ class Runtime<R : RuntimeContext> internal constructor(
      * @param handler イベント受信時に実行するハンドラ
      */
     @PublishedApi
-    internal fun <T : Event> on(
+    internal fun <T : E> on(
         eventClass: KClass<T>,
         handler: suspend R.(T) -> Unit,
     ) {

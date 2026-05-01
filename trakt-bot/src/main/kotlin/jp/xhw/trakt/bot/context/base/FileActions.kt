@@ -1,4 +1,4 @@
-package jp.xhw.trakt.bot.context.bot
+package jp.xhw.trakt.bot.context.base
 
 import jp.xhw.trakt.bot.model.ChannelHandle
 import jp.xhw.trakt.bot.model.FileHandle
@@ -13,7 +13,7 @@ import jp.xhw.trakt.bot.model.FileMeta
  * @param contentType MIME タイプ。`null` の場合はサーバー側判定
  * @return アップロードされたファイルのメタ情報
  */
-context(ctx: BotContext)
+context(ctx: BaseContext)
 suspend fun uploadFile(
     channelHandle: ChannelHandle,
     file: ByteArray,
@@ -26,7 +26,7 @@ suspend fun uploadFile(
  *
  * @return ファイルメタ情報
  */
-context(ctx: BotContext)
+context(ctx: BaseContext)
 suspend fun FileHandle.fetchMeta(): FileMeta = ctx.filePort.fetchFileMeta(id)
 
 /**
@@ -34,7 +34,7 @@ suspend fun FileHandle.fetchMeta(): FileMeta = ctx.filePort.fetchFileMeta(id)
  *
  * @return ファイル本体
  */
-context(ctx: BotContext)
+context(ctx: BaseContext)
 suspend fun FileHandle.download(): ByteArray = ctx.filePort.downloadFile(id)
 
 /**
@@ -42,17 +42,17 @@ suspend fun FileHandle.download(): ByteArray = ctx.filePort.downloadFile(id)
  *
  * @return ファイル本体
  */
-context(ctx: BotContext)
+context(ctx: BaseContext)
 suspend fun FileMeta.download(): ByteArray = handle.download()
 
 /** ファイルを削除します。 */
-context(ctx: BotContext)
+context(ctx: BaseContext)
 suspend fun FileHandle.delete() {
     ctx.filePort.deleteFile(id)
 }
 
 /** ファイルを削除します。 */
-context(ctx: BotContext)
+context(ctx: BaseContext)
 suspend fun FileMeta.delete() = handle.delete()
 
 /**
@@ -60,5 +60,5 @@ suspend fun FileMeta.delete() = handle.delete()
  *
  * @return 最新のファイルメタ情報
  */
-context(ctx: BotContext)
+context(ctx: BaseContext)
 suspend fun FileMeta.refresh(): FileMeta = handle.fetchMeta()

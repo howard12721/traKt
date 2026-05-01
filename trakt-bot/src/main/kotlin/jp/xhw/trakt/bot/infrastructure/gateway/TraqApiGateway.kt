@@ -9,6 +9,7 @@ import jp.xhw.trakt.rest.infrastructure.ApiClient
 import jp.xhw.trakt.websocket.WebSocketClient
 import jp.xhw.trakt.websocket.WebSocketClientConfig
 import jp.xhw.trakt.websocket.bot.BotEvent
+import jp.xhw.trakt.websocket.user.UserEvent
 import kotlinx.serialization.json.Json
 
 internal class TraqApiGateway(
@@ -30,7 +31,7 @@ internal class TraqApiGateway(
             }
         }
 
-    val ws: WebSocketClient<BotEvent> =
+    val botWs: WebSocketClient<BotEvent> =
         WebSocketClient(
             token,
             WebSocketClientConfig(
@@ -39,6 +40,20 @@ internal class TraqApiGateway(
                 eventDecoders = listOf(BotEvent.decoder),
             ),
         )
+
+    val userWs: WebSocketClient<UserEvent> =
+        WebSocketClient(
+            token,
+            WebSocketClientConfig(
+                origin = "wss://$origin",
+                path = "/api/v3/ws",
+                debugMode = debugMode,
+                eventDecoders = listOf(UserEvent.decoder),
+            ),
+        )
+
+    val ws: WebSocketClient<BotEvent>
+        get() = botWs
 
     val activityApi = api(::ActivityApi)
     val botApi = api(::BotApi)

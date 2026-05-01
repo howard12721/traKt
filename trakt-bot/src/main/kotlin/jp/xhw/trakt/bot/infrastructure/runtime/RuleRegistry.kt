@@ -1,7 +1,6 @@
 package jp.xhw.trakt.bot.infrastructure.runtime
 
 import jp.xhw.trakt.bot.context.RuntimeContext
-import jp.xhw.trakt.bot.model.Event
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
@@ -12,8 +11,8 @@ import org.slf4j.LoggerFactory
 import kotlin.reflect.KClass
 
 /** source event を domain event に変換し、登録された handler へ配送します。 */
-internal class RuleRegistry<R : RuntimeContext>(
-    private val eventMapper: (Any?) -> Event?,
+internal class RuleRegistry<R : RuntimeContext, E : Any>(
+    private val eventMapper: (Any?) -> E?,
 ) {
     private val logger = LoggerFactory.getLogger(RuleRegistry::class.java)
 
@@ -25,7 +24,7 @@ internal class RuleRegistry<R : RuntimeContext>(
             ) -> Job,
         >()
 
-    fun <T : Event> on(
+    fun <T : E> on(
         eventClass: KClass<T>,
         context: R,
         handler: suspend R.(T) -> Unit,
