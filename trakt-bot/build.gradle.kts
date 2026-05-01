@@ -70,7 +70,7 @@ openApiGenerate {
     )
 
     inputSpec.set(apiSpecPath)
-    outputDir.set(generatedTraqClientDir.map { it.asFile.absolutePath })
+    outputDir.set(generatedTraqClientDir)
 
     typeMappings.set(
         mapOf(
