@@ -11,9 +11,47 @@ value class StampId(
 
 /** スタンプを参照するためのハンドル。 */
 @JvmInline
-value class StampHandle(
+value class StampHandle internal constructor(
     val id: StampId,
-)
+) {
+    companion object {
+        /**
+         * [StampId] から [StampHandle] を生成します。
+         *
+         * @param id スタンプID
+         * @return 生成されたスタンプハンドル
+         */
+        @Deprecated(
+            message = "Replace with stamp method instead.",
+            replaceWith = ReplaceWith("stamp(StampId)"),
+        )
+        fun of(id: StampId): StampHandle = StampHandle(id)
+
+        /**
+         * [Uuid] から [StampHandle] を生成します。
+         *
+         * @param id スタンプID(UUID)
+         * @return 生成されたスタンプハンドル
+         */
+        @Deprecated(
+            message = "Replace with stamp method instead.",
+            replaceWith = ReplaceWith("stamp(Uuid)"),
+        )
+        fun of(id: Uuid): StampHandle = StampHandle(StampId(id))
+
+        /**
+         * UUID 文字列から [StampHandle] を生成します。
+         *
+         * @param id スタンプID(UUID文字列)
+         * @return 生成されたスタンプハンドル
+         */
+        @Deprecated(
+            message = "Replace with stamp method instead.",
+            replaceWith = ReplaceWith("stamp(String)"),
+        )
+        fun of(id: String): StampHandle = of(Uuid.parse(id))
+    }
+}
 
 /** スタンプ。 */
 sealed interface Stamp {
@@ -35,15 +73,23 @@ sealed interface Stamp {
         get() = FileHandle(fileId)
 
     /** 基本的なスタンプ情報。 */
-    data class Basic(
+    class Basic internal constructor(
         override val id: StampId,
         override val name: String,
         override val creatorId: UserId,
         override val fileId: FileId,
-    ) : Stamp
+    ) : Stamp {
+        override fun equals(other: Any?): Boolean {
+            if (this === other) return true
+            if (other !is Stamp) return false
+            return this.id == other.id
+        }
+
+        override fun hashCode(): Int = id.hashCode()
+    }
 
     /** API から取得するスタンプ詳細。 */
-    data class Detail(
+    class Detail internal constructor(
         override val id: StampId,
         override val name: String,
         override val creatorId: UserId,
@@ -51,7 +97,15 @@ sealed interface Stamp {
         val createdAt: Instant,
         val updatedAt: Instant,
         val isUnicode: Boolean,
-    ) : Stamp
+    ) : Stamp {
+        override fun equals(other: Any?): Boolean {
+            if (this === other) return true
+            if (other !is Stamp) return false
+            return this.id == other.id
+        }
+
+        override fun hashCode(): Int = id.hashCode()
+    }
 }
 
 /** スタンプ種別。 */
@@ -59,3 +113,9 @@ enum class StampType {
     UNICODE,
     ORIGINAL,
 }
+
+fun stamp(id: StampId) = StampHandle(id)
+
+fun stamp(id: Uuid) = stamp(StampId(id))
+
+fun stamp(id: String) = stamp(Uuid.parse(id))

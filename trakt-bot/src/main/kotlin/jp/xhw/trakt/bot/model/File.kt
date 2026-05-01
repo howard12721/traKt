@@ -11,7 +11,7 @@ value class FileId(
 
 /** ファイルを参照するためのハンドル。 */
 @JvmInline
-value class FileHandle(
+value class FileHandle internal constructor(
     val id: FileId,
 ) {
     companion object {
@@ -42,7 +42,8 @@ value class FileHandle(
 }
 
 /** ファイルメタ情報。 */
-data class FileMeta(
+@ConsistentCopyVisibility
+data class FileMeta internal constructor(
     val id: FileId,
     val name: String,
     val mime: String,

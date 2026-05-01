@@ -11,9 +11,47 @@ value class UserId(
 
 /** ユーザーを参照するためのハンドル。 */
 @JvmInline
-value class UserHandle(
+value class UserHandle internal constructor(
     val id: UserId,
-)
+) {
+    companion object {
+        /**
+         * [UserId] から [UserHandle] を生成します。
+         *
+         * @param id ユーザーID
+         * @return 生成されたユーザーハンドル
+         */
+        @Deprecated(
+            message = "Replace with user method instead.",
+            replaceWith = ReplaceWith("user(UserId)"),
+        )
+        fun of(id: UserId): UserHandle = UserHandle(id)
+
+        /**
+         * [Uuid] から [UserHandle] を生成します。
+         *
+         * @param id ユーザーID(UUID)
+         * @return 生成されたユーザーハンドル
+         */
+        @Deprecated(
+            message = "Replace with user method instead.",
+            replaceWith = ReplaceWith("user(Uuid)"),
+        )
+        fun of(id: Uuid): UserHandle = UserHandle(UserId(id))
+
+        /**
+         * UUID 文字列から [UserHandle] を生成します。
+         *
+         * @param id ユーザーID(UUID文字列)
+         * @return 生成されたユーザーハンドル
+         */
+        @Deprecated(
+            message = "Replace with user method instead.",
+            replaceWith = ReplaceWith("user(String)"),
+        )
+        fun of(id: String): UserHandle = UserHandle(UserId(Uuid.parse(id)))
+    }
+}
 
 /** ユーザータグID。 */
 @JvmInline
@@ -37,7 +75,8 @@ value class BotId(
 )
 
 /** Bot と対応ユーザーの紐付け情報。 */
-data class Bot(
+@ConsistentCopyVisibility
+data class Bot internal constructor(
     val botId: BotId,
     val userId: UserId,
 ) {
@@ -69,16 +108,24 @@ sealed interface User {
     }
 
     /** イベントで使われるユーザー情報。 */
-    data class Minimal(
+    class Minimal internal constructor(
         override val id: UserId,
         override val name: String,
         override val displayName: String,
         override val iconFileId: FileId,
         override val isBot: Boolean,
-    ) : User
+    ) : User {
+        override fun equals(other: Any?): Boolean {
+            if (this === other) return true
+            if (other !is User) return false
+            return this.id == other.id
+        }
+
+        override fun hashCode(): Int = id.hashCode()
+    }
 
     /** 一覧取得等で使う基本的なユーザー情報。 */
-    data class Basic(
+    class Basic internal constructor(
         override val id: UserId,
         override val name: String,
         override val displayName: String,
@@ -86,10 +133,18 @@ sealed interface User {
         override val isBot: Boolean,
         override val state: UserState,
         override val updatedAt: Instant,
-    ) : StatefulUser
+    ) : StatefulUser {
+        override fun equals(other: Any?): Boolean {
+            if (this === other) return true
+            if (other !is User) return false
+            return this.id == other.id
+        }
+
+        override fun hashCode(): Int = id.hashCode()
+    }
 
     /** API から取得するユーザー詳細情報。 */
-    data class Detail(
+    class Detail internal constructor(
         override val id: UserId,
         override val name: String,
         override val displayName: String,
@@ -111,11 +166,20 @@ sealed interface User {
         /** ホームチャンネルのハンドル。 */
         val homeChannelHandle: ChannelHandle?
             get() = homeChannelId?.let { ChannelHandle(it) }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) return true
+            if (other !is User) return false
+            return this.id == other.id
+        }
+
+        override fun hashCode(): Int = id.hashCode()
     }
 }
 
 /** ユーザータグ情報。 */
-data class UserTag(
+@ConsistentCopyVisibility
+data class UserTag internal constructor(
     val tagId: UserTagId,
     val tag: String,
     val isLocked: Boolean,
@@ -130,15 +194,23 @@ data class UserTag(
  * @param count 同一メッセージ上のものは複数カウントしないスタンプ数
  * @param total 同一メッセージ上のものも複数カウントするスタンプ数
  */
-data class UserStampStats(
+@ConsistentCopyVisibility
+data class UserStampStats internal constructor(
     val stampId: StampId,
     val count: Long,
     val total: Long,
 )
 
 /** ユーザー統計情報。 */
-data class UserStats(
+@ConsistentCopyVisibility
+data class UserStats internal constructor(
     val totalMessageCount: Long,
     val stamps: List<UserStampStats>,
     val datetime: Instant,
 )
+
+fun user(id: UserId) = UserHandle(id)
+
+fun user(id: Uuid) = user(UserId(id))
+
+fun user(id: String) = user(Uuid.parse(id))

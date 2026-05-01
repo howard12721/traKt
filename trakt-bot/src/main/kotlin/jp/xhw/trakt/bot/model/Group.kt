@@ -11,7 +11,7 @@ value class GroupId(
 
 /** グループを参照するためのハンドル。 */
 @JvmInline
-value class GroupHandle(
+value class GroupHandle internal constructor(
     val id: GroupId,
 ) {
     companion object {
@@ -21,6 +21,10 @@ value class GroupHandle(
          * @param id グループID
          * @return 生成されたグループハンドル
          */
+        @Deprecated(
+            message = "Replace with group method instead.",
+            replaceWith = ReplaceWith("group(GroupId)"),
+        )
         fun of(id: GroupId): GroupHandle = GroupHandle(id)
 
         /**
@@ -29,6 +33,10 @@ value class GroupHandle(
          * @param id グループID(UUID)
          * @return 生成されたグループハンドル
          */
+        @Deprecated(
+            message = "Replace with group method instead.",
+            replaceWith = ReplaceWith("group(Uuid)"),
+        )
         fun of(id: Uuid): GroupHandle = GroupHandle(GroupId(id))
 
         /**
@@ -37,12 +45,16 @@ value class GroupHandle(
          * @param id グループID(UUID文字列)
          * @return 生成されたグループハンドル
          */
+        @Deprecated(
+            message = "Replace with group method instead.",
+            replaceWith = ReplaceWith("group(String)"),
+        )
         fun of(id: String): GroupHandle = of(Uuid.parse(id))
     }
 }
 
 /** グループ詳細情報。 */
-data class Group(
+class Group internal constructor(
     val id: GroupId,
     val name: String,
     val description: String?,
@@ -68,10 +80,19 @@ data class Group(
     /** 管理者のユーザーハンドル一覧。 */
     val adminUsers: List<UserHandle>
         get() = admins.map { UserHandle(it) }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is Group) return false
+        return this.id == other.id
+    }
+
+    override fun hashCode(): Int = id.hashCode()
 }
 
 /** グループメンバー情報。 */
-data class GroupMember(
+@ConsistentCopyVisibility
+data class GroupMember internal constructor(
     val userId: UserId,
     val role: String,
 ) {
@@ -79,3 +100,9 @@ data class GroupMember(
     val user: UserHandle
         get() = UserHandle(userId)
 }
+
+fun group(id: GroupId) = GroupHandle(id)
+
+fun group(id: Uuid) = group(GroupId(id))
+
+fun group(id: String) = group(Uuid.parse(id))

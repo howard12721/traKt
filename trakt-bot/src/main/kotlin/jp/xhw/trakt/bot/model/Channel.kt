@@ -11,19 +11,19 @@ value class ChannelId(
 
 /** チャンネルのフルパス。 */
 @JvmInline
-value class ChannelPath(
+value class ChannelPath internal constructor(
     val value: String,
 )
 
 /** チャンネルのトピック。 */
 @JvmInline
-value class ChannelTopic(
+value class ChannelTopic internal constructor(
     val value: String,
 )
 
 /** チャンネルを参照するためのハンドル。 */
 @JvmInline
-value class ChannelHandle(
+value class ChannelHandle internal constructor(
     val id: ChannelId,
 ) {
     companion object {
@@ -33,6 +33,10 @@ value class ChannelHandle(
          * @param id チャンネルID
          * @return 生成されたチャンネルハンドル
          */
+        @Deprecated(
+            message = "Replace with channel method instead.",
+            replaceWith = ReplaceWith("channel(ChannelId)"),
+        )
         fun of(id: ChannelId): ChannelHandle = ChannelHandle(id)
 
         /**
@@ -41,6 +45,10 @@ value class ChannelHandle(
          * @param id チャンネルID(UUID)
          * @return 生成されたチャンネルハンドル
          */
+        @Deprecated(
+            message = "Replace with channel method instead.",
+            replaceWith = ReplaceWith("channel(Uuid)"),
+        )
         fun of(id: Uuid): ChannelHandle = ChannelHandle(ChannelId(id))
 
         /**
@@ -49,12 +57,17 @@ value class ChannelHandle(
          * @param id チャンネルID(UUID文字列)
          * @return 生成されたチャンネルハンドル
          */
-        fun of(id: String): ChannelHandle = of(Uuid.parse(id))
+        @Deprecated(
+            message = "Replace with channel method instead.",
+            replaceWith = ReplaceWith("channel(String)"),
+        )
+        fun of(id: String): ChannelHandle = ChannelHandle(ChannelId(Uuid.parse(id)))
     }
 }
 
 /** チャンネルの統計情報。 */
-data class ChannelStats(
+@ConsistentCopyVisibility
+data class ChannelStats internal constructor(
     val messageCount: Int,
     val stamps: List<Stamp>,
     val users: List<User>,
@@ -70,7 +83,8 @@ enum class ChannelViewState {
 }
 
 /** チャンネル閲覧者情報。 */
-data class ChannelViewer(
+@ConsistentCopyVisibility
+data class ChannelViewer internal constructor(
     val userId: UserId,
     val state: ChannelViewState,
     val updatedAt: Instant,
@@ -99,26 +113,44 @@ sealed interface Channel {
     }
 
     /** DM チャンネル。 */
-    data class DirectMessage(
+    class DirectMessage internal constructor(
         override val id: ChannelId,
         val userId: UserId,
     ) : Channel {
         /** DM 相手ユーザーのハンドル。 */
         val user: UserHandle
             get() = UserHandle(userId)
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) return true
+            if (other !is Channel) return false
+
+            return this.id == other.id
+        }
+
+        override fun hashCode(): Int = id.hashCode()
     }
 
     /** チャンネル作成イベント等で使うチャンネル。 */
-    data class Meta(
+    class Meta internal constructor(
         override val id: ChannelId,
         override val parentId: ChannelId?,
         override val name: String,
         val creator: User,
         val path: ChannelPath,
-    ) : PublicChannel
+    ) : PublicChannel {
+        override fun equals(other: Any?): Boolean {
+            if (this === other) return true
+            if (other !is Channel) return false
+
+            return this.id == other.id
+        }
+
+        override fun hashCode(): Int = id.hashCode()
+    }
 
     /** API から取得するチャンネル。 */
-    data class Detail(
+    class Detail internal constructor(
         override val id: ChannelId,
         override val parentId: ChannelId?,
         override val name: String,
@@ -130,17 +162,28 @@ sealed interface Channel {
         /** 子チャンネルのハンドル一覧。 */
         val children: List<ChannelHandle>
             get() = childrenIds.map { ChannelHandle(it) }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) return true
+            if (other !is Channel) return false
+
+            return this.id == other.id
+        }
+
+        override fun hashCode(): Int = id.hashCode()
     }
 }
 
 /** チャンネル一覧取得結果。 */
-data class ChannelDirectory(
+@ConsistentCopyVisibility
+data class ChannelDirectory internal constructor(
     val publicChannels: List<Channel.Detail>,
     val directMessageChannels: List<Channel.DirectMessage>,
 )
 
 /** チャンネルにピン留めされたメッセージ情報。 */
-data class Pin(
+@ConsistentCopyVisibility
+data class Pin internal constructor(
     val pinnerId: UserId,
     val pinnedAt: Instant,
     val message: Message,
@@ -153,3 +196,9 @@ data class Pin(
     val messageId: MessageId
         get() = message.id
 }
+
+fun channel(id: ChannelId) = ChannelHandle(id)
+
+fun channel(id: Uuid) = channel(ChannelId(id))
+
+fun channel(id: String) = channel(Uuid.parse(id))

@@ -11,7 +11,7 @@ value class MessageId(
 
 /** メッセージを参照するためのハンドル。 */
 @JvmInline
-value class MessageHandle(
+value class MessageHandle internal constructor(
     val id: MessageId,
 ) {
     companion object {
@@ -21,6 +21,10 @@ value class MessageHandle(
          * @param id メッセージID
          * @return 生成されたメッセージハンドル
          */
+        @Deprecated(
+            "Replace with message method instead.",
+            ReplaceWith("message(MessageId)"),
+        )
         fun of(id: MessageId): MessageHandle = MessageHandle(id)
 
         /**
@@ -29,6 +33,10 @@ value class MessageHandle(
          * @param id メッセージID(UUID)
          * @return 生成されたメッセージハンドル
          */
+        @Deprecated(
+            "Replace with message method instead.",
+            ReplaceWith("message(uuid)"),
+        )
         fun of(id: Uuid): MessageHandle = MessageHandle(MessageId(id))
 
         /**
@@ -37,12 +45,16 @@ value class MessageHandle(
          * @param id メッセージID(UUID文字列)
          * @return 生成されたメッセージハンドル
          */
-        fun of(id: String): MessageHandle = of(Uuid.parse(id))
+        @Deprecated(
+            "Replace with message method instead.",
+            ReplaceWith("message(String)"),
+        )
+        fun of(id: String): MessageHandle = MessageHandle(MessageId(Uuid.parse(id)))
     }
 }
 
 /** メッセージ本文とメタ情報。 */
-data class Message(
+class Message internal constructor(
     val id: MessageId,
     val authorId: UserId,
     val channelId: ChannelId,
@@ -65,10 +77,15 @@ data class Message(
     /** 投稿先チャンネルのハンドル。 */
     val channel: ChannelHandle
         get() = ChannelHandle(channelId)
+
+    override fun equals(other: Any?): Boolean = other is Message && this.id == other.id
+
+    override fun hashCode(): Int = id.hashCode()
 }
 
 /** メッセージへ付与されたスタンプ情報。 */
-data class MessageStamp(
+@ConsistentCopyVisibility
+data class MessageStamp internal constructor(
     val userId: UserId,
     val stampId: StampId,
     val count: Int,
@@ -85,7 +102,8 @@ data class MessageStamp(
 }
 
 /** メッセージのピン情報。 */
-data class PinInfo(
+@ConsistentCopyVisibility
+data class PinInfo internal constructor(
     val pinnerId: UserId,
     val pinnedAt: Instant,
 ) {
@@ -101,7 +119,14 @@ enum class SortDirection {
 }
 
 /** メッセージ検索結果。 */
-data class SearchResult(
+@ConsistentCopyVisibility
+data class SearchResult internal constructor(
     val totalHits: Long,
     val hits: List<Message>,
 )
+
+fun message(id: MessageId) = MessageHandle(id)
+
+fun message(uuid: Uuid) = MessageHandle(MessageId(uuid))
+
+fun message(id: String) = message(Uuid.parse(id))
