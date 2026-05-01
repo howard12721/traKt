@@ -1,4 +1,4 @@
-package jp.xhw.trakt.bot.scope.bot
+package jp.xhw.trakt.bot.context.bot
 
 import jp.xhw.trakt.bot.model.ChannelHandle
 

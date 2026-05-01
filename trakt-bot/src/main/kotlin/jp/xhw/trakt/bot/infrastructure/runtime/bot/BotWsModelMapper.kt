@@ -1,4 +1,4 @@
-package jp.xhw.trakt.bot.infrastructure.runtime.mapper
+package jp.xhw.trakt.bot.infrastructure.runtime.bot
 
 import jp.xhw.trakt.bot.model.*
 import jp.xhw.trakt.websocket.ChannelCreated as WsChannelCreated

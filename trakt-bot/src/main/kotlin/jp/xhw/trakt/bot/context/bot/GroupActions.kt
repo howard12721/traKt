@@ -1,12 +1,6 @@
-package jp.xhw.trakt.bot.scope.bot
+package jp.xhw.trakt.bot.context.bot
 
-import jp.xhw.trakt.bot.model.Group
-import jp.xhw.trakt.bot.model.GroupHandle
-import jp.xhw.trakt.bot.model.GroupId
-import jp.xhw.trakt.bot.model.GroupMember
-import jp.xhw.trakt.bot.model.User
-import jp.xhw.trakt.bot.model.UserHandle
-import jp.xhw.trakt.bot.model.UserId
+import jp.xhw.trakt.bot.model.*
 
 /**
  * グループ詳細を取得します。

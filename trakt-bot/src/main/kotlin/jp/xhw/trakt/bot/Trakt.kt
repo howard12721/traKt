@@ -1,5 +1,7 @@
 package jp.xhw.trakt.bot
 
+import jp.xhw.trakt.bot.infrastructure.runtime.TraktClient
+import jp.xhw.trakt.bot.infrastructure.runtime.bot.createBotClient
 import kotlinx.coroutines.Dispatchers
 import kotlin.coroutines.CoroutineContext
 import kotlin.uuid.Uuid
@@ -7,8 +9,8 @@ import kotlin.uuid.Uuid
 /**
  * traQ Bot クライアントを構築します。
  *
- * 返り値の [TraktClient] に対して [TraktClient.start] / [TraktClient.stop] を呼び、
- * `block` で `on<Event>` ハンドラを登録して利用します。
+ * `block` でイベントハンドラを登録し、返り値の [TraktClient] に対して
+ * [TraktClient.start] / [TraktClient.stop] を呼び出して利用します。
  *
  * @param token traQ Bot アクセストークン
  * @param botId Bot の UUID。Bot 固有アクションを使う場合に指定
@@ -26,7 +28,7 @@ fun trakt(
     debugMode: Boolean = false,
     block: TraktClient.() -> Unit = {},
 ): TraktClient =
-    TraktClient(
+    createBotClient(
         token = token,
         botId = botId,
         origin = origin,

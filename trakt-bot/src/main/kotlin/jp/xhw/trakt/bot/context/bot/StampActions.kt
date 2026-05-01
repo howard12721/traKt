@@ -1,6 +1,7 @@
-package jp.xhw.trakt.bot.scope.bot
+package jp.xhw.trakt.bot.context.bot
 
 import jp.xhw.trakt.bot.model.Stamp
+import jp.xhw.trakt.bot.model.Stamp.Detail
 import jp.xhw.trakt.bot.model.StampHandle
 import jp.xhw.trakt.bot.model.StampId
 import jp.xhw.trakt.bot.model.StampType

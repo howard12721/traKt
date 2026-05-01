@@ -1,6 +1,7 @@
-package jp.xhw.trakt.bot.scope.bot
+package jp.xhw.trakt.bot.context.bot
 
 import jp.xhw.trakt.bot.model.*
+import jp.xhw.trakt.bot.model.Channel.Detail
 import kotlin.time.Instant
 import kotlin.uuid.Uuid
 
