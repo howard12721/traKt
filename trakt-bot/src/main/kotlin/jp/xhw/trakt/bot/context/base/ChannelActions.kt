@@ -34,14 +34,12 @@ context(ctx: BaseContext)
 suspend fun ChannelHandle.fetch(): Detail = ctx.channelPort.fetchChannel(id)
 
 /**
- * チャンネルを詳細型として解決します。
- *
- * 既に [Detail] の場合はそのまま返し、そうでなければ API から再取得します。
+ * チャンネル詳細を取得します。
  *
  * @return チャンネル詳細情報
  */
 context(ctx: BaseContext)
-suspend fun Channel.fetch(): Detail = this as? Detail ?: handle.fetch()
+suspend fun Channel.fetch(): Detail = handle.fetch()
 
 /**
  * チャンネル詳細を再取得します。

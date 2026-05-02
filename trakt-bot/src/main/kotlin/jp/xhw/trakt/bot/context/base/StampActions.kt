@@ -52,14 +52,12 @@ context(ctx: BaseContext)
 suspend fun fetchStamps(type: StampType? = null): List<Detail> = ctx.stampPort.fetchStamps(type)
 
 /**
- * スタンプを詳細型として解決します。
- *
- * 既に [Detail] の場合はそのまま返し、そうでなければ API から再取得します。
+ * スタンプ詳細を取得します。
  *
  * @return スタンプ詳細情報
  */
 context(ctx: BaseContext)
-suspend fun Stamp.fetch(): Detail = this as? Detail ?: handle.fetch()
+suspend fun Stamp.fetch(): Detail = handle.fetch()
 
 /**
  * スタンプ詳細を再取得します。
