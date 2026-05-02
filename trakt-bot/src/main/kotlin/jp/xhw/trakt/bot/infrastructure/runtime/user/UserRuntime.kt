@@ -27,6 +27,10 @@ internal fun createUserClient(
             stampPort = TraqStampPort(apiGateway),
             groupPort = TraqGroupPort(apiGateway),
             filePort = TraqFilePort(apiGateway),
+            selfPort = TraqSelfPort(apiGateway),
+            clipPort = TraqClipPort(apiGateway),
+            webhookPort = TraqWebhookPort(apiGateway),
+            managedBotPort = TraqManagedBotPort(apiGateway),
         )
     val lifecycle =
         object : RuntimeLifecycle {

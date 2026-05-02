@@ -171,8 +171,26 @@ data class UserStats internal constructor(
     val datetime: Instant,
 )
 
+/**
+ * [UserId] からユーザーハンドルを作成します。
+ *
+ * @param id ユーザーID
+ * @return ユーザーハンドル
+ */
 fun user(id: UserId) = UserHandle(id)
 
+/**
+ * UUID からユーザーハンドルを作成します。
+ *
+ * @param id ユーザーID
+ * @return ユーザーハンドル
+ */
 fun user(id: Uuid) = user(UserId(id))
 
+/**
+ * UUID 文字列からユーザーハンドルを作成します。
+ *
+ * @param id ユーザーID
+ * @return ユーザーハンドル
+ */
 fun user(id: String) = user(Uuid.parse(id))

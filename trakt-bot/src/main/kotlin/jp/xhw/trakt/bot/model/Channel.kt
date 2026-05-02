@@ -159,8 +159,26 @@ data class Pin internal constructor(
         get() = message.id
 }
 
+/**
+ * [ChannelId] からチャンネルハンドルを作成します。
+ *
+ * @param id チャンネルID
+ * @return チャンネルハンドル
+ */
 fun channel(id: ChannelId) = ChannelHandle(id)
 
+/**
+ * UUID からチャンネルハンドルを作成します。
+ *
+ * @param id チャンネルID
+ * @return チャンネルハンドル
+ */
 fun channel(id: Uuid) = channel(ChannelId(id))
 
+/**
+ * UUID 文字列からチャンネルハンドルを作成します。
+ *
+ * @param id チャンネルID
+ * @return チャンネルハンドル
+ */
 fun channel(id: String) = channel(Uuid.parse(id))

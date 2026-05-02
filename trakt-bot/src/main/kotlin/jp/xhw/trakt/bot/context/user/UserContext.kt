@@ -18,6 +18,10 @@ class UserContext internal constructor(
     stampPort: StampPort,
     groupPort: GroupPort,
     filePort: FilePort,
+    internal val selfPort: SelfPort,
+    internal val clipPort: ClipPort,
+    internal val webhookPort: WebhookPort,
+    internal val managedBotPort: ManagedBotPort,
 ) : BaseContext(
         origin,
         channelPort,

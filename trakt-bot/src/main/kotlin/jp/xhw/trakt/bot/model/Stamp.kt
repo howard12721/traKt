@@ -76,8 +76,26 @@ enum class StampType {
     ORIGINAL,
 }
 
+/**
+ * [StampId] からスタンプハンドルを作成します。
+ *
+ * @param id スタンプID
+ * @return スタンプハンドル
+ */
 fun stamp(id: StampId) = StampHandle(id)
 
+/**
+ * UUID からスタンプハンドルを作成します。
+ *
+ * @param id スタンプID
+ * @return スタンプハンドル
+ */
 fun stamp(id: Uuid) = stamp(StampId(id))
 
+/**
+ * UUID 文字列からスタンプハンドルを作成します。
+ *
+ * @param id スタンプID
+ * @return スタンプハンドル
+ */
 fun stamp(id: String) = stamp(Uuid.parse(id))

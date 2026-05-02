@@ -1,8 +1,5 @@
 package jp.xhw.trakt.bot.infrastructure.gateway
 
-import io.ktor.client.request.forms.*
-import io.ktor.http.*
-import io.ktor.utils.io.core.*
 import jp.xhw.trakt.bot.infrastructure.gateway.mapper.toModel
 import jp.xhw.trakt.bot.model.ChannelId
 import jp.xhw.trakt.bot.model.FileId
@@ -18,7 +15,7 @@ internal class TraqFilePort(
         fileName: String,
         contentType: String?,
     ): FileMeta {
-        val filePart = file.toFormPart(fileName, contentType)
+        val filePart = file.toFilePart(fileName, contentType)
         val response =
             apiGateway.fileApi.postFile(
                 file = filePart,
@@ -41,22 +38,3 @@ internal class TraqFilePort(
         apiGateway.fileApi.deleteFile(fileId.value).requireSuccess(operation = "deleteFile(fileId=${fileId.value})")
     }
 }
-
-private fun ByteArray.toFormPart(
-    fileName: String,
-    contentType: String?,
-): FormPart<InputProvider> =
-    FormPart(
-        key = "file",
-        value =
-            InputProvider {
-                buildPacket {
-                    writeFully(this@toFormPart)
-                }
-            },
-        headers =
-            Headers.build {
-                append(HttpHeaders.ContentDisposition, "filename=\"$fileName\"")
-                contentType?.let { append(HttpHeaders.ContentType, it) }
-            },
-    )

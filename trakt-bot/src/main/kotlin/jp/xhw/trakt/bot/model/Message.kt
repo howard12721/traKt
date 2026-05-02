@@ -87,8 +87,26 @@ data class SearchResult internal constructor(
     val hits: List<Message>,
 )
 
+/**
+ * [MessageId] からメッセージハンドルを作成します。
+ *
+ * @param id メッセージID
+ * @return メッセージハンドル
+ */
 fun message(id: MessageId) = MessageHandle(id)
 
+/**
+ * UUID からメッセージハンドルを作成します。
+ *
+ * @param uuid メッセージID
+ * @return メッセージハンドル
+ */
 fun message(uuid: Uuid) = MessageHandle(MessageId(uuid))
 
+/**
+ * UUID 文字列からメッセージハンドルを作成します。
+ *
+ * @param id メッセージID
+ * @return メッセージハンドル
+ */
 fun message(id: String) = message(Uuid.parse(id))

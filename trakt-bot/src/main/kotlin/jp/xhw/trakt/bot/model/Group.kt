@@ -63,8 +63,26 @@ data class GroupMember internal constructor(
         get() = UserHandle(userId)
 }
 
+/**
+ * [GroupId] からグループハンドルを作成します。
+ *
+ * @param id グループID
+ * @return グループハンドル
+ */
 fun group(id: GroupId) = GroupHandle(id)
 
+/**
+ * UUID からグループハンドルを作成します。
+ *
+ * @param id グループID
+ * @return グループハンドル
+ */
 fun group(id: Uuid) = group(GroupId(id))
 
+/**
+ * UUID 文字列からグループハンドルを作成します。
+ *
+ * @param id グループID
+ * @return グループハンドル
+ */
 fun group(id: String) = group(Uuid.parse(id))
