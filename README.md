@@ -19,7 +19,7 @@ repositories {
 }
 
 dependencies {
-    implementation("com.github.howard12721.traKt:trakt-bot:2.0.0")
+    implementation("com.github.howard12721.traKt:trakt-bot:3.0.0")
 }
 ```
 
@@ -51,44 +51,4 @@ suspend fun main() {
         client.stop()
     }
 }
-```
-
-## 起動の流れ
-
-```
-trakt(token) { ... }   ← TraktClient 生成 + イベントハンドラ登録
-        ↓
-    client.start()      ← WebSocket 接続 & イベントループ開始
-        ↓
-    (イベント受信)       ← ハンドラが BotContext 内で実行される
-        ↓
-    client.stop()        ← 接続切断 & リソース解放
-```
-
-## コンフィグ
-
-`trakt()` ファクトリ関数のパラメータ：
-
-| パラメータ              | 型                  | デフォルト値          | 説明                     |
-|--------------------|--------------------| --------------------- |------------------------|
-| `token`            | `String`           | (必須)                | Bot アクセストークン           |
-| `botId`            | `Uuid?`            | `null`                | Bot ID。`channel.join` など Bot 固有アクションを使う場合に必要 |
-| `origin`           | `String`           | `"q.trap.jp"`         | traQ サーバーのホスト名         |
-| `coroutineContext` | `CoroutineContext` | `Dispatchers.Default` | イベント処理に使用するコルーチンコンテキスト |
-| `debugMode`        | `Boolean`          | `false`               | WebSocket の DEBUG ログ出力を有効化 |
-
-## 環境変数で管理する例
-
-```bash
-export TRAQ_BOT_TOKEN="your-bot-token-here"
-export TRAQ_BOT_ID="your-bot-id-here"
-```
-
-```kotlin
-val token = System.getenv("TRAQ_BOT_TOKEN")
-    ?: error("TRAQ_BOT_TOKEN environment variable is required")
-
-val botId = System.getenv("TRAQ_BOT_ID")
-    ?.takeUnless(String::isBlank)
-    ?.let(Uuid::parse)
 ```
