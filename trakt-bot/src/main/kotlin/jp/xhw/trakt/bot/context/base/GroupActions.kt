@@ -59,7 +59,9 @@ context(ctx: BaseContext)
 suspend fun GroupHandle.addMember(
     user: UserHandle,
     role: String = "",
-) = addMember(user.id, role)
+) {
+    addMember(user.id, role)
+}
 
 /**
  * グループへメンバーを追加します。
@@ -71,7 +73,9 @@ context(ctx: BaseContext)
 suspend fun GroupHandle.addMember(
     user: User,
     role: String = "",
-) = addMember(user.id, role)
+) {
+    addMember(user.id, role)
+}
 
 /**
  * グループへ管理者を追加します。
@@ -89,7 +93,9 @@ suspend fun GroupHandle.addAdmin(userId: UserId) {
  * @param user 追加するユーザー
  */
 context(ctx: BaseContext)
-suspend fun GroupHandle.addAdmin(user: UserHandle) = addAdmin(user.id)
+suspend fun GroupHandle.addAdmin(user: UserHandle) {
+    addAdmin(user.id)
+}
 
 /**
  * グループへ管理者を追加します。
@@ -97,7 +103,9 @@ suspend fun GroupHandle.addAdmin(user: UserHandle) = addAdmin(user.id)
  * @param user 追加するユーザー
  */
 context(ctx: BaseContext)
-suspend fun GroupHandle.addAdmin(user: User) = addAdmin(user.id)
+suspend fun GroupHandle.addAdmin(user: User) {
+    addAdmin(user.id)
+}
 
 /**
  * グループ情報を再取得します。
@@ -117,7 +125,9 @@ context(ctx: BaseContext)
 suspend fun Group.addMember(
     userId: UserId,
     role: String = "",
-) = handle.addMember(userId, role)
+) {
+    handle.addMember(userId, role)
+}
 
 /**
  * グループへメンバーを追加します。
@@ -129,7 +139,9 @@ context(ctx: BaseContext)
 suspend fun Group.addMember(
     user: UserHandle,
     role: String = "",
-) = handle.addMember(user, role)
+) {
+    handle.addMember(user, role)
+}
 
 /**
  * グループへメンバーを追加します。
@@ -141,7 +153,9 @@ context(ctx: BaseContext)
 suspend fun Group.addMember(
     user: User,
     role: String = "",
-) = handle.addMember(user, role)
+) {
+    handle.addMember(user, role)
+}
 
 /**
  * グループへ管理者を追加します。
@@ -149,7 +163,9 @@ suspend fun Group.addMember(
  * @param userId 追加するユーザーID
  */
 context(ctx: BaseContext)
-suspend fun Group.addAdmin(userId: UserId) = handle.addAdmin(userId)
+suspend fun Group.addAdmin(userId: UserId) {
+    handle.addAdmin(userId)
+}
 
 /**
  * グループへ管理者を追加します。
@@ -157,7 +173,9 @@ suspend fun Group.addAdmin(userId: UserId) = handle.addAdmin(userId)
  * @param user 追加するユーザー
  */
 context(ctx: BaseContext)
-suspend fun Group.addAdmin(user: UserHandle) = handle.addAdmin(user)
+suspend fun Group.addAdmin(user: UserHandle) {
+    handle.addAdmin(user)
+}
 
 /**
  * グループへ管理者を追加します。
@@ -165,4 +183,6 @@ suspend fun Group.addAdmin(user: UserHandle) = handle.addAdmin(user)
  * @param user 追加するユーザー
  */
 context(ctx: BaseContext)
-suspend fun Group.addAdmin(user: User) = handle.addAdmin(user)
+suspend fun Group.addAdmin(user: User) {
+    handle.addAdmin(user)
+}

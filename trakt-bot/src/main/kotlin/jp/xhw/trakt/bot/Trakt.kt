@@ -12,7 +12,8 @@ import kotlin.uuid.Uuid
  * traQ Bot クライアントを構築します。
  *
  * `block` でイベントハンドラを登録し、返り値の [TraktClient] に対して
- * [TraktClient.start] / [TraktClient.stop] を呼び出して利用します。
+ * [start][jp.xhw.trakt.bot.infrastructure.runtime.Runtime.start] /
+ * [stop][jp.xhw.trakt.bot.infrastructure.runtime.Runtime.stop] を呼び出して利用します。
  *
  * @param token traQ Bot アクセストークン
  * @param botId Bot の UUID。Bot 固有アクションを使う場合に指定
@@ -42,7 +43,9 @@ fun trakt(
  * traQ User token で動くセルフボット用クライアントを構築します。
  *
  * `block` で [jp.xhw.trakt.bot.model.UserEvent] のハンドラを登録し、
- * 返り値の [SelfTraktClient] に対して [SelfTraktClient.start] / [SelfTraktClient.stop]
+ * 返り値の [SelfTraktClient] に対して
+ * [start][jp.xhw.trakt.bot.infrastructure.runtime.Runtime.start] /
+ * [stop][jp.xhw.trakt.bot.infrastructure.runtime.Runtime.stop]
  * を呼び出して利用します。
  *
  * @param token traQ User アクセストークン

@@ -62,11 +62,15 @@ suspend fun MessageHandle.update(
     content: String,
     embed: Boolean = false,
     nonce: String? = null,
-) = ctx.messagePort.editMessage(id, content, embed, nonce)
+) {
+    ctx.messagePort.editMessage(id, content, embed, nonce)
+}
 
 /** メッセージを削除します。 */
 context(ctx: BaseContext)
-suspend fun MessageHandle.delete() = ctx.messagePort.deleteMessage(id)
+suspend fun MessageHandle.delete() {
+    ctx.messagePort.deleteMessage(id)
+}
 
 // --- Stamps ---
 
@@ -80,7 +84,9 @@ context(ctx: BaseContext)
 suspend fun MessageHandle.addStamp(
     stampId: StampId,
     count: Int = 1,
-) = ctx.messagePort.addStamp(id, stampId, count)
+) {
+    ctx.messagePort.addStamp(id, stampId, count)
+}
 
 /**
  * メッセージへスタンプを追加します。
@@ -92,7 +98,9 @@ context(ctx: BaseContext)
 suspend fun MessageHandle.addStamp(
     stamp: StampHandle,
     count: Int = 1,
-) = addStamp(stamp.id, count)
+) {
+    addStamp(stamp.id, count)
+}
 
 /**
  * メッセージへスタンプを追加します。
@@ -104,7 +112,9 @@ context(ctx: BaseContext)
 suspend fun MessageHandle.addStamp(
     stampId: Uuid,
     count: Int = 1,
-) = addStamp(StampId(stampId), count)
+) {
+    addStamp(StampId(stampId), count)
+}
 
 /**
  * メッセージへスタンプを追加します。
@@ -116,7 +126,9 @@ context(ctx: BaseContext)
 suspend fun MessageHandle.addStamp(
     stampId: String,
     count: Int = 1,
-) = addStamp(Uuid.parse(stampId), count)
+) {
+    addStamp(Uuid.parse(stampId), count)
+}
 
 /**
  * メッセージからスタンプを削除します。
@@ -124,7 +136,9 @@ suspend fun MessageHandle.addStamp(
  * @param stampId 削除するスタンプID
  */
 context(ctx: BaseContext)
-suspend fun MessageHandle.removeStamp(stampId: StampId) = ctx.messagePort.removeStamp(id, stampId)
+suspend fun MessageHandle.removeStamp(stampId: StampId) {
+    ctx.messagePort.removeStamp(id, stampId)
+}
 
 /**
  * メッセージからスタンプを削除します。
@@ -132,7 +146,9 @@ suspend fun MessageHandle.removeStamp(stampId: StampId) = ctx.messagePort.remove
  * @param stamp 削除するスタンプハンドル
  */
 context(ctx: BaseContext)
-suspend fun MessageHandle.removeStamp(stamp: StampHandle) = removeStamp(stamp.id)
+suspend fun MessageHandle.removeStamp(stamp: StampHandle) {
+    removeStamp(stamp.id)
+}
 
 /**
  * メッセージからスタンプを削除します。
@@ -140,7 +156,9 @@ suspend fun MessageHandle.removeStamp(stamp: StampHandle) = removeStamp(stamp.id
  * @param stampId 削除するスタンプID(UUID)
  */
 context(ctx: BaseContext)
-suspend fun MessageHandle.removeStamp(stampId: Uuid) = removeStamp(StampId(stampId))
+suspend fun MessageHandle.removeStamp(stampId: Uuid) {
+    removeStamp(StampId(stampId))
+}
 
 /**
  * メッセージからスタンプを削除します。
@@ -148,7 +166,9 @@ suspend fun MessageHandle.removeStamp(stampId: Uuid) = removeStamp(StampId(stamp
  * @param stampId 削除するスタンプID(UUID文字列)
  */
 context(ctx: BaseContext)
-suspend fun MessageHandle.removeStamp(stampId: String) = removeStamp(Uuid.parse(stampId))
+suspend fun MessageHandle.removeStamp(stampId: String) {
+    removeStamp(Uuid.parse(stampId))
+}
 
 // --- Pins ---
 
@@ -162,7 +182,9 @@ suspend fun MessageHandle.pin(): PinInfo = ctx.messagePort.createPin(id)
 
 /** メッセージのピン留めを解除します。 */
 context(ctx: BaseContext)
-suspend fun MessageHandle.unpin() = ctx.messagePort.removePin(id)
+suspend fun MessageHandle.unpin() {
+    ctx.messagePort.removePin(id)
+}
 
 // --- Search ---
 
@@ -282,11 +304,15 @@ suspend fun Message.update(
     content: String,
     embed: Boolean = false,
     nonce: String? = null,
-) = handle.update(content, embed, nonce)
+) {
+    handle.update(content, embed, nonce)
+}
 
 /** メッセージを削除します。 */
 context(ctx: BaseContext)
-suspend fun Message.delete() = handle.delete()
+suspend fun Message.delete() {
+    handle.delete()
+}
 
 /**
  * メッセージへスタンプを追加します。
@@ -298,7 +324,9 @@ context(ctx: BaseContext)
 suspend fun Message.addStamp(
     stampId: StampId,
     count: Int = 1,
-) = handle.addStamp(stampId, count)
+) {
+    handle.addStamp(stampId, count)
+}
 
 /**
  * メッセージへスタンプを追加します。
@@ -310,7 +338,9 @@ context(ctx: BaseContext)
 suspend fun Message.addStamp(
     stamp: StampHandle,
     count: Int = 1,
-) = handle.addStamp(stamp, count)
+) {
+    handle.addStamp(stamp, count)
+}
 
 /**
  * メッセージへスタンプを追加します。
@@ -322,7 +352,9 @@ context(ctx: BaseContext)
 suspend fun Message.addStamp(
     stampId: Uuid,
     count: Int = 1,
-) = handle.addStamp(stampId, count)
+) {
+    handle.addStamp(stampId, count)
+}
 
 /**
  * メッセージへスタンプを追加します。
@@ -334,7 +366,9 @@ context(ctx: BaseContext)
 suspend fun Message.addStamp(
     stampId: String,
     count: Int = 1,
-) = handle.addStamp(stampId, count)
+) {
+    handle.addStamp(stampId, count)
+}
 
 /**
  * メッセージからスタンプを削除します。
@@ -342,7 +376,9 @@ suspend fun Message.addStamp(
  * @param stampId 削除するスタンプID
  */
 context(ctx: BaseContext)
-suspend fun Message.removeStamp(stampId: StampId) = handle.removeStamp(stampId)
+suspend fun Message.removeStamp(stampId: StampId) {
+    handle.removeStamp(stampId)
+}
 
 /**
  * メッセージからスタンプを削除します。
@@ -350,7 +386,9 @@ suspend fun Message.removeStamp(stampId: StampId) = handle.removeStamp(stampId)
  * @param stamp 削除するスタンプハンドル
  */
 context(ctx: BaseContext)
-suspend fun Message.removeStamp(stamp: StampHandle) = handle.removeStamp(stamp)
+suspend fun Message.removeStamp(stamp: StampHandle) {
+    handle.removeStamp(stamp)
+}
 
 /**
  * メッセージからスタンプを削除します。
@@ -358,7 +396,9 @@ suspend fun Message.removeStamp(stamp: StampHandle) = handle.removeStamp(stamp)
  * @param stampId 削除するスタンプID(UUID)
  */
 context(ctx: BaseContext)
-suspend fun Message.removeStamp(stampId: Uuid) = handle.removeStamp(stampId)
+suspend fun Message.removeStamp(stampId: Uuid) {
+    handle.removeStamp(stampId)
+}
 
 /**
  * メッセージからスタンプを削除します。
@@ -366,7 +406,9 @@ suspend fun Message.removeStamp(stampId: Uuid) = handle.removeStamp(stampId)
  * @param stampId 削除するスタンプID(UUID文字列)
  */
 context(ctx: BaseContext)
-suspend fun Message.removeStamp(stampId: String) = handle.removeStamp(stampId)
+suspend fun Message.removeStamp(stampId: String) {
+    handle.removeStamp(stampId)
+}
 
 /**
  * メッセージをピン留めします。
@@ -378,7 +420,9 @@ suspend fun Message.pin(): PinInfo = handle.pin()
 
 /** メッセージのピン留めを解除します。 */
 context(ctx: BaseContext)
-suspend fun Message.unpin() = handle.unpin()
+suspend fun Message.unpin() {
+    handle.unpin()
+}
 
 /**
  * 元メッセージへのリンク付きで返信します。

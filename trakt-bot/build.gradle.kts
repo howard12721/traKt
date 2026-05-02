@@ -1,12 +1,14 @@
 import java.net.URI
 import java.nio.file.Files
 import java.nio.file.StandardCopyOption
+import org.jetbrains.dokka.gradle.engine.parameters.VisibilityModifier
 
 plugins {
     id("org.jetbrains.kotlin.jvm")
     id("org.jetbrains.kotlin.plugin.serialization")
     id("maven-publish")
     id("org.openapi.generator")
+    id("org.jetbrains.dokka")
 }
 
 group = "jp.xhw"
@@ -98,6 +100,36 @@ tasks.named("compileKotlin") {
 tasks.test {
     useJUnitPlatform()
 }
+
+dokka {
+    dokkaPublications.html {
+        moduleName.set("trakt-bot")
+        moduleVersion.set(project.version.toString())
+        outputDirectory.set(layout.buildDirectory.dir("dokka/html"))
+        suppressObviousFunctions.set(true)
+        failOnWarning.set(false)
+    }
+
+    dokkaSourceSets.configureEach {
+        documentedVisibilities.set(setOf(VisibilityModifier.Public))
+        skipEmptyPackages.set(true)
+        suppressGeneratedFiles.set(true)
+
+        perPackageOption {
+            matchingRegex.set("jp\\.xhw\\.trakt\\.bot\\.infrastructure\\.(gateway|runtime\\.(bot|user))(\\..*)?")
+            suppress.set(true)
+        }
+        perPackageOption {
+            matchingRegex.set("jp\\.xhw\\.trakt\\.bot\\.port(\\..*)?")
+            suppress.set(true)
+        }
+        perPackageOption {
+            matchingRegex.set("jp\\.xhw\\.trakt\\.rest(\\..*)?")
+            suppress.set(true)
+        }
+    }
+}
+
 kotlin {
     compilerOptions {
         freeCompilerArgs.add("-opt-in=kotlin.time.ExperimentalTime")
