@@ -44,7 +44,7 @@ class Runtime<R : RuntimeContext, E : Any> internal constructor(
     private val runtimeScope = CoroutineScope(supervisorJob + coroutineContext)
     private val lifecycleEvents =
         MutableSharedFlow<Event>(
-            replay = 0,
+            replay = 1,
             extraBufferCapacity = 1,
             onBufferOverflow = BufferOverflow.SUSPEND,
         )
