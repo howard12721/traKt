@@ -31,6 +31,7 @@ internal fun createUserClient(
             clipPort = TraqClipPort(apiGateway),
             webhookPort = TraqWebhookPort(apiGateway),
             managedBotPort = TraqManagedBotPort(apiGateway),
+            userWebSocketPort = TraqUserWebSocketPort(apiGateway),
         )
     val lifecycle =
         object : RuntimeLifecycle {

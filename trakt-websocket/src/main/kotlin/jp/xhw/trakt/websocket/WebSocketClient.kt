@@ -144,8 +144,7 @@ class WebSocketClient<E : Any>(
     suspend fun sendCommand(command: String) {
         val currentSession = session
         if (currentSession?.isActive != true) {
-            logger.warn("WebSocket session is not active. Cannot send command: $command")
-            return
+            error("WebSocket session is not active. Cannot send command: $command")
         }
         currentSession.send(command)
     }

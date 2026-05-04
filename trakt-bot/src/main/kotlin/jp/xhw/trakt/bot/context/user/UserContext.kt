@@ -22,6 +22,7 @@ class UserContext internal constructor(
     internal val clipPort: ClipPort,
     internal val webhookPort: WebhookPort,
     internal val managedBotPort: ManagedBotPort,
+    internal val userWebSocketPort: UserWebSocketPort,
 ) : BaseContext(
         origin,
         channelPort,
