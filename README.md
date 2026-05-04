@@ -45,10 +45,6 @@ suspend fun main() {
         }
     }
 
-    try {
-        client.start()
-    } finally {
-        client.stop()
-    }
+    client.run()
 }
 ```

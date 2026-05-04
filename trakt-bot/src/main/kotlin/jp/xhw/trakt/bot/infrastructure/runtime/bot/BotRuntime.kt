@@ -39,6 +39,10 @@ internal fun createBotClient(
                 apiGateway.botWs.start()
             }
 
+            override suspend fun awaitStarted() {
+                apiGateway.botWs.awaitConnected()
+            }
+
             override suspend fun stop() {
                 apiGateway.botWs.stop()
                 apiGateway.botWs.close()

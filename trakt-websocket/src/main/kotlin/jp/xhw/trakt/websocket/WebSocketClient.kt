@@ -42,6 +42,8 @@ class WebSocketClient<E : Any>(
 
     val events: SharedFlow<E> = config.eventFlow.asSharedFlow()
 
+    private val connected = MutableStateFlow(false)
+
     val logger: Logger by lazy { LoggerFactory.getLogger(WebSocketClient::class.java) }
 
     inline fun <reified T : E> on(
@@ -75,6 +77,7 @@ class WebSocketClient<E : Any>(
         check(!started) { "WebSocket client is already started" }
         started = true
         stopping = false
+        connected.value = false
 
         try {
             while (currentCoroutineContext().isActive && !stopping) {
@@ -103,12 +106,18 @@ class WebSocketClient<E : Any>(
                     }
                 } finally {
                     session = null
+                    connected.value = false
                 }
             }
         } finally {
             session = null
+            connected.value = false
             started = false
         }
+    }
+
+    suspend fun awaitConnected() {
+        connected.first { it }
     }
 
     suspend fun stop() {
@@ -126,12 +135,14 @@ class WebSocketClient<E : Any>(
         }
 
         session = null
+        connected.value = false
         coroutineContext.cancelChildren()
         logger.info("WebSocket client stopped")
     }
 
     fun close() {
         stopping = true
+        connected.value = false
         coroutineContext.cancelChildren()
         runCatching { config.client.close() }.onFailure { error ->
             logger.error(
@@ -162,6 +173,7 @@ class WebSocketClient<E : Any>(
         }
 
         session = openedSession
+        connected.value = true
         logger.info("WebSocket session established successfully")
         return openedSession
     }

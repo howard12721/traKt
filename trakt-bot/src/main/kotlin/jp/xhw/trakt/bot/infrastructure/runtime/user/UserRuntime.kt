@@ -39,6 +39,10 @@ internal fun createUserClient(
                 apiGateway.userWs.start()
             }
 
+            override suspend fun awaitStarted() {
+                apiGateway.userWs.awaitConnected()
+            }
+
             override suspend fun stop() {
                 apiGateway.userWs.stop()
                 apiGateway.userWs.close()

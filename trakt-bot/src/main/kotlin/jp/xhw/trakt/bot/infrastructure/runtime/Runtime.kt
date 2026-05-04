@@ -4,11 +4,7 @@ import jp.xhw.trakt.bot.context.RuntimeContext
 import jp.xhw.trakt.bot.context.bot.BotContext
 import jp.xhw.trakt.bot.context.user.UserContext
 import jp.xhw.trakt.bot.dsl.TraktDsl
-import jp.xhw.trakt.bot.model.BotEvent
-import jp.xhw.trakt.bot.model.Disposed
-import jp.xhw.trakt.bot.model.Event
-import jp.xhw.trakt.bot.model.Initialized
-import jp.xhw.trakt.bot.model.UserEvent
+import jp.xhw.trakt.bot.model.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.Flow
@@ -16,8 +12,8 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.merge
 import kotlin.coroutines.CoroutineContext
-import kotlin.time.Clock
 import kotlin.reflect.KClass
+import kotlin.time.Clock
 
 typealias TraktClient = Runtime<BotContext, BotEvent>
 
@@ -110,8 +106,24 @@ class Runtime<R : RuntimeContext, E : Any> internal constructor(
                 ),
                 runtimeScope,
             )
-        lifecycle.start()
+        val lifecycleJob =
+            runtimeScope.launch {
+                lifecycle.start()
+            }
+        lifecycle.awaitStarted()
         lifecycleEvents.emit(Initialized(occurredAt = Clock.System.now()))
+        lifecycleJob.join()
+    }
+
+    /**
+     * lifecycle と登録済みイベントハンドラの購読を開始し、終了時に必ず停止します。
+     */
+    suspend fun run() {
+        try {
+            start()
+        } finally {
+            stop()
+        }
     }
 
     /**
