@@ -50,11 +50,7 @@ data class ChannelViewer internal constructor(
     val userId: UserId,
     val state: ChannelViewState,
     val updatedAt: Instant,
-) {
-    /** 閲覧者ユーザーの ID。 */
-    val user: UserId
-        get() = userId
-}
+)
 
 /** チャンネル。 */
 sealed interface Channel {
@@ -64,10 +60,6 @@ sealed interface Channel {
     sealed interface PublicChannel : Channel {
         val parentId: ChannelId?
         val name: String
-
-        /** 親チャンネルの ID。 */
-        val parent: ChannelId?
-            get() = parentId
     }
 
     /** DM チャンネル。 */
@@ -75,10 +67,6 @@ sealed interface Channel {
         override val id: ChannelId,
         val userId: UserId,
     ) : Channel {
-        /** DM 相手ユーザーの ID。 */
-        val user: UserId
-            get() = userId
-
         override fun equals(other: Any?): Boolean {
             if (this === other) return true
             if (other !is Channel) return false
@@ -117,10 +105,6 @@ sealed interface Channel {
         val topic: ChannelTopic,
         val childrenIds: List<ChannelId>,
     ) : PublicChannel {
-        /** 子チャンネル ID 一覧。 */
-        val children: List<ChannelId>
-            get() = childrenIds
-
         override fun equals(other: Any?): Boolean {
             if (this === other) return true
             if (other !is Channel) return false
@@ -145,12 +129,4 @@ data class Pin internal constructor(
     val pinnerId: UserId,
     val pinnedAt: Instant,
     val message: Message,
-) {
-    /** ピン留めしたユーザーの ID。 */
-    val pinner: UserId
-        get() = pinnerId
-
-    /** ピン留め対象メッセージID。 */
-    val messageId: MessageId
-        get() = message.id
-}
+)

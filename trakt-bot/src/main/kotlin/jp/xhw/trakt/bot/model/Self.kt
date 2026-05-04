@@ -56,12 +56,6 @@ class CurrentUser internal constructor(
     val homeChannelId: ChannelId?,
     val permissions: List<UserPermission>,
 ) : User.StatefulUser {
-    val groups: List<GroupId>
-        get() = groupIds
-
-    val homeChannel: ChannelId?
-        get() = homeChannelId
-
     val hasAdministrativeAccess: Boolean
         get() =
             permissions.any {
@@ -92,10 +86,7 @@ enum class ChannelSubscriptionLevel {
 data class ChannelSubscription internal constructor(
     val channelId: ChannelId,
     val level: ChannelSubscriptionLevel,
-) {
-    val channel: ChannelId
-        get() = channelId
-}
+)
 
 /** 自分の未読チャンネル情報。 */
 @ConsistentCopyVisibility
@@ -106,13 +97,7 @@ data class UnreadChannel internal constructor(
     val since: Instant,
     val updatedAt: Instant,
     val oldestMessageId: MessageId,
-) {
-    val channel: ChannelId
-        get() = channelId
-
-    val oldestMessage: MessageId
-        get() = oldestMessageId
-}
+)
 
 /** 自分の WebSocket セッションごとの閲覧状態。 */
 @ConsistentCopyVisibility
@@ -120,20 +105,14 @@ data class MyChannelViewState internal constructor(
     val key: String,
     val channelId: ChannelId,
     val state: ChannelViewState,
-) {
-    val channel: ChannelId
-        get() = channelId
-}
+)
 
 /** ユーザー設定。 */
 @ConsistentCopyVisibility
 data class UserSettings internal constructor(
     val userId: UserId,
     val notifyCitation: Boolean,
-) {
-    val user: UserId
-        get() = userId
-}
+)
 
 /** ログインセッション情報。 */
 @ConsistentCopyVisibility
@@ -164,17 +143,11 @@ data class ExternalAccount internal constructor(
 data class StampHistoryEntry internal constructor(
     val stampId: StampId,
     val datetime: Instant,
-) {
-    val stamp: StampId
-        get() = stampId
-}
+)
 
 /** スタンプレコメンド。 */
 @ConsistentCopyVisibility
 data class StampRecommendation internal constructor(
     val stampId: StampId,
     val score: Double,
-) {
-    val stamp: StampId
-        get() = stampId
-}
+)

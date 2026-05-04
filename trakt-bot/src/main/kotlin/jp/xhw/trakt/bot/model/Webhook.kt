@@ -27,13 +27,4 @@ data class Webhook internal constructor(
     val ownerId: UserId,
     val createdAt: Instant,
     val updatedAt: Instant,
-) {
-    val botUser: UserId
-        get() = botUserId
-
-    val channel: ChannelId
-        get() = channelId
-
-    val owner: UserId
-        get() = ownerId
-}
+)

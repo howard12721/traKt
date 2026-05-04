@@ -53,11 +53,7 @@ value class BotId(
 data class Bot internal constructor(
     val botId: BotId,
     val userId: UserId,
-) {
-    /** Bot に対応するユーザー ID。 */
-    val user: UserId
-        get() = userId
-}
+)
 
 /** ユーザー。 */
 sealed interface User {
@@ -66,10 +62,6 @@ sealed interface User {
     val displayName: String
     val iconFileId: FileId
     val isBot: Boolean
-
-    /** アイコンファイル ID。 */
-    val iconFile: FileId
-        get() = iconFileId
 
     /** 状態を持つユーザー情報。 */
     sealed interface StatefulUser : User {
@@ -129,14 +121,6 @@ sealed interface User {
         val bio: String,
         val homeChannelId: ChannelId?,
     ) : StatefulUser {
-        /** 所属グループ ID 一覧。 */
-        val groups: List<GroupId>
-            get() = groupIds
-
-        /** ホームチャンネル ID。 */
-        val homeChannel: ChannelId?
-            get() = homeChannelId
-
         override fun equals(other: Any?): Boolean {
             if (this === other) return true
             if (other !is User) return false

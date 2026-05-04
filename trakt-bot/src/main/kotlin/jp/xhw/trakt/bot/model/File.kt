@@ -27,12 +27,4 @@ data class FileMeta internal constructor(
     val createdAt: Instant,
     val channelId: ChannelId?,
     val uploaderId: UserId?,
-) {
-    /** 所属チャンネル ID。 */
-    val channel: ChannelId?
-        get() = channelId
-
-    /** アップロードユーザー ID。 */
-    val uploader: UserId?
-        get() = uploaderId
-}
+)

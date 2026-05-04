@@ -39,10 +39,7 @@ data class BotEventLog internal constructor(
     val result: BotEventResult?,
     val code: Int,
     val datetime: Instant,
-) {
-    val bot: BotId
-        get() = botId
-}
+)
 
 /** 管理 API で扱う Bot 情報。 */
 sealed interface ManagedBot {
@@ -55,12 +52,6 @@ sealed interface ManagedBot {
     val state: ManagedBotState
     val createdAt: Instant
     val updatedAt: Instant
-
-    val botUser: UserId
-        get() = botUserId
-
-    val developer: UserId
-        get() = developerId
 
     class Basic internal constructor(
         override val id: BotId,
@@ -97,9 +88,6 @@ sealed interface ManagedBot {
         val privileged: Boolean,
         val channelIds: List<ChannelId>,
     ) : ManagedBot {
-        val channels: List<ChannelId>
-            get() = channelIds
-
         override fun equals(other: Any?): Boolean {
             if (this === other) return true
             if (other !is ManagedBot) return false

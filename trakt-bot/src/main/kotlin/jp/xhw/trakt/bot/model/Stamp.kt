@@ -22,14 +22,6 @@ sealed interface Stamp {
     val creatorId: UserId
     val fileId: FileId
 
-    /** 作成者のユーザー ID。 */
-    val creator: UserId
-        get() = creatorId
-
-    /** 画像ファイル ID。 */
-    val file: FileId
-        get() = fileId
-
     /** 基本的なスタンプ情報。 */
     class Basic internal constructor(
         override val id: StampId,

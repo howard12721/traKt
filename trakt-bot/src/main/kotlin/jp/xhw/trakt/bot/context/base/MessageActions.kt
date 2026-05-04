@@ -182,7 +182,7 @@ suspend fun MessageId.reply(
     content: String,
     embed: Boolean = false,
     nonce: String? = null,
-): Message = fetch().channel.sendMessage(content + "\n${url()}", embed, nonce)
+): Message = fetch().channelId.sendMessage(content + "\n${url()}", embed, nonce)
 
 // --- Message convenience extensions ---
 
@@ -285,7 +285,7 @@ suspend fun Message.reply(
     content: String,
     embed: Boolean = false,
     nonce: String? = null,
-): Message = channel.sendMessage(content + "\n${url()}", embed, nonce)
+): Message = channelId.sendMessage(content + "\n${url()}", embed, nonce)
 
 /** メッセージ URL を生成します。 */
 context(ctx: BaseContext)

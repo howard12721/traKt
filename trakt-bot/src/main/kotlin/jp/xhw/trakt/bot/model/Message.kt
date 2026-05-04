@@ -28,14 +28,6 @@ class Message internal constructor(
     val threadId: Uuid?,
     val nonce: String? = null,
 ) {
-    /** 投稿者の ID。 */
-    val author: UserId
-        get() = authorId
-
-    /** 投稿先チャンネルの ID。 */
-    val channel: ChannelId
-        get() = channelId
-
     override fun equals(other: Any?): Boolean = other is Message && this.id == other.id
 
     override fun hashCode(): Int = id.hashCode()
@@ -49,26 +41,14 @@ data class MessageStamp internal constructor(
     val count: Int,
     val createdAt: Instant,
     val updatedAt: Instant,
-) {
-    /** スタンプを押したユーザーの ID。 */
-    val user: UserId
-        get() = userId
-
-    /** 付与されたスタンプの ID。 */
-    val stamp: StampId
-        get() = stampId
-}
+)
 
 /** メッセージのピン情報。 */
 @ConsistentCopyVisibility
 data class PinInfo internal constructor(
     val pinnerId: UserId,
     val pinnedAt: Instant,
-) {
-    /** ピン留めしたユーザーの ID。 */
-    val pinner: UserId
-        get() = pinnerId
-}
+)
 
 /** メッセージ取得・検索時の並び順。 */
 enum class SortDirection {

@@ -72,11 +72,7 @@ data class BotJoinedChannel internal constructor(
     override val occurredAt: Instant,
     val channelId: ChannelId,
 ) : BotEvent,
-    TimedEvent {
-    /** 追加先チャンネルのID。 */
-    val channel: ChannelId
-        get() = channelId
-}
+    TimedEvent
 
 /** Bot がチャンネルから削除されたときのイベント。 */
 @ConsistentCopyVisibility
@@ -84,11 +80,7 @@ data class BotLeftChannel internal constructor(
     override val occurredAt: Instant,
     val channelId: ChannelId,
 ) : BotEvent,
-    TimedEvent {
-    /** 削除元チャンネルのID。 */
-    val channel: ChannelId
-        get() = channelId
-}
+    TimedEvent
 
 /** パブリックチャンネルが作成されたときのイベント。 */
 @ConsistentCopyVisibility
@@ -106,11 +98,7 @@ data class BotChannelTopicChanged internal constructor(
     val topic: String,
     val updaterId: UserId,
 ) : BotEvent,
-    TimedEvent {
-    /** 更新実行ユーザーのID。 */
-    val updater: UserId
-        get() = updaterId
-}
+    TimedEvent
 
 /** ユーザーが作成されたときのイベント。 */
 @ConsistentCopyVisibility

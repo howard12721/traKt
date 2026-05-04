@@ -27,10 +27,6 @@ class Group internal constructor(
     val updatedAt: Instant,
     val admins: List<UserId>,
 ) {
-    /** グループアイコンファイル ID。 */
-    val iconFile: FileId
-        get() = iconFileId
-
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other !is Group) return false
@@ -45,8 +41,4 @@ class Group internal constructor(
 data class GroupMember internal constructor(
     val userId: UserId,
     val role: String,
-) {
-    /** メンバーのユーザー ID。 */
-    val user: UserId
-        get() = userId
-}
+)

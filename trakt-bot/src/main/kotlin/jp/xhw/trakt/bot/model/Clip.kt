@@ -10,10 +10,7 @@ data class ClipFolder internal constructor(
     val description: String,
     val ownerId: UserId,
     val createdAt: Instant,
-) {
-    val owner: UserId
-        get() = ownerId
-}
+)
 
 /** クリップフォルダ内のメッセージ。 */
 @ConsistentCopyVisibility
@@ -27,7 +24,4 @@ data class ClippedMessage internal constructor(
 data class MessageClip internal constructor(
     val folderId: ClipFolderId,
     val clippedAt: Instant,
-) {
-    val folder: ClipFolderId
-        get() = folderId
-}
+)
