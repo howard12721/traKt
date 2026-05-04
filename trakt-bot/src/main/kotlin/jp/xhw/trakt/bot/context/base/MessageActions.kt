@@ -289,8 +289,8 @@ suspend fun Message.reply(
 
 /** メッセージ URL を生成します。 */
 context(ctx: BaseContext)
-private fun MessageId.url(): String = "https://${ctx.origin}/messages/${value}"
+fun MessageId.url(): String = "https://${ctx.origin}/messages/$value"
 
 /** メッセージ URL を生成します。 */
 context(ctx: BaseContext)
-private fun Message.url(): String = id.url()
+fun Message.url(): String = id.url()
