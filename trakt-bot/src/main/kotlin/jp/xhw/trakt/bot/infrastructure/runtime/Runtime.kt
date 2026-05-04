@@ -110,8 +110,8 @@ class Runtime<R : RuntimeContext, E : Any> internal constructor(
                 ),
                 runtimeScope,
             )
-        lifecycleEvents.emit(Initialized(occurredAt = Clock.System.now()))
         lifecycle.start()
+        lifecycleEvents.emit(Initialized(occurredAt = Clock.System.now()))
     }
 
     /**
