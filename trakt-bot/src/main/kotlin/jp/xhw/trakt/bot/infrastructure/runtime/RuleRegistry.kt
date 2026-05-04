@@ -14,40 +14,43 @@ import kotlin.reflect.KClass
 internal class RuleRegistry<R : RuntimeContext, E : Any> {
     private val logger = LoggerFactory.getLogger(RuleRegistry::class.java)
 
-    private val installers =
-        mutableListOf<
-            (
-                eventSource: Flow<E>,
-                scope: CoroutineScope,
-            ) -> Job,
-        >()
+    private val handlers = mutableListOf<suspend (E) -> Unit>()
 
     fun <T : E> on(
         eventClass: KClass<T>,
         context: R,
         handler: suspend R.(T) -> Unit,
     ) {
-        installers += { eventSource, scope ->
-            eventSource
-                .onEach { event ->
-                    if (!eventClass.isInstance(event)) {
-                        return@onEach
-                    }
-                    @Suppress("UNCHECKED_CAST")
-                    val typedEvent = event as T
-                    try {
-                        context.handler(typedEvent)
-                    } catch (e: CancellationException) {
-                        throw e
-                    } catch (e: Exception) {
-                        logger.error("Error while handling event: {}", eventClass.simpleName, e)
-                    }
-                }.launchIn(scope)
+        handlers += registeredHandler@{ event ->
+            if (!eventClass.isInstance(event)) {
+                return@registeredHandler
+            }
+            @Suppress("UNCHECKED_CAST")
+            val typedEvent = event as T
+            try {
+                context.handler(typedEvent)
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                logger.error("Error while handling event: {}", eventClass.simpleName, e)
+            }
         }
     }
 
-    fun install(
+    fun subscribe(
         eventSource: Flow<E>,
         scope: CoroutineScope,
-    ): List<Job> = installers.map { installer -> installer(eventSource, scope) }
+    ): Job? {
+        if (handlers.isEmpty()) {
+            return null
+        }
+
+        val installedHandlers = handlers.toList()
+        return eventSource
+            .onEach { event ->
+                installedHandlers.forEach { handler ->
+                    handler(event)
+                }
+            }.launchIn(scope)
+    }
 }

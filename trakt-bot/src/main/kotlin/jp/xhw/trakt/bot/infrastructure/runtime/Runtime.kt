@@ -45,7 +45,8 @@ class Runtime<R : RuntimeContext, E : Any> internal constructor(
             onBufferOverflow = BufferOverflow.SUSPEND,
         )
 
-    private var subscriptions: List<Job> = emptyList()
+    private var eventSubscription: Job? = null
+    private var started = false
 
     /**
      * 指定イベント型のハンドラを登録します。
@@ -69,7 +70,7 @@ class Runtime<R : RuntimeContext, E : Any> internal constructor(
         eventClass: KClass<T>,
         handler: suspend R.(T) -> Unit,
     ) {
-        check(subscriptions.isEmpty()) { "Handlers must be registered before start()" }
+        check(!started) { "Handlers must be registered before start()" }
         ruleRegistry.on(eventClass, context, handler)
     }
 
@@ -97,9 +98,10 @@ class Runtime<R : RuntimeContext, E : Any> internal constructor(
      * lifecycle と登録済みイベントハンドラの購読を開始します。
      */
     suspend fun start() {
-        check(subscriptions.isEmpty()) { "Client is already started" }
-        subscriptions =
-            ruleRegistry.install(
+        check(!started) { "Client is already started" }
+        started = true
+        eventSubscription =
+            ruleRegistry.subscribe(
                 merge(
                     eventSource.mapNotNull(eventMapper),
                     lifecycleEvents.mapNotNull(::toRuntimeEvent),
@@ -132,8 +134,9 @@ class Runtime<R : RuntimeContext, E : Any> internal constructor(
     suspend fun stop() {
         lifecycle.stop()
         lifecycleEvents.emit(Disposed(occurredAt = Clock.System.now()))
-        subscriptions.forEach(Job::cancel)
-        subscriptions = emptyList()
+        eventSubscription?.cancel()
+        eventSubscription = null
+        started = false
         supervisorJob.cancel()
     }
 
