@@ -195,3 +195,11 @@ suspend fun Channel.sendMessage(
     embed: Boolean = false,
     nonce: String? = null,
 ): Message = id.sendMessage(content, embed, nonce)
+
+/**
+ * パスからチャンネルを取得します。
+ *
+ * @param path 取得対象チャンネルのパス
+ */
+context(ctx: BaseContext)
+suspend fun fetchChannelByPath(path: ChannelPath): Channel.Detail? = fetchChannels(path = path.value).publicChannels.firstOrNull()

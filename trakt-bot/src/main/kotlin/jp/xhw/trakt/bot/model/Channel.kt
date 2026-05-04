@@ -17,9 +17,15 @@ value class ChannelId(
 
 /** チャンネルのフルパス。 */
 @JvmInline
-value class ChannelPath internal constructor(
+value class ChannelPath(
     val value: String,
-)
+) {
+    init {
+        require(Regex("^[a-zA-Z0-9-_]+(/[a-zA-Z0-9-_]+)*$").matches(value)) {
+            "Invalid channel path: $value"
+        }
+    }
+}
 
 /** チャンネルのトピック。 */
 @JvmInline
