@@ -5,9 +5,6 @@ import kotlin.uuid.Uuid
 
 sealed interface UserEvent : Event
 
-/** User token のイベントであることを型名から判別しやすい共通型。 */
-typealias UserDomainEvent = UserEvent
-
 @JvmInline
 value class StampPaletteId(
     val value: Uuid,

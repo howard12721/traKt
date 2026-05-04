@@ -8,9 +8,6 @@ sealed interface Event
 /** Bot token の WebSocket から配信されるイベントの共通型。 */
 sealed interface BotEvent : Event
 
-/** Bot token のイベントであることを型名から判別しやすい共通型。 */
-typealias BotDomainEvent = BotEvent
-
 /** 発生時刻を持つイベントの共通型。 */
 sealed interface TimedEvent : Event {
     val occurredAt: Instant
