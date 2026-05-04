@@ -227,3 +227,12 @@ suspend fun User.untag(tagId: UserTagId) = id.untag(tagId)
  */
 context(ctx: BaseContext)
 suspend fun User.fetchStats(): UserStats = id.fetchStats()
+
+/**
+ * 名前からユーザーを取得します。
+ *
+ * @param name 取得するユーザーの名前
+ * @return ユーザー情報。見つからない場合は `null`
+ */
+context(ctx: BaseContext)
+suspend fun fetchUserByName(name: String): User.Detail? = fetchUsers(name = name).firstOrNull()?.id?.fetch()
