@@ -6,4 +6,4 @@ plugins {
 }
 
 group = "jp.xhw"
-version = "4.0.0"
+version = "4.1.0"
