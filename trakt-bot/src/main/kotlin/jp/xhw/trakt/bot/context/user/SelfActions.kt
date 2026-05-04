@@ -125,9 +125,17 @@ suspend fun fetchMyStars(): List<ChannelId> = ctx.selfPort.fetchMyStars()
 context(ctx: UserContext)
 suspend fun ChannelId.star() = ctx.selfPort.addMyStar(this)
 
+/** チャンネルをスターします。 */
+context(ctx: UserContext)
+suspend fun Channel.star() = id.star()
+
 /** チャンネルのスターを外します。 */
 context(ctx: UserContext)
 suspend fun ChannelId.unstar() = ctx.selfPort.removeMyStar(this)
+
+/** チャンネルのスターを外します。 */
+context(ctx: UserContext)
+suspend fun Channel.unstar() = id.unstar()
 
 /**
  * 自分のチャンネル購読状態一覧を取得します。
@@ -145,17 +153,37 @@ suspend fun fetchMySubscriptions(): List<ChannelSubscription> = ctx.selfPort.fet
 context(ctx: UserContext)
 suspend fun ChannelId.setSubscription(level: ChannelSubscriptionLevel) = ctx.selfPort.setMySubscription(this, level)
 
+/**
+ * チャンネル購読レベルを設定します。
+ *
+ * @param level 新しい購読レベル
+ */
+context(ctx: UserContext)
+suspend fun Channel.setSubscription(level: ChannelSubscriptionLevel) = id.setSubscription(level)
+
 /** チャンネル購読を無効にします。 */
 context(ctx: UserContext)
 suspend fun ChannelId.unsubscribe() = setSubscription(ChannelSubscriptionLevel.NONE)
+
+/** チャンネル購読を無効にします。 */
+context(ctx: UserContext)
+suspend fun Channel.unsubscribe() = setSubscription(ChannelSubscriptionLevel.NONE)
 
 /** チャンネルを未読管理対象にします。 */
 context(ctx: UserContext)
 suspend fun ChannelId.subscribe() = setSubscription(ChannelSubscriptionLevel.SUBSCRIBED)
 
+/** チャンネルを未読管理対象にします。 */
+context(ctx: UserContext)
+suspend fun Channel.subscribe() = setSubscription(ChannelSubscriptionLevel.SUBSCRIBED)
+
 /** チャンネルを通知対象にします。 */
 context(ctx: UserContext)
 suspend fun ChannelId.notify() = setSubscription(ChannelSubscriptionLevel.NOTIFIED)
+
+/** チャンネルを通知対象にします。 */
+context(ctx: UserContext)
+suspend fun Channel.notify() = setSubscription(ChannelSubscriptionLevel.NOTIFIED)
 
 /**
  * 自分の未読チャンネル一覧を取得します。
@@ -168,6 +196,10 @@ suspend fun fetchMyUnreadChannels(): List<UnreadChannel> = ctx.selfPort.fetchMyU
 /** チャンネルを既読にします。 */
 context(ctx: UserContext)
 suspend fun ChannelId.markRead() = ctx.selfPort.readChannel(this)
+
+/** チャンネルを既読にします。 */
+context(ctx: UserContext)
+suspend fun Channel.markRead() = id.markRead()
 
 /**
  * 自分の閲覧状態一覧を取得します。

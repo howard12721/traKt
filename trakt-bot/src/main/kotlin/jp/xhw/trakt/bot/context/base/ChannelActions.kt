@@ -52,12 +52,28 @@ context(ctx: BaseContext)
 suspend fun ChannelId.fetchPath(): ChannelPath = ctx.channelPort.fetchChannelPath(this)
 
 /**
+ * チャンネルのパスを取得します。
+ *
+ * @return チャンネルパス
+ */
+context(ctx: BaseContext)
+suspend fun Channel.PublicChannel.fetchPath(): ChannelPath = id.fetchPath()
+
+/**
  * チャンネルのトピックを取得します。
  *
  * @return チャンネルトピック文字列
  */
 context(ctx: BaseContext)
 suspend fun ChannelId.fetchTopic(): String = ctx.channelPort.fetchChannelTopic(this)
+
+/**
+ * チャンネルのトピックを取得します。
+ *
+ * @return チャンネルトピック文字列
+ */
+context(ctx: BaseContext)
+suspend fun Channel.PublicChannel.fetchTopic(): String = id.fetchTopic()
 
 /**
  * チャンネルのトピックを更新します。
@@ -67,6 +83,16 @@ suspend fun ChannelId.fetchTopic(): String = ctx.channelPort.fetchChannelTopic(t
 context(ctx: BaseContext)
 suspend fun ChannelId.setTopic(topic: String) {
     ctx.channelPort.setChannelTopic(this, topic)
+}
+
+/**
+ * チャンネルのトピックを更新します。
+ *
+ * @param topic 新しいトピック文字列
+ */
+context(ctx: BaseContext)
+suspend fun Channel.PublicChannel.setTopic(topic: String) {
+    id.setTopic(topic)
 }
 
 /**
@@ -85,6 +111,16 @@ suspend fun ChannelId.fetchSubscribers(): List<UserId> = ctx.channelPort.fetchSu
 context(ctx: BaseContext)
 suspend fun ChannelId.setSubscribers(subscribers: List<UserId>) {
     ctx.channelPort.setSubscribers(this, subscribers)
+}
+
+/**
+ * チャンネル購読者一覧を設定します。
+ *
+ * @param subscribers 設定する購読ユーザーID一覧
+ */
+context(ctx: BaseContext)
+suspend fun Channel.PublicChannel.setSubscribers(subscribers: List<UserId>) {
+    id.setSubscribers(subscribers)
 }
 
 /**
@@ -136,12 +172,28 @@ context(ctx: BaseContext)
 suspend fun ChannelId.fetchPins(): List<Pin> = ctx.channelPort.fetchChannelPins(this)
 
 /**
+ * チャンネルにピン留めされたメッセージ一覧を取得します。
+ *
+ * @return ピン情報一覧
+ */
+context(ctx: BaseContext)
+suspend fun Channel.fetchPins(): List<Pin> = id.fetchPins()
+
+/**
  * チャンネル統計情報を取得します。
  *
  * @return チャンネル統計情報
  */
 context(ctx: BaseContext)
 suspend fun ChannelId.fetchStats(): ChannelStats = ctx.channelPort.fetchChannelStats(this)
+
+/**
+ * チャンネル統計情報を取得します。
+ *
+ * @return チャンネル統計情報
+ */
+context(ctx: BaseContext)
+suspend fun Channel.fetchStats(): ChannelStats = id.fetchStats()
 
 /**
  * チャンネルのメッセージ一覧を取得します。
@@ -163,6 +215,27 @@ suspend fun ChannelId.fetchMessages(
     inclusive: Boolean = false,
     order: SortDirection = SortDirection.DESCENDING,
 ): List<Message> = ctx.channelPort.fetchMessages(this, limit, offset, since, until, inclusive, order)
+
+/**
+ * チャンネルのメッセージ一覧を取得します。
+ *
+ * @param limit 取得件数上限。`null` の場合はサーバーデフォルト
+ * @param offset 取得開始位置
+ * @param since 指定時刻以降のメッセージに絞り込みます
+ * @param until 指定時刻以前のメッセージに絞り込みます
+ * @param inclusive `true` の場合は境界時刻と一致するメッセージを含めます
+ * @param order 並び順
+ * @return メッセージ一覧
+ */
+context(ctx: BaseContext)
+suspend fun Channel.fetchMessages(
+    limit: Int? = null,
+    offset: Int = 0,
+    since: Instant? = null,
+    until: Instant? = null,
+    inclusive: Boolean = false,
+    order: SortDirection = SortDirection.DESCENDING,
+): List<Message> = id.fetchMessages(limit, offset, since, until, inclusive, order)
 
 // --- Send ---
 

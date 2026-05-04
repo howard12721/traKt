@@ -113,12 +113,28 @@ context(ctx: UserContext)
 suspend fun BotId.join(channel: ChannelId) = ctx.managedBotPort.joinChannel(this, channel)
 
 /**
+ * Bot をチャンネルに参加させます。
+ *
+ * @param channel 参加先チャンネル
+ */
+context(ctx: UserContext)
+suspend fun BotId.join(channel: Channel.PublicChannel) = join(channel.id)
+
+/**
  * Bot をチャンネルから退出させます。
  *
  * @param channel 退出元チャンネル
  */
 context(ctx: UserContext)
 suspend fun BotId.leave(channel: ChannelId) = ctx.managedBotPort.leaveChannel(this, channel)
+
+/**
+ * Bot をチャンネルから退出させます。
+ *
+ * @param channel 退出元チャンネル
+ */
+context(ctx: UserContext)
+suspend fun BotId.leave(channel: Channel.PublicChannel) = leave(channel.id)
 
 /**
  * Bot アイコンを取得します。
@@ -150,6 +166,23 @@ suspend fun BotId.changeIcon(
  */
 context(ctx: UserContext)
 suspend fun ManagedBot.refresh(detail: Boolean = this is ManagedBot.Detail): ManagedBot = id.fetch(detail)
+
+/**
+ * Bot を取得します。
+ *
+ * @param detail `true` の場合は詳細情報を取得します
+ * @return 最新の Bot 情報
+ */
+context(ctx: UserContext)
+suspend fun ManagedBot.fetch(detail: Boolean = this is ManagedBot.Detail): ManagedBot = id.fetch(detail)
+
+/**
+ * Bot 詳細を取得します。
+ *
+ * @return Bot 詳細
+ */
+context(ctx: UserContext)
+suspend fun ManagedBot.fetchDetail(): ManagedBot.Detail = id.fetchDetail()
 
 /**
  * Bot を編集します。
@@ -186,3 +219,78 @@ suspend fun ManagedBot.activate() = id.activate()
 /** Bot を無効化します。 */
 context(ctx: UserContext)
 suspend fun ManagedBot.inactivate() = id.inactivate()
+
+/**
+ * Bot のトークンを再発行します。
+ *
+ * @return 再発行された Bot トークン
+ */
+context(ctx: UserContext)
+suspend fun ManagedBot.reissueTokens(): BotTokens = id.reissueTokens()
+
+/**
+ * Bot のイベントログを取得します。
+ *
+ * @param limit 取得件数上限。`null` の場合はサーバーデフォルト
+ * @param offset 取得開始位置
+ * @return Bot イベントログ一覧
+ */
+context(ctx: UserContext)
+suspend fun ManagedBot.fetchLogs(
+    limit: Int? = null,
+    offset: Int = 0,
+): List<BotEventLog> = id.fetchLogs(limit, offset)
+
+/**
+ * Bot をチャンネルに参加させます。
+ *
+ * @param channel 参加先チャンネル
+ */
+context(ctx: UserContext)
+suspend fun ManagedBot.join(channel: ChannelId) = id.join(channel)
+
+/**
+ * Bot をチャンネルに参加させます。
+ *
+ * @param channel 参加先チャンネル
+ */
+context(ctx: UserContext)
+suspend fun ManagedBot.join(channel: Channel.PublicChannel) = id.join(channel)
+
+/**
+ * Bot をチャンネルから退出させます。
+ *
+ * @param channel 退出元チャンネル
+ */
+context(ctx: UserContext)
+suspend fun ManagedBot.leave(channel: ChannelId) = id.leave(channel)
+
+/**
+ * Bot をチャンネルから退出させます。
+ *
+ * @param channel 退出元チャンネル
+ */
+context(ctx: UserContext)
+suspend fun ManagedBot.leave(channel: Channel.PublicChannel) = id.leave(channel)
+
+/**
+ * Bot アイコンを取得します。
+ *
+ * @return アイコン画像のバイト列
+ */
+context(ctx: UserContext)
+suspend fun ManagedBot.downloadIcon(): ByteArray = id.downloadIcon()
+
+/**
+ * Bot アイコンを変更します。
+ *
+ * @param file アイコン画像のバイト列
+ * @param fileName ファイル名
+ * @param contentType MIME タイプ。`null` の場合はサーバー側判定
+ */
+context(ctx: UserContext)
+suspend fun ManagedBot.changeIcon(
+    file: ByteArray,
+    fileName: String,
+    contentType: String? = null,
+) = id.changeIcon(file, fileName, contentType)

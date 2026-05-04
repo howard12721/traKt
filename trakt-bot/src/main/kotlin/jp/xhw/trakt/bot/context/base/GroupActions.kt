@@ -92,6 +92,14 @@ context(ctx: BaseContext)
 suspend fun Group.fetch(): Group = id.fetch()
 
 /**
+ * グループメンバー一覧を取得します。
+ *
+ * @return グループメンバー一覧
+ */
+context(ctx: BaseContext)
+suspend fun Group.fetchMembers(): List<GroupMember> = id.fetchMembers()
+
+/**
  * グループへメンバーを追加します。
  *
  * @param userId 追加するユーザーID

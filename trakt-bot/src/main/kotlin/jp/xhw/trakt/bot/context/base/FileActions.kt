@@ -1,5 +1,6 @@
 package jp.xhw.trakt.bot.context.base
 
+import jp.xhw.trakt.bot.model.Channel
 import jp.xhw.trakt.bot.model.ChannelId
 import jp.xhw.trakt.bot.model.FileId
 import jp.xhw.trakt.bot.model.FileMeta
@@ -20,6 +21,23 @@ suspend fun uploadFile(
     fileName: String,
     contentType: String? = null,
 ): FileMeta = ctx.filePort.uploadFile(channelId, file, fileName, contentType)
+
+/**
+ * チャンネルへファイルをアップロードします。
+ *
+ * @param channel アップロード先チャンネル
+ * @param file ファイル本体
+ * @param fileName 保存時のファイル名
+ * @param contentType MIME タイプ。`null` の場合はサーバー側判定
+ * @return アップロードされたファイルのメタ情報
+ */
+context(ctx: BaseContext)
+suspend fun uploadFile(
+    channel: Channel,
+    file: ByteArray,
+    fileName: String,
+    contentType: String? = null,
+): FileMeta = uploadFile(channel.id, file, fileName, contentType)
 
 /**
  * ファイルメタ情報を取得します。
@@ -62,3 +80,11 @@ suspend fun FileMeta.delete() = id.delete()
  */
 context(ctx: BaseContext)
 suspend fun FileMeta.fetch(): FileMeta = id.fetchMeta()
+
+/**
+ * ファイルメタ情報を取得します。
+ *
+ * @return 最新のファイルメタ情報
+ */
+context(ctx: BaseContext)
+suspend fun FileMeta.fetchMeta(): FileMeta = id.fetchMeta()
