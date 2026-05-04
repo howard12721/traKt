@@ -1,7 +1,8 @@
+import org.jetbrains.dokka.gradle.engine.parameters.VisibilityModifier
 import java.net.URI
+import java.nio.charset.StandardCharsets
 import java.nio.file.Files
 import java.nio.file.StandardCopyOption
-import org.jetbrains.dokka.gradle.engine.parameters.VisibilityModifier
 
 plugins {
     id("org.jetbrains.kotlin.jvm")
@@ -89,12 +90,45 @@ tasks.openApiGenerate {
     inputs.file(apiSpecFile)
 }
 
+val internalizeTraqClientTask =
+    tasks.register("internalizeTraqClient") {
+        dependsOn(tasks.openApiGenerate)
+        inputs.dir(generatedTraqClientDir)
+        outputs.upToDateWhen { false }
+
+        doLast {
+            val generatedSourceRoot =
+                generatedTraqClientDir
+                    .get()
+                    .asFile
+                    .toPath()
+                    .resolve("src/commonMain/kotlin")
+            val declarationRegex =
+                Regex(
+                    pattern =
+                        """(?m)^(?!internal\b)((?:(?:inline|suspend|operator|infix|tailrec|external)\s+)*(?:open\s+class|data\s+class|sealed\s+class|enum\s+class|class|interface|object|typealias|fun|val|var)\b)""",
+                )
+
+            Files.walk(generatedSourceRoot).use { paths ->
+                paths
+                    .filter { Files.isRegularFile(it) && it.fileName.toString().endsWith(".kt") }
+                    .forEach { path ->
+                        val source = Files.readString(path, StandardCharsets.UTF_8)
+                        val internalized = source.replace(declarationRegex, "internal $1")
+                        if (internalized != source) {
+                            Files.writeString(path, internalized, StandardCharsets.UTF_8)
+                        }
+                    }
+            }
+        }
+    }
+
 sourceSets.main {
     kotlin.srcDir(generatedTraqClientDir.map { it.dir("src/commonMain/kotlin") })
 }
 
 tasks.named("compileKotlin") {
-    dependsOn(tasks.openApiGenerate)
+    dependsOn(internalizeTraqClientTask)
 }
 
 tasks.test {
