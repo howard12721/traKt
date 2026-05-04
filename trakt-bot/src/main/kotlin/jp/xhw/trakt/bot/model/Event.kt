@@ -20,6 +20,22 @@ sealed interface BotMessageEvent :
     val message: Message
 }
 
+/** Runtime の初期化が完了したときのイベント。 */
+@ConsistentCopyVisibility
+data class Initialized internal constructor(
+    override val occurredAt: Instant,
+) : BotEvent,
+    UserEvent,
+    TimedEvent
+
+/** Runtime が停止したときのイベント。 */
+@ConsistentCopyVisibility
+data class Disposed internal constructor(
+    override val occurredAt: Instant,
+) : BotEvent,
+    UserEvent,
+    TimedEvent
+
 /** パブリックチャンネルにメッセージが投稿されたときのイベント。 */
 @ConsistentCopyVisibility
 data class BotMessageCreated internal constructor(

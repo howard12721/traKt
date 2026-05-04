@@ -48,11 +48,9 @@ internal fun createBotClient(
 
     return Runtime(
         context = ctx,
-        ruleRegistry =
-            RuleRegistry(
-                eventMapper = { event -> (event as? BotEvent)?.toEventOrNull() },
-            ),
+        ruleRegistry = RuleRegistry(),
         eventSource = apiGateway.botWs.events,
+        eventMapper = { event -> (event as? BotEvent)?.toEventOrNull() },
         lifecycle = lifecycle,
         coroutineContext = coroutineContext,
     )

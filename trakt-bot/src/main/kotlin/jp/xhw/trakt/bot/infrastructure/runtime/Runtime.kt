@@ -5,10 +5,18 @@ import jp.xhw.trakt.bot.context.bot.BotContext
 import jp.xhw.trakt.bot.context.user.UserContext
 import jp.xhw.trakt.bot.dsl.TraktDsl
 import jp.xhw.trakt.bot.model.BotEvent
+import jp.xhw.trakt.bot.model.Disposed
+import jp.xhw.trakt.bot.model.Event
+import jp.xhw.trakt.bot.model.Initialized
 import jp.xhw.trakt.bot.model.UserEvent
 import kotlinx.coroutines.*
+import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.mapNotNull
+import kotlinx.coroutines.flow.merge
 import kotlin.coroutines.CoroutineContext
+import kotlin.time.Clock
 import kotlin.reflect.KClass
 
 typealias TraktClient = Runtime<BotContext, BotEvent>
@@ -28,11 +36,18 @@ class Runtime<R : RuntimeContext, E : Any> internal constructor(
     internal val context: R,
     internal val ruleRegistry: RuleRegistry<R, E>,
     internal val eventSource: Flow<*>,
+    private val eventMapper: (Any?) -> E?,
     private val lifecycle: RuntimeLifecycle = RuntimeLifecycle.Noop,
     coroutineContext: CoroutineContext = Dispatchers.Default,
 ) {
     private val supervisorJob = SupervisorJob()
     private val runtimeScope = CoroutineScope(supervisorJob + coroutineContext)
+    private val lifecycleEvents =
+        MutableSharedFlow<Event>(
+            replay = 0,
+            extraBufferCapacity = 1,
+            onBufferOverflow = BufferOverflow.SUSPEND,
+        )
 
     private var subscriptions: List<Job> = emptyList()
 
@@ -87,7 +102,15 @@ class Runtime<R : RuntimeContext, E : Any> internal constructor(
      */
     suspend fun start() {
         check(subscriptions.isEmpty()) { "Client is already started" }
-        subscriptions = ruleRegistry.install(eventSource, runtimeScope)
+        subscriptions =
+            ruleRegistry.install(
+                merge(
+                    eventSource.mapNotNull(eventMapper),
+                    lifecycleEvents.mapNotNull(::toRuntimeEvent),
+                ),
+                runtimeScope,
+            )
+        lifecycleEvents.emit(Initialized(occurredAt = Clock.System.now()))
         lifecycle.start()
     }
 
@@ -95,9 +118,13 @@ class Runtime<R : RuntimeContext, E : Any> internal constructor(
      * イベント購読と lifecycle を停止します。
      */
     suspend fun stop() {
+        lifecycle.stop()
+        lifecycleEvents.emit(Disposed(occurredAt = Clock.System.now()))
         subscriptions.forEach(Job::cancel)
         subscriptions = emptyList()
-        lifecycle.stop()
         supervisorJob.cancel()
     }
+
+    @Suppress("UNCHECKED_CAST")
+    private fun toRuntimeEvent(event: Event): E? = event as? E
 }

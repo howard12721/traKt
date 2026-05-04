@@ -48,11 +48,9 @@ internal fun createUserClient(
 
     return Runtime(
         context = ctx,
-        ruleRegistry =
-            RuleRegistry(
-                eventMapper = { event -> (event as? WebSocketUserEvent)?.toEventOrNull() },
-            ),
+        ruleRegistry = RuleRegistry(),
         eventSource = apiGateway.userWs.events,
+        eventMapper = { event -> (event as? WebSocketUserEvent)?.toEventOrNull() },
         lifecycle = lifecycle,
         coroutineContext = coroutineContext,
     )

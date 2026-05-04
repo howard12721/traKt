@@ -10,16 +10,14 @@ import kotlinx.coroutines.flow.onEach
 import org.slf4j.LoggerFactory
 import kotlin.reflect.KClass
 
-/** source event を domain event に変換し、登録された handler へ配送します。 */
-internal class RuleRegistry<R : RuntimeContext, E : Any>(
-    private val eventMapper: (Any?) -> E?,
-) {
+/** domain event を登録された handler へ配送します。 */
+internal class RuleRegistry<R : RuntimeContext, E : Any> {
     private val logger = LoggerFactory.getLogger(RuleRegistry::class.java)
 
     private val installers =
         mutableListOf<
             (
-                eventSource: Flow<*>,
+                eventSource: Flow<E>,
                 scope: CoroutineScope,
             ) -> Job,
         >()
@@ -31,8 +29,7 @@ internal class RuleRegistry<R : RuntimeContext, E : Any>(
     ) {
         installers += { eventSource, scope ->
             eventSource
-                .onEach { sourceEvent ->
-                    val event = eventMapper(sourceEvent) ?: return@onEach
+                .onEach { event ->
                     if (!eventClass.isInstance(event)) {
                         return@onEach
                     }
@@ -50,7 +47,7 @@ internal class RuleRegistry<R : RuntimeContext, E : Any>(
     }
 
     fun install(
-        eventSource: Flow<*>,
+        eventSource: Flow<E>,
         scope: CoroutineScope,
     ): List<Job> = installers.map { installer -> installer(eventSource, scope) }
 }
