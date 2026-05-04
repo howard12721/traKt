@@ -31,21 +31,21 @@ context(ctx: UserContext)
 suspend fun fetchManagedBots(all: Boolean = false): List<ManagedBot.Basic> = ctx.managedBotPort.fetchBots(all)
 
 /**
- * このハンドルが指す Bot を取得します。
+ * この ID が指す Bot を取得します。
  *
  * @param detail `true` の場合は詳細情報を取得します
  * @return Bot 情報
  */
 context(ctx: UserContext)
-suspend fun BotHandle.fetch(detail: Boolean = false): ManagedBot = ctx.managedBotPort.fetchBot(id, detail)
+suspend fun BotId.fetch(detail: Boolean = false): ManagedBot = ctx.managedBotPort.fetchBot(this, detail)
 
 /**
- * このハンドルが指す Bot 詳細を取得します。
+ * この ID が指す Bot 詳細を取得します。
  *
  * @return Bot 詳細
  */
 context(ctx: UserContext)
-suspend fun BotHandle.fetchDetail(): ManagedBot.Detail = ctx.managedBotPort.fetchBot(id, detail = true) as ManagedBot.Detail
+suspend fun BotId.fetchDetail(): ManagedBot.Detail = ctx.managedBotPort.fetchBot(this, detail = true) as ManagedBot.Detail
 
 /**
  * Bot を編集します。
@@ -60,28 +60,28 @@ suspend fun BotHandle.fetchDetail(): ManagedBot.Detail = ctx.managedBotPort.fetc
  * @param bio 新しい自己紹介。`null` の場合は変更しません
  */
 context(ctx: UserContext)
-suspend fun BotHandle.update(
+suspend fun BotId.update(
     displayName: String? = null,
     description: String? = null,
     privileged: Boolean? = null,
     mode: ManagedBotMode? = null,
     endpoint: String? = null,
-    developer: UserHandle? = null,
+    developer: UserId? = null,
     subscribeEvents: List<String>? = null,
     bio: String? = null,
-) = ctx.managedBotPort.editBot(id, displayName, description, privileged, mode, endpoint, developer?.id, subscribeEvents, bio)
+) = ctx.managedBotPort.editBot(this, displayName, description, privileged, mode, endpoint, developer, subscribeEvents, bio)
 
 /** Bot を削除します。 */
 context(ctx: UserContext)
-suspend fun BotHandle.delete() = ctx.managedBotPort.deleteBot(id)
+suspend fun BotId.delete() = ctx.managedBotPort.deleteBot(this)
 
 /** Bot を有効化します。 */
 context(ctx: UserContext)
-suspend fun BotHandle.activate() = ctx.managedBotPort.activateBot(id)
+suspend fun BotId.activate() = ctx.managedBotPort.activateBot(this)
 
 /** Bot を無効化します。 */
 context(ctx: UserContext)
-suspend fun BotHandle.inactivate() = ctx.managedBotPort.inactivateBot(id)
+suspend fun BotId.inactivate() = ctx.managedBotPort.inactivateBot(this)
 
 /**
  * Bot のトークンを再発行します。
@@ -89,7 +89,7 @@ suspend fun BotHandle.inactivate() = ctx.managedBotPort.inactivateBot(id)
  * @return 再発行された Bot トークン
  */
 context(ctx: UserContext)
-suspend fun BotHandle.reissueTokens(): BotTokens = ctx.managedBotPort.reissueBot(id)
+suspend fun BotId.reissueTokens(): BotTokens = ctx.managedBotPort.reissueBot(this)
 
 /**
  * Bot のイベントログを取得します。
@@ -99,10 +99,10 @@ suspend fun BotHandle.reissueTokens(): BotTokens = ctx.managedBotPort.reissueBot
  * @return Bot イベントログ一覧
  */
 context(ctx: UserContext)
-suspend fun BotHandle.fetchLogs(
+suspend fun BotId.fetchLogs(
     limit: Int? = null,
     offset: Int = 0,
-): List<BotEventLog> = ctx.managedBotPort.fetchBotLogs(id, limit, offset)
+): List<BotEventLog> = ctx.managedBotPort.fetchBotLogs(this, limit, offset)
 
 /**
  * Bot をチャンネルに参加させます。
@@ -110,7 +110,7 @@ suspend fun BotHandle.fetchLogs(
  * @param channel 参加先チャンネル
  */
 context(ctx: UserContext)
-suspend fun BotHandle.join(channel: ChannelHandle) = ctx.managedBotPort.joinChannel(id, channel.id)
+suspend fun BotId.join(channel: ChannelId) = ctx.managedBotPort.joinChannel(this, channel)
 
 /**
  * Bot をチャンネルから退出させます。
@@ -118,7 +118,7 @@ suspend fun BotHandle.join(channel: ChannelHandle) = ctx.managedBotPort.joinChan
  * @param channel 退出元チャンネル
  */
 context(ctx: UserContext)
-suspend fun BotHandle.leave(channel: ChannelHandle) = ctx.managedBotPort.leaveChannel(id, channel.id)
+suspend fun BotId.leave(channel: ChannelId) = ctx.managedBotPort.leaveChannel(this, channel)
 
 /**
  * Bot アイコンを取得します。
@@ -126,7 +126,7 @@ suspend fun BotHandle.leave(channel: ChannelHandle) = ctx.managedBotPort.leaveCh
  * @return アイコン画像のバイト列
  */
 context(ctx: UserContext)
-suspend fun BotHandle.downloadIcon(): ByteArray = ctx.managedBotPort.downloadBotIcon(id)
+suspend fun BotId.downloadIcon(): ByteArray = ctx.managedBotPort.downloadBotIcon(this)
 
 /**
  * Bot アイコンを変更します。
@@ -136,20 +136,20 @@ suspend fun BotHandle.downloadIcon(): ByteArray = ctx.managedBotPort.downloadBot
  * @param contentType MIME タイプ。`null` の場合はサーバー側判定
  */
 context(ctx: UserContext)
-suspend fun BotHandle.changeIcon(
+suspend fun BotId.changeIcon(
     file: ByteArray,
     fileName: String,
     contentType: String? = null,
-) = ctx.managedBotPort.changeBotIcon(id, file, fileName, contentType)
+) = ctx.managedBotPort.changeBotIcon(this, file, fileName, contentType)
 
 /**
- * Bot を再取得します。
+ * Bot を取得します。
  *
  * @param detail `true` の場合は詳細情報を取得します
  * @return 最新の Bot 情報
  */
 context(ctx: UserContext)
-suspend fun ManagedBot.refresh(detail: Boolean = this is ManagedBot.Detail): ManagedBot = handle.fetch(detail)
+suspend fun ManagedBot.refresh(detail: Boolean = this is ManagedBot.Detail): ManagedBot = id.fetch(detail)
 
 /**
  * Bot を編集します。
@@ -170,19 +170,19 @@ suspend fun ManagedBot.update(
     privileged: Boolean? = null,
     mode: ManagedBotMode? = null,
     endpoint: String? = null,
-    developer: UserHandle? = null,
+    developer: UserId? = null,
     subscribeEvents: List<String>? = null,
     bio: String? = null,
-) = handle.update(displayName, description, privileged, mode, endpoint, developer, subscribeEvents, bio)
+) = id.update(displayName, description, privileged, mode, endpoint, developer, subscribeEvents, bio)
 
 /** Bot を削除します。 */
 context(ctx: UserContext)
-suspend fun ManagedBot.delete() = handle.delete()
+suspend fun ManagedBot.delete() = id.delete()
 
 /** Bot を有効化します。 */
 context(ctx: UserContext)
-suspend fun ManagedBot.activate() = handle.activate()
+suspend fun ManagedBot.activate() = id.activate()
 
 /** Bot を無効化します。 */
 context(ctx: UserContext)
-suspend fun ManagedBot.inactivate() = handle.inactivate()
+suspend fun ManagedBot.inactivate() = id.inactivate()

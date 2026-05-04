@@ -25,17 +25,17 @@ context(ctx: UserContext)
 suspend fun createWebhook(
     name: String,
     description: String,
-    channel: ChannelHandle,
+    channel: ChannelId,
     secret: String,
-): Webhook = ctx.webhookPort.createWebhook(name, description, channel.id, secret)
+): Webhook = ctx.webhookPort.createWebhook(name, description, channel, secret)
 
 /**
- * このハンドルが指す Webhook を取得します。
+ * この ID が指す Webhook を取得します。
  *
  * @return Webhook 情報
  */
 context(ctx: UserContext)
-suspend fun WebhookHandle.fetch(): Webhook = ctx.webhookPort.fetchWebhook(id)
+suspend fun WebhookId.fetch(): Webhook = ctx.webhookPort.fetchWebhook(this)
 
 /**
  * Webhook を編集します。
@@ -47,17 +47,17 @@ suspend fun WebhookHandle.fetch(): Webhook = ctx.webhookPort.fetchWebhook(id)
  * @param owner 新しい所有者。`null` の場合は変更しません
  */
 context(ctx: UserContext)
-suspend fun WebhookHandle.update(
+suspend fun WebhookId.update(
     name: String? = null,
     description: String? = null,
-    channel: ChannelHandle? = null,
+    channel: ChannelId? = null,
     secret: String? = null,
-    owner: UserHandle? = null,
-) = ctx.webhookPort.editWebhook(id, name, description, channel?.id, secret, owner?.id)
+    owner: UserId? = null,
+) = ctx.webhookPort.editWebhook(this, name, description, channel, secret, owner)
 
 /** Webhook を削除します。 */
 context(ctx: UserContext)
-suspend fun WebhookHandle.delete() = ctx.webhookPort.deleteWebhook(id)
+suspend fun WebhookId.delete() = ctx.webhookPort.deleteWebhook(this)
 
 /**
  * Webhook でメッセージを投稿します。
@@ -68,12 +68,12 @@ suspend fun WebhookHandle.delete() = ctx.webhookPort.deleteWebhook(id)
  * @param embed `true` の場合に埋め込み展開を有効化します
  */
 context(ctx: UserContext)
-suspend fun WebhookHandle.send(
+suspend fun WebhookId.send(
     content: String,
     signature: String? = null,
-    channel: ChannelHandle? = null,
+    channel: ChannelId? = null,
     embed: Boolean = false,
-) = ctx.webhookPort.postWebhook(id, content, signature, channel?.id, embed)
+) = ctx.webhookPort.postWebhook(this, content, signature, channel, embed)
 
 /**
  * Webhook が投稿したメッセージ一覧を取得します。
@@ -87,14 +87,14 @@ suspend fun WebhookHandle.send(
  * @return Webhook が投稿したメッセージ一覧
  */
 context(ctx: UserContext)
-suspend fun WebhookHandle.fetchMessages(
+suspend fun WebhookId.fetchMessages(
     limit: Int? = null,
     offset: Int = 0,
     since: Instant? = null,
     until: Instant? = null,
     inclusive: Boolean = false,
     order: SortDirection = SortDirection.DESCENDING,
-): List<Message> = ctx.webhookPort.fetchWebhookMessages(id, limit, offset, since, until, inclusive, order)
+): List<Message> = ctx.webhookPort.fetchWebhookMessages(this, limit, offset, since, until, inclusive, order)
 
 /**
  * Webhook が投稿したメッセージを削除します。
@@ -102,7 +102,7 @@ suspend fun WebhookHandle.fetchMessages(
  * @param message 削除対象メッセージ
  */
 context(ctx: UserContext)
-suspend fun WebhookHandle.deleteMessage(message: MessageHandle) = ctx.webhookPort.deleteWebhookMessage(id, message.id)
+suspend fun WebhookId.deleteMessage(message: MessageId) = ctx.webhookPort.deleteWebhookMessage(this, message)
 
 /**
  * Webhook アイコンを取得します。
@@ -110,7 +110,7 @@ suspend fun WebhookHandle.deleteMessage(message: MessageHandle) = ctx.webhookPor
  * @return アイコン画像のバイト列
  */
 context(ctx: UserContext)
-suspend fun WebhookHandle.downloadIcon(): ByteArray = ctx.webhookPort.downloadWebhookIcon(id)
+suspend fun WebhookId.downloadIcon(): ByteArray = ctx.webhookPort.downloadWebhookIcon(this)
 
 /**
  * Webhook アイコンを変更します。
@@ -120,11 +120,11 @@ suspend fun WebhookHandle.downloadIcon(): ByteArray = ctx.webhookPort.downloadWe
  * @param contentType MIME タイプ。`null` の場合はサーバー側判定
  */
 context(ctx: UserContext)
-suspend fun WebhookHandle.changeIcon(
+suspend fun WebhookId.changeIcon(
     file: ByteArray,
     fileName: String,
     contentType: String? = null,
-) = ctx.webhookPort.changeWebhookIcon(id, file, fileName, contentType)
+) = ctx.webhookPort.changeWebhookIcon(this, file, fileName, contentType)
 
 /**
  * Webhook を再取得します。
@@ -132,7 +132,7 @@ suspend fun WebhookHandle.changeIcon(
  * @return 最新の Webhook 情報
  */
 context(ctx: UserContext)
-suspend fun Webhook.refresh(): Webhook = handle.fetch()
+suspend fun Webhook.fetch(): Webhook = id.fetch()
 
 /**
  * Webhook を編集します。
@@ -147,14 +147,14 @@ context(ctx: UserContext)
 suspend fun Webhook.update(
     name: String? = null,
     description: String? = null,
-    channel: ChannelHandle? = null,
+    channel: ChannelId? = null,
     secret: String? = null,
-    owner: UserHandle? = null,
-) = handle.update(name, description, channel, secret, owner)
+    owner: UserId? = null,
+) = id.update(name, description, channel, secret, owner)
 
 /** Webhook を削除します。 */
 context(ctx: UserContext)
-suspend fun Webhook.delete() = handle.delete()
+suspend fun Webhook.delete() = id.delete()
 
 /**
  * Webhook でメッセージを投稿します。
@@ -168,6 +168,6 @@ context(ctx: UserContext)
 suspend fun Webhook.send(
     content: String,
     signature: String? = null,
-    channel: ChannelHandle? = null,
+    channel: ChannelId? = null,
     embed: Boolean = false,
-) = handle.send(content, signature, channel, embed)
+) = id.send(content, signature, channel, embed)

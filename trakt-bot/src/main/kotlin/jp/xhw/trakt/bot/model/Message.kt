@@ -7,13 +7,13 @@ import kotlin.uuid.Uuid
 @JvmInline
 value class MessageId(
     val value: Uuid,
-)
+) {
+    companion object {
+        operator fun invoke(value: String): MessageId = parse(value)
 
-/** メッセージを参照するためのハンドル。 */
-@JvmInline
-value class MessageHandle internal constructor(
-    val id: MessageId,
-)
+        fun parse(value: String): MessageId = MessageId(Uuid.parse(value))
+    }
+}
 
 /** メッセージ本文とメタ情報。 */
 class Message internal constructor(
@@ -28,17 +28,13 @@ class Message internal constructor(
     val threadId: Uuid?,
     val nonce: String? = null,
 ) {
-    /** このメッセージを指すハンドル。 */
-    val handle: MessageHandle
-        get() = MessageHandle(id)
+    /** 投稿者の ID。 */
+    val author: UserId
+        get() = authorId
 
-    /** 投稿者のハンドル。 */
-    val author: UserHandle
-        get() = UserHandle(authorId)
-
-    /** 投稿先チャンネルのハンドル。 */
-    val channel: ChannelHandle
-        get() = ChannelHandle(channelId)
+    /** 投稿先チャンネルの ID。 */
+    val channel: ChannelId
+        get() = channelId
 
     override fun equals(other: Any?): Boolean = other is Message && this.id == other.id
 
@@ -54,13 +50,13 @@ data class MessageStamp internal constructor(
     val createdAt: Instant,
     val updatedAt: Instant,
 ) {
-    /** スタンプを押したユーザーのハンドル。 */
-    val user: UserHandle
-        get() = UserHandle(userId)
+    /** スタンプを押したユーザーの ID。 */
+    val user: UserId
+        get() = userId
 
-    /** 付与されたスタンプのハンドル。 */
-    val stamp: StampHandle
-        get() = StampHandle(stampId)
+    /** 付与されたスタンプの ID。 */
+    val stamp: StampId
+        get() = stampId
 }
 
 /** メッセージのピン情報。 */
@@ -69,9 +65,9 @@ data class PinInfo internal constructor(
     val pinnerId: UserId,
     val pinnedAt: Instant,
 ) {
-    /** ピン留めしたユーザーのハンドル。 */
-    val pinner: UserHandle
-        get() = UserHandle(pinnerId)
+    /** ピン留めしたユーザーの ID。 */
+    val pinner: UserId
+        get() = pinnerId
 }
 
 /** メッセージ取得・検索時の並び順。 */
@@ -86,27 +82,3 @@ data class SearchResult internal constructor(
     val totalHits: Long,
     val hits: List<Message>,
 )
-
-/**
- * [MessageId] からメッセージハンドルを作成します。
- *
- * @param id メッセージID
- * @return メッセージハンドル
- */
-fun message(id: MessageId) = MessageHandle(id)
-
-/**
- * UUID からメッセージハンドルを作成します。
- *
- * @param uuid メッセージID
- * @return メッセージハンドル
- */
-fun message(uuid: Uuid) = MessageHandle(MessageId(uuid))
-
-/**
- * UUID 文字列からメッセージハンドルを作成します。
- *
- * @param id メッセージID
- * @return メッセージハンドル
- */
-fun message(id: String) = message(Uuid.parse(id))

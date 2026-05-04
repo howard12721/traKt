@@ -40,15 +40,9 @@ data class BotEventLog internal constructor(
     val code: Int,
     val datetime: Instant,
 ) {
-    val bot: BotHandle
-        get() = BotHandle(botId)
+    val bot: BotId
+        get() = botId
 }
-
-/** Bot を参照するためのハンドル。 */
-@JvmInline
-value class BotHandle internal constructor(
-    val id: BotId,
-)
 
 /** 管理 API で扱う Bot 情報。 */
 sealed interface ManagedBot {
@@ -62,14 +56,11 @@ sealed interface ManagedBot {
     val createdAt: Instant
     val updatedAt: Instant
 
-    val handle: BotHandle
-        get() = BotHandle(id)
+    val botUser: UserId
+        get() = botUserId
 
-    val botUser: UserHandle
-        get() = UserHandle(botUserId)
-
-    val developer: UserHandle
-        get() = UserHandle(developerId)
+    val developer: UserId
+        get() = developerId
 
     class Basic internal constructor(
         override val id: BotId,
@@ -106,8 +97,8 @@ sealed interface ManagedBot {
         val privileged: Boolean,
         val channelIds: List<ChannelId>,
     ) : ManagedBot {
-        val channels: List<ChannelHandle>
-            get() = channelIds.map { ChannelHandle(it) }
+        val channels: List<ChannelId>
+            get() = channelIds
 
         override fun equals(other: Any?): Boolean {
             if (this === other) return true
@@ -118,11 +109,3 @@ sealed interface ManagedBot {
         override fun hashCode(): Int = id.hashCode()
     }
 }
-
-/**
- * [BotId] から管理対象 Bot ハンドルを作成します。
- *
- * @param id Bot ID
- * @return Bot ハンドル
- */
-fun managedBot(id: BotId) = BotHandle(id)

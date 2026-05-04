@@ -7,7 +7,13 @@ import kotlin.uuid.Uuid
 @JvmInline
 value class ChannelId(
     val value: Uuid,
-)
+) {
+    companion object {
+        operator fun invoke(value: String): ChannelId = parse(value)
+
+        fun parse(value: String): ChannelId = ChannelId(Uuid.parse(value))
+    }
+}
 
 /** チャンネルのフルパス。 */
 @JvmInline
@@ -19,12 +25,6 @@ value class ChannelPath internal constructor(
 @JvmInline
 value class ChannelTopic internal constructor(
     val value: String,
-)
-
-/** チャンネルを参照するためのハンドル。 */
-@JvmInline
-value class ChannelHandle internal constructor(
-    val id: ChannelId,
 )
 
 /** チャンネルの統計情報。 */
@@ -51,27 +51,23 @@ data class ChannelViewer internal constructor(
     val state: ChannelViewState,
     val updatedAt: Instant,
 ) {
-    /** 閲覧者ユーザーのハンドル。 */
-    val user: UserHandle
-        get() = UserHandle(userId)
+    /** 閲覧者ユーザーの ID。 */
+    val user: UserId
+        get() = userId
 }
 
 /** チャンネル。 */
 sealed interface Channel {
     val id: ChannelId
 
-    /** このチャンネルを指すハンドル。 */
-    val handle: ChannelHandle
-        get() = ChannelHandle(id)
-
     /** パブリックチャンネル。 */
     sealed interface PublicChannel : Channel {
         val parentId: ChannelId?
         val name: String
 
-        /** 親チャンネルのハンドル。 */
-        val parent: ChannelHandle?
-            get() = parentId?.let { ChannelHandle(it) }
+        /** 親チャンネルの ID。 */
+        val parent: ChannelId?
+            get() = parentId
     }
 
     /** DM チャンネル。 */
@@ -79,9 +75,9 @@ sealed interface Channel {
         override val id: ChannelId,
         val userId: UserId,
     ) : Channel {
-        /** DM 相手ユーザーのハンドル。 */
-        val user: UserHandle
-            get() = UserHandle(userId)
+        /** DM 相手ユーザーの ID。 */
+        val user: UserId
+            get() = userId
 
         override fun equals(other: Any?): Boolean {
             if (this === other) return true
@@ -121,9 +117,9 @@ sealed interface Channel {
         val topic: ChannelTopic,
         val childrenIds: List<ChannelId>,
     ) : PublicChannel {
-        /** 子チャンネルのハンドル一覧。 */
-        val children: List<ChannelHandle>
-            get() = childrenIds.map { ChannelHandle(it) }
+        /** 子チャンネル ID 一覧。 */
+        val children: List<ChannelId>
+            get() = childrenIds
 
         override fun equals(other: Any?): Boolean {
             if (this === other) return true
@@ -150,35 +146,11 @@ data class Pin internal constructor(
     val pinnedAt: Instant,
     val message: Message,
 ) {
-    /** ピン留めしたユーザーのハンドル。 */
-    val pinner: UserHandle
-        get() = UserHandle(pinnerId)
+    /** ピン留めしたユーザーの ID。 */
+    val pinner: UserId
+        get() = pinnerId
 
     /** ピン留め対象メッセージID。 */
     val messageId: MessageId
         get() = message.id
 }
-
-/**
- * [ChannelId] からチャンネルハンドルを作成します。
- *
- * @param id チャンネルID
- * @return チャンネルハンドル
- */
-fun channel(id: ChannelId) = ChannelHandle(id)
-
-/**
- * UUID からチャンネルハンドルを作成します。
- *
- * @param id チャンネルID
- * @return チャンネルハンドル
- */
-fun channel(id: Uuid) = channel(ChannelId(id))
-
-/**
- * UUID 文字列からチャンネルハンドルを作成します。
- *
- * @param id チャンネルID
- * @return チャンネルハンドル
- */
-fun channel(id: String) = channel(Uuid.parse(id))

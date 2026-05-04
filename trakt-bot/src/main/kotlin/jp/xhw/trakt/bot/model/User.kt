@@ -7,19 +7,25 @@ import kotlin.uuid.Uuid
 @JvmInline
 value class UserId(
     val value: Uuid,
-)
+) {
+    companion object {
+        operator fun invoke(value: String): UserId = parse(value)
 
-/** ユーザーを参照するためのハンドル。 */
-@JvmInline
-value class UserHandle internal constructor(
-    val id: UserId,
-)
+        fun parse(value: String): UserId = UserId(Uuid.parse(value))
+    }
+}
 
 /** ユーザータグID。 */
 @JvmInline
 value class UserTagId(
     val value: Uuid,
-)
+) {
+    companion object {
+        operator fun invoke(value: String): UserTagId = parse(value)
+
+        fun parse(value: String): UserTagId = UserTagId(Uuid.parse(value))
+    }
+}
 
 /** ユーザーアカウント状態。 */
 enum class UserState(
@@ -34,7 +40,13 @@ enum class UserState(
 @JvmInline
 value class BotId(
     val value: Uuid,
-)
+) {
+    companion object {
+        operator fun invoke(value: String): BotId = parse(value)
+
+        fun parse(value: String): BotId = BotId(Uuid.parse(value))
+    }
+}
 
 /** Bot と対応ユーザーの紐付け情報。 */
 @ConsistentCopyVisibility
@@ -42,9 +54,9 @@ data class Bot internal constructor(
     val botId: BotId,
     val userId: UserId,
 ) {
-    /** Bot に対応するユーザーハンドル。 */
-    val user: UserHandle
-        get() = UserHandle(userId)
+    /** Bot に対応するユーザー ID。 */
+    val user: UserId
+        get() = userId
 }
 
 /** ユーザー。 */
@@ -55,13 +67,9 @@ sealed interface User {
     val iconFileId: FileId
     val isBot: Boolean
 
-    /** このユーザーを指すハンドル。 */
-    val handle: UserHandle
-        get() = UserHandle(id)
-
-    /** アイコンファイルのハンドル。 */
-    val iconFile: FileHandle
-        get() = FileHandle(iconFileId)
+    /** アイコンファイル ID。 */
+    val iconFile: FileId
+        get() = iconFileId
 
     /** 状態を持つユーザー情報。 */
     sealed interface StatefulUser : User {
@@ -121,13 +129,13 @@ sealed interface User {
         val bio: String,
         val homeChannelId: ChannelId?,
     ) : StatefulUser {
-        /** 所属グループのハンドル一覧。 */
-        val groups: List<GroupHandle>
-            get() = groupIds.map { GroupHandle(it) }
+        /** 所属グループ ID 一覧。 */
+        val groups: List<GroupId>
+            get() = groupIds
 
-        /** ホームチャンネルのハンドル。 */
-        val homeChannelHandle: ChannelHandle?
-            get() = homeChannelId?.let { ChannelHandle(it) }
+        /** ホームチャンネル ID。 */
+        val homeChannel: ChannelId?
+            get() = homeChannelId
 
         override fun equals(other: Any?): Boolean {
             if (this === other) return true
@@ -170,27 +178,3 @@ data class UserStats internal constructor(
     val stamps: List<UserStampStats>,
     val datetime: Instant,
 )
-
-/**
- * [UserId] からユーザーハンドルを作成します。
- *
- * @param id ユーザーID
- * @return ユーザーハンドル
- */
-fun user(id: UserId) = UserHandle(id)
-
-/**
- * UUID からユーザーハンドルを作成します。
- *
- * @param id ユーザーID
- * @return ユーザーハンドル
- */
-fun user(id: Uuid) = user(UserId(id))
-
-/**
- * UUID 文字列からユーザーハンドルを作成します。
- *
- * @param id ユーザーID
- * @return ユーザーハンドル
- */
-fun user(id: String) = user(Uuid.parse(id))

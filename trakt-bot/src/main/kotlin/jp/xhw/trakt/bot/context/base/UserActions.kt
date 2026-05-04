@@ -2,7 +2,6 @@ package jp.xhw.trakt.bot.context.base
 
 import jp.xhw.trakt.bot.model.*
 import kotlin.time.Instant
-import kotlin.uuid.Uuid
 
 // --- Fetch ---
 
@@ -16,45 +15,20 @@ context(ctx: BaseContext)
 suspend fun fetchUser(userId: UserId): User.Detail = ctx.userPort.fetchUser(userId)
 
 /**
- * ユーザー詳細を取得します。
- *
- * @param userId 取得対象ユーザーID(UUID)
- * @return ユーザー詳細情報
- */
-context(ctx: BaseContext)
-suspend fun fetchUser(userId: Uuid): User.Detail = fetchUser(UserId(userId))
-
-/**
- * このハンドルが指すユーザーを取得します。
+ * この ID が指すユーザーを取得します。
  *
  * @return ユーザー情報
  */
 context(ctx: BaseContext)
-suspend fun UserHandle.fetch(): User = ctx.userPort.fetchUser(id)
+suspend fun UserId.fetch(): User.Detail = ctx.userPort.fetchUser(this)
 
 /**
- * ユーザー情報を再取得します。
+ * ユーザー詳細情報を取得します。
  *
  * @return ユーザー情報
  */
 context(ctx: BaseContext)
-suspend fun User.Minimal.fetch(): User = handle.fetch()
-
-/**
- * ユーザー情報を再取得します。
- *
- * @return ユーザー情報
- */
-context(ctx: BaseContext)
-suspend fun User.Basic.fetch(): User = handle.fetch()
-
-/**
- * ユーザー詳細情報を再取得します。
- *
- * @return ユーザー情報
- */
-context(ctx: BaseContext)
-suspend fun User.Detail.refresh(): User = handle.fetch()
+suspend fun User.fetch(): User.Detail = id.fetch()
 
 /**
  * ユーザー一覧を取得します。
@@ -75,7 +49,7 @@ suspend fun fetchUsers(
  * @return アイコン画像のバイト列
  */
 context(ctx: BaseContext)
-suspend fun UserHandle.downloadIcon(): ByteArray = ctx.userPort.fetchUserIcon(id)
+suspend fun UserId.downloadIcon(): ByteArray = ctx.userPort.fetchUserIcon(this)
 
 /**
  * 指定ユーザーとの DM チャンネル情報を取得します。
@@ -83,7 +57,7 @@ suspend fun UserHandle.downloadIcon(): ByteArray = ctx.userPort.fetchUserIcon(id
  * @return DM チャンネル
  */
 context(ctx: BaseContext)
-suspend fun UserHandle.fetchDirectMessageChannel(): Channel.DirectMessage = ctx.userPort.fetchDirectMessageChannel(id)
+suspend fun UserId.fetchDirectMessageChannel(): Channel.DirectMessage = ctx.userPort.fetchDirectMessageChannel(this)
 
 /**
  * 指定ユーザーとの DM メッセージを取得します。
@@ -97,7 +71,7 @@ suspend fun UserHandle.fetchDirectMessageChannel(): Channel.DirectMessage = ctx.
  * @return DM メッセージ一覧
  */
 context(ctx: BaseContext)
-suspend fun UserHandle.fetchDirectMessages(
+suspend fun UserId.fetchDirectMessages(
     limit: Int? = null,
     offset: Int = 0,
     since: Instant? = null,
@@ -106,7 +80,7 @@ suspend fun UserHandle.fetchDirectMessages(
     order: SortDirection = SortDirection.DESCENDING,
 ): List<Message> =
     ctx.messagePort.fetchDirectMessages(
-        id,
+        this,
         limit,
         offset,
         since,
@@ -124,11 +98,11 @@ suspend fun UserHandle.fetchDirectMessages(
  * @return 送信されたメッセージ
  */
 context(ctx: BaseContext)
-suspend fun UserHandle.sendDirectMessage(
+suspend fun UserId.sendDirectMessage(
     content: String,
     embed: Boolean = false,
     nonce: String? = null,
-): Message = ctx.messagePort.sendDirectMessage(id, content, embed, nonce)
+): Message = ctx.messagePort.sendDirectMessage(this, content, embed, nonce)
 
 /**
  * 指定ユーザーへダイレクトメッセージを送信します。
@@ -143,7 +117,7 @@ suspend fun User.sendDirectMessage(
     content: String,
     embed: Boolean = false,
     nonce: String? = null,
-): Message = handle.sendDirectMessage(content, embed, nonce)
+): Message = id.sendDirectMessage(content, embed, nonce)
 
 // --- Tags ---
 
@@ -153,7 +127,7 @@ suspend fun User.sendDirectMessage(
  * @return ユーザータグ一覧
  */
 context(ctx: BaseContext)
-suspend fun UserHandle.fetchTags(): List<UserTag> = ctx.userPort.fetchUserTags(id)
+suspend fun UserId.fetchTags(): List<UserTag> = ctx.userPort.fetchUserTags(this)
 
 /**
  * ユーザーへタグを追加します。
@@ -162,7 +136,7 @@ suspend fun UserHandle.fetchTags(): List<UserTag> = ctx.userPort.fetchUserTags(i
  * @return 追加後のタグ情報
  */
 context(ctx: BaseContext)
-suspend fun UserHandle.tag(tag: String): UserTag = ctx.userPort.addUserTag(id, tag)
+suspend fun UserId.tag(tag: String): UserTag = ctx.userPort.addUserTag(this, tag)
 
 /**
  * ユーザーからタグを削除します。
@@ -170,7 +144,7 @@ suspend fun UserHandle.tag(tag: String): UserTag = ctx.userPort.addUserTag(id, t
  * @param tagId 削除するタグID
  */
 context(ctx: BaseContext)
-suspend fun UserHandle.untag(tagId: UserTagId) = ctx.userPort.removeUserTag(id, tagId)
+suspend fun UserId.untag(tagId: UserTagId) = ctx.userPort.removeUserTag(this, tagId)
 
 // --- Stats ---
 
@@ -180,7 +154,7 @@ suspend fun UserHandle.untag(tagId: UserTagId) = ctx.userPort.removeUserTag(id, 
  * @return ユーザー統計情報
  */
 context(ctx: BaseContext)
-suspend fun UserHandle.fetchStats(): UserStats = ctx.userPort.fetchUserStats(id)
+suspend fun UserId.fetchStats(): UserStats = ctx.userPort.fetchUserStats(this)
 
 // --- User convenience extensions ---
 
@@ -190,7 +164,7 @@ suspend fun UserHandle.fetchStats(): UserStats = ctx.userPort.fetchUserStats(id)
  * @return アイコン画像のバイト列
  */
 context(ctx: BaseContext)
-suspend fun User.downloadIcon(): ByteArray = handle.downloadIcon()
+suspend fun User.downloadIcon(): ByteArray = id.downloadIcon()
 
 /**
  * 指定ユーザーとの DM チャンネル情報を取得します。
@@ -198,7 +172,7 @@ suspend fun User.downloadIcon(): ByteArray = handle.downloadIcon()
  * @return DM チャンネル
  */
 context(ctx: BaseContext)
-suspend fun User.fetchDirectMessageChannel(): Channel.DirectMessage = handle.fetchDirectMessageChannel()
+suspend fun User.fetchDirectMessageChannel(): Channel.DirectMessage = id.fetchDirectMessageChannel()
 
 /**
  * 指定ユーザーとの DM メッセージを取得します。
@@ -219,7 +193,7 @@ suspend fun User.fetchDirectMessages(
     until: Instant? = null,
     inclusive: Boolean = false,
     order: SortDirection = SortDirection.DESCENDING,
-): List<Message> = handle.fetchDirectMessages(limit, offset, since, until, inclusive, order)
+): List<Message> = id.fetchDirectMessages(limit, offset, since, until, inclusive, order)
 
 /**
  * ユーザータグ一覧を取得します。
@@ -227,7 +201,7 @@ suspend fun User.fetchDirectMessages(
  * @return ユーザータグ一覧
  */
 context(ctx: BaseContext)
-suspend fun User.fetchTags(): List<UserTag> = handle.fetchTags()
+suspend fun User.fetchTags(): List<UserTag> = id.fetchTags()
 
 /**
  * ユーザーへタグを追加します。
@@ -236,7 +210,7 @@ suspend fun User.fetchTags(): List<UserTag> = handle.fetchTags()
  * @return 追加後のタグ情報
  */
 context(ctx: BaseContext)
-suspend fun User.tag(tag: String): UserTag = handle.tag(tag)
+suspend fun User.tag(tag: String): UserTag = id.tag(tag)
 
 /**
  * ユーザーからタグを削除します。
@@ -244,7 +218,7 @@ suspend fun User.tag(tag: String): UserTag = handle.tag(tag)
  * @param tagId 削除するタグID
  */
 context(ctx: BaseContext)
-suspend fun User.untag(tagId: UserTagId) = handle.untag(tagId)
+suspend fun User.untag(tagId: UserTagId) = id.untag(tagId)
 
 /**
  * ユーザー統計情報を取得します。
@@ -252,4 +226,4 @@ suspend fun User.untag(tagId: UserTagId) = handle.untag(tagId)
  * @return ユーザー統計情報
  */
 context(ctx: BaseContext)
-suspend fun User.fetchStats(): UserStats = handle.fetchStats()
+suspend fun User.fetchStats(): UserStats = id.fetchStats()

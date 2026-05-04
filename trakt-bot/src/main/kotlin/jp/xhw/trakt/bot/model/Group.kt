@@ -7,13 +7,13 @@ import kotlin.uuid.Uuid
 @JvmInline
 value class GroupId(
     val value: Uuid,
-)
+) {
+    companion object {
+        operator fun invoke(value: String): GroupId = parse(value)
 
-/** グループを参照するためのハンドル。 */
-@JvmInline
-value class GroupHandle internal constructor(
-    val id: GroupId,
-)
+        fun parse(value: String): GroupId = GroupId(Uuid.parse(value))
+    }
+}
 
 /** グループ詳細情報。 */
 class Group internal constructor(
@@ -27,21 +27,9 @@ class Group internal constructor(
     val updatedAt: Instant,
     val admins: List<UserId>,
 ) {
-    /** このグループを指すハンドル。 */
-    val handle: GroupHandle
-        get() = GroupHandle(id)
-
-    /** グループアイコンファイルのハンドル。 */
-    val iconFile: FileHandle
-        get() = FileHandle(iconFileId)
-
-    /** メンバーのユーザーハンドル一覧。 */
-    val memberUsers: List<UserHandle>
-        get() = members.map { it.user }
-
-    /** 管理者のユーザーハンドル一覧。 */
-    val adminUsers: List<UserHandle>
-        get() = admins.map { UserHandle(it) }
+    /** グループアイコンファイル ID。 */
+    val iconFile: FileId
+        get() = iconFileId
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -58,31 +46,7 @@ data class GroupMember internal constructor(
     val userId: UserId,
     val role: String,
 ) {
-    /** メンバーのユーザーハンドル。 */
-    val user: UserHandle
-        get() = UserHandle(userId)
+    /** メンバーのユーザー ID。 */
+    val user: UserId
+        get() = userId
 }
-
-/**
- * [GroupId] からグループハンドルを作成します。
- *
- * @param id グループID
- * @return グループハンドル
- */
-fun group(id: GroupId) = GroupHandle(id)
-
-/**
- * UUID からグループハンドルを作成します。
- *
- * @param id グループID
- * @return グループハンドル
- */
-fun group(id: Uuid) = group(GroupId(id))
-
-/**
- * UUID 文字列からグループハンドルを作成します。
- *
- * @param id グループID
- * @return グループハンドル
- */
-fun group(id: String) = group(Uuid.parse(id))

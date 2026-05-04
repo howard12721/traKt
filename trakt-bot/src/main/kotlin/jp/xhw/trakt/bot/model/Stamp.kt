@@ -7,13 +7,13 @@ import kotlin.uuid.Uuid
 @JvmInline
 value class StampId(
     val value: Uuid,
-)
+) {
+    companion object {
+        operator fun invoke(value: String): StampId = parse(value)
 
-/** スタンプを参照するためのハンドル。 */
-@JvmInline
-value class StampHandle internal constructor(
-    val id: StampId,
-)
+        fun parse(value: String): StampId = StampId(Uuid.parse(value))
+    }
+}
 
 /** スタンプ。 */
 sealed interface Stamp {
@@ -22,17 +22,13 @@ sealed interface Stamp {
     val creatorId: UserId
     val fileId: FileId
 
-    /** このスタンプを指すハンドル。 */
-    val handle: StampHandle
-        get() = StampHandle(id)
+    /** 作成者のユーザー ID。 */
+    val creator: UserId
+        get() = creatorId
 
-    /** 作成者のユーザーハンドル。 */
-    val creator: UserHandle
-        get() = UserHandle(creatorId)
-
-    /** 画像ファイルのハンドル。 */
-    val fileHandle: FileHandle
-        get() = FileHandle(fileId)
+    /** 画像ファイル ID。 */
+    val file: FileId
+        get() = fileId
 
     /** 基本的なスタンプ情報。 */
     class Basic internal constructor(
@@ -75,27 +71,3 @@ enum class StampType {
     UNICODE,
     ORIGINAL,
 }
-
-/**
- * [StampId] からスタンプハンドルを作成します。
- *
- * @param id スタンプID
- * @return スタンプハンドル
- */
-fun stamp(id: StampId) = StampHandle(id)
-
-/**
- * UUID からスタンプハンドルを作成します。
- *
- * @param id スタンプID
- * @return スタンプハンドル
- */
-fun stamp(id: Uuid) = stamp(StampId(id))
-
-/**
- * UUID 文字列からスタンプハンドルを作成します。
- *
- * @param id スタンプID
- * @return スタンプハンドル
- */
-fun stamp(id: String) = stamp(Uuid.parse(id))

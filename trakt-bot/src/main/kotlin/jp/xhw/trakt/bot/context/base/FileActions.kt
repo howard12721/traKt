@@ -1,13 +1,13 @@
 package jp.xhw.trakt.bot.context.base
 
-import jp.xhw.trakt.bot.model.ChannelHandle
-import jp.xhw.trakt.bot.model.FileHandle
+import jp.xhw.trakt.bot.model.ChannelId
+import jp.xhw.trakt.bot.model.FileId
 import jp.xhw.trakt.bot.model.FileMeta
 
 /**
  * チャンネルへファイルをアップロードします。
  *
- * @param channelHandle アップロード先チャンネル
+ * @param channelId アップロード先チャンネル ID
  * @param file ファイル本体
  * @param fileName 保存時のファイル名
  * @param contentType MIME タイプ。`null` の場合はサーバー側判定
@@ -15,11 +15,11 @@ import jp.xhw.trakt.bot.model.FileMeta
  */
 context(ctx: BaseContext)
 suspend fun uploadFile(
-    channelHandle: ChannelHandle,
+    channelId: ChannelId,
     file: ByteArray,
     fileName: String,
     contentType: String? = null,
-): FileMeta = ctx.filePort.uploadFile(channelHandle.id, file, fileName, contentType)
+): FileMeta = ctx.filePort.uploadFile(channelId, file, fileName, contentType)
 
 /**
  * ファイルメタ情報を取得します。
@@ -27,7 +27,7 @@ suspend fun uploadFile(
  * @return ファイルメタ情報
  */
 context(ctx: BaseContext)
-suspend fun FileHandle.fetchMeta(): FileMeta = ctx.filePort.fetchFileMeta(id)
+suspend fun FileId.fetchMeta(): FileMeta = ctx.filePort.fetchFileMeta(this)
 
 /**
  * ファイル本体をダウンロードします。
@@ -35,7 +35,7 @@ suspend fun FileHandle.fetchMeta(): FileMeta = ctx.filePort.fetchFileMeta(id)
  * @return ファイル本体
  */
 context(ctx: BaseContext)
-suspend fun FileHandle.download(): ByteArray = ctx.filePort.downloadFile(id)
+suspend fun FileId.download(): ByteArray = ctx.filePort.downloadFile(this)
 
 /**
  * ファイル本体をダウンロードします。
@@ -43,22 +43,22 @@ suspend fun FileHandle.download(): ByteArray = ctx.filePort.downloadFile(id)
  * @return ファイル本体
  */
 context(ctx: BaseContext)
-suspend fun FileMeta.download(): ByteArray = handle.download()
+suspend fun FileMeta.download(): ByteArray = id.download()
 
 /** ファイルを削除します。 */
 context(ctx: BaseContext)
-suspend fun FileHandle.delete() {
-    ctx.filePort.deleteFile(id)
+suspend fun FileId.delete() {
+    ctx.filePort.deleteFile(this)
 }
 
 /** ファイルを削除します。 */
 context(ctx: BaseContext)
-suspend fun FileMeta.delete() = handle.delete()
+suspend fun FileMeta.delete() = id.delete()
 
 /**
- * ファイルメタ情報を再取得します。
+ * ファイルメタ情報を取得します。
  *
  * @return 最新のファイルメタ情報
  */
 context(ctx: BaseContext)
-suspend fun FileMeta.refresh(): FileMeta = handle.fetchMeta()
+suspend fun FileMeta.fetch(): FileMeta = id.fetchMeta()

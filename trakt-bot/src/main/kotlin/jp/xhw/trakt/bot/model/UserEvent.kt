@@ -11,22 +11,46 @@ typealias UserDomainEvent = UserEvent
 @JvmInline
 value class StampPaletteId(
     val value: Uuid,
-)
+) {
+    companion object {
+        operator fun invoke(value: String): StampPaletteId = parse(value)
+
+        fun parse(value: String): StampPaletteId = StampPaletteId(Uuid.parse(value))
+    }
+}
 
 @JvmInline
 value class ClipFolderId(
     val value: Uuid,
-)
+) {
+    companion object {
+        operator fun invoke(value: String): ClipFolderId = parse(value)
+
+        fun parse(value: String): ClipFolderId = ClipFolderId(Uuid.parse(value))
+    }
+}
 
 @JvmInline
 value class QallSoundId(
     val value: Uuid,
-)
+) {
+    companion object {
+        operator fun invoke(value: String): QallSoundId = parse(value)
+
+        fun parse(value: String): QallSoundId = QallSoundId(Uuid.parse(value))
+    }
+}
 
 @JvmInline
 value class QallRoomId(
     val value: Uuid,
-)
+) {
+    companion object {
+        operator fun invoke(value: String): QallRoomId = parse(value)
+
+        fun parse(value: String): QallRoomId = QallRoomId(Uuid.parse(value))
+    }
+}
 
 @ConsistentCopyVisibility
 data class WebRtcSession internal constructor(
@@ -40,8 +64,8 @@ data class UserChannelViewState internal constructor(
     val channelId: ChannelId,
     val state: ChannelViewState,
 ) {
-    val channel: ChannelHandle
-        get() = ChannelHandle(channelId)
+    val channel: ChannelId
+        get() = channelId
 }
 
 @ConsistentCopyVisibility
@@ -65,16 +89,16 @@ data class QallRoomWithParticipants internal constructor(
 data class UserJoined internal constructor(
     val userId: UserId,
 ) : UserEvent {
-    val user: UserHandle
-        get() = UserHandle(userId)
+    val user: UserId
+        get() = userId
 }
 
 @ConsistentCopyVisibility
 data class UserUpdated internal constructor(
     val userId: UserId,
 ) : UserEvent {
-    val user: UserHandle
-        get() = UserHandle(userId)
+    val user: UserId
+        get() = userId
 }
 
 @ConsistentCopyVisibility
@@ -82,16 +106,16 @@ data class UserTagsUpdated internal constructor(
     val userId: UserId,
     val tagId: UserTagId,
 ) : UserEvent {
-    val user: UserHandle
-        get() = UserHandle(userId)
+    val user: UserId
+        get() = userId
 }
 
 @ConsistentCopyVisibility
 data class UserIconUpdated internal constructor(
     val userId: UserId,
 ) : UserEvent {
-    val user: UserHandle
-        get() = UserHandle(userId)
+    val user: UserId
+        get() = userId
 }
 
 @ConsistentCopyVisibility
@@ -100,11 +124,11 @@ data class UserWebRtcStateChanged internal constructor(
     val channelId: ChannelId,
     val sessions: List<WebRtcSession>,
 ) : UserEvent {
-    val user: UserHandle
-        get() = UserHandle(userId)
+    val user: UserId
+        get() = userId
 
-    val channel: ChannelHandle
-        get() = ChannelHandle(channelId)
+    val channel: ChannelId
+        get() = channelId
 }
 
 @ConsistentCopyVisibility
@@ -116,40 +140,40 @@ data class UserViewStateChanged internal constructor(
 data class UserOnline internal constructor(
     val userId: UserId,
 ) : UserEvent {
-    val user: UserHandle
-        get() = UserHandle(userId)
+    val user: UserId
+        get() = userId
 }
 
 @ConsistentCopyVisibility
 data class UserOffline internal constructor(
     val userId: UserId,
 ) : UserEvent {
-    val user: UserHandle
-        get() = UserHandle(userId)
+    val user: UserId
+        get() = userId
 }
 
 @ConsistentCopyVisibility
 data class UserGroupCreated internal constructor(
     val groupId: GroupId,
 ) : UserEvent {
-    val group: GroupHandle
-        get() = GroupHandle(groupId)
+    val group: GroupId
+        get() = groupId
 }
 
 @ConsistentCopyVisibility
 data class UserGroupUpdated internal constructor(
     val groupId: GroupId,
 ) : UserEvent {
-    val group: GroupHandle
-        get() = GroupHandle(groupId)
+    val group: GroupId
+        get() = groupId
 }
 
 @ConsistentCopyVisibility
 data class UserGroupDeleted internal constructor(
     val groupId: GroupId,
 ) : UserEvent {
-    val group: GroupHandle
-        get() = GroupHandle(groupId)
+    val group: GroupId
+        get() = groupId
 }
 
 @ConsistentCopyVisibility
@@ -157,11 +181,11 @@ data class UserChannelCreated internal constructor(
     val channelId: ChannelId,
     val dmUserId: UserId?,
 ) : UserEvent {
-    val channel: ChannelHandle
-        get() = ChannelHandle(channelId)
+    val channel: ChannelId
+        get() = channelId
 
-    val dmUser: UserHandle?
-        get() = dmUserId?.let { UserHandle(it) }
+    val dmUser: UserId?
+        get() = dmUserId
 }
 
 @ConsistentCopyVisibility
@@ -169,11 +193,11 @@ data class UserChannelUpdated internal constructor(
     val channelId: ChannelId,
     val dmUserId: UserId?,
 ) : UserEvent {
-    val channel: ChannelHandle
-        get() = ChannelHandle(channelId)
+    val channel: ChannelId
+        get() = channelId
 
-    val dmUser: UserHandle?
-        get() = dmUserId?.let { UserHandle(it) }
+    val dmUser: UserId?
+        get() = dmUserId
 }
 
 @ConsistentCopyVisibility
@@ -181,27 +205,27 @@ data class UserChannelDeleted internal constructor(
     val channelId: ChannelId,
     val dmUserId: UserId?,
 ) : UserEvent {
-    val channel: ChannelHandle
-        get() = ChannelHandle(channelId)
+    val channel: ChannelId
+        get() = channelId
 
-    val dmUser: UserHandle?
-        get() = dmUserId?.let { UserHandle(it) }
+    val dmUser: UserId?
+        get() = dmUserId
 }
 
 @ConsistentCopyVisibility
 data class UserChannelStared internal constructor(
     val channelId: ChannelId,
 ) : UserEvent {
-    val channel: ChannelHandle
-        get() = ChannelHandle(channelId)
+    val channel: ChannelId
+        get() = channelId
 }
 
 @ConsistentCopyVisibility
 data class UserChannelUnstared internal constructor(
     val channelId: ChannelId,
 ) : UserEvent {
-    val channel: ChannelHandle
-        get() = ChannelHandle(channelId)
+    val channel: ChannelId
+        get() = channelId
 }
 
 @ConsistentCopyVisibility
@@ -209,16 +233,16 @@ data class UserChannelViewersChanged internal constructor(
     val channelId: ChannelId,
     val viewers: List<ChannelViewer>,
 ) : UserEvent {
-    val channel: ChannelHandle
-        get() = ChannelHandle(channelId)
+    val channel: ChannelId
+        get() = channelId
 }
 
 @ConsistentCopyVisibility
 data class UserChannelSubscribersChanged internal constructor(
     val channelId: ChannelId,
 ) : UserEvent {
-    val channel: ChannelHandle
-        get() = ChannelHandle(channelId)
+    val channel: ChannelId
+        get() = channelId
 }
 
 @ConsistentCopyVisibility
@@ -226,24 +250,24 @@ data class UserMessageCreated internal constructor(
     val messageId: MessageId,
     val isCiting: Boolean,
 ) : UserEvent {
-    val message: MessageHandle
-        get() = MessageHandle(messageId)
+    val message: MessageId
+        get() = messageId
 }
 
 @ConsistentCopyVisibility
 data class UserMessageUpdated internal constructor(
     val messageId: MessageId,
 ) : UserEvent {
-    val message: MessageHandle
-        get() = MessageHandle(messageId)
+    val message: MessageId
+        get() = messageId
 }
 
 @ConsistentCopyVisibility
 data class UserMessageDeleted internal constructor(
     val messageId: MessageId,
 ) : UserEvent {
-    val message: MessageHandle
-        get() = MessageHandle(messageId)
+    val message: MessageId
+        get() = messageId
 }
 
 @ConsistentCopyVisibility
@@ -254,14 +278,14 @@ data class UserMessageStamped internal constructor(
     val count: Int,
     val createdAt: Instant,
 ) : UserEvent {
-    val message: MessageHandle
-        get() = MessageHandle(messageId)
+    val message: MessageId
+        get() = messageId
 
-    val user: UserHandle
-        get() = UserHandle(userId)
+    val user: UserId
+        get() = userId
 
-    val stamp: StampHandle
-        get() = StampHandle(stampId)
+    val stamp: StampId
+        get() = stampId
 }
 
 @ConsistentCopyVisibility
@@ -270,14 +294,14 @@ data class UserMessageUnstamped internal constructor(
     val userId: UserId,
     val stampId: StampId,
 ) : UserEvent {
-    val message: MessageHandle
-        get() = MessageHandle(messageId)
+    val message: MessageId
+        get() = messageId
 
-    val user: UserHandle
-        get() = UserHandle(userId)
+    val user: UserId
+        get() = userId
 
-    val stamp: StampHandle
-        get() = StampHandle(stampId)
+    val stamp: StampId
+        get() = stampId
 }
 
 @ConsistentCopyVisibility
@@ -285,11 +309,11 @@ data class UserMessagePinned internal constructor(
     val messageId: MessageId,
     val channelId: ChannelId,
 ) : UserEvent {
-    val message: MessageHandle
-        get() = MessageHandle(messageId)
+    val message: MessageId
+        get() = messageId
 
-    val channel: ChannelHandle
-        get() = ChannelHandle(channelId)
+    val channel: ChannelId
+        get() = channelId
 }
 
 @ConsistentCopyVisibility
@@ -297,43 +321,43 @@ data class UserMessageUnpinned internal constructor(
     val messageId: MessageId,
     val channelId: ChannelId,
 ) : UserEvent {
-    val message: MessageHandle
-        get() = MessageHandle(messageId)
+    val message: MessageId
+        get() = messageId
 
-    val channel: ChannelHandle
-        get() = ChannelHandle(channelId)
+    val channel: ChannelId
+        get() = channelId
 }
 
 @ConsistentCopyVisibility
 data class UserMessageRead internal constructor(
     val messageId: MessageId,
 ) : UserEvent {
-    val message: MessageHandle
-        get() = MessageHandle(messageId)
+    val message: MessageId
+        get() = messageId
 }
 
 @ConsistentCopyVisibility
 data class UserStampCreated internal constructor(
     val stampId: StampId,
 ) : UserEvent {
-    val stamp: StampHandle
-        get() = StampHandle(stampId)
+    val stamp: StampId
+        get() = stampId
 }
 
 @ConsistentCopyVisibility
 data class UserStampUpdated internal constructor(
     val stampId: StampId,
 ) : UserEvent {
-    val stamp: StampHandle
-        get() = StampHandle(stampId)
+    val stamp: StampId
+        get() = stampId
 }
 
 @ConsistentCopyVisibility
 data class UserStampDeleted internal constructor(
     val stampId: StampId,
 ) : UserEvent {
-    val stamp: StampHandle
-        get() = StampHandle(stampId)
+    val stamp: StampId
+        get() = stampId
 }
 
 @ConsistentCopyVisibility
@@ -371,8 +395,8 @@ data class UserClipFolderMessageDeleted internal constructor(
     val clipFolderId: ClipFolderId,
     val messageId: MessageId,
 ) : UserEvent {
-    val message: MessageHandle
-        get() = MessageHandle(messageId)
+    val message: MessageId
+        get() = messageId
 }
 
 @ConsistentCopyVisibility
@@ -380,8 +404,8 @@ data class UserClipFolderMessageAdded internal constructor(
     val clipFolderId: ClipFolderId,
     val messageId: MessageId,
 ) : UserEvent {
-    val message: MessageHandle
-        get() = MessageHandle(messageId)
+    val message: MessageId
+        get() = messageId
 }
 
 @ConsistentCopyVisibility
@@ -395,8 +419,8 @@ data class UserQallSoundboardItemCreated internal constructor(
     val name: String,
     val creatorId: UserId,
 ) : UserEvent {
-    val creator: UserHandle
-        get() = UserHandle(creatorId)
+    val creator: UserId
+        get() = creatorId
 }
 
 @ConsistentCopyVisibility

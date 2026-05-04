@@ -1,7 +1,6 @@
 package jp.xhw.trakt.bot.context.user
 
 import jp.xhw.trakt.bot.model.*
-import kotlin.uuid.Uuid
 
 /**
  * 自分自身の詳細を取得します。
@@ -24,8 +23,8 @@ suspend fun editMe(
     displayName: String? = null,
     twitterId: String? = null,
     bio: String? = null,
-    homeChannel: ChannelHandle? = null,
-) = ctx.selfPort.editMe(displayName, twitterId, bio, homeChannel?.id)
+    homeChannel: ChannelId? = null,
+) = ctx.selfPort.editMe(displayName, twitterId, bio, homeChannel)
 
 /**
  * 自分のアイコン画像を取得します。
@@ -117,18 +116,18 @@ suspend fun UserTagId.removeFromMe() = ctx.selfPort.removeMyTag(this)
 /**
  * 自分がスターしているチャンネル一覧を取得します。
  *
- * @return スターしているチャンネルハンドル一覧
+ * @return スターしているチャンネル ID 一覧
  */
 context(ctx: UserContext)
-suspend fun fetchMyStars(): List<ChannelHandle> = ctx.selfPort.fetchMyStars().map { ChannelHandle(it) }
+suspend fun fetchMyStars(): List<ChannelId> = ctx.selfPort.fetchMyStars()
 
 /** チャンネルをスターします。 */
 context(ctx: UserContext)
-suspend fun ChannelHandle.star() = ctx.selfPort.addMyStar(id)
+suspend fun ChannelId.star() = ctx.selfPort.addMyStar(this)
 
 /** チャンネルのスターを外します。 */
 context(ctx: UserContext)
-suspend fun ChannelHandle.unstar() = ctx.selfPort.removeMyStar(id)
+suspend fun ChannelId.unstar() = ctx.selfPort.removeMyStar(this)
 
 /**
  * 自分のチャンネル購読状態一覧を取得します。
@@ -144,19 +143,19 @@ suspend fun fetchMySubscriptions(): List<ChannelSubscription> = ctx.selfPort.fet
  * @param level 新しい購読レベル
  */
 context(ctx: UserContext)
-suspend fun ChannelHandle.setSubscription(level: ChannelSubscriptionLevel) = ctx.selfPort.setMySubscription(id, level)
+suspend fun ChannelId.setSubscription(level: ChannelSubscriptionLevel) = ctx.selfPort.setMySubscription(this, level)
 
 /** チャンネル購読を無効にします。 */
 context(ctx: UserContext)
-suspend fun ChannelHandle.unsubscribe() = setSubscription(ChannelSubscriptionLevel.NONE)
+suspend fun ChannelId.unsubscribe() = setSubscription(ChannelSubscriptionLevel.NONE)
 
 /** チャンネルを未読管理対象にします。 */
 context(ctx: UserContext)
-suspend fun ChannelHandle.subscribe() = setSubscription(ChannelSubscriptionLevel.SUBSCRIBED)
+suspend fun ChannelId.subscribe() = setSubscription(ChannelSubscriptionLevel.SUBSCRIBED)
 
 /** チャンネルを通知対象にします。 */
 context(ctx: UserContext)
-suspend fun ChannelHandle.notify() = setSubscription(ChannelSubscriptionLevel.NOTIFIED)
+suspend fun ChannelId.notify() = setSubscription(ChannelSubscriptionLevel.NOTIFIED)
 
 /**
  * 自分の未読チャンネル一覧を取得します。
@@ -168,7 +167,7 @@ suspend fun fetchMyUnreadChannels(): List<UnreadChannel> = ctx.selfPort.fetchMyU
 
 /** チャンネルを既読にします。 */
 context(ctx: UserContext)
-suspend fun ChannelHandle.markRead() = ctx.selfPort.readChannel(id)
+suspend fun ChannelId.markRead() = ctx.selfPort.readChannel(this)
 
 /**
  * 自分の閲覧状態一覧を取得します。
@@ -259,35 +258,3 @@ suspend fun fetchMyStampRecommendations(limit: Int = 100): List<StampRecommendat
  */
 context(ctx: UserContext)
 suspend fun fetchMyQRCode(): ByteArray = ctx.selfPort.fetchMyQRCode()
-
-/**
- * UUID からログインセッションIDを作ります。
- *
- * @param id ログインセッションID
- * @return ログインセッションID
- */
-fun loginSession(id: Uuid): LoginSessionId = LoginSessionId(id)
-
-/**
- * UUID 文字列からログインセッションIDを作ります。
- *
- * @param id ログインセッションID
- * @return ログインセッションID
- */
-fun loginSession(id: String): LoginSessionId = loginSession(Uuid.parse(id))
-
-/**
- * UUID から OAuth2 トークンIDを作ります。
- *
- * @param id OAuth2 トークンID
- * @return OAuth2 トークンID
- */
-fun oauth2Token(id: Uuid): OAuth2TokenId = OAuth2TokenId(id)
-
-/**
- * UUID 文字列から OAuth2 トークンIDを作ります。
- *
- * @param id OAuth2 トークンID
- * @return OAuth2 トークンID
- */
-fun oauth2Token(id: String): OAuth2TokenId = oauth2Token(Uuid.parse(id))

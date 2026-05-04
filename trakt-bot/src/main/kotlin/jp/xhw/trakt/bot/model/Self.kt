@@ -19,13 +19,25 @@ value class OAuth2Scope(
 @JvmInline
 value class LoginSessionId(
     val value: Uuid,
-)
+) {
+    companion object {
+        operator fun invoke(value: String): LoginSessionId = parse(value)
+
+        fun parse(value: String): LoginSessionId = LoginSessionId(Uuid.parse(value))
+    }
+}
 
 /** OAuth2 トークンID。 */
 @JvmInline
 value class OAuth2TokenId(
     val value: Uuid,
-)
+) {
+    companion object {
+        operator fun invoke(value: String): OAuth2TokenId = parse(value)
+
+        fun parse(value: String): OAuth2TokenId = OAuth2TokenId(Uuid.parse(value))
+    }
+}
 
 /** 自分自身の詳細情報。 */
 class CurrentUser internal constructor(
@@ -44,11 +56,11 @@ class CurrentUser internal constructor(
     val homeChannelId: ChannelId?,
     val permissions: List<UserPermission>,
 ) : User.StatefulUser {
-    val groups: List<GroupHandle>
-        get() = groupIds.map { GroupHandle(it) }
+    val groups: List<GroupId>
+        get() = groupIds
 
-    val homeChannel: ChannelHandle?
-        get() = homeChannelId?.let { ChannelHandle(it) }
+    val homeChannel: ChannelId?
+        get() = homeChannelId
 
     val hasAdministrativeAccess: Boolean
         get() =
@@ -81,8 +93,8 @@ data class ChannelSubscription internal constructor(
     val channelId: ChannelId,
     val level: ChannelSubscriptionLevel,
 ) {
-    val channel: ChannelHandle
-        get() = ChannelHandle(channelId)
+    val channel: ChannelId
+        get() = channelId
 }
 
 /** 自分の未読チャンネル情報。 */
@@ -95,11 +107,11 @@ data class UnreadChannel internal constructor(
     val updatedAt: Instant,
     val oldestMessageId: MessageId,
 ) {
-    val channel: ChannelHandle
-        get() = ChannelHandle(channelId)
+    val channel: ChannelId
+        get() = channelId
 
-    val oldestMessage: MessageHandle
-        get() = MessageHandle(oldestMessageId)
+    val oldestMessage: MessageId
+        get() = oldestMessageId
 }
 
 /** 自分の WebSocket セッションごとの閲覧状態。 */
@@ -109,8 +121,8 @@ data class MyChannelViewState internal constructor(
     val channelId: ChannelId,
     val state: ChannelViewState,
 ) {
-    val channel: ChannelHandle
-        get() = ChannelHandle(channelId)
+    val channel: ChannelId
+        get() = channelId
 }
 
 /** ユーザー設定。 */
@@ -119,8 +131,8 @@ data class UserSettings internal constructor(
     val userId: UserId,
     val notifyCitation: Boolean,
 ) {
-    val user: UserHandle
-        get() = UserHandle(userId)
+    val user: UserId
+        get() = userId
 }
 
 /** ログインセッション情報。 */
@@ -153,8 +165,8 @@ data class StampHistoryEntry internal constructor(
     val stampId: StampId,
     val datetime: Instant,
 ) {
-    val stamp: StampHandle
-        get() = StampHandle(stampId)
+    val stamp: StampId
+        get() = stampId
 }
 
 /** スタンプレコメンド。 */
@@ -163,6 +175,6 @@ data class StampRecommendation internal constructor(
     val stampId: StampId,
     val score: Double,
 ) {
-    val stamp: StampHandle
-        get() = StampHandle(stampId)
+    val stamp: StampId
+        get() = stampId
 }

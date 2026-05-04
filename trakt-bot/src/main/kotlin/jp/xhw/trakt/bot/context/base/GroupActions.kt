@@ -12,12 +12,12 @@ context(ctx: BaseContext)
 suspend fun fetchGroup(groupId: GroupId): Group = ctx.groupPort.fetchGroup(groupId)
 
 /**
- * このハンドルが指すグループ詳細を取得します。
+ * この ID が指すグループ詳細を取得します。
  *
  * @return グループ詳細情報
  */
 context(ctx: BaseContext)
-suspend fun GroupHandle.fetch(): Group = ctx.groupPort.fetchGroup(id)
+suspend fun GroupId.fetch(): Group = ctx.groupPort.fetchGroup(this)
 
 /**
  * グループ一覧を取得します。
@@ -33,7 +33,7 @@ suspend fun fetchGroups(): List<Group> = ctx.groupPort.fetchGroups()
  * @return グループメンバー一覧
  */
 context(ctx: BaseContext)
-suspend fun GroupHandle.fetchMembers(): List<GroupMember> = ctx.groupPort.fetchMembers(id)
+suspend fun GroupId.fetchMembers(): List<GroupMember> = ctx.groupPort.fetchMembers(this)
 
 /**
  * グループへメンバーを追加します。
@@ -42,11 +42,11 @@ suspend fun GroupHandle.fetchMembers(): List<GroupMember> = ctx.groupPort.fetchM
  * @param role 追加時に設定するロール
  */
 context(ctx: BaseContext)
-suspend fun GroupHandle.addMember(
+suspend fun GroupId.addMember(
     userId: UserId,
     role: String = "",
 ) {
-    ctx.groupPort.addMember(id, userId, role)
+    ctx.groupPort.addMember(this, userId, role)
 }
 
 /**
@@ -56,21 +56,7 @@ suspend fun GroupHandle.addMember(
  * @param role 追加時に設定するロール
  */
 context(ctx: BaseContext)
-suspend fun GroupHandle.addMember(
-    user: UserHandle,
-    role: String = "",
-) {
-    addMember(user.id, role)
-}
-
-/**
- * グループへメンバーを追加します。
- *
- * @param user 追加するユーザー
- * @param role 追加時に設定するロール
- */
-context(ctx: BaseContext)
-suspend fun GroupHandle.addMember(
+suspend fun GroupId.addMember(
     user: User,
     role: String = "",
 ) {
@@ -83,8 +69,8 @@ suspend fun GroupHandle.addMember(
  * @param userId 追加するユーザーID
  */
 context(ctx: BaseContext)
-suspend fun GroupHandle.addAdmin(userId: UserId) {
-    ctx.groupPort.addAdmin(id, userId)
+suspend fun GroupId.addAdmin(userId: UserId) {
+    ctx.groupPort.addAdmin(this, userId)
 }
 
 /**
@@ -93,27 +79,17 @@ suspend fun GroupHandle.addAdmin(userId: UserId) {
  * @param user 追加するユーザー
  */
 context(ctx: BaseContext)
-suspend fun GroupHandle.addAdmin(user: UserHandle) {
+suspend fun GroupId.addAdmin(user: User) {
     addAdmin(user.id)
 }
 
 /**
- * グループへ管理者を追加します。
- *
- * @param user 追加するユーザー
- */
-context(ctx: BaseContext)
-suspend fun GroupHandle.addAdmin(user: User) {
-    addAdmin(user.id)
-}
-
-/**
- * グループ情報を再取得します。
+ * グループ情報を取得します。
  *
  * @return 最新のグループ情報
  */
 context(ctx: BaseContext)
-suspend fun Group.refresh(): Group = handle.fetch()
+suspend fun Group.fetch(): Group = id.fetch()
 
 /**
  * グループへメンバーを追加します。
@@ -126,21 +102,7 @@ suspend fun Group.addMember(
     userId: UserId,
     role: String = "",
 ) {
-    handle.addMember(userId, role)
-}
-
-/**
- * グループへメンバーを追加します。
- *
- * @param user 追加するユーザー
- * @param role 追加時に設定するロール
- */
-context(ctx: BaseContext)
-suspend fun Group.addMember(
-    user: UserHandle,
-    role: String = "",
-) {
-    handle.addMember(user, role)
+    id.addMember(userId, role)
 }
 
 /**
@@ -154,7 +116,7 @@ suspend fun Group.addMember(
     user: User,
     role: String = "",
 ) {
-    handle.addMember(user, role)
+    id.addMember(user, role)
 }
 
 /**
@@ -164,17 +126,7 @@ suspend fun Group.addMember(
  */
 context(ctx: BaseContext)
 suspend fun Group.addAdmin(userId: UserId) {
-    handle.addAdmin(userId)
-}
-
-/**
- * グループへ管理者を追加します。
- *
- * @param user 追加するユーザー
- */
-context(ctx: BaseContext)
-suspend fun Group.addAdmin(user: UserHandle) {
-    handle.addAdmin(user)
+    id.addAdmin(userId)
 }
 
 /**
@@ -184,5 +136,5 @@ suspend fun Group.addAdmin(user: UserHandle) {
  */
 context(ctx: BaseContext)
 suspend fun Group.addAdmin(user: User) {
-    handle.addAdmin(user)
+    id.addAdmin(user)
 }

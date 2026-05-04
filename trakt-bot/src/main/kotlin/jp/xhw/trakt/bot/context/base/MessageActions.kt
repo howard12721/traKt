@@ -2,7 +2,6 @@ package jp.xhw.trakt.bot.context.base
 
 import jp.xhw.trakt.bot.model.*
 import kotlin.time.Instant
-import kotlin.uuid.Uuid
 
 // --- Fetch ---
 
@@ -16,21 +15,12 @@ context(ctx: BaseContext)
 suspend fun fetchMessage(messageId: MessageId): Message = ctx.messagePort.fetchMessage(messageId)
 
 /**
- * メッセージ詳細を取得します。
- *
- * @param messageId 取得対象メッセージID(UUID)
- * @return メッセージ情報
- */
-context(ctx: BaseContext)
-suspend fun fetchMessage(messageId: Uuid): Message = fetchMessage(MessageId(messageId))
-
-/**
- * このハンドルが指すメッセージを取得します。
+ * この ID が指すメッセージを取得します。
  *
  * @return メッセージ情報
  */
 context(ctx: BaseContext)
-suspend fun MessageHandle.fetch(): Message = ctx.messagePort.fetchMessage(id)
+suspend fun MessageId.fetch(): Message = ctx.messagePort.fetchMessage(this)
 
 /**
  * メッセージに付与されたスタンプ一覧を取得します。
@@ -38,7 +28,7 @@ suspend fun MessageHandle.fetch(): Message = ctx.messagePort.fetchMessage(id)
  * @return スタンプ情報一覧
  */
 context(ctx: BaseContext)
-suspend fun MessageHandle.fetchStamps(): List<MessageStamp> = ctx.messagePort.fetchStamps(id)
+suspend fun MessageId.fetchStamps(): List<MessageStamp> = ctx.messagePort.fetchStamps(this)
 
 /**
  * メッセージのピン情報を取得します。
@@ -46,7 +36,7 @@ suspend fun MessageHandle.fetchStamps(): List<MessageStamp> = ctx.messagePort.fe
  * @return ピン情報
  */
 context(ctx: BaseContext)
-suspend fun MessageHandle.fetchPinInfo(): PinInfo = ctx.messagePort.fetchPinInfo(id)
+suspend fun MessageId.fetchPinInfo(): PinInfo = ctx.messagePort.fetchPinInfo(this)
 
 // --- Edit / Delete ---
 
@@ -58,18 +48,18 @@ suspend fun MessageHandle.fetchPinInfo(): PinInfo = ctx.messagePort.fetchPinInfo
  * @param nonce 重複送信防止に使う任意文字列
  */
 context(ctx: BaseContext)
-suspend fun MessageHandle.update(
+suspend fun MessageId.update(
     content: String,
     embed: Boolean = false,
     nonce: String? = null,
 ) {
-    ctx.messagePort.editMessage(id, content, embed, nonce)
+    ctx.messagePort.editMessage(this, content, embed, nonce)
 }
 
 /** メッセージを削除します。 */
 context(ctx: BaseContext)
-suspend fun MessageHandle.delete() {
-    ctx.messagePort.deleteMessage(id)
+suspend fun MessageId.delete() {
+    ctx.messagePort.deleteMessage(this)
 }
 
 // --- Stamps ---
@@ -81,53 +71,11 @@ suspend fun MessageHandle.delete() {
  * @param count 追加個数
  */
 context(ctx: BaseContext)
-suspend fun MessageHandle.addStamp(
+suspend fun MessageId.addStamp(
     stampId: StampId,
     count: Int = 1,
 ) {
-    ctx.messagePort.addStamp(id, stampId, count)
-}
-
-/**
- * メッセージへスタンプを追加します。
- *
- * @param stamp 付与するスタンプハンドル
- * @param count 追加個数
- */
-context(ctx: BaseContext)
-suspend fun MessageHandle.addStamp(
-    stamp: StampHandle,
-    count: Int = 1,
-) {
-    addStamp(stamp.id, count)
-}
-
-/**
- * メッセージへスタンプを追加します。
- *
- * @param stampId 付与するスタンプID(UUID)
- * @param count 追加個数
- */
-context(ctx: BaseContext)
-suspend fun MessageHandle.addStamp(
-    stampId: Uuid,
-    count: Int = 1,
-) {
-    addStamp(StampId(stampId), count)
-}
-
-/**
- * メッセージへスタンプを追加します。
- *
- * @param stampId 付与するスタンプID(UUID文字列)
- * @param count 追加個数
- */
-context(ctx: BaseContext)
-suspend fun MessageHandle.addStamp(
-    stampId: String,
-    count: Int = 1,
-) {
-    addStamp(Uuid.parse(stampId), count)
+    ctx.messagePort.addStamp(this, stampId, count)
 }
 
 /**
@@ -136,38 +84,8 @@ suspend fun MessageHandle.addStamp(
  * @param stampId 削除するスタンプID
  */
 context(ctx: BaseContext)
-suspend fun MessageHandle.removeStamp(stampId: StampId) {
-    ctx.messagePort.removeStamp(id, stampId)
-}
-
-/**
- * メッセージからスタンプを削除します。
- *
- * @param stamp 削除するスタンプハンドル
- */
-context(ctx: BaseContext)
-suspend fun MessageHandle.removeStamp(stamp: StampHandle) {
-    removeStamp(stamp.id)
-}
-
-/**
- * メッセージからスタンプを削除します。
- *
- * @param stampId 削除するスタンプID(UUID)
- */
-context(ctx: BaseContext)
-suspend fun MessageHandle.removeStamp(stampId: Uuid) {
-    removeStamp(StampId(stampId))
-}
-
-/**
- * メッセージからスタンプを削除します。
- *
- * @param stampId 削除するスタンプID(UUID文字列)
- */
-context(ctx: BaseContext)
-suspend fun MessageHandle.removeStamp(stampId: String) {
-    removeStamp(Uuid.parse(stampId))
+suspend fun MessageId.removeStamp(stampId: StampId) {
+    ctx.messagePort.removeStamp(this, stampId)
 }
 
 // --- Pins ---
@@ -178,12 +96,12 @@ suspend fun MessageHandle.removeStamp(stampId: String) {
  * @return 作成されたピン情報
  */
 context(ctx: BaseContext)
-suspend fun MessageHandle.pin(): PinInfo = ctx.messagePort.createPin(id)
+suspend fun MessageId.pin(): PinInfo = ctx.messagePort.createPin(this)
 
 /** メッセージのピン留めを解除します。 */
 context(ctx: BaseContext)
-suspend fun MessageHandle.unpin() {
-    ctx.messagePort.removePin(id)
+suspend fun MessageId.unpin() {
+    ctx.messagePort.removePin(this)
 }
 
 // --- Search ---
@@ -260,7 +178,7 @@ suspend fun searchMessages(
  * @return 送信された返信メッセージ
  */
 context(ctx: BaseContext)
-suspend fun MessageHandle.reply(
+suspend fun MessageId.reply(
     content: String,
     embed: Boolean = false,
     nonce: String? = null,
@@ -269,12 +187,12 @@ suspend fun MessageHandle.reply(
 // --- Message convenience extensions ---
 
 /**
- * メッセージ情報を再取得します。
+ * メッセージ情報を取得します。
  *
  * @return 最新のメッセージ情報
  */
 context(ctx: BaseContext)
-suspend fun Message.refresh(): Message = handle.fetch()
+suspend fun Message.fetch(): Message = id.fetch()
 
 /**
  * メッセージに付与されたスタンプ一覧を取得します。
@@ -282,7 +200,7 @@ suspend fun Message.refresh(): Message = handle.fetch()
  * @return スタンプ情報一覧
  */
 context(ctx: BaseContext)
-suspend fun Message.fetchStamps(): List<MessageStamp> = handle.fetchStamps()
+suspend fun Message.fetchStamps(): List<MessageStamp> = id.fetchStamps()
 
 /**
  * メッセージのピン情報を取得します。
@@ -290,7 +208,7 @@ suspend fun Message.fetchStamps(): List<MessageStamp> = handle.fetchStamps()
  * @return ピン情報
  */
 context(ctx: BaseContext)
-suspend fun Message.fetchPinInfo(): PinInfo = handle.fetchPinInfo()
+suspend fun Message.fetchPinInfo(): PinInfo = id.fetchPinInfo()
 
 /**
  * メッセージ本文を更新します。
@@ -305,13 +223,13 @@ suspend fun Message.update(
     embed: Boolean = false,
     nonce: String? = null,
 ) {
-    handle.update(content, embed, nonce)
+    id.update(content, embed, nonce)
 }
 
 /** メッセージを削除します。 */
 context(ctx: BaseContext)
 suspend fun Message.delete() {
-    handle.delete()
+    id.delete()
 }
 
 /**
@@ -325,49 +243,7 @@ suspend fun Message.addStamp(
     stampId: StampId,
     count: Int = 1,
 ) {
-    handle.addStamp(stampId, count)
-}
-
-/**
- * メッセージへスタンプを追加します。
- *
- * @param stamp 付与するスタンプハンドル
- * @param count 追加個数
- */
-context(ctx: BaseContext)
-suspend fun Message.addStamp(
-    stamp: StampHandle,
-    count: Int = 1,
-) {
-    handle.addStamp(stamp, count)
-}
-
-/**
- * メッセージへスタンプを追加します。
- *
- * @param stampId 付与するスタンプID(UUID)
- * @param count 追加個数
- */
-context(ctx: BaseContext)
-suspend fun Message.addStamp(
-    stampId: Uuid,
-    count: Int = 1,
-) {
-    handle.addStamp(stampId, count)
-}
-
-/**
- * メッセージへスタンプを追加します。
- *
- * @param stampId 付与するスタンプID(UUID文字列)
- * @param count 追加個数
- */
-context(ctx: BaseContext)
-suspend fun Message.addStamp(
-    stampId: String,
-    count: Int = 1,
-) {
-    handle.addStamp(stampId, count)
+    id.addStamp(stampId, count)
 }
 
 /**
@@ -377,37 +253,7 @@ suspend fun Message.addStamp(
  */
 context(ctx: BaseContext)
 suspend fun Message.removeStamp(stampId: StampId) {
-    handle.removeStamp(stampId)
-}
-
-/**
- * メッセージからスタンプを削除します。
- *
- * @param stamp 削除するスタンプハンドル
- */
-context(ctx: BaseContext)
-suspend fun Message.removeStamp(stamp: StampHandle) {
-    handle.removeStamp(stamp)
-}
-
-/**
- * メッセージからスタンプを削除します。
- *
- * @param stampId 削除するスタンプID(UUID)
- */
-context(ctx: BaseContext)
-suspend fun Message.removeStamp(stampId: Uuid) {
-    handle.removeStamp(stampId)
-}
-
-/**
- * メッセージからスタンプを削除します。
- *
- * @param stampId 削除するスタンプID(UUID文字列)
- */
-context(ctx: BaseContext)
-suspend fun Message.removeStamp(stampId: String) {
-    handle.removeStamp(stampId)
+    id.removeStamp(stampId)
 }
 
 /**
@@ -416,12 +262,12 @@ suspend fun Message.removeStamp(stampId: String) {
  * @return 作成されたピン情報
  */
 context(ctx: BaseContext)
-suspend fun Message.pin(): PinInfo = handle.pin()
+suspend fun Message.pin(): PinInfo = id.pin()
 
 /** メッセージのピン留めを解除します。 */
 context(ctx: BaseContext)
 suspend fun Message.unpin() {
-    handle.unpin()
+    id.unpin()
 }
 
 /**
@@ -443,8 +289,8 @@ suspend fun Message.reply(
 
 /** メッセージ URL を生成します。 */
 context(ctx: BaseContext)
-private fun MessageHandle.url(): String = "https://${ctx.origin}/messages/${id.value}"
+private fun MessageId.url(): String = "https://${ctx.origin}/messages/${value}"
 
 /** メッセージ URL を生成します。 */
 context(ctx: BaseContext)
-private fun Message.url(): String = handle.url()
+private fun Message.url(): String = id.url()

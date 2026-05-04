@@ -7,13 +7,13 @@ import kotlin.uuid.Uuid
 @JvmInline
 value class WebhookId(
     val value: Uuid,
-)
+) {
+    companion object {
+        operator fun invoke(value: String): WebhookId = parse(value)
 
-/** Webhook を参照するためのハンドル。 */
-@JvmInline
-value class WebhookHandle internal constructor(
-    val id: WebhookId,
-)
+        fun parse(value: String): WebhookId = WebhookId(Uuid.parse(value))
+    }
+}
 
 /** Webhook 情報。 */
 @ConsistentCopyVisibility
@@ -28,39 +28,12 @@ data class Webhook internal constructor(
     val createdAt: Instant,
     val updatedAt: Instant,
 ) {
-    val handle: WebhookHandle
-        get() = WebhookHandle(id)
+    val botUser: UserId
+        get() = botUserId
 
-    val botUser: UserHandle
-        get() = UserHandle(botUserId)
+    val channel: ChannelId
+        get() = channelId
 
-    val channel: ChannelHandle
-        get() = ChannelHandle(channelId)
-
-    val owner: UserHandle
-        get() = UserHandle(ownerId)
+    val owner: UserId
+        get() = ownerId
 }
-
-/**
- * [WebhookId] から Webhook ハンドルを作成します。
- *
- * @param id Webhook ID
- * @return Webhook ハンドル
- */
-fun webhook(id: WebhookId) = WebhookHandle(id)
-
-/**
- * UUID から Webhook ハンドルを作成します。
- *
- * @param id Webhook ID
- * @return Webhook ハンドル
- */
-fun webhook(id: Uuid) = webhook(WebhookId(id))
-
-/**
- * UUID 文字列から Webhook ハンドルを作成します。
- *
- * @param id Webhook ID
- * @return Webhook ハンドル
- */
-fun webhook(id: String) = webhook(Uuid.parse(id))

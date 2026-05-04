@@ -76,9 +76,9 @@ data class BotJoinedChannel internal constructor(
     val channelId: ChannelId,
 ) : BotEvent,
     TimedEvent {
-    /** 追加先チャンネルのハンドル。 */
-    val channel: ChannelHandle
-        get() = ChannelHandle(channelId)
+    /** 追加先チャンネルのID。 */
+    val channel: ChannelId
+        get() = channelId
 }
 
 /** Bot がチャンネルから削除されたときのイベント。 */
@@ -88,9 +88,9 @@ data class BotLeftChannel internal constructor(
     val channelId: ChannelId,
 ) : BotEvent,
     TimedEvent {
-    /** 削除元チャンネルのハンドル。 */
-    val channel: ChannelHandle
-        get() = ChannelHandle(channelId)
+    /** 削除元チャンネルのID。 */
+    val channel: ChannelId
+        get() = channelId
 }
 
 /** パブリックチャンネルが作成されたときのイベント。 */
@@ -110,9 +110,9 @@ data class BotChannelTopicChanged internal constructor(
     val updaterId: UserId,
 ) : BotEvent,
     TimedEvent {
-    /** 更新実行ユーザーのハンドル。 */
-    val updater: UserHandle
-        get() = UserHandle(updaterId)
+    /** 更新実行ユーザーのID。 */
+    val updater: UserId
+        get() = updaterId
 }
 
 /** ユーザーが作成されたときのイベント。 */
