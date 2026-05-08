@@ -11,9 +11,11 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.merge
+import org.slf4j.LoggerFactory
 import kotlin.coroutines.CoroutineContext
 import kotlin.reflect.KClass
 import kotlin.time.Clock
+import kotlin.time.Duration
 
 typealias TraktClient = Runtime<BotContext, BotEvent>
 
@@ -44,8 +46,11 @@ class Runtime<R : RuntimeContext, E : Any> internal constructor(
             extraBufferCapacity = 1,
             onBufferOverflow = BufferOverflow.SUSPEND,
         )
+    private val logger = LoggerFactory.getLogger(Runtime::class.java)
+    private val scheduledTasks = mutableListOf<ScheduledTask<R>>()
 
     private var eventSubscription: Job? = null
+    private var scheduledTaskJobs = emptyList<Job>()
     private var started = false
 
     /**
@@ -95,6 +100,31 @@ class Runtime<R : RuntimeContext, E : Any> internal constructor(
         }
 
     /**
+     * 一定間隔で実行するタスクを登録します。
+     *
+     * タスクは [start] 後、lifecycle の準備ができてから実行されます。
+     * [interval] は前回の開始から次回の開始までの間隔です。
+     * 前回の実行が [interval] を超えた場合でも、次の実行は予定どおり開始されます。
+     * 例外が発生しても runtime は停止せず、次回以降の実行は継続します。
+     *
+     * 例: `every(1.minutes) { ... }`
+     *
+     * @param interval 実行開始の間隔。正の値を指定してください
+     * @param initialDelay 初回実行までの待ち時間。0 以上を指定してください
+     * @param block 定期実行する処理
+     */
+    fun every(
+        interval: Duration,
+        initialDelay: Duration = interval,
+        block: suspend R.() -> Unit,
+    ) {
+        check(!started) { "Scheduled tasks must be registered before start()" }
+        require(interval > Duration.ZERO) { "interval must be positive" }
+        require(initialDelay >= Duration.ZERO) { "initialDelay must be zero or positive" }
+        scheduledTasks += ScheduledTask(interval, initialDelay, block)
+    }
+
+    /**
      * lifecycle と登録済みイベントハンドラの購読を開始します。
      */
     suspend fun start() {
@@ -114,6 +144,7 @@ class Runtime<R : RuntimeContext, E : Any> internal constructor(
             }
         lifecycle.awaitStarted()
         lifecycleEvents.emit(Initialized(occurredAt = Clock.System.now()))
+        scheduledTaskJobs = startScheduledTasks()
         lifecycleJob.join()
     }
 
@@ -132,6 +163,8 @@ class Runtime<R : RuntimeContext, E : Any> internal constructor(
      * イベント購読と lifecycle を停止します。
      */
     suspend fun stop() {
+        scheduledTaskJobs.forEach { it.cancel() }
+        scheduledTaskJobs = emptyList()
         lifecycle.stop()
         lifecycleEvents.emit(Disposed(occurredAt = Clock.System.now()))
         eventSubscription?.cancel()
@@ -142,4 +175,32 @@ class Runtime<R : RuntimeContext, E : Any> internal constructor(
 
     @Suppress("UNCHECKED_CAST")
     private fun toRuntimeEvent(event: Event): E? = event as? E
+
+    private fun startScheduledTasks(): List<Job> =
+        scheduledTasks.map { task ->
+            runtimeScope.launch {
+                delay(task.initialDelay)
+                while (isActive) {
+                    launchScheduledTask(task)
+                    delay(task.interval)
+                }
+            }
+        }
+
+    private fun launchScheduledTask(task: ScheduledTask<R>): Job =
+        runtimeScope.launch {
+            try {
+                task.block(context)
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                logger.error("Error while running scheduled task", e)
+            }
+        }
 }
+
+private data class ScheduledTask<R : RuntimeContext>(
+    val interval: Duration,
+    val initialDelay: Duration,
+    val block: suspend R.() -> Unit,
+)
