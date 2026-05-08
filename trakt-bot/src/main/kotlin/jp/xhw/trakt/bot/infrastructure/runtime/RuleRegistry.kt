@@ -7,6 +7,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import org.slf4j.LoggerFactory
 import kotlin.reflect.KClass
 
@@ -49,7 +50,9 @@ internal class RuleRegistry<R : RuntimeContext, E : Any> {
         return eventSource
             .onEach { event ->
                 installedHandlers.forEach { handler ->
-                    handler(event)
+                    scope.launch {
+                        handler(event)
+                    }
                 }
             }.launchIn(scope)
     }
