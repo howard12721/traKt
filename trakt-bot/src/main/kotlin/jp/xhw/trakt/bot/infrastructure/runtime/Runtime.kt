@@ -16,6 +16,7 @@ import kotlin.coroutines.CoroutineContext
 import kotlin.reflect.KClass
 import kotlin.time.Clock
 import kotlin.time.Duration
+import kotlin.time.TimeSource
 
 typealias TraktClient = Runtime<BotContext, BotEvent>
 
@@ -105,6 +106,7 @@ class Runtime<R : RuntimeContext, E : Any> internal constructor(
      * タスクは [start] 後、lifecycle の準備ができてから実行されます。
      * [interval] は前回の開始から次回の開始までの間隔です。
      * 前回の実行が [interval] を超えた場合でも、次の実行は予定どおり開始されます。
+     * 次回の実行時刻は予定時刻を基準に計算し、遅れている場合は待たずに次の実行へ進みます。
      * 例外が発生しても runtime は停止せず、次回以降の実行は継続します。
      *
      * 例: `every(1.minutes) { ... }`
@@ -180,9 +182,16 @@ class Runtime<R : RuntimeContext, E : Any> internal constructor(
         scheduledTasks.map { task ->
             runtimeScope.launch {
                 delay(task.initialDelay)
+                var nextStart = TimeSource.Monotonic.markNow()
                 while (isActive) {
                     launchScheduledTask(task)
-                    delay(task.interval)
+                    nextStart += task.interval
+                    val delayUntilNextStart = -nextStart.elapsedNow()
+                    if (delayUntilNextStart > Duration.ZERO) {
+                        delay(delayUntilNextStart)
+                    } else {
+                        yield()
+                    }
                 }
             }
         }
