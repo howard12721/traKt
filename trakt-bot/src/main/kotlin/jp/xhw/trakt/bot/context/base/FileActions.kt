@@ -48,6 +48,16 @@ context(ctx: BaseContext)
 suspend fun FileId.fetchMeta(): FileMeta = ctx.filePort.fetchFileMeta(this)
 
 /**
+ * ファイルメタ情報を取得します。存在しない場合は `null` を返します。
+ *
+ * ユーザー入力など、存在が保証できない ID を扱う場合に使います。
+ *
+ * @return ファイルメタ情報。存在しない場合は `null`
+ */
+context(ctx: BaseContext)
+suspend fun FileId.fetchMetaOrNull(): FileMeta? = ctx.filePort.fetchFileMetaOrNull(this)
+
+/**
  * ファイル本体をダウンロードします。
  *
  * @return ファイル本体
@@ -82,12 +92,28 @@ context(ctx: BaseContext)
 suspend fun FileMeta.fetch(): FileMeta = id.fetchMeta()
 
 /**
+ * ファイルメタ情報を取得します。存在しない場合は `null` を返します。
+ *
+ * @return 最新のファイルメタ情報。存在しない場合は `null`
+ */
+context(ctx: BaseContext)
+suspend fun FileMeta.fetchOrNull(): FileMeta? = id.fetchMetaOrNull()
+
+/**
  * ファイルメタ情報を取得します。
  *
  * @return 最新のファイルメタ情報
  */
 context(ctx: BaseContext)
 suspend fun FileMeta.fetchMeta(): FileMeta = id.fetchMeta()
+
+/**
+ * ファイルメタ情報を取得します。存在しない場合は `null` を返します。
+ *
+ * @return 最新のファイルメタ情報。存在しない場合は `null`
+ */
+context(ctx: BaseContext)
+suspend fun FileMeta.fetchMetaOrNull(): FileMeta? = id.fetchMetaOrNull()
 
 /**
  * ファイルのURLを生成します。

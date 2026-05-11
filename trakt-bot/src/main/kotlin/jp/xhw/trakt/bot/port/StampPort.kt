@@ -14,6 +14,14 @@ internal interface StampPort {
     suspend fun fetchStamp(stampId: StampId): Stamp.Detail
 
     /**
+     * スタンプ詳細を取得します。存在しない場合は `null` を返します。
+     *
+     * @param stampId 取得対象スタンプ
+     * @return スタンプ詳細。存在しない場合は `null`
+     */
+    suspend fun fetchStampOrNull(stampId: StampId): Stamp.Detail?
+
+    /**
      * スタンプ一覧を取得します。
      *
      * @param type 取得対象スタンプ種別

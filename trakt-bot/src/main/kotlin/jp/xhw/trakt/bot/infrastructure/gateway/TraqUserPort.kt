@@ -13,6 +13,11 @@ internal class TraqUserPort(
         return response.bodyOrThrow(operation = "fetchUser(userId=${userId.value})").toModel()
     }
 
+    override suspend fun fetchUserOrNull(userId: UserId): User.Detail? {
+        val response = apiGateway.userApi.getUser(userId.value)
+        return response.bodyOrNullIfNotFound(operation = "fetchUserOrNull(userId=${userId.value})")?.toModel()
+    }
+
     override suspend fun fetchUsers(
         includeSuspended: Boolean,
         name: String?,

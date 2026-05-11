@@ -15,6 +15,11 @@ internal class TraqMessagePort(
         return response.bodyOrThrow(operation = "fetchMessage(messageId=${messageId.value})").toModel()
     }
 
+    override suspend fun fetchMessageOrNull(messageId: MessageId): Message? {
+        val response = apiGateway.messageApi.getMessage(messageId.value)
+        return response.bodyOrNullIfNotFound(operation = "fetchMessageOrNull(messageId=${messageId.value})")?.toModel()
+    }
+
     override suspend fun editMessage(
         messageId: MessageId,
         content: String,

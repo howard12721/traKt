@@ -13,6 +13,14 @@ internal interface MessagePort {
     suspend fun fetchMessage(messageId: MessageId): Message
 
     /**
+     * メッセージ詳細を取得します。存在しない場合は `null` を返します。
+     *
+     * @param messageId 取得対象メッセージ
+     * @return メッセージ情報。存在しない場合は `null`
+     */
+    suspend fun fetchMessageOrNull(messageId: MessageId): Message?
+
+    /**
      * メッセージ本文を更新します。
      *
      * @param messageId 更新対象メッセージ

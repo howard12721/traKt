@@ -15,6 +15,17 @@ context(ctx: BaseContext)
 suspend fun fetchChannel(channelId: ChannelId): Channel.Detail = ctx.channelPort.fetchChannel(channelId)
 
 /**
+ * チャンネル詳細を取得します。存在しない場合は `null` を返します。
+ *
+ * ユーザー入力など、存在が保証できない ID を扱う場合に使います。
+ *
+ * @param channelId 取得対象チャンネルID
+ * @return チャンネル詳細情報。存在しない場合は `null`
+ */
+context(ctx: BaseContext)
+suspend fun fetchChannelOrNull(channelId: ChannelId): Channel.Detail? = ctx.channelPort.fetchChannelOrNull(channelId)
+
+/**
  * この ID が指すチャンネル詳細を取得します。
  *
  * @return チャンネル詳細情報
@@ -23,12 +34,30 @@ context(ctx: BaseContext)
 suspend fun ChannelId.fetch(): Channel.Detail = ctx.channelPort.fetchChannel(this)
 
 /**
+ * この ID が指すチャンネル詳細を取得します。存在しない場合は `null` を返します。
+ *
+ * ユーザー入力など、存在が保証できない ID を扱う場合に使います。
+ *
+ * @return チャンネル詳細情報。存在しない場合は `null`
+ */
+context(ctx: BaseContext)
+suspend fun ChannelId.fetchOrNull(): Channel.Detail? = ctx.channelPort.fetchChannelOrNull(this)
+
+/**
  * チャンネル詳細を取得します。
  *
  * @return チャンネル詳細情報
  */
 context(ctx: BaseContext)
 suspend fun Channel.fetch(): Channel.Detail = id.fetch()
+
+/**
+ * チャンネル詳細を取得します。存在しない場合は `null` を返します。
+ *
+ * @return チャンネル詳細情報。存在しない場合は `null`
+ */
+context(ctx: BaseContext)
+suspend fun Channel.fetchOrNull(): Channel.Detail? = id.fetchOrNull()
 
 /**
  * チャンネル一覧を取得します。

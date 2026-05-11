@@ -34,6 +34,11 @@ internal class TraqChannelPort(
         return response.bodyOrThrow(operation = "fetchChannel(channelId=${channelId.value})").toDetail()
     }
 
+    override suspend fun fetchChannelOrNull(channelId: ChannelId): Channel.Detail? {
+        val response = apiGateway.channelApi.getChannel(channelId.value)
+        return response.bodyOrNullIfNotFound(operation = "fetchChannelOrNull(channelId=${channelId.value})")?.toDetail()
+    }
+
     override suspend fun fetchChannelPath(channelId: ChannelId): ChannelPath {
         val response = apiGateway.channelApi.getChannelPath(channelId.value)
         return ChannelPath(

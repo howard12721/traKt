@@ -29,6 +29,11 @@ internal class TraqFilePort(
         return response.bodyOrThrow(operation = "fetchFileMeta(fileId=${fileId.value})").toModel()
     }
 
+    override suspend fun fetchFileMetaOrNull(fileId: FileId): FileMeta? {
+        val response = apiGateway.fileApi.getFileMeta(fileId.value)
+        return response.bodyOrNullIfNotFound(operation = "fetchFileMetaOrNull(fileId=${fileId.value})")?.toModel()
+    }
+
     override suspend fun downloadFile(fileId: FileId): ByteArray {
         val response = apiGateway.fileApi.getFile(fileId.value)
         return response.bodyOrThrow(operation = "downloadFile(fileId=${fileId.value})").value

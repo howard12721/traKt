@@ -12,12 +12,33 @@ context(ctx: BaseContext)
 suspend fun fetchGroup(groupId: GroupId): Group = ctx.groupPort.fetchGroup(groupId)
 
 /**
+ * グループ詳細を取得します。存在しない場合は `null` を返します。
+ *
+ * ユーザー入力など、存在が保証できない ID を扱う場合に使います。
+ *
+ * @param groupId 取得対象グループID
+ * @return グループ詳細情報。存在しない場合は `null`
+ */
+context(ctx: BaseContext)
+suspend fun fetchGroupOrNull(groupId: GroupId): Group? = ctx.groupPort.fetchGroupOrNull(groupId)
+
+/**
  * この ID が指すグループ詳細を取得します。
  *
  * @return グループ詳細情報
  */
 context(ctx: BaseContext)
 suspend fun GroupId.fetch(): Group = ctx.groupPort.fetchGroup(this)
+
+/**
+ * この ID が指すグループ詳細を取得します。存在しない場合は `null` を返します。
+ *
+ * ユーザー入力など、存在が保証できない ID を扱う場合に使います。
+ *
+ * @return グループ詳細情報。存在しない場合は `null`
+ */
+context(ctx: BaseContext)
+suspend fun GroupId.fetchOrNull(): Group? = ctx.groupPort.fetchGroupOrNull(this)
 
 /**
  * グループ一覧を取得します。
@@ -90,6 +111,14 @@ suspend fun GroupId.addAdmin(user: User) {
  */
 context(ctx: BaseContext)
 suspend fun Group.fetch(): Group = id.fetch()
+
+/**
+ * グループ情報を取得します。存在しない場合は `null` を返します。
+ *
+ * @return 最新のグループ情報。存在しない場合は `null`
+ */
+context(ctx: BaseContext)
+suspend fun Group.fetchOrNull(): Group? = id.fetchOrNull()
 
 /**
  * グループメンバー一覧を取得します。

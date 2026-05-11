@@ -15,6 +15,11 @@ internal class TraqStampPort(
         return response.bodyOrThrow(operation = "fetchStamp(stampId=${stampId.value})").toModel()
     }
 
+    override suspend fun fetchStampOrNull(stampId: StampId): Stamp.Detail? {
+        val response = apiGateway.stampApi.getStamp(stampId.value)
+        return response.bodyOrNullIfNotFound(operation = "fetchStampOrNull(stampId=${stampId.value})")?.toModel()
+    }
+
     override suspend fun fetchStamps(type: StampType?): List<Stamp.Detail> {
         val response = apiGateway.stampApi.getStamps(type = type?.toApiModel())
         return response.bodyOrThrow(operation = "fetchStamps(type=$type)").map { it.toModel() }

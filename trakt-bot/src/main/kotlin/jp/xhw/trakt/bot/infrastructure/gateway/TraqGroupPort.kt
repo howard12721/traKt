@@ -17,6 +17,11 @@ internal class TraqGroupPort(
         return response.bodyOrThrow(operation = "fetchGroup(groupId=${groupId.value})").toModel()
     }
 
+    override suspend fun fetchGroupOrNull(groupId: GroupId): Group? {
+        val response = apiGateway.groupApi.getUserGroup(groupId.value)
+        return response.bodyOrNullIfNotFound(operation = "fetchGroupOrNull(groupId=${groupId.value})")?.toModel()
+    }
+
     override suspend fun fetchGroups(): List<Group> {
         val response = apiGateway.groupApi.getUserGroups()
         return response.bodyOrThrow(operation = "fetchGroups()").map { it.toModel() }

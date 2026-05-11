@@ -12,6 +12,14 @@ internal interface UserPort {
     suspend fun fetchUser(userId: UserId): User.Detail
 
     /**
+     * ユーザー詳細を取得します。存在しない場合は `null` を返します。
+     *
+     * @param userId 取得対象ユーザー
+     * @return ユーザー詳細。存在しない場合は `null`
+     */
+    suspend fun fetchUserOrNull(userId: UserId): User.Detail?
+
+    /**
      * ユーザー一覧を取得します。
      *
      * @param includeSuspended 非アクティブユーザーを含めるかどうか

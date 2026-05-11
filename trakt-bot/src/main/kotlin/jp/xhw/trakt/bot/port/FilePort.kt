@@ -30,6 +30,14 @@ internal interface FilePort {
     suspend fun fetchFileMeta(fileId: FileId): FileMeta
 
     /**
+     * ファイルメタ情報を取得します。存在しない場合は `null` を返します。
+     *
+     * @param fileId 取得対象ファイル
+     * @return ファイルメタ情報。存在しない場合は `null`
+     */
+    suspend fun fetchFileMetaOrNull(fileId: FileId): FileMeta?
+
+    /**
      * ファイル本体をダウンロードします。
      *
      * @param fileId 取得対象ファイル

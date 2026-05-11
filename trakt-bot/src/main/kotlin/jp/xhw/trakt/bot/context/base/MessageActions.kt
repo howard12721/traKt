@@ -15,12 +15,33 @@ context(ctx: BaseContext)
 suspend fun fetchMessage(messageId: MessageId): Message = ctx.messagePort.fetchMessage(messageId)
 
 /**
+ * メッセージ詳細を取得します。存在しない場合は `null` を返します。
+ *
+ * ユーザー入力など、存在が保証できない ID を扱う場合に使います。
+ *
+ * @param messageId 取得対象メッセージID
+ * @return メッセージ情報。存在しない場合は `null`
+ */
+context(ctx: BaseContext)
+suspend fun fetchMessageOrNull(messageId: MessageId): Message? = ctx.messagePort.fetchMessageOrNull(messageId)
+
+/**
  * この ID が指すメッセージを取得します。
  *
  * @return メッセージ情報
  */
 context(ctx: BaseContext)
 suspend fun MessageId.fetch(): Message = ctx.messagePort.fetchMessage(this)
+
+/**
+ * この ID が指すメッセージを取得します。存在しない場合は `null` を返します。
+ *
+ * ユーザー入力など、存在が保証できない ID を扱う場合に使います。
+ *
+ * @return メッセージ情報。存在しない場合は `null`
+ */
+context(ctx: BaseContext)
+suspend fun MessageId.fetchOrNull(): Message? = ctx.messagePort.fetchMessageOrNull(this)
 
 /**
  * メッセージに付与されたスタンプ一覧を取得します。
@@ -193,6 +214,14 @@ suspend fun MessageId.reply(
  */
 context(ctx: BaseContext)
 suspend fun Message.fetch(): Message = id.fetch()
+
+/**
+ * メッセージ情報を取得します。存在しない場合は `null` を返します。
+ *
+ * @return 最新のメッセージ情報。存在しない場合は `null`
+ */
+context(ctx: BaseContext)
+suspend fun Message.fetchOrNull(): Message? = id.fetchOrNull()
 
 /**
  * メッセージに付与されたスタンプ一覧を取得します。

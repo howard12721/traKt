@@ -38,6 +38,14 @@ internal suspend fun <T : Any> HttpResponse<T>.bodyOrThrow(operation: String): T
     return body()
 }
 
+internal suspend fun <T : Any> HttpResponse<T>.bodyOrNullIfNotFound(operation: String): T? {
+    if (status == 404) {
+        return null
+    }
+    requireSuccess(operation)
+    return body()
+}
+
 internal suspend fun HttpResponse<*>.toApiException(operation: String): TraqApiException {
     val bodyPreview = runCatching { response.bodyAsText() }.getOrNull()
     return TraqApiException(operation = operation, status = status, responseBody = bodyPreview)

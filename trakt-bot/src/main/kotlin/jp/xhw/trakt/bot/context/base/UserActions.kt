@@ -15,6 +15,17 @@ context(ctx: BaseContext)
 suspend fun fetchUser(userId: UserId): User.Detail = ctx.userPort.fetchUser(userId)
 
 /**
+ * ユーザー詳細を取得します。存在しない場合は `null` を返します。
+ *
+ * ユーザー入力など、存在が保証できない ID を扱う場合に使います。
+ *
+ * @param userId 取得対象ユーザーID
+ * @return ユーザー詳細情報。存在しない場合は `null`
+ */
+context(ctx: BaseContext)
+suspend fun fetchUserOrNull(userId: UserId): User.Detail? = ctx.userPort.fetchUserOrNull(userId)
+
+/**
  * この ID が指すユーザーを取得します。
  *
  * @return ユーザー情報
@@ -23,12 +34,30 @@ context(ctx: BaseContext)
 suspend fun UserId.fetch(): User.Detail = ctx.userPort.fetchUser(this)
 
 /**
+ * この ID が指すユーザーを取得します。存在しない場合は `null` を返します。
+ *
+ * ユーザー入力など、存在が保証できない ID を扱う場合に使います。
+ *
+ * @return ユーザー情報。存在しない場合は `null`
+ */
+context(ctx: BaseContext)
+suspend fun UserId.fetchOrNull(): User.Detail? = ctx.userPort.fetchUserOrNull(this)
+
+/**
  * ユーザー詳細情報を取得します。
  *
  * @return ユーザー情報
  */
 context(ctx: BaseContext)
 suspend fun User.fetch(): User.Detail = id.fetch()
+
+/**
+ * ユーザー詳細情報を取得します。存在しない場合は `null` を返します。
+ *
+ * @return ユーザー情報。存在しない場合は `null`
+ */
+context(ctx: BaseContext)
+suspend fun User.fetchOrNull(): User.Detail? = id.fetchOrNull()
 
 /**
  * ユーザー一覧を取得します。

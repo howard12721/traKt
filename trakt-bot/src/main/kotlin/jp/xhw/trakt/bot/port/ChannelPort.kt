@@ -25,6 +25,14 @@ internal interface ChannelPort {
     suspend fun fetchChannel(channelId: ChannelId): Channel.Detail
 
     /**
+     * チャンネル詳細を取得します。存在しない場合は `null` を返します。
+     *
+     * @param channelId 取得対象チャンネル
+     * @return チャンネル詳細。存在しない場合は `null`
+     */
+    suspend fun fetchChannelOrNull(channelId: ChannelId): Channel.Detail?
+
+    /**
      * チャンネルのパスを取得します。
      *
      * @param channelId 取得対象チャンネル

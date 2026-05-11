@@ -15,6 +15,14 @@ internal interface GroupPort {
     suspend fun fetchGroup(groupId: GroupId): Group
 
     /**
+     * グループ詳細を取得します。存在しない場合は `null` を返します。
+     *
+     * @param groupId 取得対象グループ
+     * @return グループ詳細。存在しない場合は `null`
+     */
+    suspend fun fetchGroupOrNull(groupId: GroupId): Group?
+
+    /**
      * グループ一覧を取得します。
      *
      * @return グループ一覧
