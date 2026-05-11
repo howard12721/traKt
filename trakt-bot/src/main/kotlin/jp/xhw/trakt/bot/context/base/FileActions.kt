@@ -88,3 +88,19 @@ suspend fun FileMeta.fetch(): FileMeta = id.fetchMeta()
  */
 context(ctx: BaseContext)
 suspend fun FileMeta.fetchMeta(): FileMeta = id.fetchMeta()
+
+/**
+ * ファイルのURLを生成します。
+ *
+ * @return ファイルのURL
+ */
+context(ctx: BaseContext)
+fun FileId.url(): String = "https://${ctx.origin}/files/$value"
+
+/**
+ * ファイルのURLを生成します。
+ *
+ * @return ファイルのURL
+ */
+context(ctx: BaseContext)
+fun FileMeta.url(): String = id.url()
