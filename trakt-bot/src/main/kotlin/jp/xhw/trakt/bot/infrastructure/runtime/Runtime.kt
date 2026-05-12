@@ -132,11 +132,6 @@ class Runtime<R : RuntimeContext, E : Any> internal constructor(
     suspend fun start() {
         check(!started) { "Client is already started" }
         started = true
-        val lifecycleJob =
-            runtimeScope.launch {
-                lifecycle.start()
-            }
-        lifecycle.awaitStarted()
         eventSubscription =
             ruleRegistry.subscribe(
                 merge(
@@ -145,6 +140,11 @@ class Runtime<R : RuntimeContext, E : Any> internal constructor(
                 ),
                 runtimeScope,
             )
+        val lifecycleJob =
+            runtimeScope.launch {
+                lifecycle.start()
+            }
+        lifecycle.awaitStarted()
         lifecycleEvents.emit(Initialized(occurredAt = Clock.System.now()))
         scheduledTaskJobs = startScheduledTasks()
         lifecycleJob.join()
