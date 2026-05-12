@@ -39,7 +39,7 @@ internal class TraqManagedBotPort(
     override suspend fun fetchBot(
         botId: BotId,
         detail: Boolean,
-    ): ManagedBot =
+    ): ManagedBot.WithMeta =
         apiGateway.botApi
             .getBot(botId.value, detail)
             .bodyOrThrow(operation = "fetchManagedBot(botId=${botId.value}, detail=$detail)")

@@ -50,7 +50,7 @@ class CurrentUser internal constructor(
     override val updatedAt: Instant,
     val twitterId: String,
     val lastOnline: Instant?,
-    val tags: List<UserTag>,
+    val tags: List<UserTag.Detail>,
     val groups: List<Group.Ref>,
     val bio: String,
     val homeChannel: Channel.Ref?,

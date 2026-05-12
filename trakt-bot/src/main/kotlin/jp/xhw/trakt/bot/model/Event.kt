@@ -17,7 +17,7 @@ sealed interface TimedEvent : Event {
 sealed interface BotMessageEvent :
     BotEvent,
     TimedEvent {
-    val message: Message
+    val message: Message.Detail
 }
 
 /** Runtime の初期化が完了したときのイベント。 */
@@ -40,28 +40,28 @@ data class Disposed internal constructor(
 @ConsistentCopyVisibility
 data class BotMessageCreated internal constructor(
     override val occurredAt: Instant,
-    override val message: Message,
+    override val message: Message.Detail,
 ) : BotMessageEvent
 
 /** パブリックチャンネルのメッセージが更新されたときのイベント。 */
 @ConsistentCopyVisibility
 data class BotMessageUpdated internal constructor(
     override val occurredAt: Instant,
-    override val message: Message,
+    override val message: Message.Detail,
 ) : BotMessageEvent
 
 /** DM にメッセージが投稿されたときのイベント。 */
 @ConsistentCopyVisibility
 data class BotDirectMessageCreated internal constructor(
     override val occurredAt: Instant,
-    override val message: Message,
+    override val message: Message.Detail,
 ) : BotMessageEvent
 
 /** DM のメッセージが更新されたときのイベント。 */
 @ConsistentCopyVisibility
 data class BotDirectMessageUpdated internal constructor(
     override val occurredAt: Instant,
-    override val message: Message,
+    override val message: Message.Detail,
 ) : BotMessageEvent
 
 /** パブリックチャンネルのメッセージが削除されたときのイベント。 */

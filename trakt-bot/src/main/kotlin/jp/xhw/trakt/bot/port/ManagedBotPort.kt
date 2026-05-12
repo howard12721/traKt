@@ -16,7 +16,7 @@ internal interface ManagedBotPort {
     suspend fun fetchBot(
         botId: BotId,
         detail: Boolean = false,
-    ): ManagedBot
+    ): ManagedBot.WithMeta
 
     suspend fun editBot(
         botId: BotId,

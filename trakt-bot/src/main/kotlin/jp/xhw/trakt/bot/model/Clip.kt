@@ -26,7 +26,7 @@ sealed interface ClipFolder {
 /** クリップフォルダ内のメッセージ。 */
 @ConsistentCopyVisibility
 data class ClippedMessage internal constructor(
-    val message: Message,
+    val message: Message.Detail,
     val clippedAt: Instant,
 )
 

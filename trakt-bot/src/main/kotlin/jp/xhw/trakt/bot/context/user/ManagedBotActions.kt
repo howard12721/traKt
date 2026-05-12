@@ -41,7 +41,7 @@ context(ctx: UserContext)
 suspend fun fetchManagedBot(
     botId: BotId,
     detail: Boolean = false,
-): ManagedBot = ctx.managedBotPort.fetchBot(botId, detail)
+): ManagedBot.WithMeta = ctx.managedBotPort.fetchBot(botId, detail)
 
 /**
  * Bot 詳細を取得します。
@@ -60,7 +60,7 @@ suspend fun fetchManagedBotDetail(botId: BotId): ManagedBot.Detail =
  * @return 最新の Bot 情報
  */
 context(ctx: UserContext)
-suspend fun ManagedBot.fetch(detail: Boolean = this is ManagedBot.Detail): ManagedBot = fetchManagedBot(id, detail)
+suspend fun ManagedBot.fetch(detail: Boolean = this is ManagedBot.Detail): ManagedBot.WithMeta = fetchManagedBot(id, detail)
 
 /**
  * Bot を取得します。
@@ -69,7 +69,7 @@ suspend fun ManagedBot.fetch(detail: Boolean = this is ManagedBot.Detail): Manag
  * @return 最新の Bot 情報
  */
 context(ctx: UserContext)
-suspend fun ManagedBot.refresh(detail: Boolean = this is ManagedBot.Detail): ManagedBot = fetch(detail)
+suspend fun ManagedBot.refresh(detail: Boolean = this is ManagedBot.Detail): ManagedBot.WithMeta = fetch(detail)
 
 /**
  * Bot 詳細を取得します。

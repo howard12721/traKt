@@ -37,8 +37,8 @@ value class ChannelTopic internal constructor(
 @ConsistentCopyVisibility
 data class ChannelStats internal constructor(
     val messageCount: Int,
-    val stamps: List<Stamp>,
-    val users: List<User>,
+    val stamps: List<Stamp.Ref>,
+    val users: List<User.Ref>,
     val datetime: Instant,
 )
 

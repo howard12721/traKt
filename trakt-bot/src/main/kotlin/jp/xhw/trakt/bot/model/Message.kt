@@ -71,5 +71,5 @@ enum class SortDirection {
 @ConsistentCopyVisibility
 data class SearchResult internal constructor(
     val totalHits: Long,
-    val hits: List<Message>,
+    val hits: List<Message.Detail>,
 )
