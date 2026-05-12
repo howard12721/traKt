@@ -10,7 +10,7 @@ internal interface MessagePort {
      * @param messageId 取得対象メッセージ
      * @return メッセージ情報
      */
-    suspend fun fetchMessage(messageId: MessageId): Message
+    suspend fun fetchMessage(messageId: MessageId): Message.Detail
 
     /**
      * メッセージ詳細を取得します。存在しない場合は `null` を返します。
@@ -18,7 +18,7 @@ internal interface MessagePort {
      * @param messageId 取得対象メッセージ
      * @return メッセージ情報。存在しない場合は `null`
      */
-    suspend fun fetchMessageOrNull(messageId: MessageId): Message?
+    suspend fun fetchMessageOrNull(messageId: MessageId): Message.Detail?
 
     /**
      * メッセージ本文を更新します。
@@ -111,7 +111,7 @@ internal interface MessagePort {
         content: String,
         embed: Boolean = false,
         nonce: String? = null,
-    ): Message
+    ): Message.Detail
 
     /**
      * ユーザーとの DM メッセージを取得します。
@@ -133,7 +133,7 @@ internal interface MessagePort {
         until: Instant? = null,
         inclusive: Boolean = false,
         order: SortDirection = SortDirection.DESCENDING,
-    ): List<Message>
+    ): List<Message.Detail>
 
     /**
      * メッセージを検索します。

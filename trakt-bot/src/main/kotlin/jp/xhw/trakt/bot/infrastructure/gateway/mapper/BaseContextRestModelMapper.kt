@@ -27,12 +27,12 @@ import jp.xhw.trakt.rest.models.UserTag as RestUserTag
 internal fun RestChannel.toDetail(): Channel.Detail =
     Channel.Detail(
         id = ChannelId(id),
-        parentId = parentId?.let { ChannelId(it) },
+        parent = parentId?.let { Channel.Ref(ChannelId(it)) },
         name = name,
         isArchived = archived,
         isForcedNotified = force,
         topic = ChannelTopic(topic),
-        childrenIds = children.map { ChannelId(it) },
+        children = children.map { Channel.Ref(ChannelId(it)) },
     )
 
 internal fun RestChannelList.toDirectory(): ChannelDirectory =
@@ -44,14 +44,14 @@ internal fun RestChannelList.toDirectory(): ChannelDirectory =
 internal fun RestDMChannel.toModel(): Channel.DirectMessage =
     Channel.DirectMessage(
         id = ChannelId(id),
-        userId = UserId(userId),
+        user = User.Ref(UserId(userId)),
     )
 
 // ── Channel Viewer ──
 
 internal fun RestChannelViewer.toViewerModel(): ChannelViewer =
     ChannelViewer(
-        userId = UserId(userId),
+        user = User.Ref(UserId(userId)),
         state = state.toModel(),
         updatedAt = updatedAt,
     )
@@ -66,11 +66,11 @@ internal fun RestChannelViewState.toModel(): ChannelViewState =
 
 // ── Message ──
 
-internal fun RestMessage.toModel(): Message =
-    Message(
+internal fun RestMessage.toModel(): Message.Detail =
+    Message.Detail(
         id = MessageId(id),
-        authorId = UserId(userId),
-        channelId = ChannelId(channelId),
+        author = User.Ref(UserId(userId)),
+        channel = Channel.Ref(ChannelId(channelId)),
         content = content,
         createdAt = createdAt,
         updatedAt = updatedAt,
@@ -82,8 +82,8 @@ internal fun RestMessage.toModel(): Message =
 
 internal fun RestMessageStamp.toModel(): MessageStamp =
     MessageStamp(
-        userId = UserId(userId),
-        stampId = StampId(stampId),
+        user = User.Ref(UserId(userId)),
+        stamp = Stamp.Ref(StampId(stampId)),
         count = count,
         createdAt = createdAt,
         updatedAt = updatedAt,
@@ -91,13 +91,13 @@ internal fun RestMessageStamp.toModel(): MessageStamp =
 
 internal fun RestMessagePin.toModel(): PinInfo =
     PinInfo(
-        pinnerId = UserId(userId),
+        pinner = User.Ref(UserId(userId)),
         pinnedAt = pinnedAt,
     )
 
 internal fun RestPin.toModel(): Pin =
     Pin(
-        pinnerId = UserId(userId),
+        pinner = User.Ref(UserId(userId)),
         pinnedAt = pinnedAt,
         message = message.toModel(),
     )
@@ -109,16 +109,16 @@ internal fun RestUserDetail.toModel(): User.Detail =
         id = UserId(id),
         name = name,
         displayName = displayName,
-        iconFileId = FileId(iconFileId),
+        iconFile = File.Ref(FileId(iconFileId)),
         isBot = bot,
         state = state.toModel(),
         updatedAt = updatedAt,
         twitterId = twitterId,
         lastOnline = lastOnline,
         tags = tags.map { it.toModel() },
-        groupIds = groups.map { GroupId(it) },
+        groups = groups.map { Group.Ref(GroupId(it)) },
         bio = bio,
-        homeChannelId = homeChannel?.let { ChannelId(it) },
+        homeChannel = homeChannel?.let { Channel.Ref(ChannelId(it)) },
     )
 
 internal fun RestUser.toModel(): User.Basic =
@@ -126,15 +126,15 @@ internal fun RestUser.toModel(): User.Basic =
         id = UserId(id),
         name = name,
         displayName = displayName,
-        iconFileId = FileId(iconFileId),
+        iconFile = File.Ref(FileId(iconFileId)),
         isBot = bot,
         state = state.toModel(),
         updatedAt = updatedAt,
     )
 
-internal fun RestUserTag.toModel(): UserTag =
-    UserTag(
-        tagId = UserTagId(tagId),
+internal fun RestUserTag.toModel(): UserTag.Detail =
+    UserTag.Detail(
+        id = UserTagId(tagId),
         tag = tag,
         isLocked = isLocked,
         createdAt = createdAt,
@@ -161,8 +161,8 @@ internal fun RestStamp.toModel(): Stamp.Detail =
     Stamp.Detail(
         id = StampId(id),
         name = name,
-        creatorId = UserId(creatorId),
-        fileId = FileId(fileId),
+        creator = User.Ref(UserId(creatorId)),
+        file = File.Ref(FileId(fileId)),
         createdAt = createdAt,
         updatedAt = updatedAt,
         isUnicode = isUnicode,
@@ -172,8 +172,8 @@ internal fun RestStampWithThumbnail.toModel(): Stamp.Detail =
     Stamp.Detail(
         id = StampId(id),
         name = name,
-        creatorId = UserId(creatorId),
-        fileId = FileId(fileId),
+        creator = User.Ref(UserId(creatorId)),
+        file = File.Ref(FileId(fileId)),
         createdAt = createdAt,
         updatedAt = updatedAt,
         isUnicode = isUnicode,
@@ -190,28 +190,28 @@ internal fun RestFileInfo.toModel(): FileMeta =
         md5 = md5,
         isAnimatedImage = isAnimatedImage,
         createdAt = createdAt,
-        channelId = channelId?.let { ChannelId(it) },
-        uploaderId = uploaderId?.let { UserId(it) },
+        channel = channelId?.let { Channel.Ref(ChannelId(it)) },
+        uploader = uploaderId?.let { User.Ref(UserId(it)) },
     )
 
 // ── Group ──
 
-internal fun RestUserGroup.toModel(): Group =
-    Group(
+internal fun RestUserGroup.toModel(): Group.Detail =
+    Group.Detail(
         id = GroupId(id),
         name = name,
         description = description,
         type = type,
-        iconFileId = FileId(icon),
+        iconFile = File.Ref(FileId(icon)),
         members = members.map { it.toModel() },
         createdAt = createdAt,
         updatedAt = updatedAt,
-        admins = admins.map { UserId(it) },
+        adminUsers = admins.map { User.Ref(UserId(it)) },
     )
 
 internal fun RestUserGroupMember.toModel(): GroupMember =
     GroupMember(
-        userId = UserId(id),
+        user = User.Ref(UserId(id)),
         role = role,
     )
 
@@ -226,7 +226,7 @@ internal fun RestUserStats.toModel(): UserStats =
 
 internal fun RestUserStatsStamp.toModel(): UserStampStats =
     UserStampStats(
-        stampId = StampId(id),
+        stamp = Stamp.Ref(StampId(id)),
         count = count,
         total = total,
     )

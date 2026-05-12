@@ -12,7 +12,7 @@ internal interface GroupPort {
      * @param groupId 取得対象グループ
      * @return グループ詳細
      */
-    suspend fun fetchGroup(groupId: GroupId): Group
+    suspend fun fetchGroup(groupId: GroupId): Group.Detail
 
     /**
      * グループ詳細を取得します。存在しない場合は `null` を返します。
@@ -20,14 +20,14 @@ internal interface GroupPort {
      * @param groupId 取得対象グループ
      * @return グループ詳細。存在しない場合は `null`
      */
-    suspend fun fetchGroupOrNull(groupId: GroupId): Group?
+    suspend fun fetchGroupOrNull(groupId: GroupId): Group.Detail?
 
     /**
      * グループ一覧を取得します。
      *
      * @return グループ一覧
      */
-    suspend fun fetchGroups(): List<Group>
+    suspend fun fetchGroups(): List<Group.Detail>
 
     /**
      * グループメンバー一覧を取得します。

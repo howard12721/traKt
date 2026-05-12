@@ -31,9 +31,9 @@ internal interface SelfPort {
 
     suspend fun setNotifyCitation(enabled: Boolean)
 
-    suspend fun fetchMyTags(): List<UserTag>
+    suspend fun fetchMyTags(): List<UserTag.Detail>
 
-    suspend fun addMyTag(tag: String): UserTag
+    suspend fun addMyTag(tag: String): UserTag.Detail
 
     suspend fun editMyTag(
         tagId: UserTagId,
@@ -42,7 +42,7 @@ internal interface SelfPort {
 
     suspend fun removeMyTag(tagId: UserTagId)
 
-    suspend fun fetchMyStars(): List<ChannelId>
+    suspend fun fetchMyStars(): List<Channel.Ref>
 
     suspend fun addMyStar(channelId: ChannelId)
 
@@ -63,11 +63,11 @@ internal interface SelfPort {
 
     suspend fun registerFCMDevice(token: String)
 
-    suspend fun fetchMySessions(): List<LoginSession>
+    suspend fun fetchMySessions(): List<LoginSession.Detail>
 
     suspend fun revokeMySession(sessionId: LoginSessionId)
 
-    suspend fun fetchMyTokens(): List<ActiveOAuth2Token>
+    suspend fun fetchMyTokens(): List<ActiveOAuth2Token.Detail>
 
     suspend fun revokeMyToken(tokenId: OAuth2TokenId)
 

@@ -13,7 +13,7 @@ context(ctx: UserContext)
 suspend fun createClipFolder(
     name: String,
     description: String = "",
-): ClipFolder = ctx.clipPort.createFolder(name, description)
+): ClipFolder.Detail = ctx.clipPort.createFolder(name, description)
 
 /**
  * 自分のクリップフォルダ一覧を取得します。
@@ -21,122 +21,16 @@ suspend fun createClipFolder(
  * @return クリップフォルダ一覧
  */
 context(ctx: UserContext)
-suspend fun fetchClipFolders(): List<ClipFolder> = ctx.clipPort.fetchFolders()
+suspend fun fetchClipFolders(): List<ClipFolder.Detail> = ctx.clipPort.fetchFolders()
 
 /**
- * この ID が指すクリップフォルダを取得します。
+ * クリップフォルダを取得します。
  *
- * @return クリップフォルダ
+ * @param folderId 取得対象クリップフォルダID
+ * @return 最新のクリップフォルダ情報
  */
 context(ctx: UserContext)
-suspend fun ClipFolderId.fetch(): ClipFolder = ctx.clipPort.fetchFolder(this)
-
-/**
- * クリップフォルダを編集します。
- *
- * @param name 新しいフォルダ名。`null` の場合は変更しません
- * @param description 新しい説明。`null` の場合は変更しません
- */
-context(ctx: UserContext)
-suspend fun ClipFolderId.update(
-    name: String? = null,
-    description: String? = null,
-) = ctx.clipPort.editFolder(this, name, description)
-
-/** クリップフォルダを削除します。 */
-context(ctx: UserContext)
-suspend fun ClipFolderId.delete() = ctx.clipPort.deleteFolder(this)
-
-/**
- * メッセージをクリップフォルダに追加します。
- *
- * @param message 追加するメッセージ
- * @return 追加されたクリップ情報
- */
-context(ctx: UserContext)
-suspend fun ClipFolderId.add(message: MessageId): ClippedMessage = ctx.clipPort.clipMessage(this, message)
-
-/**
- * メッセージをクリップフォルダに追加します。
- *
- * @param message 追加するメッセージ
- * @return 追加されたクリップ情報
- */
-context(ctx: UserContext)
-suspend fun ClipFolderId.add(message: Message): ClippedMessage = add(message.id)
-
-/**
- * メッセージをクリップフォルダから外します。
- *
- * @param message 外すメッセージ
- */
-context(ctx: UserContext)
-suspend fun ClipFolderId.remove(message: MessageId) = ctx.clipPort.unclipMessage(this, message)
-
-/**
- * メッセージをクリップフォルダから外します。
- *
- * @param message 外すメッセージ
- */
-context(ctx: UserContext)
-suspend fun ClipFolderId.remove(message: Message) = remove(message.id)
-
-/**
- * クリップフォルダ内のメッセージ一覧を取得します。
- *
- * @param limit 取得件数上限。`null` の場合はサーバーデフォルト
- * @param offset 取得開始位置
- * @param order 並び順
- * @return クリップされたメッセージ一覧
- */
-context(ctx: UserContext)
-suspend fun ClipFolderId.fetchMessages(
-    limit: Int? = null,
-    offset: Int = 0,
-    order: SortDirection = SortDirection.DESCENDING,
-): List<ClippedMessage> = ctx.clipPort.fetchClips(this, limit, offset, order)
-
-/**
- * メッセージを指定フォルダにクリップします。
- *
- * @param folder 追加先クリップフォルダ
- * @return 追加されたクリップ情報
- */
-context(ctx: UserContext)
-suspend fun MessageId.clipTo(folder: ClipFolderId): ClippedMessage = folder.add(this)
-
-/**
- * メッセージを指定フォルダにクリップします。
- *
- * @param folder 追加先クリップフォルダ
- * @return 追加されたクリップ情報
- */
-context(ctx: UserContext)
-suspend fun MessageId.clipTo(folder: ClipFolder): ClippedMessage = clipTo(folder.id)
-
-/**
- * メッセージを指定フォルダのクリップから外します。
- *
- * @param folder 外す対象のクリップフォルダ
- */
-context(ctx: UserContext)
-suspend fun MessageId.unclipFrom(folder: ClipFolderId) = folder.remove(this)
-
-/**
- * メッセージを指定フォルダのクリップから外します。
- *
- * @param folder 外す対象のクリップフォルダ
- */
-context(ctx: UserContext)
-suspend fun MessageId.unclipFrom(folder: ClipFolder) = unclipFrom(folder.id)
-
-/**
- * このメッセージの自分のクリップ一覧を取得します。
- *
- * @return メッセージのクリップ先一覧
- */
-context(ctx: UserContext)
-suspend fun MessageId.fetchClips(): List<MessageClip> = ctx.clipPort.fetchMessageClips(this)
+suspend fun fetchClipFolder(folderId: ClipFolderId): ClipFolder.Detail = ctx.clipPort.fetchFolder(folderId)
 
 /**
  * クリップフォルダを取得します。
@@ -144,7 +38,7 @@ suspend fun MessageId.fetchClips(): List<MessageClip> = ctx.clipPort.fetchMessag
  * @return 最新のクリップフォルダ情報
  */
 context(ctx: UserContext)
-suspend fun ClipFolder.fetch(): ClipFolder = id.fetch()
+suspend fun ClipFolder.fetch(): ClipFolder.Detail = fetchClipFolder(id)
 
 /**
  * クリップフォルダを編集します。
@@ -156,45 +50,28 @@ context(ctx: UserContext)
 suspend fun ClipFolder.update(
     name: String? = null,
     description: String? = null,
-) = id.update(name, description)
+) = ctx.clipPort.editFolder(id, name, description)
 
 /** クリップフォルダを削除します。 */
 context(ctx: UserContext)
-suspend fun ClipFolder.delete() = id.delete()
+suspend fun ClipFolder.delete() = ctx.clipPort.deleteFolder(id)
 
 /**
  * メッセージをクリップフォルダに追加します。
  *
- * @param message 追加するメッセージ
+ * @param messageId 追加するメッセージID
  * @return 追加されたクリップ情報
  */
 context(ctx: UserContext)
-suspend fun ClipFolder.add(message: MessageId): ClippedMessage = id.add(message)
-
-/**
- * メッセージをクリップフォルダに追加します。
- *
- * @param message 追加するメッセージ
- * @return 追加されたクリップ情報
- */
-context(ctx: UserContext)
-suspend fun ClipFolder.add(message: Message): ClippedMessage = id.add(message)
+suspend fun ClipFolder.add(messageId: MessageId): ClippedMessage = ctx.clipPort.clipMessage(id, messageId)
 
 /**
  * メッセージをクリップフォルダから外します。
  *
- * @param message 外すメッセージ
+ * @param messageId 外すメッセージID
  */
 context(ctx: UserContext)
-suspend fun ClipFolder.remove(message: MessageId) = id.remove(message)
-
-/**
- * メッセージをクリップフォルダから外します。
- *
- * @param message 外すメッセージ
- */
-context(ctx: UserContext)
-suspend fun ClipFolder.remove(message: Message) = id.remove(message)
+suspend fun ClipFolder.remove(messageId: MessageId) = ctx.clipPort.unclipMessage(id, messageId)
 
 /**
  * クリップフォルダ内のメッセージ一覧を取得します。
@@ -209,41 +86,24 @@ suspend fun ClipFolder.fetchMessages(
     limit: Int? = null,
     offset: Int = 0,
     order: SortDirection = SortDirection.DESCENDING,
-): List<ClippedMessage> = id.fetchMessages(limit, offset, order)
+): List<ClippedMessage> = ctx.clipPort.fetchClips(id, limit, offset, order)
 
 /**
  * メッセージを指定フォルダにクリップします。
  *
- * @param folder 追加先クリップフォルダ
+ * @param folderId 追加先クリップフォルダID
  * @return 追加されたクリップ情報
  */
 context(ctx: UserContext)
-suspend fun Message.clipTo(folder: ClipFolderId): ClippedMessage = id.clipTo(folder)
-
-/**
- * メッセージを指定フォルダにクリップします。
- *
- * @param folder 追加先クリップフォルダ
- * @return 追加されたクリップ情報
- */
-context(ctx: UserContext)
-suspend fun Message.clipTo(folder: ClipFolder): ClippedMessage = id.clipTo(folder)
+suspend fun Message.clipTo(folderId: ClipFolderId): ClippedMessage = ctx.clipPort.clipMessage(folderId, id)
 
 /**
  * メッセージを指定フォルダのクリップから外します。
  *
- * @param folder 外す対象のクリップフォルダ
+ * @param folderId 外す対象のクリップフォルダID
  */
 context(ctx: UserContext)
-suspend fun Message.unclipFrom(folder: ClipFolderId) = id.unclipFrom(folder)
-
-/**
- * メッセージを指定フォルダのクリップから外します。
- *
- * @param folder 外す対象のクリップフォルダ
- */
-context(ctx: UserContext)
-suspend fun Message.unclipFrom(folder: ClipFolder) = id.unclipFrom(folder)
+suspend fun Message.unclipFrom(folderId: ClipFolderId) = ctx.clipPort.unclipMessage(folderId, id)
 
 /**
  * このメッセージの自分のクリップ一覧を取得します。
@@ -251,4 +111,4 @@ suspend fun Message.unclipFrom(folder: ClipFolder) = id.unclipFrom(folder)
  * @return メッセージのクリップ先一覧
  */
 context(ctx: UserContext)
-suspend fun Message.fetchClips(): List<MessageClip> = id.fetchClips()
+suspend fun Message.fetchClips(): List<MessageClip> = ctx.clipPort.fetchMessageClips(id)

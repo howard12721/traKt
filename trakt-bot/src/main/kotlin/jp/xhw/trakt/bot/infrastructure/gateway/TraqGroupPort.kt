@@ -12,17 +12,17 @@ import jp.xhw.trakt.rest.models.PostUserGroupAdminRequest
 internal class TraqGroupPort(
     private val apiGateway: TraqApiGateway,
 ) : GroupPort {
-    override suspend fun fetchGroup(groupId: GroupId): Group {
+    override suspend fun fetchGroup(groupId: GroupId): Group.Detail {
         val response = apiGateway.groupApi.getUserGroup(groupId.value)
         return response.bodyOrThrow(operation = "fetchGroup(groupId=${groupId.value})").toModel()
     }
 
-    override suspend fun fetchGroupOrNull(groupId: GroupId): Group? {
+    override suspend fun fetchGroupOrNull(groupId: GroupId): Group.Detail? {
         val response = apiGateway.groupApi.getUserGroup(groupId.value)
         return response.bodyOrNullIfNotFound(operation = "fetchGroupOrNull(groupId=${groupId.value})")?.toModel()
     }
 
-    override suspend fun fetchGroups(): List<Group> {
+    override suspend fun fetchGroups(): List<Group.Detail> {
         val response = apiGateway.groupApi.getUserGroups()
         return response.bodyOrThrow(operation = "fetchGroups()").map { it.toModel() }
     }

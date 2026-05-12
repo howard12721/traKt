@@ -33,7 +33,7 @@ enum class BotEventResult {
 /** Bot イベントログ。 */
 @ConsistentCopyVisibility
 data class BotEventLog internal constructor(
-    val botId: BotId,
+    val bot: ManagedBot.Ref,
     val requestId: String,
     val event: String,
     val result: BotEventResult?,
@@ -44,26 +44,35 @@ data class BotEventLog internal constructor(
 /** 管理 API で扱う Bot 情報。 */
 sealed interface ManagedBot {
     val id: BotId
-    val botUserId: UserId
-    val description: String
-    val developerId: UserId
-    val subscribeEvents: List<String>
-    val mode: ManagedBotMode
-    val state: ManagedBotState
-    val createdAt: Instant
-    val updatedAt: Instant
+
+    /** ID のみを持つ Bot 参照。 */
+    @JvmInline
+    value class Ref(
+        override val id: BotId,
+    ) : ManagedBot
+
+    sealed interface WithMeta : ManagedBot {
+        val botUser: User.Ref
+        val description: String
+        val developer: User.Ref
+        val subscribeEvents: List<String>
+        val mode: ManagedBotMode
+        val state: ManagedBotState
+        val createdAt: Instant
+        val updatedAt: Instant
+    }
 
     class Basic internal constructor(
         override val id: BotId,
-        override val botUserId: UserId,
+        override val botUser: User.Ref,
         override val description: String,
-        override val developerId: UserId,
+        override val developer: User.Ref,
         override val subscribeEvents: List<String>,
         override val mode: ManagedBotMode,
         override val state: ManagedBotState,
         override val createdAt: Instant,
         override val updatedAt: Instant,
-    ) : ManagedBot {
+    ) : WithMeta {
         override fun equals(other: Any?): Boolean {
             if (this === other) return true
             if (other !is ManagedBot) return false
@@ -75,9 +84,9 @@ sealed interface ManagedBot {
 
     class Detail internal constructor(
         override val id: BotId,
-        override val botUserId: UserId,
+        override val botUser: User.Ref,
         override val description: String,
-        override val developerId: UserId,
+        override val developer: User.Ref,
         override val subscribeEvents: List<String>,
         override val mode: ManagedBotMode,
         override val state: ManagedBotState,
@@ -86,8 +95,8 @@ sealed interface ManagedBot {
         val tokens: BotTokens,
         val endpoint: String,
         val privileged: Boolean,
-        val channelIds: List<ChannelId>,
-    ) : ManagedBot {
+        val channels: List<Channel.Ref>,
+    ) : WithMeta {
         override fun equals(other: Any?): Boolean {
             if (this === other) return true
             if (other !is ManagedBot) return false

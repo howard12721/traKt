@@ -15,29 +15,40 @@ value class MessageId(
     }
 }
 
-/** メッセージ本文とメタ情報。 */
-class Message internal constructor(
-    val id: MessageId,
-    val authorId: UserId,
-    val channelId: ChannelId,
-    val content: String,
-    val createdAt: Instant,
-    val updatedAt: Instant,
-    val isPinned: Boolean,
-    val stamps: List<MessageStamp>,
-    val threadId: Uuid?,
-    val nonce: String? = null,
-) {
-    override fun equals(other: Any?): Boolean = other is Message && this.id == other.id
+/** メッセージ。 */
+sealed interface Message {
+    val id: MessageId
 
-    override fun hashCode(): Int = id.hashCode()
+    /** ID のみを持つメッセージ参照。 */
+    @JvmInline
+    value class Ref(
+        override val id: MessageId,
+    ) : Message
+
+    /** メッセージ本文とメタ情報。 */
+    class Detail internal constructor(
+        override val id: MessageId,
+        val author: User.Ref,
+        val channel: Channel.Ref,
+        val content: String,
+        val createdAt: Instant,
+        val updatedAt: Instant,
+        val isPinned: Boolean,
+        val stamps: List<MessageStamp>,
+        val threadId: Uuid?,
+        val nonce: String? = null,
+    ) : Message {
+        override fun equals(other: Any?): Boolean = other is Message && this.id == other.id
+
+        override fun hashCode(): Int = id.hashCode()
+    }
 }
 
 /** メッセージへ付与されたスタンプ情報。 */
 @ConsistentCopyVisibility
 data class MessageStamp internal constructor(
-    val userId: UserId,
-    val stampId: StampId,
+    val user: User.Ref,
+    val stamp: Stamp.Ref,
     val count: Int,
     val createdAt: Instant,
     val updatedAt: Instant,
@@ -46,7 +57,7 @@ data class MessageStamp internal constructor(
 /** メッセージのピン情報。 */
 @ConsistentCopyVisibility
 data class PinInfo internal constructor(
-    val pinnerId: UserId,
+    val pinner: User.Ref,
     val pinnedAt: Instant,
 )
 

@@ -18,17 +18,26 @@ value class StampId(
 /** スタンプ。 */
 sealed interface Stamp {
     val id: StampId
-    val name: String
-    val creatorId: UserId
-    val fileId: FileId
+
+    /** ID のみを持つスタンプ参照。 */
+    @JvmInline
+    value class Ref(
+        override val id: StampId,
+    ) : Stamp
+
+    sealed interface WithMeta : Stamp {
+        val name: String
+        val creator: User.Ref
+        val file: File.Ref
+    }
 
     /** 基本的なスタンプ情報。 */
     class Basic internal constructor(
         override val id: StampId,
         override val name: String,
-        override val creatorId: UserId,
-        override val fileId: FileId,
-    ) : Stamp {
+        override val creator: User.Ref,
+        override val file: File.Ref,
+    ) : WithMeta {
         override fun equals(other: Any?): Boolean {
             if (this === other) return true
             if (other !is Stamp) return false
@@ -42,12 +51,12 @@ sealed interface Stamp {
     class Detail internal constructor(
         override val id: StampId,
         override val name: String,
-        override val creatorId: UserId,
-        override val fileId: FileId,
+        override val creator: User.Ref,
+        override val file: File.Ref,
         val createdAt: Instant,
         val updatedAt: Instant,
         val isUnicode: Boolean,
-    ) : Stamp {
+    ) : WithMeta {
         override fun equals(other: Any?): Boolean {
             if (this === other) return true
             if (other !is Stamp) return false

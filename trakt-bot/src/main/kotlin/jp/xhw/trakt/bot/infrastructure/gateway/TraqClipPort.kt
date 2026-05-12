@@ -14,19 +14,19 @@ internal class TraqClipPort(
     override suspend fun createFolder(
         name: String,
         description: String,
-    ): ClipFolder =
+    ): ClipFolder.Detail =
         apiGateway.clipApi
             .createClipFolder(PostClipFolderRequest(name = name, description = description))
             .bodyOrThrow(operation = "createClipFolder(name=$name)")
             .toModel()
 
-    override suspend fun fetchFolders(): List<ClipFolder> =
+    override suspend fun fetchFolders(): List<ClipFolder.Detail> =
         apiGateway.clipApi
             .getClipFolders()
             .bodyOrThrow(operation = "fetchClipFolders()")
             .map { it.toModel() }
 
-    override suspend fun fetchFolder(folderId: ClipFolderId): ClipFolder =
+    override suspend fun fetchFolder(folderId: ClipFolderId): ClipFolder.Detail =
         apiGateway.clipApi
             .getClipFolder(folderId.value)
             .bodyOrThrow(operation = "fetchClipFolder(folderId=${folderId.value})")

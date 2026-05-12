@@ -44,16 +44,16 @@ class CurrentUser internal constructor(
     override val id: UserId,
     override val name: String,
     override val displayName: String,
-    override val iconFileId: FileId,
+    override val iconFile: File.Ref,
     override val isBot: Boolean,
     override val state: UserState,
     override val updatedAt: Instant,
     val twitterId: String,
     val lastOnline: Instant?,
     val tags: List<UserTag>,
-    val groupIds: List<GroupId>,
+    val groups: List<Group.Ref>,
     val bio: String,
-    val homeChannelId: ChannelId?,
+    val homeChannel: Channel.Ref?,
     val permissions: List<UserPermission>,
 ) : User.StatefulUser {
     val hasAdministrativeAccess: Boolean
@@ -84,51 +84,73 @@ enum class ChannelSubscriptionLevel {
 /** 自分のチャンネル購読状態。 */
 @ConsistentCopyVisibility
 data class ChannelSubscription internal constructor(
-    val channelId: ChannelId,
+    val channel: Channel.Ref,
     val level: ChannelSubscriptionLevel,
 )
 
 /** 自分の未読チャンネル情報。 */
 @ConsistentCopyVisibility
 data class UnreadChannel internal constructor(
-    val channelId: ChannelId,
+    val channel: Channel.Ref,
     val count: Int,
     val noticeable: Boolean,
     val since: Instant,
     val updatedAt: Instant,
-    val oldestMessageId: MessageId,
+    val oldestMessage: Message.Ref,
 )
 
 /** 自分の WebSocket セッションごとの閲覧状態。 */
 @ConsistentCopyVisibility
 data class MyChannelViewState internal constructor(
     val key: String,
-    val channelId: ChannelId,
+    val channel: Channel.Ref,
     val state: ChannelViewState,
 )
 
 /** ユーザー設定。 */
 @ConsistentCopyVisibility
 data class UserSettings internal constructor(
-    val userId: UserId,
+    val user: User.Ref,
     val notifyCitation: Boolean,
 )
 
-/** ログインセッション情報。 */
-@ConsistentCopyVisibility
-data class LoginSession internal constructor(
-    val id: LoginSessionId,
-    val issuedAt: Instant,
-)
+/** ログインセッション。 */
+sealed interface LoginSession {
+    val id: LoginSessionId
 
-/** 有効な OAuth2 トークン情報。 */
-@ConsistentCopyVisibility
-data class ActiveOAuth2Token internal constructor(
-    val id: OAuth2TokenId,
-    val clientId: String,
-    val scopes: List<OAuth2Scope>,
-    val issuedAt: Instant,
-)
+    /** ID のみを持つログインセッション参照。 */
+    @JvmInline
+    value class Ref(
+        override val id: LoginSessionId,
+    ) : LoginSession
+
+    /** ログインセッション情報。 */
+    @ConsistentCopyVisibility
+    data class Detail internal constructor(
+        override val id: LoginSessionId,
+        val issuedAt: Instant,
+    ) : LoginSession
+}
+
+/** 有効な OAuth2 トークン。 */
+sealed interface ActiveOAuth2Token {
+    val id: OAuth2TokenId
+
+    /** ID のみを持つ OAuth2 トークン参照。 */
+    @JvmInline
+    value class Ref(
+        override val id: OAuth2TokenId,
+    ) : ActiveOAuth2Token
+
+    /** 有効な OAuth2 トークン情報。 */
+    @ConsistentCopyVisibility
+    data class Detail internal constructor(
+        override val id: OAuth2TokenId,
+        val clientId: String,
+        val scopes: List<OAuth2Scope>,
+        val issuedAt: Instant,
+    ) : ActiveOAuth2Token
+}
 
 /** 外部ログインアカウント。 */
 @ConsistentCopyVisibility
@@ -141,13 +163,13 @@ data class ExternalAccount internal constructor(
 /** スタンプ利用履歴。 */
 @ConsistentCopyVisibility
 data class StampHistoryEntry internal constructor(
-    val stampId: StampId,
+    val stamp: Stamp.Ref,
     val datetime: Instant,
 )
 
 /** スタンプレコメンド。 */
 @ConsistentCopyVisibility
 data class StampRecommendation internal constructor(
-    val stampId: StampId,
+    val stamp: Stamp.Ref,
     val score: Double,
 )

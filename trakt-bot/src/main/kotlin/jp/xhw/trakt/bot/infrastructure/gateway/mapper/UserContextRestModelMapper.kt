@@ -32,16 +32,16 @@ internal fun RestMyUserDetail.toCurrentUser(): CurrentUser =
         id = UserId(id),
         name = name,
         displayName = displayName,
-        iconFileId = FileId(iconFileId),
+        iconFile = File.Ref(FileId(iconFileId)),
         isBot = bot,
         state = state.toModel(),
         updatedAt = updatedAt,
         twitterId = twitterId,
         lastOnline = lastOnline,
         tags = tags.map { it.toModel() },
-        groupIds = groups.map { GroupId(it) },
+        groups = groups.map { Group.Ref(GroupId(it)) },
         bio = bio,
-        homeChannelId = homeChannel?.let { ChannelId(it) },
+        homeChannel = homeChannel?.let { Channel.Ref(ChannelId(it)) },
         permissions = permissions.map { it.toModel() },
     )
 
@@ -65,41 +65,41 @@ internal fun ChannelSubscriptionLevel.toApiModel(): RestChannelSubscribeLevel =
 
 internal fun RestUserSubscribeState.toModel(): ChannelSubscription =
     ChannelSubscription(
-        channelId = ChannelId(channelId),
+        channel = Channel.Ref(ChannelId(channelId)),
         level = level.toModel(),
     )
 
 internal fun RestUnreadChannel.toModel(): UnreadChannel =
     UnreadChannel(
-        channelId = ChannelId(channelId),
+        channel = Channel.Ref(ChannelId(channelId)),
         count = count,
         noticeable = noticeable,
         since = since,
         updatedAt = updatedAt,
-        oldestMessageId = MessageId(oldestMessageId),
+        oldestMessage = Message.Ref(MessageId(oldestMessageId)),
     )
 
 internal fun RestMyChannelViewState.toModel(): MyChannelViewState =
     MyChannelViewState(
         key = key,
-        channelId = ChannelId(channelId),
+        channel = Channel.Ref(ChannelId(channelId)),
         state = state.toModel(),
     )
 
 internal fun RestUserSettings.toModel(): UserSettings =
     UserSettings(
-        userId = UserId(id),
+        user = User.Ref(UserId(id)),
         notifyCitation = notifyCitation,
     )
 
-internal fun RestLoginSession.toModel(): LoginSession =
-    LoginSession(
+internal fun RestLoginSession.toModel(): LoginSession.Detail =
+    LoginSession.Detail(
         id = LoginSessionId(id),
         issuedAt = issuedAt,
     )
 
-internal fun RestActiveOAuth2Token.toModel(): ActiveOAuth2Token =
-    ActiveOAuth2Token(
+internal fun RestActiveOAuth2Token.toModel(): ActiveOAuth2Token.Detail =
+    ActiveOAuth2Token.Detail(
         id = OAuth2TokenId(id),
         clientId = clientId,
         scopes = scopes.map { it.toModel() },
@@ -115,22 +115,22 @@ internal fun RestExternalProviderUser.toModel(): ExternalAccount =
 
 internal fun RestStampHistoryEntry.toModel(): StampHistoryEntry =
     StampHistoryEntry(
-        stampId = StampId(stampId),
+        stamp = Stamp.Ref(StampId(stampId)),
         datetime = datetime,
     )
 
 internal fun RestStampRecommendation.toModel(): StampRecommendation =
     StampRecommendation(
-        stampId = StampId(stampId),
+        stamp = Stamp.Ref(StampId(stampId)),
         score = score,
     )
 
-internal fun RestClipFolder.toModel(): ClipFolder =
-    ClipFolder(
+internal fun RestClipFolder.toModel(): ClipFolder.Detail =
+    ClipFolder.Detail(
         id = ClipFolderId(id),
         name = name,
         description = description,
-        ownerId = UserId(ownerId),
+        owner = User.Ref(UserId(ownerId)),
         createdAt = createdAt,
     )
 
@@ -142,19 +142,19 @@ internal fun RestClippedMessage.toModel(): ClippedMessage =
 
 internal fun RestMessageClip.toModel(): MessageClip =
     MessageClip(
-        folderId = ClipFolderId(folderId),
+        folder = ClipFolder.Ref(ClipFolderId(folderId)),
         clippedAt = clippedAt,
     )
 
-internal fun RestWebhook.toModel(): Webhook =
-    Webhook(
+internal fun RestWebhook.toModel(): Webhook.Detail =
+    Webhook.Detail(
         id = WebhookId(id),
-        botUserId = UserId(botUserId),
+        botUser = User.Ref(UserId(botUserId)),
         displayName = displayName,
         description = description,
         isSecure = secure,
-        channelId = ChannelId(channelId),
-        ownerId = UserId(ownerId),
+        channel = Channel.Ref(ChannelId(channelId)),
+        owner = User.Ref(UserId(ownerId)),
         createdAt = createdAt,
         updatedAt = updatedAt,
     )
@@ -162,9 +162,9 @@ internal fun RestWebhook.toModel(): Webhook =
 internal fun RestBot.toManagedModel(): ManagedBot.Basic =
     ManagedBot.Basic(
         id = BotId(id),
-        botUserId = UserId(botUserId),
+        botUser = User.Ref(UserId(botUserId)),
         description = description,
-        developerId = UserId(developerId),
+        developer = User.Ref(UserId(developerId)),
         subscribeEvents = subscribeEvents,
         mode = mode.toModel(),
         state = state.toModel(),
@@ -175,9 +175,9 @@ internal fun RestBot.toManagedModel(): ManagedBot.Basic =
 internal fun RestBotDetail.toManagedModel(): ManagedBot.Detail =
     ManagedBot.Detail(
         id = BotId(id),
-        botUserId = UserId(botUserId),
+        botUser = User.Ref(UserId(botUserId)),
         description = description,
-        developerId = UserId(developerId),
+        developer = User.Ref(UserId(developerId)),
         subscribeEvents = subscribeEvents,
         mode = mode.toModel(),
         state = state.toModel(),
@@ -186,15 +186,15 @@ internal fun RestBotDetail.toManagedModel(): ManagedBot.Detail =
         tokens = tokens.toModel(),
         endpoint = endpoint,
         privileged = privileged,
-        channelIds = channels.map { ChannelId(it) },
+        channels = channels.map { Channel.Ref(ChannelId(it)) },
     )
 
 internal fun RestGetBotResponse.toManagedModel(): ManagedBot.Detail =
     ManagedBot.Detail(
         id = BotId(id),
-        botUserId = UserId(botUserId),
+        botUser = User.Ref(UserId(botUserId)),
         description = description,
-        developerId = UserId(developerId),
+        developer = User.Ref(UserId(developerId)),
         subscribeEvents = subscribeEvents,
         mode = mode.toModel(),
         state = state.toModel(),
@@ -203,7 +203,7 @@ internal fun RestGetBotResponse.toManagedModel(): ManagedBot.Detail =
         tokens = tokens.toModel(),
         endpoint = endpoint,
         privileged = privileged,
-        channelIds = channels.map { ChannelId(it) },
+        channels = channels.map { Channel.Ref(ChannelId(it)) },
     )
 
 internal fun RestBotMode.toModel(): ManagedBotMode =
@@ -241,7 +241,7 @@ internal fun RestBotEventResult.toModel(): BotEventResult =
 
 internal fun RestBotEventLog.toModel(): BotEventLog =
     BotEventLog(
-        botId = BotId(botId),
+        bot = ManagedBot.Ref(BotId(botId)),
         requestId = requestId.toString(),
         event = event,
         result = result?.toModel(),

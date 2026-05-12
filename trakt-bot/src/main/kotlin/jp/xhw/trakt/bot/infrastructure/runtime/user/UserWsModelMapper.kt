@@ -52,25 +52,25 @@ import jp.xhw.trakt.websocket.user.WebRtcSession as WsWebRtcSession
 internal fun WebSocketEvent.toEventOrNull(): UserEvent? =
     when (this) {
         is WsUserJoined -> {
-            UserJoined(userId = id.userId())
+            UserJoined(user = id.userRef())
         }
 
         is WsUserUpdated -> {
-            UserUpdated(userId = id.userId())
+            UserUpdated(user = id.userRef())
         }
 
         is WsUserTagsUpdated -> {
-            UserTagsUpdated(userId = id.userId(), tagId = UserTagId(tagId))
+            UserTagsUpdated(user = id.userRef(), tag = UserTag.Ref(UserTagId(tagId)))
         }
 
         is WsUserIconUpdated -> {
-            UserIconUpdated(userId = id.userId())
+            UserIconUpdated(user = id.userRef())
         }
 
         is WsUserWebRtcStateChanged -> {
             UserWebRtcStateChanged(
-                userId = userId.userId(),
-                channelId = channelId.channelId(),
+                user = userId.userRef(),
+                channel = channelId.channelRef(),
                 sessions = sessions.map { it.toModel() },
             )
         }
@@ -80,73 +80,73 @@ internal fun WebSocketEvent.toEventOrNull(): UserEvent? =
         }
 
         is WsUserOnline -> {
-            UserOnline(userId = id.userId())
+            UserOnline(user = id.userRef())
         }
 
         is WsUserOffline -> {
-            UserOffline(userId = id.userId())
+            UserOffline(user = id.userRef())
         }
 
         is WsUserGroupCreated -> {
-            UserGroupCreated(groupId = id.groupId())
+            UserGroupCreated(group = id.groupRef())
         }
 
         is WsUserGroupUpdated -> {
-            UserGroupUpdated(groupId = id.groupId())
+            UserGroupUpdated(group = id.groupRef())
         }
 
         is WsUserGroupDeleted -> {
-            UserGroupDeleted(groupId = id.groupId())
+            UserGroupDeleted(group = id.groupRef())
         }
 
         is WsChannelCreated -> {
-            UserChannelCreated(channelId = id.channelId(), dmUserId = dmUserId?.userId())
+            UserChannelCreated(channel = id.channelRef(), dmUser = dmUserId?.userRef())
         }
 
         is WsChannelUpdated -> {
-            UserChannelUpdated(channelId = id.channelId(), dmUserId = dmUserId?.userId())
+            UserChannelUpdated(channel = id.channelRef(), dmUser = dmUserId?.userRef())
         }
 
         is WsChannelDeleted -> {
-            UserChannelDeleted(channelId = id.channelId(), dmUserId = dmUserId?.userId())
+            UserChannelDeleted(channel = id.channelRef(), dmUser = dmUserId?.userRef())
         }
 
         is WsChannelStared -> {
-            UserChannelStared(channelId = id.channelId())
+            UserChannelStared(channel = id.channelRef())
         }
 
         is WsChannelUnstared -> {
-            UserChannelUnstared(channelId = id.channelId())
+            UserChannelUnstared(channel = id.channelRef())
         }
 
         is WsChannelViewersChanged -> {
             UserChannelViewersChanged(
-                channelId = id.channelId(),
+                channel = id.channelRef(),
                 viewers = viewers.map { it.toModel() },
             )
         }
 
         is WsChannelSubscribersChanged -> {
-            UserChannelSubscribersChanged(channelId = id.channelId())
+            UserChannelSubscribersChanged(channel = id.channelRef())
         }
 
         is WsMessageCreated -> {
-            UserMessageCreated(messageId = id.messageId(), isCiting = isCiting)
+            UserMessageCreated(message = id.messageRef(), isCiting = isCiting)
         }
 
         is WsMessageUpdated -> {
-            UserMessageUpdated(messageId = id.messageId())
+            UserMessageUpdated(message = id.messageRef())
         }
 
         is WsMessageDeleted -> {
-            UserMessageDeleted(messageId = id.messageId())
+            UserMessageDeleted(message = id.messageRef())
         }
 
         is WsMessageStamped -> {
             UserMessageStamped(
-                messageId = messageId.messageId(),
-                userId = userId.userId(),
-                stampId = stampId.stampId(),
+                message = messageId.messageRef(),
+                user = userId.userRef(),
+                stamp = stampId.stampRef(),
                 count = count,
                 createdAt = createdAt,
             )
@@ -154,74 +154,74 @@ internal fun WebSocketEvent.toEventOrNull(): UserEvent? =
 
         is WsMessageUnstamped -> {
             UserMessageUnstamped(
-                messageId = messageId.messageId(),
-                userId = userId.userId(),
-                stampId = stampId.stampId(),
+                message = messageId.messageRef(),
+                user = userId.userRef(),
+                stamp = stampId.stampRef(),
             )
         }
 
         is WsMessagePinned -> {
-            UserMessagePinned(messageId = messageId.messageId(), channelId = channelId.channelId())
+            UserMessagePinned(message = messageId.messageRef(), channel = channelId.channelRef())
         }
 
         is WsMessageUnpinned -> {
             UserMessageUnpinned(
-                messageId = messageId.messageId(),
-                channelId = channelId.channelId(),
+                message = messageId.messageRef(),
+                channel = channelId.channelRef(),
             )
         }
 
         is WsMessageRead -> {
-            UserMessageRead(messageId = id.messageId())
+            UserMessageRead(message = id.messageRef())
         }
 
         is WsStampCreated -> {
-            UserStampCreated(stampId = id.stampId())
+            UserStampCreated(stamp = id.stampRef())
         }
 
         is WsStampUpdated -> {
-            UserStampUpdated(stampId = id.stampId())
+            UserStampUpdated(stamp = id.stampRef())
         }
 
         is WsStampDeleted -> {
-            UserStampDeleted(stampId = id.stampId())
+            UserStampDeleted(stamp = id.stampRef())
         }
 
         is WsStampPaletteCreated -> {
-            UserStampPaletteCreated(stampPaletteId = id.stampPaletteId())
+            UserStampPaletteCreated(stampPalette = id.stampPaletteRef())
         }
 
         is WsStampPaletteUpdated -> {
-            UserStampPaletteUpdated(stampPaletteId = id.stampPaletteId())
+            UserStampPaletteUpdated(stampPalette = id.stampPaletteRef())
         }
 
         is WsStampPaletteDeleted -> {
-            UserStampPaletteDeleted(stampPaletteId = id.stampPaletteId())
+            UserStampPaletteDeleted(stampPalette = id.stampPaletteRef())
         }
 
         is WsClipFolderCreated -> {
-            UserClipFolderCreated(clipFolderId = id.clipFolderId())
+            UserClipFolderCreated(folder = id.clipFolderRef())
         }
 
         is WsClipFolderUpdated -> {
-            UserClipFolderUpdated(clipFolderId = id.clipFolderId())
+            UserClipFolderUpdated(folder = id.clipFolderRef())
         }
 
         is WsClipFolderDeleted -> {
-            UserClipFolderDeleted(clipFolderId = id.clipFolderId())
+            UserClipFolderDeleted(folder = id.clipFolderRef())
         }
 
         is WsClipFolderMessageDeleted -> {
             UserClipFolderMessageDeleted(
-                clipFolderId = folderId.clipFolderId(),
-                messageId = messageId.messageId(),
+                folder = folderId.clipFolderRef(),
+                message = messageId.messageRef(),
             )
         }
 
         is WsClipFolderMessageAdded -> {
             UserClipFolderMessageAdded(
-                clipFolderId = folderId.clipFolderId(),
-                messageId = messageId.messageId(),
+                folder = folderId.clipFolderRef(),
+                message = messageId.messageRef(),
             )
         }
 
@@ -231,34 +231,34 @@ internal fun WebSocketEvent.toEventOrNull(): UserEvent? =
 
         is WsQallSoundboardItemCreated -> {
             UserQallSoundboardItemCreated(
-                soundId = soundId.qallSoundId(),
+                sound = soundId.qallSoundRef(),
                 name = name,
-                creatorId = creatorId.userId(),
+                creator = creatorId.userRef(),
             )
         }
 
         is WsQallSoundboardItemDeleted -> {
-            UserQallSoundboardItemDeleted(soundId = soundId.qallSoundId())
+            UserQallSoundboardItemDeleted(sound = soundId.qallSoundRef())
         }
     }
 
-private fun Uuid.userId(): UserId = UserId(this)
+private fun Uuid.userRef(): User.Ref = User.Ref(UserId(this))
 
-private fun Uuid.groupId(): GroupId = GroupId(this)
+private fun Uuid.groupRef(): Group.Ref = Group.Ref(GroupId(this))
 
-private fun Uuid.channelId(): ChannelId = ChannelId(this)
+private fun Uuid.channelRef(): Channel.Ref = Channel.Ref(ChannelId(this))
 
-private fun Uuid.messageId(): MessageId = MessageId(this)
+private fun Uuid.messageRef(): Message.Ref = Message.Ref(MessageId(this))
 
-private fun Uuid.stampId(): StampId = StampId(this)
+private fun Uuid.stampRef(): Stamp.Ref = Stamp.Ref(StampId(this))
 
-private fun Uuid.stampPaletteId(): StampPaletteId = StampPaletteId(this)
+private fun Uuid.stampPaletteRef(): StampPalette.Ref = StampPalette.Ref(StampPaletteId(this))
 
-private fun Uuid.clipFolderId(): ClipFolderId = ClipFolderId(this)
+private fun Uuid.clipFolderRef(): ClipFolder.Ref = ClipFolder.Ref(ClipFolderId(this))
 
-private fun Uuid.qallSoundId(): QallSoundId = QallSoundId(this)
+private fun Uuid.qallSoundRef(): QallSound.Ref = QallSound.Ref(QallSoundId(this))
 
-private fun Uuid.qallRoomId(): QallRoomId = QallRoomId(this)
+private fun Uuid.qallRoomRef(): QallRoom.Ref = QallRoom.Ref(QallRoomId(this))
 
 private fun WsWebRtcSession.toModel(): WebRtcSession =
     WebRtcSession(
@@ -269,13 +269,13 @@ private fun WsWebRtcSession.toModel(): WebRtcSession =
 private fun WsViewState.toModel(): UserChannelViewState =
     UserChannelViewState(
         key = key,
-        channelId = channelId.channelId(),
+        channel = channelId.channelRef(),
         state = state.toChannelViewState(),
     )
 
 private fun WsChannelViewer.toModel(): ChannelViewer =
     ChannelViewer(
-        userId = userId.userId(),
+        user = userId.userRef(),
         state = state.toChannelViewState(),
         updatedAt = updatedAt,
     )
@@ -294,7 +294,7 @@ private fun WsQallRoomWithParticipants.toModel(): QallRoomWithParticipants =
         isWebinar = isWebinar,
         metadata = metadata,
         participants = participants.map { it.toModel() },
-        roomId = roomId.qallRoomId(),
+        room = roomId.qallRoomRef(),
     )
 
 private fun String.toChannelViewState(): ChannelViewState =

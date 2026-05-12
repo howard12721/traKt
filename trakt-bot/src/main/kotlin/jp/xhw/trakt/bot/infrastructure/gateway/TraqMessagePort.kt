@@ -10,12 +10,12 @@ import jp.xhw.trakt.rest.models.PostMessageStampRequest
 internal class TraqMessagePort(
     private val apiGateway: TraqApiGateway,
 ) : MessagePort {
-    override suspend fun fetchMessage(messageId: MessageId): Message {
+    override suspend fun fetchMessage(messageId: MessageId): Message.Detail {
         val response = apiGateway.messageApi.getMessage(messageId.value)
         return response.bodyOrThrow(operation = "fetchMessage(messageId=${messageId.value})").toModel()
     }
 
-    override suspend fun fetchMessageOrNull(messageId: MessageId): Message? {
+    override suspend fun fetchMessageOrNull(messageId: MessageId): Message.Detail? {
         val response = apiGateway.messageApi.getMessage(messageId.value)
         return response.bodyOrNullIfNotFound(operation = "fetchMessageOrNull(messageId=${messageId.value})")?.toModel()
     }
@@ -94,7 +94,7 @@ internal class TraqMessagePort(
         content: String,
         embed: Boolean,
         nonce: String?,
-    ): Message {
+    ): Message.Detail {
         val response =
             apiGateway.messageApi.postDirectMessage(
                 userId = userId.value,
@@ -116,7 +116,7 @@ internal class TraqMessagePort(
         until: kotlin.time.Instant?,
         inclusive: Boolean,
         order: SortDirection,
-    ): List<Message> {
+    ): List<Message.Detail> {
         val response =
             apiGateway.messageApi.getDirectMessages(
                 userId = userId.value,

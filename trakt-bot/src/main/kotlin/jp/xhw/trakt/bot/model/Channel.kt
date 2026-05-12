@@ -53,7 +53,7 @@ enum class ChannelViewState {
 /** チャンネル閲覧者情報。 */
 @ConsistentCopyVisibility
 data class ChannelViewer internal constructor(
-    val userId: UserId,
+    val user: User.Ref,
     val state: ChannelViewState,
     val updatedAt: Instant,
 )
@@ -62,16 +62,22 @@ data class ChannelViewer internal constructor(
 sealed interface Channel {
     val id: ChannelId
 
+    /** ID のみを持つチャンネル参照。 */
+    @JvmInline
+    value class Ref(
+        override val id: ChannelId,
+    ) : Channel
+
     /** パブリックチャンネル。 */
     sealed interface PublicChannel : Channel {
-        val parentId: ChannelId?
+        val parent: Channel.Ref?
         val name: String
     }
 
     /** DM チャンネル。 */
     class DirectMessage internal constructor(
         override val id: ChannelId,
-        val userId: UserId,
+        val user: User.Ref,
     ) : Channel {
         override fun equals(other: Any?): Boolean {
             if (this === other) return true
@@ -86,9 +92,9 @@ sealed interface Channel {
     /** チャンネル作成イベント等で使うチャンネル。 */
     class Meta internal constructor(
         override val id: ChannelId,
-        override val parentId: ChannelId?,
+        override val parent: Ref?,
         override val name: String,
-        val creator: User,
+        val creator: User.Minimal,
         val path: ChannelPath,
     ) : PublicChannel {
         override fun equals(other: Any?): Boolean {
@@ -104,12 +110,12 @@ sealed interface Channel {
     /** API から取得するチャンネル。 */
     class Detail internal constructor(
         override val id: ChannelId,
-        override val parentId: ChannelId?,
+        override val parent: Ref?,
         override val name: String,
         val isArchived: Boolean,
         val isForcedNotified: Boolean,
         val topic: ChannelTopic,
-        val childrenIds: List<ChannelId>,
+        val children: List<Ref>,
     ) : PublicChannel {
         override fun equals(other: Any?): Boolean {
             if (this === other) return true
@@ -132,7 +138,7 @@ data class ChannelDirectory internal constructor(
 /** チャンネルにピン留めされたメッセージ情報。 */
 @ConsistentCopyVisibility
 data class Pin internal constructor(
-    val pinnerId: UserId,
+    val pinner: User.Ref,
     val pinnedAt: Instant,
-    val message: Message,
+    val message: Message.Detail,
 )

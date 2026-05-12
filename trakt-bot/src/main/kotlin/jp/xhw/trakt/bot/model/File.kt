@@ -15,16 +15,27 @@ value class FileId(
     }
 }
 
+/** ファイル。 */
+sealed interface File {
+    val id: FileId
+
+    /** ID のみを持つファイル参照。 */
+    @JvmInline
+    value class Ref(
+        override val id: FileId,
+    ) : File
+}
+
 /** ファイルメタ情報。 */
 @ConsistentCopyVisibility
 data class FileMeta internal constructor(
-    val id: FileId,
+    override val id: FileId,
     val name: String,
     val mime: String,
     val size: Long,
     val md5: String,
     val isAnimatedImage: Boolean,
     val createdAt: Instant,
-    val channelId: ChannelId?,
-    val uploaderId: UserId?,
-)
+    val channel: Channel.Ref?,
+    val uploader: User.Ref?,
+) : File

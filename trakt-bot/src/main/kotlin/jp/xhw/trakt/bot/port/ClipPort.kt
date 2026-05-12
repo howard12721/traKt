@@ -6,11 +6,11 @@ internal interface ClipPort {
     suspend fun createFolder(
         name: String,
         description: String,
-    ): ClipFolder
+    ): ClipFolder.Detail
 
-    suspend fun fetchFolders(): List<ClipFolder>
+    suspend fun fetchFolders(): List<ClipFolder.Detail>
 
-    suspend fun fetchFolder(folderId: ClipFolderId): ClipFolder
+    suspend fun fetchFolder(folderId: ClipFolderId): ClipFolder.Detail
 
     suspend fun editFolder(
         folderId: ClipFolderId,

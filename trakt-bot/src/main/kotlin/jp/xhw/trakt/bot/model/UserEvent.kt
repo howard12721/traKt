@@ -16,6 +16,17 @@ value class StampPaletteId(
     }
 }
 
+/** スタンプパレット。 */
+sealed interface StampPalette {
+    val id: StampPaletteId
+
+    /** ID のみを持つスタンプパレット参照。 */
+    @JvmInline
+    value class Ref(
+        override val id: StampPaletteId,
+    ) : StampPalette
+}
+
 @JvmInline
 value class ClipFolderId(
     val value: Uuid,
@@ -38,6 +49,17 @@ value class QallSoundId(
     }
 }
 
+/** Qall サウンド。 */
+sealed interface QallSound {
+    val id: QallSoundId
+
+    /** ID のみを持つ Qall サウンド参照。 */
+    @JvmInline
+    value class Ref(
+        override val id: QallSoundId,
+    ) : QallSound
+}
+
 @JvmInline
 value class QallRoomId(
     val value: Uuid,
@@ -49,6 +71,17 @@ value class QallRoomId(
     }
 }
 
+/** Qall ルーム。 */
+sealed interface QallRoom {
+    val id: QallRoomId
+
+    /** ID のみを持つ Qall ルーム参照。 */
+    @JvmInline
+    value class Ref(
+        override val id: QallRoomId,
+    ) : QallRoom
+}
+
 @ConsistentCopyVisibility
 data class WebRtcSession internal constructor(
     val state: String,
@@ -58,7 +91,7 @@ data class WebRtcSession internal constructor(
 @ConsistentCopyVisibility
 data class UserChannelViewState internal constructor(
     val key: String,
-    val channelId: ChannelId,
+    val channel: Channel.Ref,
     val state: ChannelViewState,
 )
 
@@ -76,34 +109,34 @@ data class QallRoomWithParticipants internal constructor(
     val isWebinar: Boolean,
     val metadata: String?,
     val participants: List<QallParticipant>,
-    val roomId: QallRoomId,
+    val room: QallRoom.Ref,
 )
 
 @ConsistentCopyVisibility
 data class UserJoined internal constructor(
-    val userId: UserId,
+    val user: User.Ref,
 ) : UserEvent
 
 @ConsistentCopyVisibility
 data class UserUpdated internal constructor(
-    val userId: UserId,
+    val user: User.Ref,
 ) : UserEvent
 
 @ConsistentCopyVisibility
 data class UserTagsUpdated internal constructor(
-    val userId: UserId,
-    val tagId: UserTagId,
+    val user: User.Ref,
+    val tag: UserTag.Ref,
 ) : UserEvent
 
 @ConsistentCopyVisibility
 data class UserIconUpdated internal constructor(
-    val userId: UserId,
+    val user: User.Ref,
 ) : UserEvent
 
 @ConsistentCopyVisibility
 data class UserWebRtcStateChanged internal constructor(
-    val userId: UserId,
-    val channelId: ChannelId,
+    val user: User.Ref,
+    val channel: Channel.Ref,
     val sessions: List<WebRtcSession>,
 ) : UserEvent
 
@@ -114,172 +147,172 @@ data class UserViewStateChanged internal constructor(
 
 @ConsistentCopyVisibility
 data class UserOnline internal constructor(
-    val userId: UserId,
+    val user: User.Ref,
 ) : UserEvent
 
 @ConsistentCopyVisibility
 data class UserOffline internal constructor(
-    val userId: UserId,
+    val user: User.Ref,
 ) : UserEvent
 
 @ConsistentCopyVisibility
 data class UserGroupCreated internal constructor(
-    val groupId: GroupId,
+    val group: Group.Ref,
 ) : UserEvent
 
 @ConsistentCopyVisibility
 data class UserGroupUpdated internal constructor(
-    val groupId: GroupId,
+    val group: Group.Ref,
 ) : UserEvent
 
 @ConsistentCopyVisibility
 data class UserGroupDeleted internal constructor(
-    val groupId: GroupId,
+    val group: Group.Ref,
 ) : UserEvent
 
 @ConsistentCopyVisibility
 data class UserChannelCreated internal constructor(
-    val channelId: ChannelId,
-    val dmUserId: UserId?,
+    val channel: Channel.Ref,
+    val dmUser: User.Ref?,
 ) : UserEvent
 
 @ConsistentCopyVisibility
 data class UserChannelUpdated internal constructor(
-    val channelId: ChannelId,
-    val dmUserId: UserId?,
+    val channel: Channel.Ref,
+    val dmUser: User.Ref?,
 ) : UserEvent
 
 @ConsistentCopyVisibility
 data class UserChannelDeleted internal constructor(
-    val channelId: ChannelId,
-    val dmUserId: UserId?,
+    val channel: Channel.Ref,
+    val dmUser: User.Ref?,
 ) : UserEvent
 
 @ConsistentCopyVisibility
 data class UserChannelStared internal constructor(
-    val channelId: ChannelId,
+    val channel: Channel.Ref,
 ) : UserEvent
 
 @ConsistentCopyVisibility
 data class UserChannelUnstared internal constructor(
-    val channelId: ChannelId,
+    val channel: Channel.Ref,
 ) : UserEvent
 
 @ConsistentCopyVisibility
 data class UserChannelViewersChanged internal constructor(
-    val channelId: ChannelId,
+    val channel: Channel.Ref,
     val viewers: List<ChannelViewer>,
 ) : UserEvent
 
 @ConsistentCopyVisibility
 data class UserChannelSubscribersChanged internal constructor(
-    val channelId: ChannelId,
+    val channel: Channel.Ref,
 ) : UserEvent
 
 @ConsistentCopyVisibility
 data class UserMessageCreated internal constructor(
-    val messageId: MessageId,
+    val message: Message.Ref,
     val isCiting: Boolean,
 ) : UserEvent
 
 @ConsistentCopyVisibility
 data class UserMessageUpdated internal constructor(
-    val messageId: MessageId,
+    val message: Message.Ref,
 ) : UserEvent
 
 @ConsistentCopyVisibility
 data class UserMessageDeleted internal constructor(
-    val messageId: MessageId,
+    val message: Message.Ref,
 ) : UserEvent
 
 @ConsistentCopyVisibility
 data class UserMessageStamped internal constructor(
-    val messageId: MessageId,
-    val userId: UserId,
-    val stampId: StampId,
+    val message: Message.Ref,
+    val user: User.Ref,
+    val stamp: Stamp.Ref,
     val count: Int,
     val createdAt: Instant,
 ) : UserEvent
 
 @ConsistentCopyVisibility
 data class UserMessageUnstamped internal constructor(
-    val messageId: MessageId,
-    val userId: UserId,
-    val stampId: StampId,
+    val message: Message.Ref,
+    val user: User.Ref,
+    val stamp: Stamp.Ref,
 ) : UserEvent
 
 @ConsistentCopyVisibility
 data class UserMessagePinned internal constructor(
-    val messageId: MessageId,
-    val channelId: ChannelId,
+    val message: Message.Ref,
+    val channel: Channel.Ref,
 ) : UserEvent
 
 @ConsistentCopyVisibility
 data class UserMessageUnpinned internal constructor(
-    val messageId: MessageId,
-    val channelId: ChannelId,
+    val message: Message.Ref,
+    val channel: Channel.Ref,
 ) : UserEvent
 
 @ConsistentCopyVisibility
 data class UserMessageRead internal constructor(
-    val messageId: MessageId,
+    val message: Message.Ref,
 ) : UserEvent
 
 @ConsistentCopyVisibility
 data class UserStampCreated internal constructor(
-    val stampId: StampId,
+    val stamp: Stamp.Ref,
 ) : UserEvent
 
 @ConsistentCopyVisibility
 data class UserStampUpdated internal constructor(
-    val stampId: StampId,
+    val stamp: Stamp.Ref,
 ) : UserEvent
 
 @ConsistentCopyVisibility
 data class UserStampDeleted internal constructor(
-    val stampId: StampId,
+    val stamp: Stamp.Ref,
 ) : UserEvent
 
 @ConsistentCopyVisibility
 data class UserStampPaletteCreated internal constructor(
-    val stampPaletteId: StampPaletteId,
+    val stampPalette: StampPalette.Ref,
 ) : UserEvent
 
 @ConsistentCopyVisibility
 data class UserStampPaletteUpdated internal constructor(
-    val stampPaletteId: StampPaletteId,
+    val stampPalette: StampPalette.Ref,
 ) : UserEvent
 
 @ConsistentCopyVisibility
 data class UserStampPaletteDeleted internal constructor(
-    val stampPaletteId: StampPaletteId,
+    val stampPalette: StampPalette.Ref,
 ) : UserEvent
 
 @ConsistentCopyVisibility
 data class UserClipFolderCreated internal constructor(
-    val clipFolderId: ClipFolderId,
+    val folder: ClipFolder.Ref,
 ) : UserEvent
 
 @ConsistentCopyVisibility
 data class UserClipFolderUpdated internal constructor(
-    val clipFolderId: ClipFolderId,
+    val folder: ClipFolder.Ref,
 ) : UserEvent
 
 @ConsistentCopyVisibility
 data class UserClipFolderDeleted internal constructor(
-    val clipFolderId: ClipFolderId,
+    val folder: ClipFolder.Ref,
 ) : UserEvent
 
 @ConsistentCopyVisibility
 data class UserClipFolderMessageDeleted internal constructor(
-    val clipFolderId: ClipFolderId,
-    val messageId: MessageId,
+    val folder: ClipFolder.Ref,
+    val message: Message.Ref,
 ) : UserEvent
 
 @ConsistentCopyVisibility
 data class UserClipFolderMessageAdded internal constructor(
-    val clipFolderId: ClipFolderId,
-    val messageId: MessageId,
+    val folder: ClipFolder.Ref,
+    val message: Message.Ref,
 ) : UserEvent
 
 @ConsistentCopyVisibility
@@ -289,12 +322,12 @@ data class UserQallRoomStateChanged internal constructor(
 
 @ConsistentCopyVisibility
 data class UserQallSoundboardItemCreated internal constructor(
-    val soundId: QallSoundId,
+    val sound: QallSound.Ref,
     val name: String,
-    val creatorId: UserId,
+    val creator: User.Ref,
 ) : UserEvent
 
 @ConsistentCopyVisibility
 data class UserQallSoundboardItemDeleted internal constructor(
-    val soundId: QallSoundId,
+    val sound: QallSound.Ref,
 ) : UserEvent

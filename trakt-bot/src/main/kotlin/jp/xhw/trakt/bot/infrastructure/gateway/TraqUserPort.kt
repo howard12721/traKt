@@ -48,7 +48,7 @@ internal class TraqUserPort(
         return stats.toModel()
     }
 
-    override suspend fun fetchUserTags(userId: UserId): List<UserTag> {
+    override suspend fun fetchUserTags(userId: UserId): List<UserTag.Detail> {
         val response = apiGateway.userApi.getUserTags(userId.value)
         return response.bodyOrThrow(operation = "fetchUserTags(userId=${userId.value})").map { it.toModel() }
     }
@@ -56,7 +56,7 @@ internal class TraqUserPort(
     override suspend fun addUserTag(
         userId: UserId,
         tag: String,
-    ): UserTag {
+    ): UserTag.Detail {
         val response =
             apiGateway.userApi.addUserTag(
                 userId = userId.value,

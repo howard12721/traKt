@@ -62,9 +62,9 @@ internal class TraqChannelPort(
             ).requireSuccess(operation = "setChannelTopic(channelId=${channelId.value})")
     }
 
-    override suspend fun fetchSubscribers(channelId: ChannelId): List<UserId> {
+    override suspend fun fetchSubscribers(channelId: ChannelId): List<User.Ref> {
         val response = apiGateway.channelApi.getChannelSubscribers(channelId.value)
-        return response.bodyOrThrow(operation = "fetchSubscribers(channelId=${channelId.value})").map { UserId(it) }
+        return response.bodyOrThrow(operation = "fetchSubscribers(channelId=${channelId.value})").map { User.Ref(UserId(it)) }
     }
 
     override suspend fun setSubscribers(
@@ -90,7 +90,7 @@ internal class TraqChannelPort(
         val response = apiGateway.channelApi.getChannelBots(channelId.value)
         return response
             .bodyOrThrow(operation = "fetchBots(channelId=${channelId.value})")
-            .map { Bot(botId = BotId(it.id), userId = UserId(it.botUserId)) }
+            .map { Bot(managedBot = ManagedBot.Ref(BotId(it.id)), user = User.Ref(UserId(it.botUserId))) }
     }
 
     override suspend fun fetchChannelPins(channelId: ChannelId): List<Pin> {
@@ -117,7 +117,7 @@ internal class TraqChannelPort(
         until: Instant?,
         inclusive: Boolean,
         order: SortDirection,
-    ): List<Message> {
+    ): List<Message.Detail> {
         val response =
             apiGateway.channelApi.getMessages(
                 channelId = channelId.value,
@@ -136,7 +136,7 @@ internal class TraqChannelPort(
         content: String,
         embed: Boolean,
         nonce: String?,
-    ): Message {
+    ): Message.Detail {
         val response =
             apiGateway.channelApi.postMessage(
                 channelId = channelId.value,

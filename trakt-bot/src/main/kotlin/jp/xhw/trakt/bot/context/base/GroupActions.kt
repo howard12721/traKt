@@ -1,6 +1,9 @@
 package jp.xhw.trakt.bot.context.base
 
-import jp.xhw.trakt.bot.model.*
+import jp.xhw.trakt.bot.model.Group
+import jp.xhw.trakt.bot.model.GroupId
+import jp.xhw.trakt.bot.model.GroupMember
+import jp.xhw.trakt.bot.model.UserId
 
 /**
  * グループ詳細を取得します。
@@ -9,100 +12,16 @@ import jp.xhw.trakt.bot.model.*
  * @return グループ詳細情報
  */
 context(ctx: BaseContext)
-suspend fun fetchGroup(groupId: GroupId): Group = ctx.groupPort.fetchGroup(groupId)
+suspend fun fetchGroup(groupId: GroupId): Group.Detail = ctx.groupPort.fetchGroup(groupId)
 
 /**
  * グループ詳細を取得します。存在しない場合は `null` を返します。
- *
- * ユーザー入力など、存在が保証できない ID を扱う場合に使います。
  *
  * @param groupId 取得対象グループID
  * @return グループ詳細情報。存在しない場合は `null`
  */
 context(ctx: BaseContext)
-suspend fun fetchGroupOrNull(groupId: GroupId): Group? = ctx.groupPort.fetchGroupOrNull(groupId)
-
-/**
- * この ID が指すグループ詳細を取得します。
- *
- * @return グループ詳細情報
- */
-context(ctx: BaseContext)
-suspend fun GroupId.fetch(): Group = ctx.groupPort.fetchGroup(this)
-
-/**
- * この ID が指すグループ詳細を取得します。存在しない場合は `null` を返します。
- *
- * ユーザー入力など、存在が保証できない ID を扱う場合に使います。
- *
- * @return グループ詳細情報。存在しない場合は `null`
- */
-context(ctx: BaseContext)
-suspend fun GroupId.fetchOrNull(): Group? = ctx.groupPort.fetchGroupOrNull(this)
-
-/**
- * グループ一覧を取得します。
- *
- * @return グループ一覧
- */
-context(ctx: BaseContext)
-suspend fun fetchGroups(): List<Group> = ctx.groupPort.fetchGroups()
-
-/**
- * グループメンバー一覧を取得します。
- *
- * @return グループメンバー一覧
- */
-context(ctx: BaseContext)
-suspend fun GroupId.fetchMembers(): List<GroupMember> = ctx.groupPort.fetchMembers(this)
-
-/**
- * グループへメンバーを追加します。
- *
- * @param userId 追加するユーザーID
- * @param role 追加時に設定するロール
- */
-context(ctx: BaseContext)
-suspend fun GroupId.addMember(
-    userId: UserId,
-    role: String = "",
-) {
-    ctx.groupPort.addMember(this, userId, role)
-}
-
-/**
- * グループへメンバーを追加します。
- *
- * @param user 追加するユーザー
- * @param role 追加時に設定するロール
- */
-context(ctx: BaseContext)
-suspend fun GroupId.addMember(
-    user: User,
-    role: String = "",
-) {
-    addMember(user.id, role)
-}
-
-/**
- * グループへ管理者を追加します。
- *
- * @param userId 追加するユーザーID
- */
-context(ctx: BaseContext)
-suspend fun GroupId.addAdmin(userId: UserId) {
-    ctx.groupPort.addAdmin(this, userId)
-}
-
-/**
- * グループへ管理者を追加します。
- *
- * @param user 追加するユーザー
- */
-context(ctx: BaseContext)
-suspend fun GroupId.addAdmin(user: User) {
-    addAdmin(user.id)
-}
+suspend fun fetchGroupOrNull(groupId: GroupId): Group.Detail? = ctx.groupPort.fetchGroupOrNull(groupId)
 
 /**
  * グループ情報を取得します。
@@ -110,15 +29,15 @@ suspend fun GroupId.addAdmin(user: User) {
  * @return 最新のグループ情報
  */
 context(ctx: BaseContext)
-suspend fun Group.fetch(): Group = id.fetch()
+suspend fun Group.fetch(): Group.Detail = ctx.groupPort.fetchGroup(id)
 
 /**
- * グループ情報を取得します。存在しない場合は `null` を返します。
+ * グループ一覧を取得します。
  *
- * @return 最新のグループ情報。存在しない場合は `null`
+ * @return グループ一覧
  */
 context(ctx: BaseContext)
-suspend fun Group.fetchOrNull(): Group? = id.fetchOrNull()
+suspend fun fetchGroups(): List<Group.Detail> = ctx.groupPort.fetchGroups()
 
 /**
  * グループメンバー一覧を取得します。
@@ -126,7 +45,7 @@ suspend fun Group.fetchOrNull(): Group? = id.fetchOrNull()
  * @return グループメンバー一覧
  */
 context(ctx: BaseContext)
-suspend fun Group.fetchMembers(): List<GroupMember> = id.fetchMembers()
+suspend fun Group.fetchMembers(): List<GroupMember> = ctx.groupPort.fetchMembers(id)
 
 /**
  * グループへメンバーを追加します。
@@ -139,21 +58,7 @@ suspend fun Group.addMember(
     userId: UserId,
     role: String = "",
 ) {
-    id.addMember(userId, role)
-}
-
-/**
- * グループへメンバーを追加します。
- *
- * @param user 追加するユーザー
- * @param role 追加時に設定するロール
- */
-context(ctx: BaseContext)
-suspend fun Group.addMember(
-    user: User,
-    role: String = "",
-) {
-    id.addMember(user, role)
+    ctx.groupPort.addMember(id, userId, role)
 }
 
 /**
@@ -163,15 +68,5 @@ suspend fun Group.addMember(
  */
 context(ctx: BaseContext)
 suspend fun Group.addAdmin(userId: UserId) {
-    id.addAdmin(userId)
-}
-
-/**
- * グループへ管理者を追加します。
- *
- * @param user 追加するユーザー
- */
-context(ctx: BaseContext)
-suspend fun Group.addAdmin(user: User) {
-    id.addAdmin(user)
+    ctx.groupPort.addAdmin(id, userId)
 }

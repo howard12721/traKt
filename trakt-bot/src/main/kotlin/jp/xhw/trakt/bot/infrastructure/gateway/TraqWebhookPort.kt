@@ -11,7 +11,7 @@ import kotlin.time.Instant
 internal class TraqWebhookPort(
     private val apiGateway: TraqApiGateway,
 ) : WebhookPort {
-    override suspend fun fetchWebhooks(all: Boolean): List<Webhook> =
+    override suspend fun fetchWebhooks(all: Boolean): List<Webhook.Detail> =
         apiGateway.webhookApi
             .getWebhooks(all)
             .bodyOrThrow(operation = "fetchWebhooks(all=$all)")
@@ -22,7 +22,7 @@ internal class TraqWebhookPort(
         description: String,
         channelId: ChannelId,
         secret: String,
-    ): Webhook =
+    ): Webhook.Detail =
         apiGateway.webhookApi
             .createWebhook(
                 PostWebhookRequest(
@@ -34,7 +34,7 @@ internal class TraqWebhookPort(
             ).bodyOrThrow(operation = "createWebhook(name=$name, channelId=${channelId.value})")
             .toModel()
 
-    override suspend fun fetchWebhook(webhookId: WebhookId): Webhook =
+    override suspend fun fetchWebhook(webhookId: WebhookId): Webhook.Detail =
         apiGateway.webhookApi
             .getWebhook(webhookId.value)
             .bodyOrThrow(operation = "fetchWebhook(webhookId=${webhookId.value})")
@@ -93,7 +93,7 @@ internal class TraqWebhookPort(
         until: Instant?,
         inclusive: Boolean,
         order: SortDirection,
-    ): List<Message> =
+    ): List<Message.Detail> =
         apiGateway.webhookApi
             .getWebhookMessages(
                 webhookId = webhookId.value,

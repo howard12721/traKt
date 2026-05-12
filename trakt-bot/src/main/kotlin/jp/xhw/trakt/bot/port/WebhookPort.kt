@@ -4,16 +4,16 @@ import jp.xhw.trakt.bot.model.*
 import kotlin.time.Instant
 
 internal interface WebhookPort {
-    suspend fun fetchWebhooks(all: Boolean = false): List<Webhook>
+    suspend fun fetchWebhooks(all: Boolean = false): List<Webhook.Detail>
 
     suspend fun createWebhook(
         name: String,
         description: String,
         channelId: ChannelId,
         secret: String,
-    ): Webhook
+    ): Webhook.Detail
 
-    suspend fun fetchWebhook(webhookId: WebhookId): Webhook
+    suspend fun fetchWebhook(webhookId: WebhookId): Webhook.Detail
 
     suspend fun editWebhook(
         webhookId: WebhookId,
@@ -42,7 +42,7 @@ internal interface WebhookPort {
         until: Instant? = null,
         inclusive: Boolean = false,
         order: SortDirection = SortDirection.DESCENDING,
-    ): List<Message>
+    ): List<Message.Detail>
 
     suspend fun deleteWebhookMessage(
         webhookId: WebhookId,

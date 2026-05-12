@@ -63,9 +63,9 @@ internal interface ChannelPort {
      * チャンネル購読者一覧を取得します。
      *
      * @param channelId 取得対象チャンネル
-     * @return 購読ユーザーID一覧
+     * @return 購読ユーザー参照一覧
      */
-    suspend fun fetchSubscribers(channelId: ChannelId): List<UserId>
+    suspend fun fetchSubscribers(channelId: ChannelId): List<User.Ref>
 
     /**
      * チャンネル購読者一覧を設定します。
@@ -130,7 +130,7 @@ internal interface ChannelPort {
         until: Instant? = null,
         inclusive: Boolean = false,
         order: SortDirection = SortDirection.DESCENDING,
-    ): List<Message>
+    ): List<Message.Detail>
 
     /**
      * チャンネルへメッセージを送信します。
@@ -146,5 +146,5 @@ internal interface ChannelPort {
         content: String,
         embed: Boolean = false,
         nonce: String? = null,
-    ): Message
+    ): Message.Detail
 }

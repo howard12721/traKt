@@ -42,25 +42,25 @@ internal fun WebSocketEvent.toEventOrNull(): BotEvent? =
         is WsMessageDeleted -> {
             BotMessageDeleted(
                 occurredAt = eventTime,
-                messageId = MessageId(message.id),
-                channelId = ChannelId(message.channelId),
+                message = Message.Ref(MessageId(message.id)),
+                channel = Channel.Ref(ChannelId(message.channelId)),
             )
         }
 
         is WsDirectMessageDeleted -> {
             BotDirectMessageDeleted(
                 occurredAt = eventTime,
-                messageId = MessageId(message.id),
-                channelId = ChannelId(message.channelId),
+                message = Message.Ref(MessageId(message.id)),
+                channel = Channel.Ref(ChannelId(message.channelId)),
             )
         }
 
         is WsJoined -> {
-            BotJoinedChannel(occurredAt = eventTime, channelId = channel.id())
+            BotJoinedChannel(occurredAt = eventTime, channel = Channel.Ref(channel.id()))
         }
 
         is WsLeft -> {
-            BotLeftChannel(occurredAt = eventTime, channelId = channel.id())
+            BotLeftChannel(occurredAt = eventTime, channel = Channel.Ref(channel.id()))
         }
 
         is WsChannelCreated -> {
@@ -75,7 +75,7 @@ internal fun WebSocketEvent.toEventOrNull(): BotEvent? =
                 occurredAt = eventTime,
                 channel = channel.toModel(),
                 topic = topic,
-                updaterId = updater.id(),
+                updater = User.Ref(updater.id()),
             )
         }
 
@@ -100,8 +100,8 @@ internal fun WebSocketEvent.toEventOrNull(): BotEvent? =
                     Stamp.Basic(
                         id = StampId(id),
                         name = name,
-                        creatorId = creator.id(),
-                        fileId = FileId(fileId),
+                        creator = User.Ref(creator.id()),
+                        file = File.Ref(FileId(fileId)),
                     ),
             )
         }
@@ -109,7 +109,7 @@ internal fun WebSocketEvent.toEventOrNull(): BotEvent? =
         is WsTagAdded -> {
             BotTagAdded(
                 occurredAt = eventTime,
-                tagId = UserTagId(tagId),
+                userTag = UserTag.Ref(UserTagId(tagId)),
                 tag = tag,
             )
         }
@@ -117,7 +117,7 @@ internal fun WebSocketEvent.toEventOrNull(): BotEvent? =
         is WsTagRemoved -> {
             BotTagRemoved(
                 occurredAt = eventTime,
-                tagId = UserTagId(tagId),
+                userTag = UserTag.Ref(UserTagId(tagId)),
                 tag = tag,
             )
         }
@@ -129,11 +129,11 @@ internal fun WebSocketEvent.toEventOrNull(): BotEvent? =
 
 private fun WsMessage.id(): MessageId = MessageId(id)
 
-private fun WsMessage.toModel(): Message =
-    Message(
+private fun WsMessage.toModel(): Message.Detail =
+    Message.Detail(
         id = id(),
-        authorId = user.id(),
-        channelId = ChannelId(this.channelId),
+        author = User.Ref(user.id()),
+        channel = Channel.Ref(ChannelId(this.channelId)),
         content = text,
         createdAt = createdAt,
         updatedAt = updatedAt,
@@ -149,7 +149,7 @@ private fun WsUser.toModel(): User.Minimal =
         id = id(),
         name = name,
         displayName = displayName,
-        iconFileId = FileId(iconId),
+        iconFile = File.Ref(FileId(iconId)),
         isBot = bot,
     )
 
@@ -158,7 +158,7 @@ private fun WsChannel.id(): ChannelId = ChannelId(id)
 private fun WsChannel.toModel(): Channel.Meta =
     Channel.Meta(
         id = id(),
-        parentId = ChannelId(parentId),
+        parent = Channel.Ref(ChannelId(parentId)),
         name = name,
         creator = creator.toModel(),
         path = ChannelPath(path),

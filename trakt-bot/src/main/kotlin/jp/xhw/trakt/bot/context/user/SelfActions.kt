@@ -16,15 +16,15 @@ suspend fun fetchMe(): CurrentUser = ctx.selfPort.fetchMe()
  * @param displayName 新しい表示名。`null` の場合は変更しません
  * @param twitterId 新しい Twitter ID。`null` の場合は変更しません
  * @param bio 新しい自己紹介。`null` の場合は変更しません
- * @param homeChannel 新しいホームチャンネル。`null` の場合は変更しません
+ * @param homeChannelId 新しいホームチャンネルID。`null` の場合は変更しません
  */
 context(ctx: UserContext)
 suspend fun editMe(
     displayName: String? = null,
     twitterId: String? = null,
     bio: String? = null,
-    homeChannel: ChannelId? = null,
-) = ctx.selfPort.editMe(displayName, twitterId, bio, homeChannel)
+    homeChannelId: ChannelId? = null,
+) = ctx.selfPort.editMe(displayName, twitterId, bio, homeChannelId)
 
 /**
  * 自分のアイコン画像を取得します。
@@ -90,7 +90,7 @@ suspend fun setNotifyCitation(enabled: Boolean) = ctx.selfPort.setNotifyCitation
  * @return 自分に付与されているタグ一覧
  */
 context(ctx: UserContext)
-suspend fun fetchMyTags(): List<UserTag> = ctx.selfPort.fetchMyTags()
+suspend fun fetchMyTags(): List<UserTag.Detail> = ctx.selfPort.fetchMyTags()
 
 /**
  * 自分にタグを追加します。
@@ -99,7 +99,7 @@ suspend fun fetchMyTags(): List<UserTag> = ctx.selfPort.fetchMyTags()
  * @return 追加後のタグ情報
  */
 context(ctx: UserContext)
-suspend fun addMyTag(tag: String): UserTag = ctx.selfPort.addMyTag(tag)
+suspend fun addMyTag(tag: String): UserTag.Detail = ctx.selfPort.addMyTag(tag)
 
 /**
  * 自分のタグのロック状態を変更します。
@@ -107,35 +107,27 @@ suspend fun addMyTag(tag: String): UserTag = ctx.selfPort.addMyTag(tag)
  * @param isLocked ロックする場合は `true`
  */
 context(ctx: UserContext)
-suspend fun UserTagId.setMyTagLocked(isLocked: Boolean) = ctx.selfPort.editMyTag(this, isLocked)
+suspend fun UserTag.setMyTagLocked(isLocked: Boolean) = ctx.selfPort.editMyTag(id, isLocked)
 
 /** 自分からこのタグを削除します。 */
 context(ctx: UserContext)
-suspend fun UserTagId.removeFromMe() = ctx.selfPort.removeMyTag(this)
+suspend fun UserTag.removeFromMe() = ctx.selfPort.removeMyTag(id)
 
 /**
  * 自分がスターしているチャンネル一覧を取得します。
  *
- * @return スターしているチャンネル ID 一覧
+ * @return スターしているチャンネル参照一覧
  */
 context(ctx: UserContext)
-suspend fun fetchMyStars(): List<ChannelId> = ctx.selfPort.fetchMyStars()
+suspend fun fetchMyStars(): List<Channel.Ref> = ctx.selfPort.fetchMyStars()
 
 /** チャンネルをスターします。 */
 context(ctx: UserContext)
-suspend fun ChannelId.star() = ctx.selfPort.addMyStar(this)
-
-/** チャンネルをスターします。 */
-context(ctx: UserContext)
-suspend fun Channel.star() = id.star()
+suspend fun Channel.star() = ctx.selfPort.addMyStar(id)
 
 /** チャンネルのスターを外します。 */
 context(ctx: UserContext)
-suspend fun ChannelId.unstar() = ctx.selfPort.removeMyStar(this)
-
-/** チャンネルのスターを外します。 */
-context(ctx: UserContext)
-suspend fun Channel.unstar() = id.unstar()
+suspend fun Channel.unstar() = ctx.selfPort.removeMyStar(id)
 
 /**
  * 自分のチャンネル購読状態一覧を取得します。
@@ -151,19 +143,7 @@ suspend fun fetchMySubscriptions(): List<ChannelSubscription> = ctx.selfPort.fet
  * @param level 新しい購読レベル
  */
 context(ctx: UserContext)
-suspend fun ChannelId.setSubscription(level: ChannelSubscriptionLevel) = ctx.selfPort.setMySubscription(this, level)
-
-/**
- * チャンネル購読レベルを設定します。
- *
- * @param level 新しい購読レベル
- */
-context(ctx: UserContext)
-suspend fun Channel.setSubscription(level: ChannelSubscriptionLevel) = id.setSubscription(level)
-
-/** チャンネル購読を無効にします。 */
-context(ctx: UserContext)
-suspend fun ChannelId.unsubscribe() = setSubscription(ChannelSubscriptionLevel.NONE)
+suspend fun Channel.setSubscription(level: ChannelSubscriptionLevel) = ctx.selfPort.setMySubscription(id, level)
 
 /** チャンネル購読を無効にします。 */
 context(ctx: UserContext)
@@ -171,15 +151,7 @@ suspend fun Channel.unsubscribe() = setSubscription(ChannelSubscriptionLevel.NON
 
 /** チャンネルを未読管理対象にします。 */
 context(ctx: UserContext)
-suspend fun ChannelId.subscribe() = setSubscription(ChannelSubscriptionLevel.SUBSCRIBED)
-
-/** チャンネルを未読管理対象にします。 */
-context(ctx: UserContext)
 suspend fun Channel.subscribe() = setSubscription(ChannelSubscriptionLevel.SUBSCRIBED)
-
-/** チャンネルを通知対象にします。 */
-context(ctx: UserContext)
-suspend fun ChannelId.notify() = setSubscription(ChannelSubscriptionLevel.NOTIFIED)
 
 /** チャンネルを通知対象にします。 */
 context(ctx: UserContext)
@@ -195,11 +167,7 @@ suspend fun fetchMyUnreadChannels(): List<UnreadChannel> = ctx.selfPort.fetchMyU
 
 /** チャンネルを既読にします。 */
 context(ctx: UserContext)
-suspend fun ChannelId.markRead() = ctx.selfPort.readChannel(this)
-
-/** チャンネルを既読にします。 */
-context(ctx: UserContext)
-suspend fun Channel.markRead() = id.markRead()
+suspend fun Channel.markRead() = ctx.selfPort.readChannel(id)
 
 /**
  * 自分の閲覧状態一覧を取得します。
@@ -223,11 +191,11 @@ suspend fun registerFCMDevice(token: String) = ctx.selfPort.registerFCMDevice(to
  * @return ログインセッション一覧
  */
 context(ctx: UserContext)
-suspend fun fetchMySessions(): List<LoginSession> = ctx.selfPort.fetchMySessions()
+suspend fun fetchMySessions(): List<LoginSession.Detail> = ctx.selfPort.fetchMySessions()
 
 /** このログインセッションを無効化します。 */
 context(ctx: UserContext)
-suspend fun LoginSessionId.revoke() = ctx.selfPort.revokeMySession(this)
+suspend fun LoginSession.revoke() = ctx.selfPort.revokeMySession(id)
 
 /**
  * 自分に発行された OAuth2 トークン一覧を取得します。
@@ -235,11 +203,11 @@ suspend fun LoginSessionId.revoke() = ctx.selfPort.revokeMySession(this)
  * @return 有効な OAuth2 トークン一覧
  */
 context(ctx: UserContext)
-suspend fun fetchMyTokens(): List<ActiveOAuth2Token> = ctx.selfPort.fetchMyTokens()
+suspend fun fetchMyTokens(): List<ActiveOAuth2Token.Detail> = ctx.selfPort.fetchMyTokens()
 
 /** この OAuth2 トークンの認可を取り消します。 */
 context(ctx: UserContext)
-suspend fun OAuth2TokenId.revoke() = ctx.selfPort.revokeMyToken(this)
+suspend fun ActiveOAuth2Token.revoke() = ctx.selfPort.revokeMyToken(id)
 
 /**
  * 自分に紐付く外部ログインアカウント一覧を取得します。

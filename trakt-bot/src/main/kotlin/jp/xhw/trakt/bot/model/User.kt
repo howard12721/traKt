@@ -51,20 +51,29 @@ value class BotId(
 /** Bot と対応ユーザーの紐付け情報。 */
 @ConsistentCopyVisibility
 data class Bot internal constructor(
-    val botId: BotId,
-    val userId: UserId,
+    val managedBot: ManagedBot.Ref,
+    val user: User.Ref,
 )
 
 /** ユーザー。 */
 sealed interface User {
     val id: UserId
-    val name: String
-    val displayName: String
-    val iconFileId: FileId
-    val isBot: Boolean
+
+    /** ID のみを持つユーザー参照。 */
+    @JvmInline
+    value class Ref(
+        override val id: UserId,
+    ) : User
+
+    sealed interface Profile : User {
+        val name: String
+        val displayName: String
+        val iconFile: File.Ref
+        val isBot: Boolean
+    }
 
     /** 状態を持つユーザー情報。 */
-    sealed interface StatefulUser : User {
+    sealed interface StatefulUser : Profile {
         val state: UserState
         val updatedAt: Instant
     }
@@ -74,9 +83,9 @@ sealed interface User {
         override val id: UserId,
         override val name: String,
         override val displayName: String,
-        override val iconFileId: FileId,
+        override val iconFile: File.Ref,
         override val isBot: Boolean,
-    ) : User {
+    ) : Profile {
         override fun equals(other: Any?): Boolean {
             if (this === other) return true
             if (other !is User) return false
@@ -91,7 +100,7 @@ sealed interface User {
         override val id: UserId,
         override val name: String,
         override val displayName: String,
-        override val iconFileId: FileId,
+        override val iconFile: File.Ref,
         override val isBot: Boolean,
         override val state: UserState,
         override val updatedAt: Instant,
@@ -110,16 +119,16 @@ sealed interface User {
         override val id: UserId,
         override val name: String,
         override val displayName: String,
-        override val iconFileId: FileId,
+        override val iconFile: File.Ref,
         override val isBot: Boolean,
         override val state: UserState,
         override val updatedAt: Instant,
         val twitterId: String,
         val lastOnline: Instant?,
-        val tags: List<UserTag>,
-        val groupIds: List<GroupId>,
+        val tags: List<UserTag.Detail>,
+        val groups: List<Group.Ref>,
         val bio: String,
-        val homeChannelId: ChannelId?,
+        val homeChannel: Channel.Ref?,
     ) : StatefulUser {
         override fun equals(other: Any?): Boolean {
             if (this === other) return true
@@ -131,26 +140,37 @@ sealed interface User {
     }
 }
 
-/** ユーザータグ情報。 */
-@ConsistentCopyVisibility
-data class UserTag internal constructor(
-    val tagId: UserTagId,
-    val tag: String,
-    val isLocked: Boolean,
-    val createdAt: Instant,
-    val updatedAt: Instant,
-)
+/** ユーザータグ。 */
+sealed interface UserTag {
+    val id: UserTagId
+
+    /** ID のみを持つユーザータグ参照。 */
+    @JvmInline
+    value class Ref(
+        override val id: UserTagId,
+    ) : UserTag
+
+    /** ユーザータグ情報。 */
+    @ConsistentCopyVisibility
+    data class Detail internal constructor(
+        override val id: UserTagId,
+        val tag: String,
+        val isLocked: Boolean,
+        val createdAt: Instant,
+        val updatedAt: Instant,
+    ) : UserTag
+}
 
 /**
  * ユーザーのスタンプ使用統計。
  *
- * @param stampId スタンプID
+ * @param stamp スタンプ参照
  * @param count 同一メッセージ上のものは複数カウントしないスタンプ数
  * @param total 同一メッセージ上のものも複数カウントするスタンプ数
  */
 @ConsistentCopyVisibility
 data class UserStampStats internal constructor(
-    val stampId: StampId,
+    val stamp: Stamp.Ref,
     val count: Long,
     val total: Long,
 )

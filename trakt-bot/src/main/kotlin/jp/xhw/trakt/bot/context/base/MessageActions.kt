@@ -12,36 +12,24 @@ import kotlin.time.Instant
  * @return メッセージ情報
  */
 context(ctx: BaseContext)
-suspend fun fetchMessage(messageId: MessageId): Message = ctx.messagePort.fetchMessage(messageId)
+suspend fun fetchMessage(messageId: MessageId): Message.Detail = ctx.messagePort.fetchMessage(messageId)
 
 /**
  * メッセージ詳細を取得します。存在しない場合は `null` を返します。
- *
- * ユーザー入力など、存在が保証できない ID を扱う場合に使います。
  *
  * @param messageId 取得対象メッセージID
  * @return メッセージ情報。存在しない場合は `null`
  */
 context(ctx: BaseContext)
-suspend fun fetchMessageOrNull(messageId: MessageId): Message? = ctx.messagePort.fetchMessageOrNull(messageId)
+suspend fun fetchMessageOrNull(messageId: MessageId): Message.Detail? = ctx.messagePort.fetchMessageOrNull(messageId)
 
 /**
- * この ID が指すメッセージを取得します。
+ * メッセージ情報を取得します。
  *
- * @return メッセージ情報
+ * @return 最新のメッセージ情報
  */
 context(ctx: BaseContext)
-suspend fun MessageId.fetch(): Message = ctx.messagePort.fetchMessage(this)
-
-/**
- * この ID が指すメッセージを取得します。存在しない場合は `null` を返します。
- *
- * ユーザー入力など、存在が保証できない ID を扱う場合に使います。
- *
- * @return メッセージ情報。存在しない場合は `null`
- */
-context(ctx: BaseContext)
-suspend fun MessageId.fetchOrNull(): Message? = ctx.messagePort.fetchMessageOrNull(this)
+suspend fun Message.fetch(): Message.Detail = ctx.messagePort.fetchMessage(id)
 
 /**
  * メッセージに付与されたスタンプ一覧を取得します。
@@ -49,7 +37,7 @@ suspend fun MessageId.fetchOrNull(): Message? = ctx.messagePort.fetchMessageOrNu
  * @return スタンプ情報一覧
  */
 context(ctx: BaseContext)
-suspend fun MessageId.fetchStamps(): List<MessageStamp> = ctx.messagePort.fetchStamps(this)
+suspend fun Message.fetchStamps(): List<MessageStamp> = ctx.messagePort.fetchStamps(id)
 
 /**
  * メッセージのピン情報を取得します。
@@ -57,7 +45,7 @@ suspend fun MessageId.fetchStamps(): List<MessageStamp> = ctx.messagePort.fetchS
  * @return ピン情報
  */
 context(ctx: BaseContext)
-suspend fun MessageId.fetchPinInfo(): PinInfo = ctx.messagePort.fetchPinInfo(this)
+suspend fun Message.fetchPinInfo(): PinInfo = ctx.messagePort.fetchPinInfo(id)
 
 // --- Edit / Delete ---
 
@@ -69,18 +57,18 @@ suspend fun MessageId.fetchPinInfo(): PinInfo = ctx.messagePort.fetchPinInfo(thi
  * @param nonce 重複送信防止に使う任意文字列
  */
 context(ctx: BaseContext)
-suspend fun MessageId.update(
+suspend fun Message.update(
     content: String,
     embed: Boolean = false,
     nonce: String? = null,
 ) {
-    ctx.messagePort.editMessage(this, content, embed, nonce)
+    ctx.messagePort.editMessage(id, content, embed, nonce)
 }
 
 /** メッセージを削除します。 */
 context(ctx: BaseContext)
-suspend fun MessageId.delete() {
-    ctx.messagePort.deleteMessage(this)
+suspend fun Message.delete() {
+    ctx.messagePort.deleteMessage(id)
 }
 
 // --- Stamps ---
@@ -92,11 +80,11 @@ suspend fun MessageId.delete() {
  * @param count 追加個数
  */
 context(ctx: BaseContext)
-suspend fun MessageId.addStamp(
+suspend fun Message.addStamp(
     stampId: StampId,
     count: Int = 1,
 ) {
-    ctx.messagePort.addStamp(this, stampId, count)
+    ctx.messagePort.addStamp(id, stampId, count)
 }
 
 /**
@@ -105,8 +93,8 @@ suspend fun MessageId.addStamp(
  * @param stampId 削除するスタンプID
  */
 context(ctx: BaseContext)
-suspend fun MessageId.removeStamp(stampId: StampId) {
-    ctx.messagePort.removeStamp(this, stampId)
+suspend fun Message.removeStamp(stampId: StampId) {
+    ctx.messagePort.removeStamp(id, stampId)
 }
 
 // --- Pins ---
@@ -117,12 +105,12 @@ suspend fun MessageId.removeStamp(stampId: StampId) {
  * @return 作成されたピン情報
  */
 context(ctx: BaseContext)
-suspend fun MessageId.pin(): PinInfo = ctx.messagePort.createPin(this)
+suspend fun Message.pin(): PinInfo = ctx.messagePort.createPin(id)
 
 /** メッセージのピン留めを解除します。 */
 context(ctx: BaseContext)
-suspend fun MessageId.unpin() {
-    ctx.messagePort.removePin(this)
+suspend fun Message.unpin() {
+    ctx.messagePort.removePin(id)
 }
 
 // --- Search ---
@@ -199,127 +187,12 @@ suspend fun searchMessages(
  * @return 送信された返信メッセージ
  */
 context(ctx: BaseContext)
-suspend fun MessageId.reply(
-    content: String,
-    embed: Boolean = false,
-    nonce: String? = null,
-): Message = fetch().channelId.sendMessage(content + "\n${url()}", embed, nonce)
-
-// --- Message convenience extensions ---
-
-/**
- * メッセージ情報を取得します。
- *
- * @return 最新のメッセージ情報
- */
-context(ctx: BaseContext)
-suspend fun Message.fetch(): Message = id.fetch()
-
-/**
- * メッセージ情報を取得します。存在しない場合は `null` を返します。
- *
- * @return 最新のメッセージ情報。存在しない場合は `null`
- */
-context(ctx: BaseContext)
-suspend fun Message.fetchOrNull(): Message? = id.fetchOrNull()
-
-/**
- * メッセージに付与されたスタンプ一覧を取得します。
- *
- * @return スタンプ情報一覧
- */
-context(ctx: BaseContext)
-suspend fun Message.fetchStamps(): List<MessageStamp> = id.fetchStamps()
-
-/**
- * メッセージのピン情報を取得します。
- *
- * @return ピン情報
- */
-context(ctx: BaseContext)
-suspend fun Message.fetchPinInfo(): PinInfo = id.fetchPinInfo()
-
-/**
- * メッセージ本文を更新します。
- *
- * @param content 更新後本文
- * @param embed `true` の場合に埋め込み展開を有効化します
- * @param nonce 重複送信防止に使う任意文字列
- */
-context(ctx: BaseContext)
-suspend fun Message.update(
-    content: String,
-    embed: Boolean = false,
-    nonce: String? = null,
-) {
-    id.update(content, embed, nonce)
-}
-
-/** メッセージを削除します。 */
-context(ctx: BaseContext)
-suspend fun Message.delete() {
-    id.delete()
-}
-
-/**
- * メッセージへスタンプを追加します。
- *
- * @param stampId 付与するスタンプID
- * @param count 追加個数
- */
-context(ctx: BaseContext)
-suspend fun Message.addStamp(
-    stampId: StampId,
-    count: Int = 1,
-) {
-    id.addStamp(stampId, count)
-}
-
-/**
- * メッセージからスタンプを削除します。
- *
- * @param stampId 削除するスタンプID
- */
-context(ctx: BaseContext)
-suspend fun Message.removeStamp(stampId: StampId) {
-    id.removeStamp(stampId)
-}
-
-/**
- * メッセージをピン留めします。
- *
- * @return 作成されたピン情報
- */
-context(ctx: BaseContext)
-suspend fun Message.pin(): PinInfo = id.pin()
-
-/** メッセージのピン留めを解除します。 */
-context(ctx: BaseContext)
-suspend fun Message.unpin() {
-    id.unpin()
-}
-
-/**
- * 元メッセージへのリンク付きで返信します。
- *
- * 本文末尾に対象メッセージ URL を付加して送信します。
- *
- * @param content 返信本文
- * @param embed `true` の場合に埋め込み展開を有効化します
- * @param nonce 重複送信防止に使う任意文字列
- * @return 送信された返信メッセージ
- */
-context(ctx: BaseContext)
 suspend fun Message.reply(
     content: String,
     embed: Boolean = false,
     nonce: String? = null,
-): Message = channelId.sendMessage(content + "\n${url()}", embed, nonce)
+): Message.Detail = (this as? Message.Detail ?: fetch()).channel.sendMessage(content + "\n${url()}", embed, nonce)
 
 /** メッセージ URL を生成します。 */
 context(ctx: BaseContext)
-fun MessageId.url(): String = "https://${ctx.origin}/messages/$value"
-
-/** メッセージ URL を生成します。 */
-context(ctx: BaseContext)
-fun Message.url(): String = id.url()
+fun Message.url(): String = "https://${ctx.origin}/messages/${id.value}"

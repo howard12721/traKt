@@ -68,8 +68,8 @@ data class BotDirectMessageUpdated internal constructor(
 @ConsistentCopyVisibility
 data class BotMessageDeleted internal constructor(
     override val occurredAt: Instant,
-    val messageId: MessageId,
-    val channelId: ChannelId,
+    val message: Message.Ref,
+    val channel: Channel.Ref,
 ) : BotEvent,
     TimedEvent
 
@@ -77,8 +77,8 @@ data class BotMessageDeleted internal constructor(
 @ConsistentCopyVisibility
 data class BotDirectMessageDeleted internal constructor(
     override val occurredAt: Instant,
-    val messageId: MessageId,
-    val channelId: ChannelId,
+    val message: Message.Ref,
+    val channel: Channel.Ref,
 ) : BotEvent,
     TimedEvent
 
@@ -86,7 +86,7 @@ data class BotDirectMessageDeleted internal constructor(
 @ConsistentCopyVisibility
 data class BotJoinedChannel internal constructor(
     override val occurredAt: Instant,
-    val channelId: ChannelId,
+    val channel: Channel.Ref,
 ) : BotEvent,
     TimedEvent
 
@@ -94,7 +94,7 @@ data class BotJoinedChannel internal constructor(
 @ConsistentCopyVisibility
 data class BotLeftChannel internal constructor(
     override val occurredAt: Instant,
-    val channelId: ChannelId,
+    val channel: Channel.Ref,
 ) : BotEvent,
     TimedEvent
 
@@ -112,7 +112,7 @@ data class BotChannelTopicChanged internal constructor(
     override val occurredAt: Instant,
     val channel: Channel.Meta,
     val topic: String,
-    val updaterId: UserId,
+    val updater: User.Ref,
 ) : BotEvent,
     TimedEvent
 
@@ -144,7 +144,7 @@ data class BotStampCreated internal constructor(
 @ConsistentCopyVisibility
 data class BotTagAdded internal constructor(
     override val occurredAt: Instant,
-    val tagId: UserTagId,
+    val userTag: UserTag.Ref,
     val tag: String,
 ) : BotEvent,
     TimedEvent
@@ -153,7 +153,7 @@ data class BotTagAdded internal constructor(
 @ConsistentCopyVisibility
 data class BotTagRemoved internal constructor(
     override val occurredAt: Instant,
-    val tagId: UserTagId,
+    val userTag: UserTag.Ref,
     val tag: String,
 ) : BotEvent,
     TimedEvent

@@ -15,16 +15,27 @@ value class WebhookId(
     }
 }
 
-/** Webhook 情報。 */
-@ConsistentCopyVisibility
-data class Webhook internal constructor(
-    val id: WebhookId,
-    val botUserId: UserId,
-    val displayName: String,
-    val description: String,
-    val isSecure: Boolean,
-    val channelId: ChannelId,
-    val ownerId: UserId,
-    val createdAt: Instant,
-    val updatedAt: Instant,
-)
+/** Webhook。 */
+sealed interface Webhook {
+    val id: WebhookId
+
+    /** ID のみを持つ Webhook 参照。 */
+    @JvmInline
+    value class Ref(
+        override val id: WebhookId,
+    ) : Webhook
+
+    /** Webhook 情報。 */
+    @ConsistentCopyVisibility
+    data class Detail internal constructor(
+        override val id: WebhookId,
+        val botUser: User.Ref,
+        val displayName: String,
+        val description: String,
+        val isSecure: Boolean,
+        val channel: Channel.Ref,
+        val owner: User.Ref,
+        val createdAt: Instant,
+        val updatedAt: Instant,
+    ) : Webhook
+}

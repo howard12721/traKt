@@ -61,7 +61,7 @@ internal interface UserPort {
      * @param userId 取得対象ユーザー
      * @return ユーザータグ一覧
      */
-    suspend fun fetchUserTags(userId: UserId): List<UserTag>
+    suspend fun fetchUserTags(userId: UserId): List<UserTag.Detail>
 
     /**
      * ユーザーへタグを追加します。
@@ -73,7 +73,7 @@ internal interface UserPort {
     suspend fun addUserTag(
         userId: UserId,
         tag: String,
-    ): UserTag
+    ): UserTag.Detail
 
     /**
      * ユーザーからタグを削除します。

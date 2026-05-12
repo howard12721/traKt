@@ -87,13 +87,13 @@ internal class TraqSelfPort(
             .requireSuccess(operation = "setNotifyCitation(enabled=$enabled)")
     }
 
-    override suspend fun fetchMyTags(): List<UserTag> =
+    override suspend fun fetchMyTags(): List<UserTag.Detail> =
         apiGateway.meApi
             .getMyUserTags()
             .bodyOrThrow(operation = "fetchMyTags()")
             .map { it.toModel() }
 
-    override suspend fun addMyTag(tag: String): UserTag =
+    override suspend fun addMyTag(tag: String): UserTag.Detail =
         apiGateway.meApi
             .addMyUserTag(PostUserTagRequest(tag))
             .bodyOrThrow(operation = "addMyTag(tag=$tag)")
@@ -114,11 +114,11 @@ internal class TraqSelfPort(
             .requireSuccess(operation = "removeMyTag(tagId=${tagId.value})")
     }
 
-    override suspend fun fetchMyStars(): List<ChannelId> =
+    override suspend fun fetchMyStars(): List<Channel.Ref> =
         apiGateway.meApi
             .getMyStars()
             .bodyOrThrow(operation = "fetchMyStars()")
-            .map { ChannelId(it) }
+            .map { Channel.Ref(ChannelId(it)) }
 
     override suspend fun addMyStar(channelId: ChannelId) {
         apiGateway.meApi
@@ -173,7 +173,7 @@ internal class TraqSelfPort(
             .requireSuccess(operation = "registerFCMDevice()")
     }
 
-    override suspend fun fetchMySessions(): List<LoginSession> =
+    override suspend fun fetchMySessions(): List<LoginSession.Detail> =
         apiGateway.meApi
             .getMySessions()
             .bodyOrThrow(operation = "fetchMySessions()")
@@ -185,7 +185,7 @@ internal class TraqSelfPort(
             .requireSuccess(operation = "revokeMySession(sessionId=${sessionId.value})")
     }
 
-    override suspend fun fetchMyTokens(): List<ActiveOAuth2Token> =
+    override suspend fun fetchMyTokens(): List<ActiveOAuth2Token.Detail> =
         apiGateway.meApi
             .getMyTokens()
             .bodyOrThrow(operation = "fetchMyTokens()")
