@@ -41,12 +41,15 @@ internal object CommandTokenizer {
                     }
 
                     char == '\\' -> {
-                        index++
-                        if (index >= input.length) {
+                        if (index + 1 >= input.length) {
                             value.append('\\')
+                            index++
                         } else {
+                            index++
                             value.append(input[index])
+                            index++
                         }
+                        continue
                     }
 
                     quote != null && char == quote -> {
