@@ -1,18 +1,8 @@
 package jp.xhw.trakt.bot.command
 
 import jp.xhw.trakt.bot.context.bot.BotContext
-import jp.xhw.trakt.bot.model.BotMessageCreated
-import jp.xhw.trakt.bot.model.ChannelId
-import jp.xhw.trakt.bot.model.Message
-import jp.xhw.trakt.bot.model.MessageId
-import jp.xhw.trakt.bot.model.UserId
-import jp.xhw.trakt.bot.port.BotPort
+import jp.xhw.trakt.bot.model.*
 import jp.xhw.trakt.bot.port.ChannelPort
-import jp.xhw.trakt.bot.port.FilePort
-import jp.xhw.trakt.bot.port.GroupPort
-import jp.xhw.trakt.bot.port.MessagePort
-import jp.xhw.trakt.bot.port.StampPort
-import jp.xhw.trakt.bot.port.UserPort
 import kotlinx.coroutines.runBlocking
 import java.lang.reflect.Proxy
 import kotlin.test.Test
@@ -193,10 +183,10 @@ class CommandRegistryTest {
         BotMessageCreated(
             occurredAt = Instant.parse("2026-05-12T00:00:00Z"),
             message =
-                Message(
+                Message.Detail(
                     id = MessageId(Uuid.parse("019e145d-e5ca-7cdc-ba1b-92bcc98a2927")),
-                    authorId = UserId(Uuid.parse("019e145d-e5ca-7cdc-ba1b-92bcc98a2928")),
-                    channelId = ChannelId(Uuid.parse("019e145d-e5ca-7cdc-ba1b-92bcc98a2929")),
+                    author = User.Ref(UserId(Uuid.parse("019e145d-e5ca-7cdc-ba1b-92bcc98a2928"))),
+                    channel = Channel.Ref(ChannelId(Uuid.parse("019e145d-e5ca-7cdc-ba1b-92bcc98a2929"))),
                     content = content,
                     createdAt = Instant.parse("2026-05-12T00:00:00Z"),
                     updatedAt = Instant.parse("2026-05-12T00:00:00Z"),
@@ -209,23 +199,26 @@ class CommandRegistryTest {
     private fun testContext(replies: MutableList<String> = mutableListOf()): BotContext {
         val context =
             BotContext(
-            botId = null,
-            origin = "q.trap.jp",
-            botPort = fakePort(),
-            selfPort = fakePort(),
-            channelPort = fakeChannelPort(replies),
-            messagePort = fakePort(),
-            userPort = fakePort(),
-            stampPort = fakePort(),
-            groupPort = fakePort(),
-            filePort = fakePort(),
-        )
+                botId = null,
+                origin = "q.trap.jp",
+                botPort = fakePort(),
+                selfPort = fakePort(),
+                channelPort = fakeChannelPort(replies),
+                messagePort = fakePort(),
+                userPort = fakePort(),
+                stampPort = fakePort(),
+                groupPort = fakePort(),
+                filePort = fakePort(),
+            )
         context.currentUserId = UserId(Uuid.parse("019e145d-e5ca-7cdc-ba1b-92bcc98a2926"))
         return context
     }
 
     private fun fakeChannelPort(replies: MutableList<String>): ChannelPort =
-        Proxy.newProxyInstance(ChannelPort::class.java.classLoader, arrayOf(ChannelPort::class.java)) { _, method, args ->
+        Proxy.newProxyInstance(
+            ChannelPort::class.java.classLoader,
+            arrayOf(ChannelPort::class.java),
+        ) { _, method, args ->
             if (method.name.startsWith("sendMessage")) {
                 replies += args?.get(1) as String
                 return@newProxyInstance message(ChannelId(args[0] as Uuid), args[1] as String)
@@ -243,10 +236,10 @@ class CommandRegistryTest {
         channelId: ChannelId,
         content: String,
     ): Message =
-        Message(
+        Message.Detail(
             id = MessageId(Uuid.parse("019e145d-e5ca-7cdc-ba1b-92bcc98a2930")),
-            authorId = UserId(Uuid.parse("019e145d-e5ca-7cdc-ba1b-92bcc98a2928")),
-            channelId = channelId,
+            author = User.Ref(UserId(Uuid.parse("019e145d-e5ca-7cdc-ba1b-92bcc98a2928"))),
+            channel = Channel.Ref(channelId),
             content = content,
             createdAt = Instant.parse("2026-05-12T00:00:00Z"),
             updatedAt = Instant.parse("2026-05-12T00:00:00Z"),

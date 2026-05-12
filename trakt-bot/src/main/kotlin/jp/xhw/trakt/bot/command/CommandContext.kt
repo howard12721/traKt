@@ -7,7 +7,7 @@ import jp.xhw.trakt.bot.model.UserId
 /** Context passed to command executors. */
 class CommandContext internal constructor(
     val event: BotMessageCreated,
-    val message: Message,
+    val message: Message.Detail,
     val commandName: String,
     val rawInput: String,
     val args: CommandArguments,

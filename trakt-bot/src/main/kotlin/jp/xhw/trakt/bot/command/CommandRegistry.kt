@@ -23,12 +23,12 @@ internal class CommandRegistry internal constructor(
         val help = root("help")
         help.description = options.helpDescription
         help.executor = { command ->
-            command.message.channelId.sendMessage(helpText())
+            command.message.channel.sendMessage(helpText())
         }
         help.addArgumentChild(
             ArgumentCommandNode("command", StringArgumentType).also { commandArgument ->
                 commandArgument.executor = { command ->
-                    command.message.channelId.sendMessage(commandHelpText(command.args.string("command")))
+                    command.message.channel.sendMessage(commandHelpText(command.args.string("command")))
                 }
             },
         )
