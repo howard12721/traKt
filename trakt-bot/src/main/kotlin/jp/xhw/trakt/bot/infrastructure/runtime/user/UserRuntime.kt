@@ -7,6 +7,7 @@ import jp.xhw.trakt.bot.infrastructure.runtime.Runtime
 import jp.xhw.trakt.bot.infrastructure.runtime.RuntimeLifecycle
 import jp.xhw.trakt.bot.infrastructure.runtime.SelfTraktClient
 import kotlinx.coroutines.Dispatchers
+import org.slf4j.LoggerFactory
 import kotlin.coroutines.CoroutineContext
 import jp.xhw.trakt.websocket.user.UserEvent as WebSocketUserEvent
 
@@ -18,6 +19,7 @@ internal fun createUserClient(
     debugMode: Boolean = false,
 ): SelfTraktClient {
     val apiGateway = TraqApiGateway(token = token, origin = origin, debugMode = debugMode)
+    val selfPort = TraqSelfPort(apiGateway)
     val ctx =
         UserContext(
             origin = origin,
@@ -27,12 +29,13 @@ internal fun createUserClient(
             stampPort = TraqStampPort(apiGateway),
             groupPort = TraqGroupPort(apiGateway),
             filePort = TraqFilePort(apiGateway),
-            selfPort = TraqSelfPort(apiGateway),
+            selfPort = selfPort,
             clipPort = TraqClipPort(apiGateway),
             webhookPort = TraqWebhookPort(apiGateway),
             managedBotPort = TraqManagedBotPort(apiGateway),
             userWebSocketPort = TraqUserWebSocketPort(apiGateway),
         )
+    val logger = LoggerFactory.getLogger("jp.xhw.trakt.bot.UserRuntime")
     val lifecycle =
         object : RuntimeLifecycle {
             override suspend fun start() {
@@ -41,6 +44,11 @@ internal fun createUserClient(
 
             override suspend fun awaitStarted() {
                 apiGateway.userWs.awaitConnected()
+                val currentUser = selfPort.fetchMe()
+                ctx.currentUser = currentUser
+                ctx.currentUsername = currentUser.name
+                ctx.currentUserId = currentUser.id
+                logger.info("Logged in as {} ({})", currentUser.name, currentUser.id.value)
             }
 
             override suspend fun stop() {

@@ -9,6 +9,7 @@ import jp.xhw.trakt.bot.infrastructure.runtime.TraktClient
 import jp.xhw.trakt.bot.model.BotId
 import jp.xhw.trakt.websocket.bot.BotEvent
 import kotlinx.coroutines.Dispatchers
+import org.slf4j.LoggerFactory
 import kotlin.coroutines.CoroutineContext
 import kotlin.uuid.Uuid
 
@@ -21,6 +22,7 @@ internal fun createBotClient(
     debugMode: Boolean = false,
 ): TraktClient {
     val apiGateway = TraqApiGateway(token = token, origin = origin, debugMode = debugMode)
+    val selfPort = TraqBotSelfPort(apiGateway)
     val ctx =
         BotContext(
             botId = botId?.let(::BotId),
@@ -32,7 +34,9 @@ internal fun createBotClient(
             groupPort = TraqGroupPort(apiGateway),
             filePort = TraqFilePort(apiGateway),
             botPort = TraqBotPort(apiGateway),
+            selfPort = selfPort,
         )
+    val logger = LoggerFactory.getLogger("jp.xhw.trakt.bot.BotRuntime")
     val lifecycle =
         object : RuntimeLifecycle {
             override suspend fun start() {
@@ -41,6 +45,11 @@ internal fun createBotClient(
 
             override suspend fun awaitStarted() {
                 apiGateway.botWs.awaitConnected()
+                val currentUser = selfPort.fetchMe()
+                ctx.currentUser = currentUser
+                ctx.currentUsername = currentUser.name
+                ctx.currentUserId = currentUser.id
+                logger.info("Logged in as {} ({})", currentUser.name, currentUser.id.value)
             }
 
             override suspend fun stop() {
