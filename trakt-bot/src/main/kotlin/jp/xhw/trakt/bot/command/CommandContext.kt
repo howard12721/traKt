@@ -4,7 +4,7 @@ import jp.xhw.trakt.bot.model.BotMessageCreated
 import jp.xhw.trakt.bot.model.Message
 import jp.xhw.trakt.bot.model.UserId
 
-/** Context passed to command executors. */
+/** コマンド実行時に executor へ渡される context。 */
 class CommandContext internal constructor(
     val event: BotMessageCreated,
     val message: Message.Detail,
@@ -13,7 +13,7 @@ class CommandContext internal constructor(
     val args: CommandArguments,
 )
 
-/** Parsed command arguments keyed by their DSL names. */
+/** DSL で定義した名前から参照できるパース済みコマンド引数。 */
 class CommandArguments internal constructor(
     private val values: Map<String, Any?>,
 ) {

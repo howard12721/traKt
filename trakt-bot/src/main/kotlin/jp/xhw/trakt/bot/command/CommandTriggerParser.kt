@@ -4,12 +4,12 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.jsonPrimitive
 
-// コマンドの本体
+/** コマンドトリガーを取り除いた入力本文。 */
 internal data class CommandInput(
     val body: String,
 )
 
-// コマンドのprefixを取り除いて本体だけを返すヘルパー
+/** メッセージ本文からコマンド入力を取り出します。 */
 internal object CommandTriggerParser {
     private val json = Json { ignoreUnknownKeys = true }
 

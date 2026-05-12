@@ -3,7 +3,7 @@ package jp.xhw.trakt.bot.command
 import jp.xhw.trakt.bot.model.UserId
 import kotlin.uuid.Uuid
 
-/** Command argument type used for validation and conversion. */
+/** コマンド引数の検証と変換に使う型。 */
 sealed interface CommandArgumentType<T> {
     val displayName: String
 

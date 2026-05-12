@@ -4,9 +4,9 @@ import jp.xhw.trakt.bot.infrastructure.runtime.TraktClient
 import jp.xhw.trakt.bot.model.BotMessageCreated
 
 /**
- * Registers a command tree that handles [BotMessageCreated] events.
+ * [BotMessageCreated] イベントを処理するコマンドツリーを登録します。
  *
- * Mention triggers use the Bot user ID fetched during runtime startup.
+ * メンショントリガーは runtime 起動時に取得した Bot ユーザーIDを使って判定します。
  */
 fun TraktClient.commands(
     prefix: String,
