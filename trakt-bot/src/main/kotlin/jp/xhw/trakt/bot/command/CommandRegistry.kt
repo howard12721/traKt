@@ -198,9 +198,47 @@ internal class CommandRegistry internal constructor(
         return usages.distinct()
     }
 
+    private fun collectUsagesPassingThrough(
+        root: CommandNode,
+        target: CommandNode,
+    ): List<String> {
+        val usages = mutableListOf<String>()
+
+        fun visit(
+            node: CommandNode,
+            parts: List<String>,
+        ) {
+            if (!containsNode(node, target)) {
+                return
+            }
+            if (node.executor != null) {
+                usages += parts.joinToString(" ")
+            }
+            if (node.children.isEmpty() && node.executor == null) {
+                usages += parts.joinToString(" ")
+            }
+            node.children.forEach { child ->
+                if (!containsNode(child, target)) {
+                    return@forEach
+                }
+                val part =
+                    when (child) {
+                        is LiteralCommandNode -> child.name
+                        is ArgumentCommandNode<*> -> "<${child.name}>"
+                    }
+                visit(child, parts + part)
+            }
+        }
+
+        visit(root, listOf(root.name))
+        return usages.distinct()
+    }
+
     private fun usageFor(node: CommandNode): String {
         val root = roots.values.firstOrNull { candidate -> containsNode(candidate, node) } ?: return node.name
-        return collectUsages(root).firstOrNull() ?: root.name
+        return collectUsagesPassingThrough(root, node)
+            .minWithOrNull(compareBy<String>({ it.split(" ").size }, { it.length }))
+            ?: root.name
     }
 
     private fun containsNode(
