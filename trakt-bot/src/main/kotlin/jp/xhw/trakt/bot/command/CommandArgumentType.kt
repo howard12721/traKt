@@ -181,7 +181,7 @@ internal class UserNameCache {
             return null
         }
 
-        val user = ctx.userPort.fetchUsers(includeSuspended = true, name = name).firstOrNull()
+        val user = ctx.userPort.fetchUsers(name = name).firstOrNull()
         if (user == null) {
             misses += name
             return null
