@@ -110,7 +110,7 @@ internal class CommandRegistry internal constructor(
 
             val value = child.type.parse(token.value, resolver)
             if (value == null) {
-                argumentErrors += "${child.name} must be ${child.type.displayName}"
+                argumentErrors += "<${child.name}>が有効な${child.type.displayName}ではありません。"
                 continue
             }
 
