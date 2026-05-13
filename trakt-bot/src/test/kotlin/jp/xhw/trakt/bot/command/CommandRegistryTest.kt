@@ -323,14 +323,70 @@ class CommandRegistryTest {
             )
         }
 
+    @Test
+    fun customErrorMessagesAreUsedForCommandReplies() =
+        runBlocking {
+            val replies = mutableListOf<String>()
+            val registry =
+                registry(errorMessages = TestCommandErrorMessages) {
+                    command("admin") {
+                        literal("ban") {
+                            string("name") {
+                                executes {}
+                            }
+                        }
+                    }
+                    command("user") {
+                        user("user") {
+                            executes {}
+                        }
+                    }
+                }
+
+            registry.handle(testContext(replies), event("!admin ban"))
+            registry.handle(testContext(replies), event("!user missing"))
+            registry.handle(testContext(replies), event("!admin ban alice extra"))
+            registry.handle(testContext(replies), event("""!admin "ban"""))
+
+            assertEquals(
+                listOf(
+                    "missing:admin ban <name>\nhttps://q.trap.jp/messages/019e145d-e5ca-7cdc-ba1b-92bcc98a2927",
+                    "invalid:user:user\nhttps://q.trap.jp/messages/019e145d-e5ca-7cdc-ba1b-92bcc98a2927",
+                    "unexpected:extra\nhttps://q.trap.jp/messages/019e145d-e5ca-7cdc-ba1b-92bcc98a2927",
+                    "quote:\"\nhttps://q.trap.jp/messages/019e145d-e5ca-7cdc-ba1b-92bcc98a2927",
+                ),
+                replies,
+            )
+        }
+
     private fun registry(
         prefix: String = "!",
         botUserId: String? = null,
+        errorMessages: CommandErrorMessages = DefaultCommandErrorMessages,
         block: CommandRegistryBuilder.() -> Unit,
     ): CommandRegistry =
-        CommandRegistry(CommandOptions(prefix = prefix, botUserIdProvider = { botUserId })).also { registry ->
+        CommandRegistry(
+            CommandOptions(
+                prefix = prefix,
+                botUserIdProvider = { botUserId },
+                errorMessages = errorMessages,
+            ),
+        ).also { registry ->
             CommandRegistryBuilder(registry).block()
         }
+
+    private object TestCommandErrorMessages : CommandErrorMessages {
+        override fun unclosedQuote(quote: Char): String = "quote:$quote"
+
+        override fun missingArguments(usage: String): String = "missing:$usage"
+
+        override fun invalidArgument(
+            name: String,
+            expectedType: String,
+        ): String = "invalid:$name:$expectedType"
+
+        override fun unexpectedArgument(value: String): String = "unexpected:$value"
+    }
 
     private fun event(content: String): BotMessageCreated =
         BotMessageCreated(

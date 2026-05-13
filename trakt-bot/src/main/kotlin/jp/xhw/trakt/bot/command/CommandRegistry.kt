@@ -22,7 +22,7 @@ internal class CommandRegistry internal constructor(
         val commandInput = CommandTriggerParser.parse(event.message.content, options) ?: return
         val rawCommandInput = commandInput.body
         val tokens =
-            when (val result = CommandTokenizer.tokenize(rawCommandInput)) {
+            when (val result = CommandTokenizer.tokenize(rawCommandInput, options.errorMessages)) {
                 is TokenizeResult.Success -> {
                     result.tokens
                 }
@@ -93,7 +93,9 @@ internal class CommandRegistry internal constructor(
             return if (executor != null) {
                 CommandMatch.Success(executor, arguments)
             } else {
-                CommandMatch.Failure("引数が不足しています。 Usage: ${usageFor(root, node, executorReachableNodes)}")
+                CommandMatch.Failure(
+                    options.errorMessages.missingArguments(usageFor(root, node, executorReachableNodes)),
+                )
             }
         }
 
@@ -121,7 +123,7 @@ internal class CommandRegistry internal constructor(
 
             val value = child.type.parse(token.value, resolver)
             if (value == null) {
-                argumentErrors += "<${child.name}>が有効な${child.type.displayName}ではありません。"
+                argumentErrors += options.errorMessages.invalidArgument(child.name, child.type.displayName)
                 continue
             }
 
@@ -146,7 +148,7 @@ internal class CommandRegistry internal constructor(
             ?: if (argumentErrors.isNotEmpty()) {
                 CommandMatch.Failure(argumentErrors.first())
             } else {
-                CommandMatch.Failure("Unexpected argument: ${token.value}")
+                CommandMatch.Failure(options.errorMessages.unexpectedArgument(token.value))
             }
     }
 
@@ -246,6 +248,7 @@ internal data class CommandOptions(
     val prefix: String,
     val botUserIdProvider: () -> String? = { null },
     val replyOnError: Boolean = true,
+    val errorMessages: CommandErrorMessages = DefaultCommandErrorMessages,
 )
 
 private sealed interface CommandMatch {

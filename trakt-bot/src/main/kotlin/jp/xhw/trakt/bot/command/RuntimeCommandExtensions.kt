@@ -12,6 +12,7 @@ import jp.xhw.trakt.bot.model.Initialized
 fun TraktClientBuilder.commands(
     prefix: String,
     replyOnError: Boolean = true,
+    errorMessages: CommandErrorMessages = DefaultCommandErrorMessages,
     block: CommandRegistryBuilder.() -> Unit,
 ) {
     require(prefix.isNotEmpty()) { "Command prefix must not be empty" }
@@ -22,6 +23,7 @@ fun TraktClientBuilder.commands(
                 prefix = prefix,
                 botUserIdProvider = { context.currentUserId?.value?.toString() },
                 replyOnError = replyOnError,
+                errorMessages = errorMessages,
             ),
         )
     CommandRegistryBuilder(registry).block()

@@ -17,7 +17,10 @@ internal sealed interface TokenizeResult {
 }
 
 internal object CommandTokenizer {
-    fun tokenize(input: String): TokenizeResult {
+    fun tokenize(
+        input: String,
+        errorMessages: CommandErrorMessages = DefaultCommandErrorMessages,
+    ): TokenizeResult {
         val tokens = mutableListOf<CommandToken>()
         var index = 0
 
@@ -75,7 +78,7 @@ internal object CommandTokenizer {
             }
 
             if (quote != null) {
-                return TokenizeResult.Failure("Unclosed quote: $quote")
+                return TokenizeResult.Failure(errorMessages.unclosedQuote(quote))
             }
 
             tokens += CommandToken(value.toString(), start, index)
