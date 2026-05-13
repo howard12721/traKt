@@ -67,76 +67,82 @@ object BooleanArgumentType : CommandArgumentType<Boolean> {
         }
 }
 
-object UserArgumentType : CommandArgumentType<User.Ref> {
+object UserArgumentType : CommandArgumentType<User.Detail> {
     override val displayName: String = "user"
 
     override suspend fun parse(
         token: String,
         resolver: CommandArgumentResolver,
-    ): User.Ref? = resolver.resolveUser(token)
+    ): User.Detail? = resolver.resolveUser(token)
 }
 
-object ChannelArgumentType : CommandArgumentType<Channel.Ref> {
+object ChannelArgumentType : CommandArgumentType<Channel.Detail> {
     override val displayName: String = "channel"
 
     override suspend fun parse(
         token: String,
         resolver: CommandArgumentResolver,
-    ): Channel.Ref? = resolver.resolveChannel(token)
+    ): Channel.Detail? = resolver.resolveChannel(token)
 }
 
-object GroupArgumentType : CommandArgumentType<Group.Ref> {
+object GroupArgumentType : CommandArgumentType<Group.Detail> {
     override val displayName: String = "group"
 
     override suspend fun parse(
         token: String,
         resolver: CommandArgumentResolver,
-    ): Group.Ref? = resolver.resolveGroup(token)
+    ): Group.Detail? = resolver.resolveGroup(token)
 }
 
-object MessageArgumentType : CommandArgumentType<Message.Ref> {
+object MessageArgumentType : CommandArgumentType<Message.Detail> {
     override val displayName: String = "message"
 
     override suspend fun parse(
         token: String,
         resolver: CommandArgumentResolver,
-    ): Message.Ref? = resolver.resolveMessage(token)
+    ): Message.Detail? = resolver.resolveMessage(token)
 }
 
 class CommandArgumentResolver internal constructor(
     private val ctx: BotContext,
     private val userNameCache: UserNameCache,
 ) {
-    suspend fun resolveUser(token: String): User.Ref? {
-        parseUuid(token)?.let { return User.Ref(UserId(it)) }
-        CommandMentionParser.parseId(token, type = "user")?.let { return User.Ref(UserId(it)) }
-        return userNameCache.resolve(ctx, token)?.let { User.Ref(it) }
+    suspend fun resolveUser(token: String): User.Detail? {
+        parseUuid(token)?.let { return resolveUserId(UserId(it)) }
+        CommandMentionParser.parseId(token, type = "user")?.let { return resolveUserId(UserId(it)) }
+        return userNameCache.resolve(ctx, token)?.let { resolveUserId(it) }
     }
 
-    suspend fun resolveChannel(token: String): Channel.Ref? {
-        parseUuid(token)?.let { return Channel.Ref(ChannelId(it)) }
-        CommandMentionParser.parseId(token, type = "channel")?.let { return Channel.Ref(ChannelId(it)) }
+    suspend fun resolveChannel(token: String): Channel.Detail? {
+        parseUuid(token)?.let { return resolveChannelId(ChannelId(it)) }
+        CommandMentionParser.parseId(token, type = "channel")?.let { return resolveChannelId(ChannelId(it)) }
 
         val path = runCatching { ChannelPath(token.removePrefix("#")) }.getOrNull() ?: return null
-        val channel =
-            ctx.channelPort
-                .fetchChannels(path = path.value)
-                .publicChannels
-                .firstOrNull() ?: return null
-        return Channel.Ref(channel.id)
+        return ctx.channelPort
+            .fetchChannels(path = path.value)
+            .publicChannels
+            .firstOrNull()
     }
 
-    fun resolveGroup(token: String): Group.Ref? {
-        parseUuid(token)?.let { return Group.Ref(GroupId(it)) }
-        CommandMentionParser.parseId(token, type = "group")?.let { return Group.Ref(GroupId(it)) }
+    suspend fun resolveGroup(token: String): Group.Detail? {
+        parseUuid(token)?.let { return resolveGroupId(GroupId(it)) }
+        CommandMentionParser.parseId(token, type = "group")?.let { return resolveGroupId(GroupId(it)) }
         return null
     }
 
-    fun resolveMessage(token: String): Message.Ref? {
-        parseUuid(token)?.let { return Message.Ref(MessageId(it)) }
-        parseMessageUrl(token)?.let { return Message.Ref(MessageId(it)) }
+    suspend fun resolveMessage(token: String): Message.Detail? {
+        parseUuid(token)?.let { return resolveMessageId(MessageId(it)) }
+        parseMessageUrl(token)?.let { return resolveMessageId(MessageId(it)) }
         return null
     }
+
+    private suspend fun resolveUserId(userId: UserId): User.Detail? = ctx.userPort.fetchUserOrNull(userId)
+
+    private suspend fun resolveChannelId(channelId: ChannelId): Channel.Detail? = ctx.channelPort.fetchChannelOrNull(channelId)
+
+    private suspend fun resolveGroupId(groupId: GroupId): Group.Detail? = ctx.groupPort.fetchGroupOrNull(groupId)
+
+    private suspend fun resolveMessageId(messageId: MessageId): Message.Detail? = ctx.messagePort.fetchMessageOrNull(messageId)
 }
 
 internal class UserNameCache {

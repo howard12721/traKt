@@ -26,13 +26,13 @@ class CommandArguments internal constructor(
 
     fun boolean(name: String): Boolean = get(name)
 
-    fun user(name: String): User.Ref = get(name)
+    fun user(name: String): User.Detail = get(name)
 
-    fun channel(name: String): Channel.Ref = get(name)
+    fun channel(name: String): Channel.Detail = get(name)
 
-    fun group(name: String): Group.Ref = get(name)
+    fun group(name: String): Group.Detail = get(name)
 
-    fun message(name: String): Message.Ref = get(name)
+    fun message(name: String): Message.Detail = get(name)
 
     operator fun contains(name: String): Boolean = name in values
 }
