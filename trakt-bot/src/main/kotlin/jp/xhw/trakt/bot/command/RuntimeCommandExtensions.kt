@@ -11,7 +11,6 @@ import jp.xhw.trakt.bot.model.BotMessageCreated
 fun TraktClient.commands(
     prefix: String,
     replyOnError: Boolean = true,
-    helpDescription: String = "ヘルプを表示します",
     block: CommandRegistryBuilder.() -> Unit,
 ) {
     require(prefix.isNotEmpty()) { "Command prefix must not be empty" }
@@ -22,11 +21,9 @@ fun TraktClient.commands(
                 prefix = prefix,
                 botUserIdProvider = { context.currentUserId?.value?.toString() },
                 replyOnError = replyOnError,
-                helpDescription = helpDescription,
             ),
         )
     CommandRegistryBuilder(registry).block()
-    registry.installHelpIfAbsent()
 
     on<BotMessageCreated> { event ->
         registry.handle(this, event)

@@ -6,7 +6,6 @@ typealias CommandExecutor = suspend BotContext.(CommandContext) -> Unit
 
 internal sealed class CommandNode(
     val name: String,
-    var description: String?,
 ) {
     private val mutableChildren: MutableList<CommandNode> = mutableListOf()
     private val mutableLiteralChildren: MutableMap<String, LiteralCommandNode> = linkedMapOf()
@@ -45,11 +44,9 @@ internal sealed class CommandNode(
 
 internal class LiteralCommandNode(
     name: String,
-    description: String? = null,
-) : CommandNode(name, description)
+) : CommandNode(name)
 
 internal class ArgumentCommandNode<T>(
     name: String,
     val type: CommandArgumentType<T>,
-    description: String? = null,
-) : CommandNode(name, description)
+) : CommandNode(name)

@@ -9,14 +9,10 @@ class CommandRegistryBuilder internal constructor(
 ) {
     fun command(
         name: String,
-        description: String? = null,
         block: CommandNodeBuilder.() -> Unit,
     ) {
         require(name.isNotBlank()) { "Command name must not be blank" }
         val node = registry.root(name)
-        if (description != null) {
-            node.description = description
-        }
         CommandNodeBuilder(node).block()
     }
 }
@@ -27,64 +23,53 @@ class CommandNodeBuilder internal constructor(
 ) {
     fun literal(
         name: String,
-        description: String? = null,
         block: CommandNodeBuilder.() -> Unit,
     ) {
         require(name.isNotBlank()) { "Literal name must not be blank" }
         val child = node.literal(name)
-        if (description != null) {
-            child.description = description
-        }
         CommandNodeBuilder(child).block()
     }
 
     fun <T> argument(
         name: String,
         type: CommandArgumentType<T>,
-        description: String? = null,
         block: CommandNodeBuilder.() -> Unit,
     ) {
         require(name.isNotBlank()) { "Argument name must not be blank" }
-        val child = ArgumentCommandNode(name, type, description)
+        val child = ArgumentCommandNode(name, type)
         node.addArgumentChild(child)
         CommandNodeBuilder(child).block()
     }
 
     fun string(
         name: String,
-        description: String? = null,
         block: CommandNodeBuilder.() -> Unit,
-    ) = argument(name, StringArgumentType, description, block)
+    ) = argument(name, StringArgumentType, block)
 
     fun greedyString(
         name: String,
-        description: String? = null,
         block: CommandNodeBuilder.() -> Unit,
-    ) = argument(name, GreedyStringArgumentType, description, block)
+    ) = argument(name, GreedyStringArgumentType, block)
 
     fun int(
         name: String,
-        description: String? = null,
         block: CommandNodeBuilder.() -> Unit,
-    ) = argument(name, IntArgumentType, description, block)
+    ) = argument(name, IntArgumentType, block)
 
     fun long(
         name: String,
-        description: String? = null,
         block: CommandNodeBuilder.() -> Unit,
-    ) = argument(name, LongArgumentType, description, block)
+    ) = argument(name, LongArgumentType, block)
 
     fun boolean(
         name: String,
-        description: String? = null,
         block: CommandNodeBuilder.() -> Unit,
-    ) = argument(name, BooleanArgumentType, description, block)
+    ) = argument(name, BooleanArgumentType, block)
 
     fun userId(
         name: String,
-        description: String? = null,
         block: CommandNodeBuilder.() -> Unit,
-    ) = argument<UserId>(name, UserIdArgumentType, description, block)
+    ) = argument<UserId>(name, UserIdArgumentType, block)
 
     fun executes(executor: CommandExecutor) {
         node.executor = executor

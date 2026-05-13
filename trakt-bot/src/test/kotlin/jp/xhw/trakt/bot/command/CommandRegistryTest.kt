@@ -27,7 +27,7 @@ class CommandRegistryTest {
             var handled = ""
             val registry =
                 registry(prefix = "!", botUserId = botUserId) {
-                    command("help", description = "help") {
+                    command("help") {
                         executes {
                             handled = it.commandName
                         }
@@ -48,7 +48,7 @@ class CommandRegistryTest {
             var handled = ""
             val registry =
                 registry {
-                    command("admin", description = "admin") {
+                    command("admin") {
                         literal("ban") {
                             string("name") {
                                 executes { command ->
@@ -70,7 +70,7 @@ class CommandRegistryTest {
             var handled = ""
             val registry =
                 registry {
-                    command("user", description = "user") {
+                    command("user") {
                         string("name") {
                             executes {
                                 handled = "argument"
@@ -95,7 +95,7 @@ class CommandRegistryTest {
             var handled = ""
             val registry =
                 registry {
-                    command("say", description = "say") {
+                    command("say") {
                         greedyString("text") {
                             executes { command ->
                                 handled = command.args.string("text")
@@ -110,12 +110,12 @@ class CommandRegistryTest {
         }
 
     @Test
-    fun generatedHelpListsCommands() =
+    fun helpCommandIsNotGenerated() =
         runBlocking {
             val replies = mutableListOf<String>()
             val registry =
                 registry {
-                    command("say", description = "say something") {
+                    command("say") {
                         greedyString("text") {
                             executes {}
                         }
@@ -124,49 +124,7 @@ class CommandRegistryTest {
 
             registry.handle(testContext(replies), event("!help"))
 
-            assertEquals(
-                """
-                Available commands:
-                !say <text> - say something
-                !help - ヘルプを表示します
-                !help <command> - ヘルプを表示します
-                """.trimIndent(),
-                replies.single(),
-            )
-        }
-
-    @Test
-    fun generatedHelpShowsCommandSyntax() =
-        runBlocking {
-            val replies = mutableListOf<String>()
-            val registry =
-                registry {
-                    command("admin", description = "admin commands") {
-                        literal("ban") {
-                            userId("user") {
-                                executes {}
-                            }
-                        }
-                        literal("unban") {
-                            userId("user") {
-                                executes {}
-                            }
-                        }
-                    }
-                }
-
-            registry.handle(testContext(replies), event("!help admin"))
-
-            assertEquals(
-                """
-                Usage:
-                !admin ban <user>
-                !admin unban <user>
-
-                admin commands
-                """.trimIndent(),
-                replies.single(),
-            )
+            assertEquals(emptyList(), replies)
         }
 
     private fun registry(
@@ -176,7 +134,6 @@ class CommandRegistryTest {
     ): CommandRegistry =
         CommandRegistry(CommandOptions(prefix = prefix, botUserIdProvider = { botUserId })).also { registry ->
             CommandRegistryBuilder(registry).block()
-            registry.installHelpIfAbsent()
         }
 
     private fun event(content: String): BotMessageCreated =

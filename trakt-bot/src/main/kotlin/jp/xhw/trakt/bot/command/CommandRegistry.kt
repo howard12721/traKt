@@ -1,7 +1,6 @@
 package jp.xhw.trakt.bot.command
 
 import jp.xhw.trakt.bot.context.base.reply
-import jp.xhw.trakt.bot.context.base.sendMessage
 import jp.xhw.trakt.bot.context.bot.BotContext
 import jp.xhw.trakt.bot.model.BotMessageCreated
 
@@ -14,25 +13,6 @@ internal class CommandRegistry internal constructor(
         roots.getOrPut(name) {
             LiteralCommandNode(name)
         }
-
-    internal fun installHelpIfAbsent() {
-        if ("help" in roots) {
-            return
-        }
-
-        val help = root("help")
-        help.description = options.helpDescription
-        help.executor = { command ->
-            command.message.channel.sendMessage(helpText())
-        }
-        help.addArgumentChild(
-            ArgumentCommandNode("command", StringArgumentType).also { commandArgument ->
-                commandArgument.executor = { command ->
-                    command.message.channel.sendMessage(commandHelpText(command.args.string("command")))
-                }
-            },
-        )
-    }
 
     internal suspend fun handle(
         botContext: BotContext,
@@ -141,63 +121,6 @@ internal class CommandRegistry internal constructor(
         }
     }
 
-    private fun helpText(): String {
-        val lines = mutableListOf("Available commands:")
-        roots.values.forEach { root ->
-            collectUsages(root).forEach { usage ->
-                val description = root.description?.takeIf(String::isNotBlank)
-                lines +=
-                    if (description == null) {
-                        "${options.prefix}$usage"
-                    } else {
-                        "${options.prefix}$usage - $description"
-                    }
-            }
-        }
-        return lines.joinToString("\n")
-    }
-
-    private fun commandHelpText(commandName: String): String {
-        val root = roots[commandName] ?: return "Unknown command: $commandName"
-
-        val lines = mutableListOf("Usage:")
-        collectUsages(root).forEach { usage ->
-            lines += "${options.prefix}$usage"
-        }
-        root.description?.takeIf(String::isNotBlank)?.let { description ->
-            lines += ""
-            lines += description
-        }
-        return lines.joinToString("\n")
-    }
-
-    private fun collectUsages(root: CommandNode): List<String> {
-        val usages = mutableListOf<String>()
-
-        fun visit(
-            node: CommandNode,
-            parts: List<String>,
-        ) {
-            if (node.executor != null) {
-                usages += parts.joinToString(" ")
-            }
-            if (node.children.isEmpty() && node.executor == null) {
-                usages += parts.joinToString(" ")
-            }
-            node.children.forEach { child ->
-                val part =
-                    when (child) {
-                        is LiteralCommandNode -> child.name
-                        is ArgumentCommandNode<*> -> "<${child.name}>"
-                    }
-                visit(child, parts + part)
-            }
-        }
-
-        visit(root, listOf(root.name))
-        return usages.distinct()
-    }
-
     private fun collectUsagesPassingThrough(
         root: CommandNode,
         target: CommandNode,
@@ -251,7 +174,6 @@ internal data class CommandOptions(
     val prefix: String,
     val botUserIdProvider: () -> String? = { null },
     val replyOnError: Boolean = true,
-    val helpDescription: String = "ヘルプを表示します",
 )
 
 private sealed interface CommandMatch {
