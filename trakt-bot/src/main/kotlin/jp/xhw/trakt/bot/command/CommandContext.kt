@@ -1,8 +1,6 @@
 package jp.xhw.trakt.bot.command
 
-import jp.xhw.trakt.bot.model.BotMessageCreated
-import jp.xhw.trakt.bot.model.Message
-import jp.xhw.trakt.bot.model.UserId
+import jp.xhw.trakt.bot.model.*
 
 /** コマンド実行時に executor へ渡される context。 */
 class CommandContext internal constructor(
@@ -28,7 +26,13 @@ class CommandArguments internal constructor(
 
     fun boolean(name: String): Boolean = get(name)
 
-    fun userId(name: String): UserId = get(name)
+    fun user(name: String): User.Ref = get(name)
+
+    fun channel(name: String): Channel.Ref = get(name)
+
+    fun group(name: String): Group.Ref = get(name)
+
+    fun message(name: String): Message.Ref = get(name)
 
     operator fun contains(name: String): Boolean = name in values
 }

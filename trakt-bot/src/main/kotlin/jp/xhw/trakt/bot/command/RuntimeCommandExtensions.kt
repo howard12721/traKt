@@ -2,6 +2,7 @@ package jp.xhw.trakt.bot.command
 
 import jp.xhw.trakt.bot.infrastructure.runtime.TraktClient
 import jp.xhw.trakt.bot.model.BotMessageCreated
+import jp.xhw.trakt.bot.model.Initialized
 
 /**
  * [BotMessageCreated] イベントを処理するコマンドツリーを登録します。
@@ -24,6 +25,10 @@ fun TraktClient.commands(
             ),
         )
     CommandRegistryBuilder(registry).block()
+
+    on<Initialized> {
+        registry.preloadArgumentCaches(this)
+    }
 
     on<BotMessageCreated> { event ->
         registry.handle(this, event)

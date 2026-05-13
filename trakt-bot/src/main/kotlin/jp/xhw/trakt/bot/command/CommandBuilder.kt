@@ -1,7 +1,6 @@
 package jp.xhw.trakt.bot.command
 
 import jp.xhw.trakt.bot.dsl.TraktDsl
-import jp.xhw.trakt.bot.model.UserId
 
 @TraktDsl
 class CommandRegistryBuilder internal constructor(
@@ -66,10 +65,25 @@ class CommandNodeBuilder internal constructor(
         block: CommandNodeBuilder.() -> Unit,
     ) = argument(name, BooleanArgumentType, block)
 
-    fun userId(
+    fun user(
         name: String,
         block: CommandNodeBuilder.() -> Unit,
-    ) = argument<UserId>(name, UserIdArgumentType, block)
+    ) = argument(name, UserArgumentType, block)
+
+    fun channel(
+        name: String,
+        block: CommandNodeBuilder.() -> Unit,
+    ) = argument(name, ChannelArgumentType, block)
+
+    fun group(
+        name: String,
+        block: CommandNodeBuilder.() -> Unit,
+    ) = argument(name, GroupArgumentType, block)
+
+    fun message(
+        name: String,
+        block: CommandNodeBuilder.() -> Unit,
+    ) = argument(name, MessageArgumentType, block)
 
     fun executes(executor: CommandExecutor) {
         node.executor = executor

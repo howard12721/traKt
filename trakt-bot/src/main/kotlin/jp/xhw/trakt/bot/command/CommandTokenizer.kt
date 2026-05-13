@@ -30,6 +30,13 @@ internal object CommandTokenizer {
             }
 
             val start = index
+            val mention = CommandMentionParser.parseAt(input, start = index)
+            if (mention != null) {
+                tokens += CommandToken(mention.token, start, mention.endExclusive)
+                index = mention.endExclusive
+                continue
+            }
+
             val value = StringBuilder()
             var quote: Char? = null
 

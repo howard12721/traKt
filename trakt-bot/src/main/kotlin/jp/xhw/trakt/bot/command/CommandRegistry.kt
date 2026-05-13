@@ -8,6 +8,7 @@ internal class CommandRegistry internal constructor(
     private val options: CommandOptions,
 ) {
     private val roots = linkedMapOf<String, LiteralCommandNode>()
+    private val userNameCache = UserNameCache()
 
     internal fun root(name: String): LiteralCommandNode =
         roots.getOrPut(name) {
@@ -37,7 +38,18 @@ internal class CommandRegistry internal constructor(
         }
 
         val root = roots[tokens.first().value] ?: return
-        when (val match = match(root, rawCommandInput, tokens, tokenIndex = 1, arguments = emptyMap())) {
+        val resolver = CommandArgumentResolver(botContext, userNameCache)
+        when (
+            val match =
+                match(
+                    node = root,
+                    input = rawCommandInput,
+                    tokens = tokens,
+                    tokenIndex = 1,
+                    arguments = emptyMap(),
+                    resolver = resolver,
+                )
+        ) {
             is CommandMatch.Success -> {
                 val commandContext =
                     CommandContext(
@@ -56,12 +68,17 @@ internal class CommandRegistry internal constructor(
         }
     }
 
-    private fun match(
+    internal suspend fun preloadArgumentCaches(botContext: BotContext) {
+        userNameCache.preload(botContext)
+    }
+
+    private suspend fun match(
         node: CommandNode,
         input: String,
         tokens: List<CommandToken>,
         tokenIndex: Int,
         arguments: Map<String, Any?>,
+        resolver: CommandArgumentResolver,
     ): CommandMatch {
         if (tokenIndex >= tokens.size) {
             val executor = node.executor
@@ -75,7 +92,7 @@ internal class CommandRegistry internal constructor(
         val token = tokens[tokenIndex]
         val literalMatch = node.literalChildren[token.value]
         if (literalMatch != null) {
-            return match(literalMatch, input, tokens, tokenIndex + 1, arguments)
+            return match(literalMatch, input, tokens, tokenIndex + 1, arguments, resolver)
         }
 
         val argumentErrors = mutableListOf<String>()
@@ -88,16 +105,24 @@ internal class CommandRegistry internal constructor(
                 if (executor != null) {
                     return CommandMatch.Success(executor, nextArguments)
                 }
-                return match(child, input, tokens, tokens.size, nextArguments)
+                return match(child, input, tokens, tokens.size, nextArguments, resolver)
             }
 
-            val value = child.type.parse(token.value)
+            val value = child.type.parse(token.value, resolver)
             if (value == null) {
                 argumentErrors += "${child.name} must be ${child.type.displayName}"
                 continue
             }
 
-            val result = match(child, input, tokens, tokenIndex + 1, arguments + (child.name to value))
+            val result =
+                match(
+                    node = child,
+                    input = input,
+                    tokens = tokens,
+                    tokenIndex = tokenIndex + 1,
+                    arguments = arguments + (child.name to value),
+                    resolver = resolver,
+                )
             if (result is CommandMatch.Success) {
                 return result
             }
@@ -160,7 +185,7 @@ internal class CommandRegistry internal constructor(
     private fun usageFor(node: CommandNode): String {
         val root = roots.values.firstOrNull { candidate -> containsNode(candidate, node) } ?: return node.name
         return collectUsagesPassingThrough(root, node)
-            .minWithOrNull(compareBy<String>({ it.split(" ").size }, { it.length }))
+            .minWithOrNull(compareBy({ it.split(" ").size }, { it.length }))
             ?: root.name
     }
 

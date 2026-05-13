@@ -3,6 +3,7 @@ package jp.xhw.trakt.bot.command
 import jp.xhw.trakt.bot.context.bot.BotContext
 import jp.xhw.trakt.bot.model.*
 import jp.xhw.trakt.bot.port.ChannelPort
+import jp.xhw.trakt.bot.port.UserPort
 import kotlinx.coroutines.runBlocking
 import java.lang.reflect.Proxy
 import kotlin.test.Test
@@ -18,6 +19,21 @@ class CommandRegistryTest {
 
         assertIs<TokenizeResult.Success>(result)
         assertEquals(listOf("say", "hello world", "again", "escaped value"), result.tokens.map { it.value })
+    }
+
+    @Test
+    fun tokenizesMentionJsonAsSingleToken() {
+        val result = CommandTokenizer.tokenize("""user !{"type":"user","raw":"@BOT_127","id":"019e145d-e5ca-7cdc-ba1b-92bcc98a2926"} tail""")
+
+        assertIs<TokenizeResult.Success>(result)
+        assertEquals(
+            listOf(
+                "user",
+                """!{"type":"user","raw":"@BOT_127","id":"019e145d-e5ca-7cdc-ba1b-92bcc98a2926"}""",
+                "tail",
+            ),
+            result.tokens.map { it.value },
+        )
     }
 
     @Test
@@ -127,6 +143,89 @@ class CommandRegistryTest {
             assertEquals(emptyList(), replies)
         }
 
+    @Test
+    fun userArgumentResolvesUuidMentionAndName() =
+        runBlocking {
+            val resolved = mutableListOf<UserId>()
+            val registry =
+                registry {
+                    command("user") {
+                        user("user") {
+                            executes { command ->
+                                resolved += command.args.user("user").id
+                            }
+                        }
+                    }
+                }
+            val userId = UserId(Uuid.parse("019e145d-e5ca-7cdc-ba1b-92bcc98a2940"))
+            val context = testContext(users = listOf(basicUser(userId, "BOT_127")))
+
+            registry.preloadArgumentCaches(context)
+            registry.handle(context, event("!user ${userId.value}"))
+            registry.handle(context, event("""!user !{"type":"user","raw":"@BOT_127","id":"${userId.value}"}"""))
+            registry.handle(context, event("!user BOT_127"))
+
+            assertEquals(listOf(userId, userId, userId), resolved)
+        }
+
+    @Test
+    fun channelArgumentResolvesUuidMentionAndPath() =
+        runBlocking {
+            val resolved = mutableListOf<ChannelId>()
+            val registry =
+                registry {
+                    command("channel") {
+                        channel("channel") {
+                            executes { command ->
+                                resolved += command.args.channel("channel").id
+                            }
+                        }
+                    }
+                }
+            val channelId = ChannelId(Uuid.parse("019e145d-e5ca-7cdc-ba1b-92bcc98a2941"))
+            val context = testContext(channels = listOf(channel(channelId, "times/25/howard127/---/temp")))
+
+            registry.handle(context, event("!channel ${channelId.value}"))
+            registry.handle(
+                context,
+                event("""!channel !{"type":"channel","raw":"#times/25/howard127/---/temp","id":"${channelId.value}"}"""),
+            )
+            registry.handle(context, event("!channel times/25/howard127/---/temp"))
+
+            assertEquals(listOf(channelId, channelId, channelId), resolved)
+        }
+
+    @Test
+    fun groupAndMessageArgumentsResolveSupportedForms() =
+        runBlocking {
+            val groups = mutableListOf<GroupId>()
+            val messages = mutableListOf<MessageId>()
+            val registry =
+                registry {
+                    command("refs") {
+                        group("group") {
+                            message("message") {
+                                executes { command ->
+                                    groups += command.args.group("group").id
+                                    messages += command.args.message("message").id
+                                }
+                            }
+                        }
+                    }
+                }
+            val groupId = GroupId(Uuid.parse("019e145d-e5ca-7cdc-ba1b-92bcc98a2942"))
+            val messageId = MessageId(Uuid.parse("019e145d-e5ca-7cdc-ba1b-92bcc98a2943"))
+
+            registry.handle(
+                testContext(),
+                event("""!refs !{"type":"group","raw":"@howards","id":"${groupId.value}"} https://q.trap.jp/messages/${messageId.value}"""),
+            )
+            registry.handle(testContext(), event("!refs ${groupId.value} ${messageId.value}"))
+
+            assertEquals(listOf(groupId, groupId), groups)
+            assertEquals(listOf(messageId, messageId), messages)
+        }
+
     private fun registry(
         prefix: String = "!",
         botUserId: String? = null,
@@ -153,16 +252,20 @@ class CommandRegistryTest {
                 ),
         )
 
-    private fun testContext(replies: MutableList<String> = mutableListOf()): BotContext {
+    private fun testContext(
+        replies: MutableList<String> = mutableListOf(),
+        users: List<User.Basic> = emptyList(),
+        channels: List<Channel.Detail> = emptyList(),
+    ): BotContext {
         val context =
             BotContext(
                 botId = null,
                 origin = "q.trap.jp",
                 botPort = fakePort(),
                 selfPort = fakePort(),
-                channelPort = fakeChannelPort(replies),
+                channelPort = fakeChannelPort(replies, channels),
                 messagePort = fakePort(),
-                userPort = fakePort(),
+                userPort = fakeUserPort(users),
                 stampPort = fakePort(),
                 groupPort = fakePort(),
                 filePort = fakePort(),
@@ -171,14 +274,30 @@ class CommandRegistryTest {
         return context
     }
 
-    private fun fakeChannelPort(replies: MutableList<String>): ChannelPort =
+    private fun fakeChannelPort(
+        replies: MutableList<String>,
+        channels: List<Channel.Detail>,
+    ): ChannelPort =
         Proxy.newProxyInstance(
             ChannelPort::class.java.classLoader,
             arrayOf(ChannelPort::class.java),
         ) { _, method, args ->
             if (method.name.startsWith("sendMessage")) {
                 replies += args?.get(1) as String
-                return@newProxyInstance message(ChannelId(args[0] as Uuid), args[1] as String)
+                val channelId =
+                    when (val rawChannelId = args[0]) {
+                        is ChannelId -> rawChannelId
+                        is Uuid -> ChannelId(rawChannelId)
+                        else -> error("Unexpected channel id argument: $rawChannelId")
+                    }
+                return@newProxyInstance message(channelId, args[1] as String)
+            }
+            if (method.name == "fetchChannels") {
+                val path = args?.getOrNull(1) as? String
+                return@newProxyInstance ChannelDirectory(
+                    publicChannels = channels.filter { path == null || it.name == path.substringAfterLast("/") },
+                    directMessageChannels = emptyList(),
+                )
             }
             when (method.returnType) {
                 java.lang.Boolean.TYPE -> false
@@ -188,6 +307,52 @@ class CommandRegistryTest {
                 else -> null
             }
         } as ChannelPort
+
+    private fun fakeUserPort(users: List<User.Basic>): UserPort =
+        Proxy.newProxyInstance(
+            UserPort::class.java.classLoader,
+            arrayOf(UserPort::class.java),
+        ) { _, method, args ->
+            if (method.name == "fetchUsers") {
+                val name = args?.getOrNull(1) as? String
+                return@newProxyInstance users.filter { name == null || it.name == name }
+            }
+            when (method.returnType) {
+                java.lang.Boolean.TYPE -> false
+                java.lang.Integer.TYPE -> 0
+                java.lang.Long.TYPE -> 0L
+                java.lang.Void.TYPE -> Unit
+                else -> null
+            }
+        } as UserPort
+
+    private fun basicUser(
+        id: UserId,
+        name: String,
+    ): User.Basic =
+        User.Basic(
+            id = id,
+            name = name,
+            displayName = name,
+            iconFile = File.Ref(FileId(Uuid.parse("019e145d-e5ca-7cdc-ba1b-92bcc98a2944"))),
+            isBot = true,
+            state = UserState.ACTIVE,
+            updatedAt = Instant.parse("2026-05-12T00:00:00Z"),
+        )
+
+    private fun channel(
+        id: ChannelId,
+        path: String,
+    ): Channel.Detail =
+        Channel.Detail(
+            id = id,
+            parent = null,
+            name = path.substringAfterLast("/"),
+            isArchived = false,
+            isForcedNotified = false,
+            topic = ChannelTopic(""),
+            children = emptyList(),
+        )
 
     private fun message(
         channelId: ChannelId,

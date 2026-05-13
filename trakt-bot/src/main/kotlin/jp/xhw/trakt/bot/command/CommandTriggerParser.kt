@@ -1,9 +1,5 @@
 package jp.xhw.trakt.bot.command
 
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.json.jsonPrimitive
-
 /** コマンドトリガーを取り除いた入力本文。 */
 internal data class CommandInput(
     val body: String,
@@ -11,8 +7,6 @@ internal data class CommandInput(
 
 /** メッセージ本文からコマンド入力を取り出します。 */
 internal object CommandTriggerParser {
-    private val json = Json { ignoreUnknownKeys = true }
-
     fun parse(
         content: String,
         options: CommandOptions,
@@ -33,63 +27,11 @@ internal object CommandTriggerParser {
         options: CommandOptions,
     ): CommandInput? {
         val botUserId = options.botUserIdProvider() ?: return null
-        if (!content.startsWith("!{")) {
+        val parsed = CommandMentionParser.parseAt(content, start = 0) ?: return null
+        if (parsed.mention.type != "user" || parsed.mention.id.toString() != botUserId) {
             return null
         }
 
-        val jsonEnd = findJsonEnd(content, start = 1) ?: return null
-        val mention =
-            runCatching {
-                json.parseToJsonElement(content.substring(1, jsonEnd + 1)) as? JsonObject
-            }.getOrNull() ?: return null
-
-        val type = mention["type"]?.jsonPrimitive?.content
-        val id = mention["id"]?.jsonPrimitive?.content
-        if (type != "user" || id != botUserId) {
-            return null
-        }
-
-        return CommandInput(content.substring(jsonEnd + 1).trim())
-    }
-
-    private fun findJsonEnd(
-        content: String,
-        start: Int,
-    ): Int? {
-        var index = start
-        var depth = 0
-        var inString = false
-        var escaped = false
-
-        while (index < content.length) {
-            val char = content[index]
-            when {
-                escaped -> {
-                    escaped = false
-                }
-
-                inString && char == '\\' -> {
-                    escaped = true
-                }
-
-                char == '"' -> {
-                    inString = !inString
-                }
-
-                !inString && char == '{' -> {
-                    depth++
-                }
-
-                !inString && char == '}' -> {
-                    depth--
-                    if (depth == 0) {
-                        return index
-                    }
-                }
-            }
-            index++
-        }
-
-        return null
+        return CommandInput(content.substring(parsed.endExclusive).trim())
     }
 }
