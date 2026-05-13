@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "jp.xhw"
-version = "4.1.0"
+version = "5.0.0"
 
 repositories {
     mavenCentral()

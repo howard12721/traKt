@@ -19,7 +19,7 @@ repositories {
 }
 
 dependencies {
-    implementation("com.github.howard12721.traKt:trakt-bot:4.1.0")
+    implementation("com.github.howard12721.traKt:trakt-bot:5.0.0")
 }
 ```
 
