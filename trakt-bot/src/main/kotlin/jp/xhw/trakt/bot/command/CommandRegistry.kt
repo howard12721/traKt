@@ -3,22 +3,16 @@ package jp.xhw.trakt.bot.command
 import jp.xhw.trakt.bot.context.base.reply
 import jp.xhw.trakt.bot.context.bot.BotContext
 import jp.xhw.trakt.bot.model.BotMessageCreated
-import java.util.concurrent.ConcurrentHashMap
 
 internal class CommandRegistry internal constructor(
     private val options: CommandOptions,
 ) {
     private val roots = linkedMapOf<String, LiteralCommandNode>()
     private val userNameCache = UserNameCache()
-    private val executorReachabilityCache = ConcurrentHashMap<CommandNode, Set<CommandNode>>()
 
     internal fun root(name: String): LiteralCommandNode {
         roots[name]?.let { return it }
         return LiteralCommandNode(name).also { roots[name] = it }
-    }
-
-    internal fun invalidateExecutorReachability(root: CommandNode) {
-        executorReachabilityCache.remove(root)
     }
 
     internal suspend fun handle(
@@ -208,29 +202,22 @@ internal class CommandRegistry internal constructor(
     }
 
     private fun executorReachableNodes(root: CommandNode): Set<CommandNode> =
-        executorReachabilityCache.computeIfAbsent(root) {
-            collectExecutorReachableNodes(root)
-        }
-
-    private fun collectExecutorReachableNodes(root: CommandNode): Set<CommandNode> {
-        val reachableNodes = mutableSetOf<CommandNode>()
-
-        fun visit(node: CommandNode): Boolean {
-            var reachable = node.executor != null
-            node.children.forEach { child ->
-                if (visit(child)) {
-                    reachable = true
+        buildSet {
+            fun visit(node: CommandNode): Boolean {
+                var reachable = node.executor != null
+                node.children.forEach { child ->
+                    if (visit(child)) {
+                        reachable = true
+                    }
                 }
+                if (reachable) {
+                    add(node)
+                }
+                return reachable
             }
-            if (reachable) {
-                reachableNodes += node
-            }
-            return reachable
-        }
 
-        visit(root)
-        return reachableNodes.toSet()
-    }
+            visit(root)
+        }
 
     private fun pathParts(
         root: CommandNode,

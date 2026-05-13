@@ -1,6 +1,6 @@
 package jp.xhw.trakt.bot.command
 
-import jp.xhw.trakt.bot.infrastructure.runtime.TraktClient
+import jp.xhw.trakt.bot.infrastructure.runtime.TraktClientBuilder
 import jp.xhw.trakt.bot.model.BotMessageCreated
 import jp.xhw.trakt.bot.model.Initialized
 
@@ -9,7 +9,7 @@ import jp.xhw.trakt.bot.model.Initialized
  *
  * メンショントリガーは runtime 起動時に取得した Bot ユーザーIDを使って判定します。
  */
-fun TraktClient.commands(
+fun TraktClientBuilder.commands(
     prefix: String,
     replyOnError: Boolean = true,
     block: CommandRegistryBuilder.() -> Unit,

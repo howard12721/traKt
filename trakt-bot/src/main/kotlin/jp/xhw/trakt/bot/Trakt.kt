@@ -1,7 +1,9 @@
 package jp.xhw.trakt.bot
 
-import jp.xhw.trakt.bot.infrastructure.runtime.TraktClient
 import jp.xhw.trakt.bot.infrastructure.runtime.SelfTraktClient
+import jp.xhw.trakt.bot.infrastructure.runtime.SelfTraktClientBuilder
+import jp.xhw.trakt.bot.infrastructure.runtime.TraktClient
+import jp.xhw.trakt.bot.infrastructure.runtime.TraktClientBuilder
 import jp.xhw.trakt.bot.infrastructure.runtime.bot.createBotClient
 import jp.xhw.trakt.bot.infrastructure.runtime.user.createUserClient
 import kotlinx.coroutines.Dispatchers
@@ -29,7 +31,7 @@ fun trakt(
     origin: String = "q.trap.jp",
     coroutineContext: CoroutineContext = Dispatchers.Default,
     debugMode: Boolean = false,
-    block: TraktClient.() -> Unit = {},
+    block: TraktClientBuilder.() -> Unit = {},
 ): TraktClient =
     createBotClient(
         token = token,
@@ -37,7 +39,7 @@ fun trakt(
         origin = origin,
         coroutineContext = coroutineContext,
         debugMode = debugMode,
-    ).apply(block)
+    ).apply(block).build()
 
 /**
  * traQ User token で動くセルフボット用クライアントを構築します。
@@ -60,11 +62,11 @@ fun selfTrakt(
     origin: String = "q.trap.jp",
     coroutineContext: CoroutineContext = Dispatchers.Default,
     debugMode: Boolean = false,
-    block: SelfTraktClient.() -> Unit = {},
+    block: SelfTraktClientBuilder.() -> Unit = {},
 ): SelfTraktClient =
     createUserClient(
         token = token,
         origin = origin,
         coroutineContext = coroutineContext,
         debugMode = debugMode,
-    ).apply(block)
+    ).apply(block).build()

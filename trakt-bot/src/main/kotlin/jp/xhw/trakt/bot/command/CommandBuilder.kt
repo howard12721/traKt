@@ -12,11 +12,7 @@ class CommandRegistryBuilder internal constructor(
     ) {
         require(name.isNotBlank()) { "Command name must not be blank" }
         val node = registry.root(name)
-        try {
-            CommandNodeBuilder(node).block()
-        } finally {
-            registry.invalidateExecutorReachability(node)
-        }
+        CommandNodeBuilder(node).block()
     }
 }
 

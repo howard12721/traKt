@@ -3,9 +3,9 @@ package jp.xhw.trakt.bot.infrastructure.runtime.bot
 import jp.xhw.trakt.bot.context.bot.BotContext
 import jp.xhw.trakt.bot.infrastructure.gateway.*
 import jp.xhw.trakt.bot.infrastructure.runtime.RuleRegistry
-import jp.xhw.trakt.bot.infrastructure.runtime.Runtime
+import jp.xhw.trakt.bot.infrastructure.runtime.RuntimeBuilder
 import jp.xhw.trakt.bot.infrastructure.runtime.RuntimeLifecycle
-import jp.xhw.trakt.bot.infrastructure.runtime.TraktClient
+import jp.xhw.trakt.bot.infrastructure.runtime.TraktClientBuilder
 import jp.xhw.trakt.bot.model.BotId
 import jp.xhw.trakt.websocket.bot.BotEvent
 import kotlinx.coroutines.Dispatchers
@@ -20,7 +20,7 @@ internal fun createBotClient(
     origin: String,
     coroutineContext: CoroutineContext = Dispatchers.Default,
     debugMode: Boolean = false,
-): TraktClient {
+): TraktClientBuilder {
     val apiGateway = TraqApiGateway(token = token, origin = origin, debugMode = debugMode)
     val selfPort = TraqBotSelfPort(apiGateway)
     val ctx =
@@ -59,7 +59,7 @@ internal fun createBotClient(
             }
         }
 
-    return Runtime(
+    return RuntimeBuilder(
         context = ctx,
         ruleRegistry = RuleRegistry(),
         eventSource = apiGateway.botWs.events,

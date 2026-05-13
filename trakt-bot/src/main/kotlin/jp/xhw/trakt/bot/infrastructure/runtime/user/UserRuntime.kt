@@ -3,9 +3,9 @@ package jp.xhw.trakt.bot.infrastructure.runtime.user
 import jp.xhw.trakt.bot.context.user.UserContext
 import jp.xhw.trakt.bot.infrastructure.gateway.*
 import jp.xhw.trakt.bot.infrastructure.runtime.RuleRegistry
-import jp.xhw.trakt.bot.infrastructure.runtime.Runtime
+import jp.xhw.trakt.bot.infrastructure.runtime.RuntimeBuilder
 import jp.xhw.trakt.bot.infrastructure.runtime.RuntimeLifecycle
-import jp.xhw.trakt.bot.infrastructure.runtime.SelfTraktClient
+import jp.xhw.trakt.bot.infrastructure.runtime.SelfTraktClientBuilder
 import kotlinx.coroutines.Dispatchers
 import org.slf4j.LoggerFactory
 import kotlin.coroutines.CoroutineContext
@@ -17,7 +17,7 @@ internal fun createUserClient(
     origin: String,
     coroutineContext: CoroutineContext = Dispatchers.Default,
     debugMode: Boolean = false,
-): SelfTraktClient {
+): SelfTraktClientBuilder {
     val apiGateway = TraqApiGateway(token = token, origin = origin, debugMode = debugMode)
     val selfPort = TraqSelfPort(apiGateway)
     val ctx =
@@ -58,7 +58,7 @@ internal fun createUserClient(
             }
         }
 
-    return Runtime(
+    return RuntimeBuilder(
         context = ctx,
         ruleRegistry = RuleRegistry(),
         eventSource = apiGateway.userWs.events,
