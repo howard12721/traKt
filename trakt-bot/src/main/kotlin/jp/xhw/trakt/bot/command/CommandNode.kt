@@ -20,6 +20,9 @@ internal sealed class CommandNode(
     val argumentChildren: List<ArgumentCommandNode<*>>
         get() = mutableArgumentChildren
 
+    var parent: CommandNode? = null
+        internal set
+
     var executor: CommandExecutor? = null
 
     fun literalChild(name: String): LiteralCommandNode? = mutableLiteralChildren[name]
@@ -32,12 +35,14 @@ internal sealed class CommandNode(
 
         mutableChildren += child
         mutableLiteralChildren[child.name] = child
+        child.parent = this
         return child
     }
 
     fun addArgumentChild(child: ArgumentCommandNode<*>): ArgumentCommandNode<*> {
         mutableChildren += child
         mutableArgumentChildren += child
+        child.parent = this
         return child
     }
 }

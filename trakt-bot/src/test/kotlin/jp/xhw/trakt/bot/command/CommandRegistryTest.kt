@@ -109,6 +109,70 @@ class CommandRegistryTest {
         }
 
     @Test
+    fun literalNodeWithoutExecutorDoesNotShadowArgumentNode() =
+        runBlocking {
+            var handled = ""
+            val registry =
+                registry {
+                    command("user") {
+                        literal("me") {
+                        }
+                        string("name") {
+                            executes { command ->
+                                handled = command.args.string("name")
+                            }
+                        }
+                    }
+                }
+
+            registry.handle(testContext(), event("!user me"))
+
+            assertEquals("me", handled)
+        }
+
+    @Test
+    fun missingArgumentsShowExecutableDescendantUsage() =
+        runBlocking {
+            val replies = mutableListOf<String>()
+            val registry =
+                registry {
+                    command("admin") {
+                        literal("ban") {
+                            literal("dry-run") {
+                            }
+                            string("name") {
+                                executes {}
+                            }
+                        }
+                    }
+                }
+
+            registry.handle(testContext(replies), event("!admin ban"))
+
+            assertEquals(
+                listOf("引数が不足しています。 Usage: admin ban <name>\nhttps://q.trap.jp/messages/019e145d-e5ca-7cdc-ba1b-92bcc98a2927"),
+                replies,
+            )
+        }
+
+    @Test
+    fun commandWithoutExecutorIsIgnored() =
+        runBlocking {
+            val replies = mutableListOf<String>()
+            val registry =
+                registry {
+                    command("noop") {
+                        literal("child") {
+                        }
+                    }
+                }
+
+            registry.handle(testContext(replies), event("!noop child"))
+
+            assertEquals(emptyList(), replies)
+        }
+
+    @Test
     fun greedyStringConsumesRemainingInput() =
         runBlocking {
             var handled = ""
@@ -254,7 +318,7 @@ class CommandRegistryTest {
 
             assertEquals(false, handled)
             assertEquals(
-                listOf("user must be user\nhttps://q.trap.jp/messages/019e145d-e5ca-7cdc-ba1b-92bcc98a2927"),
+                listOf("<user>が有効なuserではありません。\nhttps://q.trap.jp/messages/019e145d-e5ca-7cdc-ba1b-92bcc98a2927"),
                 replies,
             )
         }

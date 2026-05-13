@@ -3,17 +3,23 @@ package jp.xhw.trakt.bot.command
 import jp.xhw.trakt.bot.context.base.reply
 import jp.xhw.trakt.bot.context.bot.BotContext
 import jp.xhw.trakt.bot.model.BotMessageCreated
+import java.util.concurrent.ConcurrentHashMap
 
 internal class CommandRegistry internal constructor(
     private val options: CommandOptions,
 ) {
     private val roots = linkedMapOf<String, LiteralCommandNode>()
     private val userNameCache = UserNameCache()
+    private val executorReachabilityCache = ConcurrentHashMap<CommandNode, Set<CommandNode>>()
 
-    internal fun root(name: String): LiteralCommandNode =
-        roots.getOrPut(name) {
-            LiteralCommandNode(name)
-        }
+    internal fun root(name: String): LiteralCommandNode {
+        roots[name]?.let { return it }
+        return LiteralCommandNode(name).also { roots[name] = it }
+    }
+
+    internal fun invalidateExecutorReachability(root: CommandNode) {
+        executorReachabilityCache.remove(root)
+    }
 
     internal suspend fun handle(
         botContext: BotContext,
@@ -38,16 +44,22 @@ internal class CommandRegistry internal constructor(
         }
 
         val root = roots[tokens.first().value] ?: return
+        val executorReachableNodes = executorReachableNodes(root)
+        if (root !in executorReachableNodes) {
+            return
+        }
         val resolver = CommandArgumentResolver(botContext, userNameCache)
         when (
             val match =
                 match(
+                    root = root,
                     node = root,
                     input = rawCommandInput,
                     tokens = tokens,
                     tokenIndex = 1,
                     arguments = emptyMap(),
                     resolver = resolver,
+                    executorReachableNodes = executorReachableNodes,
                 )
         ) {
             is CommandMatch.Success -> {
@@ -73,31 +85,36 @@ internal class CommandRegistry internal constructor(
     }
 
     private suspend fun match(
+        root: CommandNode,
         node: CommandNode,
         input: String,
         tokens: List<CommandToken>,
         tokenIndex: Int,
         arguments: Map<String, Any?>,
         resolver: CommandArgumentResolver,
+        executorReachableNodes: Set<CommandNode>,
     ): CommandMatch {
         if (tokenIndex >= tokens.size) {
             val executor = node.executor
             return if (executor != null) {
                 CommandMatch.Success(executor, arguments)
             } else {
-                CommandMatch.Failure("Missing arguments. Usage: ${usageFor(node)}")
+                CommandMatch.Failure("引数が不足しています。 Usage: ${usageFor(root, node, executorReachableNodes)}")
             }
         }
 
         val token = tokens[tokenIndex]
         val literalMatch = node.literalChildren[token.value]
-        if (literalMatch != null) {
-            return match(literalMatch, input, tokens, tokenIndex + 1, arguments, resolver)
+        if (literalMatch != null && literalMatch in executorReachableNodes) {
+            return match(root, literalMatch, input, tokens, tokenIndex + 1, arguments, resolver, executorReachableNodes)
         }
 
         val argumentErrors = mutableListOf<String>()
         var childFailure: CommandMatch.Failure? = null
         for (child in node.argumentChildren) {
+            if (child !in executorReachableNodes) {
+                continue
+            }
             if (child.type === GreedyStringArgumentType) {
                 val value = input.substring(token.start).trim()
                 val executor = child.executor
@@ -105,7 +122,7 @@ internal class CommandRegistry internal constructor(
                 if (executor != null) {
                     return CommandMatch.Success(executor, nextArguments)
                 }
-                return match(child, input, tokens, tokens.size, nextArguments, resolver)
+                return match(root, child, input, tokens, tokens.size, nextArguments, resolver, executorReachableNodes)
             }
 
             val value = child.type.parse(token.value, resolver)
@@ -116,12 +133,14 @@ internal class CommandRegistry internal constructor(
 
             val result =
                 match(
+                    root = root,
                     node = child,
                     input = input,
                     tokens = tokens,
                     tokenIndex = tokenIndex + 1,
                     arguments = arguments + (child.name to value),
                     resolver = resolver,
+                    executorReachableNodes = executorReachableNodes,
                 )
             if (result is CommandMatch.Success) {
                 return result
@@ -146,9 +165,10 @@ internal class CommandRegistry internal constructor(
         }
     }
 
-    private fun collectUsagesPassingThrough(
-        root: CommandNode,
-        target: CommandNode,
+    private fun collectUsagesFrom(
+        node: CommandNode,
+        parts: List<String>,
+        executorReachableNodes: Set<CommandNode>,
     ): List<String> {
         val usages = mutableListOf<String>()
 
@@ -156,17 +176,11 @@ internal class CommandRegistry internal constructor(
             node: CommandNode,
             parts: List<String>,
         ) {
-            if (!containsNode(node, target)) {
-                return
-            }
             if (node.executor != null) {
                 usages += parts.joinToString(" ")
             }
-            if (node.children.isEmpty() && node.executor == null) {
-                usages += parts.joinToString(" ")
-            }
             node.children.forEach { child ->
-                if (!containsNode(child, target)) {
+                if (child !in executorReachableNodes) {
                     return@forEach
                 }
                 val part =
@@ -178,21 +192,67 @@ internal class CommandRegistry internal constructor(
             }
         }
 
-        visit(root, listOf(root.name))
+        visit(node, parts)
         return usages.distinct()
     }
 
-    private fun usageFor(node: CommandNode): String {
-        val root = roots.values.firstOrNull { candidate -> containsNode(candidate, node) } ?: return node.name
-        return collectUsagesPassingThrough(root, node)
+    private fun usageFor(
+        root: CommandNode,
+        node: CommandNode,
+        executorReachableNodes: Set<CommandNode>,
+    ): String {
+        val parts = pathParts(root, node) ?: return root.name
+        return collectUsagesFrom(node, parts, executorReachableNodes)
             .minWithOrNull(compareBy({ it.split(" ").size }, { it.length }))
             ?: root.name
     }
 
-    private fun containsNode(
-        current: CommandNode,
+    private fun executorReachableNodes(root: CommandNode): Set<CommandNode> =
+        executorReachabilityCache.computeIfAbsent(root) {
+            collectExecutorReachableNodes(root)
+        }
+
+    private fun collectExecutorReachableNodes(root: CommandNode): Set<CommandNode> {
+        val reachableNodes = mutableSetOf<CommandNode>()
+
+        fun visit(node: CommandNode): Boolean {
+            var reachable = node.executor != null
+            node.children.forEach { child ->
+                if (visit(child)) {
+                    reachable = true
+                }
+            }
+            if (reachable) {
+                reachableNodes += node
+            }
+            return reachable
+        }
+
+        visit(root)
+        return reachableNodes.toSet()
+    }
+
+    private fun pathParts(
+        root: CommandNode,
         target: CommandNode,
-    ): Boolean = current === target || current.children.any { containsNode(it, target) }
+    ): List<String>? {
+        val parts = mutableListOf<String>()
+        var current: CommandNode? = target
+        while (current != null) {
+            parts += current.usagePart()
+            if (current === root) {
+                return parts.asReversed()
+            }
+            current = current.parent
+        }
+        return null
+    }
+
+    private fun CommandNode.usagePart(): String =
+        when (this) {
+            is LiteralCommandNode -> name
+            is ArgumentCommandNode<*> -> "<$name>"
+        }
 }
 
 internal data class CommandOptions(
