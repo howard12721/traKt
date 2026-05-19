@@ -191,7 +191,7 @@ suspend fun Message.reply(
     content: String,
     embed: Boolean = false,
     nonce: String? = null,
-): Message.Detail = (this as? Message.Detail ?: fetch()).channel.sendMessage(content + "\n${url()}", embed, nonce)
+): Message.Detail = (this as? Message.Detail ?: fetch()).channel.sendMessage(content + "\n\n${url()}", embed, nonce)
 
 /** メッセージ URL を生成します。 */
 context(ctx: BaseContext)
