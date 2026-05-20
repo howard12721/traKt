@@ -832,7 +832,7 @@ paths:
             Deprecated: typeクエリを指定しなければ全てのスタンプを取得できるため、そちらを利用してください
         - schema:
             type: string
-            enum: [unicode, original]
+            enum: [ unicode, original ]
           in: query
           name: type
           description: 取得するスタンプの種類
@@ -1248,7 +1248,7 @@ paths:
                   $ref: "#/components/schemas/UserGroup"
       description: ユーザーグループのリストを取得します。
       operationId: getUserGroups
-      parameters: []
+      parameters: [ ]
     post:
       summary: ユーザーグループを作成
       responses:
@@ -1475,7 +1475,7 @@ paths:
           description: |-
             No Content
             変更されました。
-          headers: {}
+          headers: { }
         "400":
           description: Bad Request
         "403":
@@ -3612,7 +3612,7 @@ paths:
       tags:
         - clip
       operationId: getClipFolders
-      parameters: []
+      parameters: [ ]
       description: 自身が所有するクリップフォルダのリストを取得します。
   "/clip-folders/{folderId}":
     parameters:
@@ -4262,7 +4262,7 @@ paths:
                   $ref: "#/components/schemas/ExternalProviderUser"
       operationId: getMyExternalAccounts
       description: 自分に紐付けられている外部ログインアカウント一覧を取得します。
-    parameters: []
+    parameters: [ ]
   /users/me/ex-accounts/link:
     post:
       summary: 外部ログインアカウントを紐付ける
@@ -7788,7 +7788,7 @@ components:
         - type
         - width
         - height
-      x-examples: {}
+      x-examples: { }
     GetNotifyCitation:
       title: GetNotifyCitation
       type: object
@@ -8286,5 +8286,5 @@ tags:
   - name: qall
     description: Qall API
 security:
-  - OAuth2: []
-  - bearerAuth: []
+  - OAuth2: [ ]
+  - bearerAuth: [ ]
