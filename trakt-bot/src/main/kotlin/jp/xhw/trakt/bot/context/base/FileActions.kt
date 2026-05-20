@@ -1,9 +1,7 @@
 package jp.xhw.trakt.bot.context.base
 
-import jp.xhw.trakt.bot.model.ChannelId
-import jp.xhw.trakt.bot.model.File
-import jp.xhw.trakt.bot.model.FileId
-import jp.xhw.trakt.bot.model.FileMeta
+import jp.xhw.trakt.bot.model.*
+import kotlin.time.Instant
 
 /**
  * チャンネルへファイルをアップロードします。
@@ -69,3 +67,37 @@ suspend fun File.delete() {
  */
 context(ctx: BaseContext)
 fun File.url(): String = "https://${ctx.origin}/files/${id.value}"
+
+/**
+ * ファイルメタのリストを取得します。
+ *
+ * @param channelId アップロード先チャンネルID。`null` の場合は絞り込みません
+ * @param mine アップロード者が自分のファイルのみを取得するか
+ * @param limit 取得件数上限。`null` の場合はサーバーデフォルト
+ * @param offset 取得開始位置
+ * @param since 指定時刻以降にアップロードされたファイルに絞り込みます
+ * @param until 指定時刻以前にアップロードされたファイルに絞り込みます
+ * @param inclusive `true` の場合は境界時刻と一致するファイルを含めます
+ * @param order 並び順
+ * @return ファイルメタ一覧
+ */
+context(ctx: BaseContext)
+suspend fun fetchFiles(
+    channelId: ChannelId? = null,
+    mine: Boolean = false,
+    limit: Int? = null,
+    offset: Int = 0,
+    since: Instant? = null,
+    until: Instant? = null,
+    inclusive: Boolean = false,
+    order: SortDirection = SortDirection.DESCENDING,
+): List<FileMeta> = ctx.filePort.fetchFiles(channelId, mine, limit, offset, since, until, inclusive, order)
+
+/**
+ * ファイルのサムネイル画像をダウンロードします。
+ *
+ * @param type サムネイルのタイプ
+ * @return サムネイル画像のバイト列
+ */
+context(ctx: BaseContext)
+suspend fun File.downloadThumbnail(type: ThumbnailType = ThumbnailType.IMAGE): ByteArray = ctx.filePort.fetchThumbnail(id, type)

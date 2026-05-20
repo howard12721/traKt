@@ -2,6 +2,7 @@ package jp.xhw.trakt.bot.port
 
 import jp.xhw.trakt.bot.model.Stamp
 import jp.xhw.trakt.bot.model.StampId
+import jp.xhw.trakt.bot.model.StampStats
 import jp.xhw.trakt.bot.model.StampType
 
 internal interface StampPort {
@@ -28,4 +29,12 @@ internal interface StampPort {
      * @return スタンプ詳細一覧
      */
     suspend fun fetchStamps(type: StampType? = null): List<Stamp.Detail>
+
+    /**
+     * スタンプの統計情報を取得します。
+     *
+     * @param stampId 取得対象スタンプ
+     * @return スタンプ統計情報
+     */
+    suspend fun fetchStampStats(stampId: StampId): StampStats
 }

@@ -147,4 +147,15 @@ internal interface ChannelPort {
         embed: Boolean = false,
         nonce: String? = null,
     ): Message.Detail
+
+    suspend fun createChannel(
+        name: String,
+        parent: ChannelId?,
+    ): Channel.Detail
+
+    suspend fun editChannelSubscribers(
+        channelId: ChannelId,
+        on: List<UserId> = emptyList(),
+        off: List<UserId> = emptyList(),
+    )
 }

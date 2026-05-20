@@ -6,58 +6,56 @@ import jp.xhw.trakt.bot.model.GroupMember
 import jp.xhw.trakt.bot.model.UserId
 
 internal interface GroupPort {
-    /**
-     * グループ詳細を取得します。
-     *
-     * @param groupId 取得対象グループ
-     * @return グループ詳細
-     */
     suspend fun fetchGroup(groupId: GroupId): Group.Detail
 
-    /**
-     * グループ詳細を取得します。存在しない場合は `null` を返します。
-     *
-     * @param groupId 取得対象グループ
-     * @return グループ詳細。存在しない場合は `null`
-     */
     suspend fun fetchGroupOrNull(groupId: GroupId): Group.Detail?
 
-    /**
-     * グループ一覧を取得します。
-     *
-     * @return グループ一覧
-     */
     suspend fun fetchGroups(): List<Group.Detail>
 
-    /**
-     * グループメンバー一覧を取得します。
-     *
-     * @param groupId 取得対象グループ
-     * @return メンバー一覧
-     */
     suspend fun fetchMembers(groupId: GroupId): List<GroupMember>
 
-    /**
-     * グループへメンバーを追加します。
-     *
-     * @param groupId 追加対象グループ
-     * @param userId 追加するユーザー
-     * @param role 追加時に設定するロール
-     */
     suspend fun addMember(
         groupId: GroupId,
         userId: UserId,
         role: String,
     )
 
-    /**
-     * グループへ管理者を追加します。
-     *
-     * @param groupId 追加対象グループ
-     * @param userId 追加するユーザー
-     */
     suspend fun addAdmin(
         groupId: GroupId,
         userId: UserId,
     )
+
+    suspend fun createGroup(
+        name: String,
+        description: String,
+        type: String,
+    ): Group.Detail
+
+    suspend fun editGroup(
+        groupId: GroupId,
+        name: String? = null,
+        description: String? = null,
+    )
+
+    suspend fun deleteGroup(groupId: GroupId)
+
+    suspend fun changeGroupIcon(
+        groupId: GroupId,
+        file: ByteArray,
+        fileName: String,
+        contentType: String? = null,
+    )
+
+    suspend fun removeMember(
+        groupId: GroupId,
+        userId: UserId,
+    )
+
+    suspend fun editMember(
+        groupId: GroupId,
+        userId: UserId,
+        role: String,
+    )
+
+    suspend fun removeAllMembers(groupId: GroupId)
 }

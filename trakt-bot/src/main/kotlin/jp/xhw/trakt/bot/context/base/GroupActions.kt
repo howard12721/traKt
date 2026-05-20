@@ -5,6 +5,23 @@ import jp.xhw.trakt.bot.model.GroupId
 import jp.xhw.trakt.bot.model.GroupMember
 import jp.xhw.trakt.bot.model.UserId
 
+// --- Create ---
+
+/**
+ * ユーザーグループを作成します。
+ *
+ * @param name グループ名
+ * @param description グループ説明
+ * @param type グループタイプ
+ * @return 作成されたグループ詳細
+ */
+context(ctx: BaseContext)
+suspend fun createGroup(
+    name: String,
+    description: String,
+    type: String,
+): Group.Detail = ctx.groupPort.createGroup(name, description, type)
+
 /**
  * グループ詳細を取得します。
  *
@@ -69,4 +86,70 @@ suspend fun Group.addMember(
 context(ctx: BaseContext)
 suspend fun Group.addAdmin(userId: UserId) {
     ctx.groupPort.addAdmin(id, userId)
+}
+
+/**
+ * グループ情報を更新します。
+ *
+ * @param name 新しいグループ名。`null` の場合は変更しません
+ * @param description 新しい説明。`null` の場合は変更しません
+ */
+context(ctx: BaseContext)
+suspend fun Group.update(
+    name: String? = null,
+    description: String? = null,
+) {
+    ctx.groupPort.editGroup(id, name, description)
+}
+
+/** グループを削除します。 */
+context(ctx: BaseContext)
+suspend fun Group.delete() {
+    ctx.groupPort.deleteGroup(id)
+}
+
+/**
+ * グループのアイコンを変更します。
+ *
+ * @param file アイコン画像のバイト列
+ * @param fileName ファイル名
+ * @param contentType MIME タイプ。`null` の場合はサーバー側判定
+ */
+context(ctx: BaseContext)
+suspend fun Group.changeIcon(
+    file: ByteArray,
+    fileName: String,
+    contentType: String? = null,
+) {
+    ctx.groupPort.changeGroupIcon(id, file, fileName, contentType)
+}
+
+/**
+ * グループからメンバーを削除します。
+ *
+ * @param userId 削除するユーザーID
+ */
+context(ctx: BaseContext)
+suspend fun Group.removeMember(userId: UserId) {
+    ctx.groupPort.removeMember(id, userId)
+}
+
+/**
+ * グループメンバーのロールを編集します。
+ *
+ * @param userId 編集するユーザーID
+ * @param role 新しいロール
+ */
+context(ctx: BaseContext)
+suspend fun Group.editMember(
+    userId: UserId,
+    role: String,
+) {
+    ctx.groupPort.editMember(id, userId, role)
+}
+
+/** グループから全てのメンバーを削除します。 */
+context(ctx: BaseContext)
+suspend fun Group.removeAllMembers() {
+    ctx.groupPort.removeAllMembers(id)
 }

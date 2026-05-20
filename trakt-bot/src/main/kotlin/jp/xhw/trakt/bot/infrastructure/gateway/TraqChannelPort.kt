@@ -5,11 +5,17 @@ import jp.xhw.trakt.bot.infrastructure.gateway.mapper.toDirectory
 import jp.xhw.trakt.bot.infrastructure.gateway.mapper.toModel
 import jp.xhw.trakt.bot.infrastructure.gateway.mapper.toViewerModel
 import jp.xhw.trakt.bot.model.*
+import jp.xhw.trakt.bot.model.Bot
+import jp.xhw.trakt.bot.model.Channel
+import jp.xhw.trakt.bot.model.ChannelPath
+import jp.xhw.trakt.bot.model.ChannelStats
+import jp.xhw.trakt.bot.model.ChannelViewer
+import jp.xhw.trakt.bot.model.Message
+import jp.xhw.trakt.bot.model.Pin
+import jp.xhw.trakt.bot.model.User
 import jp.xhw.trakt.bot.port.ChannelPort
 import jp.xhw.trakt.rest.apis.ChannelApi
-import jp.xhw.trakt.rest.models.PostMessageRequest
-import jp.xhw.trakt.rest.models.PutChannelSubscribersRequest
-import jp.xhw.trakt.rest.models.PutChannelTopicRequest
+import jp.xhw.trakt.rest.models.*
 import kotlin.time.Instant
 
 internal class TraqChannelPort(
@@ -64,7 +70,9 @@ internal class TraqChannelPort(
 
     override suspend fun fetchSubscribers(channelId: ChannelId): List<User.Ref> {
         val response = apiGateway.channelApi.getChannelSubscribers(channelId.value)
-        return response.bodyOrThrow(operation = "fetchSubscribers(channelId=${channelId.value})").map { User.Ref(UserId(it)) }
+        return response
+            .bodyOrThrow(operation = "fetchSubscribers(channelId=${channelId.value})")
+            .map { User.Ref(UserId(it)) }
     }
 
     override suspend fun setSubscribers(
@@ -148,6 +156,34 @@ internal class TraqChannelPort(
                     ),
             )
         return response.bodyOrThrow(operation = "sendMessage(channelId=${channelId.value})").toModel()
+    }
+
+    override suspend fun createChannel(
+        name: String,
+        parent: ChannelId?,
+    ): Channel.Detail {
+        val response =
+            apiGateway.channelApi.createChannel(
+                postChannelRequest = PostChannelRequest(name = name, parent = parent?.value),
+            )
+        return response.bodyOrThrow(operation = "createChannel(name=$name)").toDetail()
+    }
+
+    override suspend fun editChannelSubscribers(
+        channelId: ChannelId,
+        on: List<UserId>,
+        off: List<UserId>,
+    ) {
+        if (on.isEmpty() && off.isEmpty()) return
+        apiGateway.channelApi
+            .editChannelSubscribers(
+                channelId = channelId.value,
+                patchChannelSubscribersRequest =
+                    PatchChannelSubscribersRequest(
+                        on = on.map { it.value }.takeIf { it.isNotEmpty() },
+                        off = off.map { it.value }.takeIf { it.isNotEmpty() },
+                    ),
+            ).requireSuccess(operation = "editChannelSubscribers(channelId=${channelId.value})")
     }
 }
 

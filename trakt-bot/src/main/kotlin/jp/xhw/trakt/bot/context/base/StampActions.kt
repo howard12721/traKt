@@ -2,6 +2,7 @@ package jp.xhw.trakt.bot.context.base
 
 import jp.xhw.trakt.bot.model.Stamp
 import jp.xhw.trakt.bot.model.StampId
+import jp.xhw.trakt.bot.model.StampStats
 import jp.xhw.trakt.bot.model.StampType
 
 /**
@@ -38,3 +39,20 @@ suspend fun Stamp.fetch(): Stamp.Detail = ctx.stampPort.fetchStamp(id)
  */
 context(ctx: BaseContext)
 suspend fun fetchStamps(type: StampType? = null): List<Stamp.Detail> = ctx.stampPort.fetchStamps(type)
+
+/**
+ * スタンプの統計情報を取得します。
+ *
+ * @param stampId 取得対象スタンプID
+ * @return スタンプ統計情報
+ */
+context(ctx: BaseContext)
+suspend fun fetchStampStats(stampId: StampId): StampStats = ctx.stampPort.fetchStampStats(stampId)
+
+/**
+ * スタンプの統計情報を取得します。
+ *
+ * @return スタンプ統計情報
+ */
+context(ctx: BaseContext)
+suspend fun Stamp.fetchStats(): StampStats = ctx.stampPort.fetchStampStats(id)

@@ -39,3 +39,9 @@ data class FileMeta internal constructor(
     val channel: Channel.Ref?,
     val uploader: User.Ref?,
 ) : File
+
+/** サムネイルの種類 */
+enum class ThumbnailType {
+    IMAGE,
+    WAVEFORM,
+}

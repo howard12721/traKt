@@ -1,19 +1,9 @@
 package jp.xhw.trakt.bot.port
 
-import jp.xhw.trakt.bot.model.ChannelId
-import jp.xhw.trakt.bot.model.FileId
-import jp.xhw.trakt.bot.model.FileMeta
+import jp.xhw.trakt.bot.model.*
+import kotlin.time.Instant
 
 internal interface FilePort {
-    /**
-     * ファイルをアップロードします。
-     *
-     * @param channelId アップロード先チャンネル
-     * @param file ファイル本体
-     * @param fileName 保存ファイル名
-     * @param contentType MIME タイプ
-     * @return アップロード後のファイルメタ情報
-     */
     suspend fun uploadFile(
         channelId: ChannelId,
         file: ByteArray,
@@ -21,34 +11,27 @@ internal interface FilePort {
         contentType: String? = null,
     ): FileMeta
 
-    /**
-     * ファイルメタ情報を取得します。
-     *
-     * @param fileId 取得対象ファイル
-     * @return ファイルメタ情報
-     */
     suspend fun fetchFileMeta(fileId: FileId): FileMeta
 
-    /**
-     * ファイルメタ情報を取得します。存在しない場合は `null` を返します。
-     *
-     * @param fileId 取得対象ファイル
-     * @return ファイルメタ情報。存在しない場合は `null`
-     */
     suspend fun fetchFileMetaOrNull(fileId: FileId): FileMeta?
 
-    /**
-     * ファイル本体をダウンロードします。
-     *
-     * @param fileId 取得対象ファイル
-     * @return ファイル本体
-     */
     suspend fun downloadFile(fileId: FileId): ByteArray
 
-    /**
-     * ファイルを削除します。
-     *
-     * @param fileId 削除対象ファイル
-     */
     suspend fun deleteFile(fileId: FileId)
+
+    suspend fun fetchFiles(
+        channelId: ChannelId? = null,
+        mine: Boolean = false,
+        limit: Int? = null,
+        offset: Int = 0,
+        since: Instant? = null,
+        until: Instant? = null,
+        inclusive: Boolean = false,
+        order: SortDirection = SortDirection.DESCENDING,
+    ): List<FileMeta>
+
+    suspend fun fetchThumbnail(
+        fileId: FileId,
+        type: ThumbnailType = ThumbnailType.IMAGE,
+    ): ByteArray
 }

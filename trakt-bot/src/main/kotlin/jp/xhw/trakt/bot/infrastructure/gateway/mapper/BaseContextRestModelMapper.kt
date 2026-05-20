@@ -12,6 +12,7 @@ import jp.xhw.trakt.rest.models.MessagePin as RestMessagePin
 import jp.xhw.trakt.rest.models.MessageStamp as RestMessageStamp
 import jp.xhw.trakt.rest.models.Pin as RestPin
 import jp.xhw.trakt.rest.models.Stamp as RestStamp
+import jp.xhw.trakt.rest.models.StampStats as RestStampStats
 import jp.xhw.trakt.rest.models.StampWithThumbnail as RestStampWithThumbnail
 import jp.xhw.trakt.rest.models.User as RestUser
 import jp.xhw.trakt.rest.models.UserAccountState as RestUserAccountState
@@ -229,4 +230,12 @@ internal fun RestUserStatsStamp.toModel(): UserStampStats =
         stamp = Stamp.Ref(StampId(id)),
         count = count,
         total = total,
+    )
+
+// ── StampStats ──
+
+internal fun RestStampStats.toStatsModel(): StampStats =
+    StampStats(
+        count = count,
+        totalCount = totalCount,
     )

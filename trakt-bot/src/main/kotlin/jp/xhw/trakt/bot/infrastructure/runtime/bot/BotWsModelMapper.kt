@@ -1,13 +1,13 @@
 package jp.xhw.trakt.bot.infrastructure.runtime.bot
 
 import jp.xhw.trakt.bot.model.*
+import jp.xhw.trakt.websocket.bot.BotEvent as WebSocketEvent
 import jp.xhw.trakt.websocket.bot.Channel as WsChannel
 import jp.xhw.trakt.websocket.bot.ChannelCreated as WsChannelCreated
 import jp.xhw.trakt.websocket.bot.ChannelTopicChanged as WsChannelTopicChanged
 import jp.xhw.trakt.websocket.bot.DirectMessageCreated as WsDirectMessageCreated
 import jp.xhw.trakt.websocket.bot.DirectMessageDeleted as WsDirectMessageDeleted
 import jp.xhw.trakt.websocket.bot.DirectMessageUpdated as WsDirectMessageUpdated
-import jp.xhw.trakt.websocket.bot.BotEvent as WebSocketEvent
 import jp.xhw.trakt.websocket.bot.Joined as WsJoined
 import jp.xhw.trakt.websocket.bot.Left as WsLeft
 import jp.xhw.trakt.websocket.bot.Message as WsMessage

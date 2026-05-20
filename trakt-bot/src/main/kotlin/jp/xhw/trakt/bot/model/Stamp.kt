@@ -72,3 +72,9 @@ enum class StampType {
     UNICODE,
     ORIGINAL,
 }
+
+@ConsistentCopyVisibility
+data class StampStats internal constructor(
+    val count: Long,
+    val totalCount: Long,
+)

@@ -1,6 +1,8 @@
 package jp.xhw.trakt.bot.infrastructure.gateway
 
-import jp.xhw.trakt.bot.infrastructure.gateway.mapper.*
+import jp.xhw.trakt.bot.infrastructure.gateway.mapper.toApiModel
+import jp.xhw.trakt.bot.infrastructure.gateway.mapper.toManagedModel
+import jp.xhw.trakt.bot.infrastructure.gateway.mapper.toModel
 import jp.xhw.trakt.bot.model.*
 import jp.xhw.trakt.bot.port.ManagedBotPort
 import jp.xhw.trakt.rest.models.PatchBotRequest

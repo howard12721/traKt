@@ -1,18 +1,19 @@
 package jp.xhw.trakt.bot.infrastructure.gateway
 
-import jp.xhw.trakt.bot.infrastructure.gateway.mapper.*
+import jp.xhw.trakt.bot.infrastructure.gateway.mapper.toApiModel
+import jp.xhw.trakt.bot.infrastructure.gateway.mapper.toCurrentUser
+import jp.xhw.trakt.bot.infrastructure.gateway.mapper.toModel
 import jp.xhw.trakt.bot.model.*
+import jp.xhw.trakt.bot.model.ActiveOAuth2Token
+import jp.xhw.trakt.bot.model.Channel
+import jp.xhw.trakt.bot.model.LoginSession
+import jp.xhw.trakt.bot.model.MyChannelViewState
+import jp.xhw.trakt.bot.model.StampHistoryEntry
+import jp.xhw.trakt.bot.model.UnreadChannel
+import jp.xhw.trakt.bot.model.UserSettings
+import jp.xhw.trakt.bot.model.UserTag
 import jp.xhw.trakt.bot.port.SelfPort
-import jp.xhw.trakt.rest.models.PatchMeRequest
-import jp.xhw.trakt.rest.models.PatchUserTagRequest
-import jp.xhw.trakt.rest.models.PostLinkExternalAccount
-import jp.xhw.trakt.rest.models.PostMyFCMDeviceRequest
-import jp.xhw.trakt.rest.models.PostStarRequest
-import jp.xhw.trakt.rest.models.PostUnlinkExternalAccount
-import jp.xhw.trakt.rest.models.PostUserTagRequest
-import jp.xhw.trakt.rest.models.PutChannelSubscribeLevelRequest
-import jp.xhw.trakt.rest.models.PutMyPasswordRequest
-import jp.xhw.trakt.rest.models.PutNotifyCitationRequest
+import jp.xhw.trakt.rest.models.*
 
 internal class TraqSelfPort(
     private val apiGateway: TraqApiGateway,

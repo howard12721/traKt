@@ -165,3 +165,30 @@ suspend fun Channel.sendMessage(
  */
 context(ctx: BaseContext)
 suspend fun fetchChannelByPath(path: ChannelPath): Channel.Detail? = fetchChannels(path = path.value).publicChannels.firstOrNull()
+
+/**
+ * チャンネルを作成します。
+ *
+ * @param name チャンネル名
+ * @param parent 親チャンネルID。`null` の場合はルートに作成します
+ * @return 作成されたチャンネル詳細
+ */
+context(ctx: BaseContext)
+suspend fun createChannel(
+    name: String,
+    parent: ChannelId? = null,
+): Channel.Detail = ctx.channelPort.createChannel(name, parent)
+
+/**
+ * チャンネルの通知購読者を増分編集します。
+ *
+ * @param on 通知をオンにするユーザーID一覧
+ * @param off 通知をオフにするユーザーID一覧
+ */
+context(ctx: BaseContext)
+suspend fun Channel.editSubscribers(
+    on: List<UserId> = emptyList(),
+    off: List<UserId> = emptyList(),
+) {
+    ctx.channelPort.editChannelSubscribers(id, on, off)
+}

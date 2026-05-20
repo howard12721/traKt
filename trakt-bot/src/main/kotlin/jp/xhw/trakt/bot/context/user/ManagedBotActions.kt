@@ -50,8 +50,7 @@ suspend fun fetchManagedBot(
  * @return Bot 詳細
  */
 context(ctx: UserContext)
-suspend fun fetchManagedBotDetail(botId: BotId): ManagedBot.Detail =
-    fetchManagedBot(botId, detail = true) as ManagedBot.Detail
+suspend fun fetchManagedBotDetail(botId: BotId): ManagedBot.Detail = fetchManagedBot(botId, detail = true) as ManagedBot.Detail
 
 /**
  * Bot を取得します。
@@ -101,7 +100,17 @@ suspend fun ManagedBot.update(
     developerId: UserId? = null,
     subscribeEvents: List<String>? = null,
     bio: String? = null,
-) = ctx.managedBotPort.editBot(id, displayName, description, privileged, mode, endpoint, developerId, subscribeEvents, bio)
+) = ctx.managedBotPort.editBot(
+    id,
+    displayName,
+    description,
+    privileged,
+    mode,
+    endpoint,
+    developerId,
+    subscribeEvents,
+    bio,
+)
 
 /** Bot を削除します。 */
 context(ctx: UserContext)
