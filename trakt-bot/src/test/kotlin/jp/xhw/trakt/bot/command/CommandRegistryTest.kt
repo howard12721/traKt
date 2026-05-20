@@ -150,7 +150,7 @@ class CommandRegistryTest {
             registry.handle(testContext(replies), event("!admin ban"))
 
             assertEquals(
-                listOf("引数が不足しています。 Usage: admin ban <name>\nhttps://q.trap.jp/messages/019e145d-e5ca-7cdc-ba1b-92bcc98a2927"),
+                listOf("引数が不足しています。 Usage: admin ban <name>\n\nhttps://q.trap.jp/messages/019e145d-e5ca-7cdc-ba1b-92bcc98a2927"),
                 replies,
             )
         }
@@ -318,7 +318,7 @@ class CommandRegistryTest {
 
             assertEquals(false, handled)
             assertEquals(
-                listOf("<user>が有効なuserではありません。\nhttps://q.trap.jp/messages/019e145d-e5ca-7cdc-ba1b-92bcc98a2927"),
+                listOf("<user>が有効なuserではありません。\n\nhttps://q.trap.jp/messages/019e145d-e5ca-7cdc-ba1b-92bcc98a2927"),
                 replies,
             )
         }
@@ -350,10 +350,10 @@ class CommandRegistryTest {
 
             assertEquals(
                 listOf(
-                    "missing:admin ban <name>\nhttps://q.trap.jp/messages/019e145d-e5ca-7cdc-ba1b-92bcc98a2927",
-                    "invalid:user:user\nhttps://q.trap.jp/messages/019e145d-e5ca-7cdc-ba1b-92bcc98a2927",
-                    "unexpected:extra\nhttps://q.trap.jp/messages/019e145d-e5ca-7cdc-ba1b-92bcc98a2927",
-                    "quote:\"\nhttps://q.trap.jp/messages/019e145d-e5ca-7cdc-ba1b-92bcc98a2927",
+                    "missing:admin ban <name>\n\nhttps://q.trap.jp/messages/019e145d-e5ca-7cdc-ba1b-92bcc98a2927",
+                    "invalid:user:user\n\nhttps://q.trap.jp/messages/019e145d-e5ca-7cdc-ba1b-92bcc98a2927",
+                    "unexpected:extra\n\nhttps://q.trap.jp/messages/019e145d-e5ca-7cdc-ba1b-92bcc98a2927",
+                    "quote:\"\n\nhttps://q.trap.jp/messages/019e145d-e5ca-7cdc-ba1b-92bcc98a2927",
                 ),
                 replies,
             )
