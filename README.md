@@ -22,20 +22,10 @@ dependencies {
 ## Bot を動かしてみる
 
 ```kotlin
-import jp.xhw.trakt.bot.model.BotMessageCreated
-import jp.xhw.trakt.bot.context.base.reply
-import jp.xhw.trakt.bot.trakt
-import kotlin.uuid.Uuid
-
 suspend fun main() {
-    val token = System.getenv("TRAQ_BOT_TOKEN")
-    require(!token.isNullOrBlank()) { "TRAQ_BOT_TOKEN is required" }
-
-    val botId = System.getenv("TRAQ_BOT_ID")?.takeUnless(String::isBlank)?.let(Uuid::parse)
-
-    val client = trakt(token = token, botId = botId) {
+    val client = trakt(token = "replace-with-your-token") {
         on<BotMessageCreated> { event ->
-            if (event.message.content.trim() == "ping") {
+            if (event.message.content == "ping") {
                 event.message.reply("pong")
             }
         }
