@@ -1,6 +1,7 @@
 package jp.xhw.trakt.bot.infrastructure.runtime
 
 import jp.xhw.trakt.bot.context.RuntimeContext
+import jp.xhw.trakt.bot.infrastructure.LoggerFactory
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
@@ -8,12 +9,11 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import org.slf4j.LoggerFactory
 import kotlin.reflect.KClass
 
 /** domain event を登録された handler へ配送します。 */
 internal class RuleRegistry<R : RuntimeContext, E : Any> {
-    private val logger = LoggerFactory.getLogger(RuleRegistry::class.java)
+    private val logger = LoggerFactory.getLogger("jp.xhw.trakt.bot.infrastructure.runtime.RuleRegistry")
 
     private val handlers = mutableListOf<suspend (E) -> Unit>()
 

@@ -1,15 +1,12 @@
 package jp.xhw.trakt.websocket
 
 import io.ktor.client.*
-import io.ktor.client.engine.cio.*
 import io.ktor.client.plugins.websocket.*
 import io.ktor.client.request.*
 import io.ktor.websocket.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.*
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 import kotlin.coroutines.CoroutineContext
 import kotlin.time.Duration.Companion.milliseconds
 
@@ -22,7 +19,7 @@ data class WebSocketClientConfig<E : Any>(
     val debugMode: Boolean = false,
     val eventDecoders: List<WsEventDecoder<E>> = emptyList(),
     val client: HttpClient =
-        HttpClient(CIO) {
+        HttpClient {
             install(WebSockets)
         },
     val eventFlow: MutableSharedFlow<E> =
@@ -44,7 +41,8 @@ class WebSocketClient<E : Any>(
 
     private val connected = MutableStateFlow(false)
 
-    val logger: Logger by lazy { LoggerFactory.getLogger(WebSocketClient::class.java) }
+    @PublishedApi
+    internal val logger: Logger by lazy { LoggerFactory.getLogger("jp.xhw.trakt.websocket.WebSocketClient") }
 
     inline fun <reified T : E> on(
         scope: CoroutineScope = this,
@@ -64,13 +62,10 @@ class WebSocketClient<E : Any>(
                 }
             }.launchIn(scope)
 
-    @Volatile
     private var session: DefaultClientWebSocketSession? = null
 
-    @Volatile
     private var started = false
 
-    @Volatile
     private var stopping = false
 
     suspend fun start() {

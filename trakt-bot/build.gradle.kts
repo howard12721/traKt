@@ -5,32 +5,15 @@ import java.nio.file.Files
 import java.nio.file.StandardCopyOption
 
 plugins {
-    id("org.jetbrains.kotlin.jvm")
+    id("org.jetbrains.kotlin.multiplatform")
     id("org.jetbrains.kotlin.plugin.serialization")
     id("maven-publish")
     id("org.openapi.generator")
     id("org.jetbrains.dokka")
 }
 
-group = "jp.xhw"
-version = "5.0.1"
-
 repositories {
     mavenCentral()
-}
-
-dependencies {
-    implementation(project(":trakt-websocket"))
-
-    implementation(libs.ktor.client.core)
-    implementation(libs.ktor.client.cio)
-    implementation(libs.ktor.client.content.negotiation)
-    implementation(libs.ktor.serialization.kotlinx.json)
-
-    implementation(libs.kotlinx.serialization.json)
-
-    implementation(libs.kotlinx.coroutines.core)
-    testImplementation(kotlin("test"))
 }
 
 val generatedTraqClientDir: Provider<Directory> = layout.buildDirectory.dir("generated/traq-client")
@@ -123,18 +106,6 @@ val internalizeTraqClientTask =
         }
     }
 
-sourceSets.main {
-    kotlin.srcDir(generatedTraqClientDir.map { it.dir("src/commonMain/kotlin") })
-}
-
-tasks.named("compileKotlin") {
-    dependsOn(internalizeTraqClientTask)
-}
-
-tasks.test {
-    useJUnitPlatform()
-}
-
 dokka {
     dokkaPublications.html {
         moduleName.set("trakt-bot")
@@ -165,6 +136,16 @@ dokka {
 }
 
 kotlin {
+    jvm()
+    js(IR) {
+        browser()
+        nodejs()
+    }
+    linuxX64()
+    linuxArm64()
+    macosArm64()
+    mingwX64()
+
     compilerOptions {
         freeCompilerArgs.add("-opt-in=kotlin.time.ExperimentalTime")
         freeCompilerArgs.add("-opt-in=kotlin.uuid.ExperimentalUuidApi")
@@ -172,16 +153,87 @@ kotlin {
         freeCompilerArgs.add("-Xcontext-parameters")
     }
     jvmToolchain(21)
-}
 
-publishing {
-    publications {
-        create<MavenPublication>("maven") {
-            groupId = project.group.toString()
-            artifactId = "trakt-bot"
-            version = project.version.toString()
+    sourceSets {
+        commonMain {
+            kotlin.srcDir("src/main/kotlin")
+            kotlin.srcDir(generatedTraqClientDir.map { it.dir("src/commonMain/kotlin") })
+            dependencies {
+                implementation(project(":trakt-core"))
+                implementation(project(":trakt-websocket"))
+                implementation(libs.ktor.client.core)
+                implementation(libs.ktor.client.content.negotiation)
+                implementation(libs.ktor.serialization.kotlinx.json)
+                implementation(libs.kotlinx.serialization.json)
+                implementation(libs.kotlinx.coroutines.core)
+            }
+        }
 
-            from(components["kotlin"])
+        val nativeMain by creating {
+            dependsOn(commonMain.get())
+        }
+
+        jvmMain {
+            dependencies {
+                implementation(libs.ktor.client.cio)
+            }
+        }
+
+        jsMain {
+            dependencies {
+                implementation(libs.ktor.client.js)
+            }
+        }
+
+        val linuxMain by creating {
+            dependsOn(nativeMain)
+            dependencies {
+                implementation(libs.ktor.client.curl)
+            }
+        }
+        linuxX64Main {
+            dependsOn(linuxMain)
+        }
+        linuxArm64Main {
+            dependsOn(linuxMain)
+        }
+
+        val macosMain by creating {
+            dependsOn(nativeMain)
+            dependencies {
+                implementation(libs.ktor.client.darwin)
+            }
+        }
+        macosArm64Main {
+            dependsOn(macosMain)
+        }
+
+        mingwX64Main {
+            dependsOn(nativeMain)
+            dependencies {
+                implementation(libs.ktor.client.winhttp)
+            }
+        }
+
+        jvmTest {
+            kotlin.srcDir("src/test/kotlin")
+            dependencies {
+                implementation(kotlin("test"))
+            }
         }
     }
 }
+
+tasks
+    .matching {
+        (it.name.startsWith("compile") && it.name.endsWith("KotlinMetadata")) ||
+            it.name.startsWith("compileKotlin") ||
+            it.name.endsWith("SourcesJar") ||
+            it.name == "sourcesJar" ||
+            it.name == "allMetadataJar" ||
+            it.name.startsWith("generateMetadataFileFor") ||
+            it.name.startsWith("generateProjectStructureMetadata") ||
+            it.name.startsWith("publish")
+    }.configureEach {
+        dependsOn(internalizeTraqClientTask)
+    }

@@ -4,7 +4,6 @@ import jp.xhw.trakt.bot.context.bot.BotContext
 import jp.xhw.trakt.bot.model.*
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
-import java.net.URI
 import kotlin.uuid.Uuid
 
 /** コマンド引数の検証と変換に使う型。 */
@@ -201,9 +200,5 @@ private fun parseUuid(token: String): Uuid? =
 
 private fun parseMessageUrl(token: String): Uuid? {
     val match = messageUrlRegex.matchEntire(token) ?: return null
-    val uri = runCatching { URI(token) }.getOrNull() ?: return null
-    if (uri.path?.startsWith("/messages/") != true) {
-        return null
-    }
     return parseUuid(match.groupValues[1])
 }

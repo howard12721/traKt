@@ -1,7 +1,6 @@
 package jp.xhw.trakt.bot.infrastructure.gateway
 
 import io.ktor.client.*
-import io.ktor.client.engine.cio.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.serialization.kotlinx.json.*
 import jp.xhw.trakt.rest.apis.*
@@ -25,7 +24,7 @@ internal class TraqApiGateway(
         }
 
     val httpClient =
-        HttpClient(CIO) {
+        HttpClient {
             install(ContentNegotiation) {
                 json(serializer)
             }

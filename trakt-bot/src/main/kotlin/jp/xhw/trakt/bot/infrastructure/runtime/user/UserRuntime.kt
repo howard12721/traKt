@@ -1,13 +1,13 @@
 package jp.xhw.trakt.bot.infrastructure.runtime.user
 
 import jp.xhw.trakt.bot.context.user.UserContext
+import jp.xhw.trakt.bot.infrastructure.LoggerFactory
 import jp.xhw.trakt.bot.infrastructure.gateway.*
 import jp.xhw.trakt.bot.infrastructure.runtime.RuleRegistry
 import jp.xhw.trakt.bot.infrastructure.runtime.RuntimeBuilder
 import jp.xhw.trakt.bot.infrastructure.runtime.RuntimeLifecycle
 import jp.xhw.trakt.bot.infrastructure.runtime.SelfTraktClientBuilder
 import kotlinx.coroutines.Dispatchers
-import org.slf4j.LoggerFactory
 import kotlin.coroutines.CoroutineContext
 import jp.xhw.trakt.websocket.user.UserEvent as WebSocketUserEvent
 

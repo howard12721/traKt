@@ -1,50 +1,93 @@
 plugins {
-    id("org.jetbrains.kotlin.jvm")
+    id("org.jetbrains.kotlin.multiplatform")
     id("org.jetbrains.kotlin.plugin.serialization")
     id("maven-publish")
 }
-
-group = "jp.xhw"
-version = "5.0.1"
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    // Ktor
-    implementation(libs.ktor.client.core)
-    implementation(libs.ktor.client.cio)
-    implementation(libs.ktor.client.websockets)
-    implementation(libs.ktor.serialization.kotlinx.json)
-
-    // KotlinX
-    implementation(libs.kotlinx.datetime)
-    implementation(libs.kotlinx.coroutines.core)
-    implementation(libs.kotlinx.serialization.json)
-
-    // Logging
-    implementation(libs.logback.classic)
-
-    // Testing
-    testImplementation(libs.kotlin.test)
 }
 
-tasks.test {
-    useJUnitPlatform()
-}
 kotlin {
+    jvm()
+    js(IR) {
+        browser()
+        nodejs()
+    }
+    linuxX64()
+    linuxArm64()
+    macosArm64()
+    mingwX64()
+
     jvmToolchain(21)
-}
 
-publishing {
-    publications {
-        create<MavenPublication>("maven") {
-            groupId = project.group.toString()
-            artifactId = "trakt-websocket"
-            version = project.version.toString()
+    sourceSets {
+        commonMain {
+            kotlin.srcDir("src/main/kotlin")
+            dependencies {
+                implementation(project(":trakt-core"))
+                implementation(libs.ktor.client.core)
+                implementation(libs.ktor.client.websockets)
+                implementation(libs.ktor.serialization.kotlinx.json)
+                implementation(libs.kotlinx.datetime)
+                implementation(libs.kotlinx.coroutines.core)
+                implementation(libs.kotlinx.serialization.json)
+            }
+        }
 
-            from(components["kotlin"])
+        val nativeMain by creating {
+            dependsOn(commonMain.get())
+        }
+
+        jvmMain {
+            dependencies {
+                implementation(libs.ktor.client.cio)
+            }
+        }
+
+        jsMain {
+            dependencies {
+                implementation(libs.ktor.client.js)
+            }
+        }
+
+        val linuxMain by creating {
+            dependsOn(nativeMain)
+            dependencies {
+                implementation(libs.ktor.client.curl)
+            }
+        }
+        linuxX64Main {
+            dependsOn(linuxMain)
+        }
+        linuxArm64Main {
+            dependsOn(linuxMain)
+        }
+
+        val macosMain by creating {
+            dependsOn(nativeMain)
+            dependencies {
+                implementation(libs.ktor.client.darwin)
+            }
+        }
+        macosArm64Main {
+            dependsOn(macosMain)
+        }
+
+        mingwX64Main {
+            dependsOn(nativeMain)
+            dependencies {
+                implementation(libs.ktor.client.winhttp)
+            }
+        }
+
+        commonTest {
+            dependencies {
+                implementation(libs.kotlin.test)
+            }
         }
     }
 }

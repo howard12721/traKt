@@ -1,5 +1,6 @@
 package jp.xhw.trakt.bot.model
 
+import kotlin.jvm.JvmInline
 import kotlin.time.Instant
 import kotlin.uuid.Uuid
 

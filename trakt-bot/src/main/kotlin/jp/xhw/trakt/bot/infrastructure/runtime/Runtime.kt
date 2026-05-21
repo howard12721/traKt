@@ -4,6 +4,7 @@ import jp.xhw.trakt.bot.context.RuntimeContext
 import jp.xhw.trakt.bot.context.bot.BotContext
 import jp.xhw.trakt.bot.context.user.UserContext
 import jp.xhw.trakt.bot.dsl.TraktDsl
+import jp.xhw.trakt.bot.infrastructure.LoggerFactory
 import jp.xhw.trakt.bot.model.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.BufferOverflow
@@ -11,7 +12,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.merge
-import org.slf4j.LoggerFactory
 import kotlin.coroutines.CoroutineContext
 import kotlin.reflect.KClass
 import kotlin.time.Clock
@@ -130,7 +130,7 @@ class Runtime<R : RuntimeContext, E : Any> internal constructor(
             extraBufferCapacity = 1,
             onBufferOverflow = BufferOverflow.SUSPEND,
         )
-    private val logger = LoggerFactory.getLogger(Runtime::class.java)
+    private val logger = LoggerFactory.getLogger("jp.xhw.trakt.bot.infrastructure.runtime.Runtime")
     private val scheduledTasks = scheduledTasks.toList()
 
     private var eventSubscription: Job? = null

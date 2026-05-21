@@ -1,6 +1,7 @@
 package jp.xhw.trakt.bot.infrastructure.runtime.bot
 
 import jp.xhw.trakt.bot.context.bot.BotContext
+import jp.xhw.trakt.bot.infrastructure.LoggerFactory
 import jp.xhw.trakt.bot.infrastructure.gateway.*
 import jp.xhw.trakt.bot.infrastructure.runtime.RuleRegistry
 import jp.xhw.trakt.bot.infrastructure.runtime.RuntimeBuilder
@@ -9,7 +10,6 @@ import jp.xhw.trakt.bot.infrastructure.runtime.TraktClientBuilder
 import jp.xhw.trakt.bot.model.BotId
 import jp.xhw.trakt.websocket.bot.BotEvent
 import kotlinx.coroutines.Dispatchers
-import org.slf4j.LoggerFactory
 import kotlin.coroutines.CoroutineContext
 import kotlin.uuid.Uuid
 

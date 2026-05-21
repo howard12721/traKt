@@ -5,3 +5,4 @@ rootProject.name = "trakt"
 
 include("trakt-websocket")
 include("trakt-bot")
+include("trakt-core")
