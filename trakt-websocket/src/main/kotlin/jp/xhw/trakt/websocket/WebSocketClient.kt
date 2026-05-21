@@ -4,6 +4,7 @@ import io.ktor.client.*
 import io.ktor.client.plugins.websocket.*
 import io.ktor.client.request.*
 import io.ktor.websocket.*
+import jp.xhw.trakt.core.client.createHttpClient
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.*
@@ -19,7 +20,7 @@ data class WebSocketClientConfig<E : Any>(
     val debugMode: Boolean = false,
     val eventDecoders: List<WsEventDecoder<E>> = emptyList(),
     val client: HttpClient =
-        HttpClient {
+        createHttpClient(debugMode) {
             install(WebSockets)
         },
     val eventFlow: MutableSharedFlow<E> =
@@ -42,7 +43,9 @@ class WebSocketClient<E : Any>(
     private val connected = MutableStateFlow(false)
 
     @PublishedApi
-    internal val logger: Logger by lazy { LoggerFactory.getLogger("jp.xhw.trakt.websocket.WebSocketClient") }
+    internal val logger: Logger by lazy {
+        LoggerFactory.getLogger("jp.xhw.trakt.websocket.WebSocketClient", config.debugMode)
+    }
 
     inline fun <reified T : E> on(
         scope: CoroutineScope = this,

@@ -2,6 +2,7 @@ package jp.xhw.trakt.core.logging
 
 class Logger(
     private val name: String,
+    private val debugEnabled: Boolean = false,
 ) {
     fun debug(
         message: String,
@@ -36,8 +37,14 @@ class Logger(
         message: String,
         args: Array<out Any?>,
     ) {
-        if (!platformIsLoggable(level, name)) {
+        if (level == LogLevel.DEBUG && !debugEnabled) {
             return
+        }
+
+        if (level != LogLevel.DEBUG || !debugEnabled) {
+            if (!platformIsLoggable(level, name)) {
+                return
+            }
         }
 
         val throwable = args.lastOrNull() as? Throwable
@@ -78,7 +85,10 @@ class Logger(
 }
 
 object LoggerFactory {
-    fun getLogger(name: String): Logger = Logger(name)
+    fun getLogger(
+        name: String,
+        debugEnabled: Boolean = false,
+    ): Logger = Logger(name, debugEnabled)
 }
 
 internal enum class LogLevel {

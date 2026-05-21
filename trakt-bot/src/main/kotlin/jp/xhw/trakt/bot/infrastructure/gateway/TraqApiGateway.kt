@@ -8,6 +8,7 @@ import jp.xhw.trakt.rest.infrastructure.ApiClient
 import jp.xhw.trakt.websocket.WebSocketClient
 import jp.xhw.trakt.websocket.WebSocketClientConfig
 import jp.xhw.trakt.websocket.bot.BotEvent
+import jp.xhw.trakt.core.client.createHttpClient
 import jp.xhw.trakt.websocket.user.UserEvent
 import kotlinx.serialization.json.Json
 
@@ -24,7 +25,7 @@ internal class TraqApiGateway(
         }
 
     val httpClient =
-        HttpClient {
+        createHttpClient(debugMode) {
             install(ContentNegotiation) {
                 json(serializer)
             }
