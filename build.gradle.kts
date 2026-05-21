@@ -3,7 +3,12 @@ plugins {
     alias(libs.plugins.kotlin.serialization) apply false
     alias(libs.plugins.openapi.generator) apply false
     alias(libs.plugins.dokka) apply false
+    alias(libs.plugins.vanniktech.maven.publish) apply false
 }
 
-group = "jp.xhw"
-version = "5.0.1"
+val projectVersion = providers.gradleProperty("releaseVersion").orElse("1.0.0-SNAPSHOT").get()
+
+allprojects {
+    group = "jp.xhw"
+    version = projectVersion
+}

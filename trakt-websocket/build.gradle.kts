@@ -1,7 +1,8 @@
 plugins {
     id("org.jetbrains.kotlin.multiplatform")
     id("org.jetbrains.kotlin.plugin.serialization")
-    id("maven-publish")
+    id("org.jetbrains.dokka")
+    id("com.vanniktech.maven.publish")
 }
 
 repositories {

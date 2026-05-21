@@ -1,6 +1,7 @@
 plugins {
     id("org.jetbrains.kotlin.multiplatform")
-    id("maven-publish")
+    id("org.jetbrains.dokka")
+    id("com.vanniktech.maven.publish")
 }
 
 repositories {
@@ -21,21 +22,57 @@ kotlin {
     jvmToolchain(21)
 
     sourceSets {
+        commonMain {
+            dependencies {
+                implementation(libs.ktor.client.core)
+                implementation(libs.ktor.client.logging)
+            }
+        }
+
         val nativeMain by creating {
             dependsOn(commonMain.get())
         }
 
-        linuxX64Main {
+        jvmMain {
+            dependencies {
+                implementation(libs.ktor.client.cio)
+            }
+        }
+
+        jsMain {
+            dependencies {
+                implementation(libs.ktor.client.js)
+            }
+        }
+
+        val linuxMain by creating {
             dependsOn(nativeMain)
+            dependencies {
+                implementation(libs.ktor.client.curl)
+            }
+        }
+        linuxX64Main {
+            dependsOn(linuxMain)
         }
         linuxArm64Main {
+            dependsOn(linuxMain)
+        }
+
+        val macosMain by creating {
             dependsOn(nativeMain)
+            dependencies {
+                implementation(libs.ktor.client.darwin)
+            }
         }
         macosArm64Main {
-            dependsOn(nativeMain)
+            dependsOn(macosMain)
         }
+
         mingwX64Main {
             dependsOn(nativeMain)
+            dependencies {
+                implementation(libs.ktor.client.winhttp)
+            }
         }
     }
 }

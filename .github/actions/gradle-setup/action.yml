@@ -1,0 +1,14 @@
+name: gradle-setup
+description: Set up Java and Gradle
+
+runs:
+  using: composite
+  steps:
+    - name: Set up JDK
+      uses: actions/setup-java@v4
+      with:
+        distribution: temurin
+        java-version: 21
+
+    - name: Set up Gradle
+      uses: gradle/actions/setup-gradle@v5
