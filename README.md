@@ -14,12 +14,8 @@ Kotlin で [traQ](https://github.com/traptitech/traQ) Bot を書くための API
 Gradle プロジェクトに以下の依存関係を追加してください。
 
 ```kotlin
-repositories {
-    maven("https://jitpack.io")
-}
-
 dependencies {
-    implementation("com.github.howard12721.traKt:trakt-bot:5.0.1")
+    implementation("jp.xhw:trakt-bot:5.1.0")
 }
 ```
 
