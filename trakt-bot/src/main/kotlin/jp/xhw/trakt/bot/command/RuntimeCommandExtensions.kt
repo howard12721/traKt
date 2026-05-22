@@ -1,11 +1,11 @@
 package jp.xhw.trakt.bot.command
 
 import jp.xhw.trakt.bot.infrastructure.runtime.TraktClientBuilder
-import jp.xhw.trakt.bot.model.BotMessageCreated
-import jp.xhw.trakt.bot.model.Initialized
+import jp.xhw.trakt.bot.onInitialized
+import jp.xhw.trakt.bot.onMessageCreated
 
 /**
- * [BotMessageCreated] イベントを処理するコマンドツリーを登録します。
+ * Bot のメッセージ作成イベントを処理するコマンドツリーを登録します。
  *
  * メンショントリガーは runtime 起動時に取得した Bot ユーザーIDを使って判定します。
  */
@@ -28,11 +28,11 @@ fun TraktClientBuilder.commands(
         )
     CommandRegistryBuilder(registry).block()
 
-    on<Initialized> {
+    onInitialized {
         registry.preloadArgumentCaches(this)
     }
 
-    on<BotMessageCreated> { event ->
+    onMessageCreated { event ->
         registry.handle(this, event)
     }
 }

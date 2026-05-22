@@ -22,9 +22,11 @@ dependencies {
 ## Bot を動かしてみる
 
 ```kotlin
+import jp.xhw.trakt.bot.onMessageCreated
+
 suspend fun main() {
     val client = trakt(token = "replace-with-your-token") {
-        on<BotMessageCreated> { event ->
+        onMessageCreated { event ->
             if (event.message.content == "ping") {
                 event.message.reply("pong")
             }

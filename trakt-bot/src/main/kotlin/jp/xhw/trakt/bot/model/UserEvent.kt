@@ -113,222 +113,265 @@ data class QallRoomWithParticipants internal constructor(
     val room: QallRoom.Ref,
 )
 
-@ConsistentCopyVisibility
-data class UserJoined internal constructor(
-    val user: User.Ref,
-) : UserEvent
+object UserEvents {
+    @ConsistentCopyVisibility
+    data class Joined internal constructor(
+        val user: User.Ref,
+    ) : UserEvent
 
-@ConsistentCopyVisibility
-data class UserUpdated internal constructor(
-    val user: User.Ref,
-) : UserEvent
+    @ConsistentCopyVisibility
+    data class Updated internal constructor(
+        val user: User.Ref,
+    ) : UserEvent
 
-@ConsistentCopyVisibility
-data class UserTagsUpdated internal constructor(
-    val user: User.Ref,
-    val tag: UserTag.Ref,
-) : UserEvent
+    @ConsistentCopyVisibility
+    data class TagsUpdated internal constructor(
+        val user: User.Ref,
+        val tag: UserTag.Ref,
+    ) : UserEvent
 
-@ConsistentCopyVisibility
-data class UserIconUpdated internal constructor(
-    val user: User.Ref,
-) : UserEvent
+    @ConsistentCopyVisibility
+    data class IconUpdated internal constructor(
+        val user: User.Ref,
+    ) : UserEvent
 
-@ConsistentCopyVisibility
-data class UserWebRtcStateChanged internal constructor(
-    val user: User.Ref,
-    val channel: Channel.Ref,
-    val sessions: List<WebRtcSession>,
-) : UserEvent
+    @ConsistentCopyVisibility
+    data class WebRtcStateChanged internal constructor(
+        val user: User.Ref,
+        val channel: Channel.Ref,
+        val sessions: List<WebRtcSession>,
+    ) : UserEvent
 
-@ConsistentCopyVisibility
-data class UserViewStateChanged internal constructor(
-    val viewStates: List<UserChannelViewState>,
-) : UserEvent
+    @ConsistentCopyVisibility
+    data class ViewStateChanged internal constructor(
+        val viewStates: List<UserChannelViewState>,
+    ) : UserEvent
 
-@ConsistentCopyVisibility
-data class UserOnline internal constructor(
-    val user: User.Ref,
-) : UserEvent
+    @ConsistentCopyVisibility
+    data class Online internal constructor(
+        val user: User.Ref,
+    ) : UserEvent
 
-@ConsistentCopyVisibility
-data class UserOffline internal constructor(
-    val user: User.Ref,
-) : UserEvent
+    @ConsistentCopyVisibility
+    data class Offline internal constructor(
+        val user: User.Ref,
+    ) : UserEvent
 
-@ConsistentCopyVisibility
-data class UserGroupCreated internal constructor(
-    val group: Group.Ref,
-) : UserEvent
+    @ConsistentCopyVisibility
+    data class GroupCreated internal constructor(
+        val group: Group.Ref,
+    ) : UserEvent
 
-@ConsistentCopyVisibility
-data class UserGroupUpdated internal constructor(
-    val group: Group.Ref,
-) : UserEvent
+    @ConsistentCopyVisibility
+    data class GroupUpdated internal constructor(
+        val group: Group.Ref,
+    ) : UserEvent
 
-@ConsistentCopyVisibility
-data class UserGroupDeleted internal constructor(
-    val group: Group.Ref,
-) : UserEvent
+    @ConsistentCopyVisibility
+    data class GroupDeleted internal constructor(
+        val group: Group.Ref,
+    ) : UserEvent
 
-@ConsistentCopyVisibility
-data class UserChannelCreated internal constructor(
-    val channel: Channel.Ref,
-    val dmUser: User.Ref?,
-) : UserEvent
+    @ConsistentCopyVisibility
+    data class ChannelCreated internal constructor(
+        val channel: Channel.Ref,
+        val dmUser: User.Ref?,
+    ) : UserEvent
 
-@ConsistentCopyVisibility
-data class UserChannelUpdated internal constructor(
-    val channel: Channel.Ref,
-    val dmUser: User.Ref?,
-) : UserEvent
+    @ConsistentCopyVisibility
+    data class ChannelUpdated internal constructor(
+        val channel: Channel.Ref,
+        val dmUser: User.Ref?,
+    ) : UserEvent
 
-@ConsistentCopyVisibility
-data class UserChannelDeleted internal constructor(
-    val channel: Channel.Ref,
-    val dmUser: User.Ref?,
-) : UserEvent
+    @ConsistentCopyVisibility
+    data class ChannelDeleted internal constructor(
+        val channel: Channel.Ref,
+        val dmUser: User.Ref?,
+    ) : UserEvent
 
-@ConsistentCopyVisibility
-data class UserChannelStared internal constructor(
-    val channel: Channel.Ref,
-) : UserEvent
+    @ConsistentCopyVisibility
+    data class ChannelStared internal constructor(
+        val channel: Channel.Ref,
+    ) : UserEvent
 
-@ConsistentCopyVisibility
-data class UserChannelUnstared internal constructor(
-    val channel: Channel.Ref,
-) : UserEvent
+    @ConsistentCopyVisibility
+    data class ChannelUnstared internal constructor(
+        val channel: Channel.Ref,
+    ) : UserEvent
 
-@ConsistentCopyVisibility
-data class UserChannelViewersChanged internal constructor(
-    val channel: Channel.Ref,
-    val viewers: List<ChannelViewer>,
-) : UserEvent
+    @ConsistentCopyVisibility
+    data class ChannelViewersChanged internal constructor(
+        val channel: Channel.Ref,
+        val viewers: List<ChannelViewer>,
+    ) : UserEvent
 
-@ConsistentCopyVisibility
-data class UserChannelSubscribersChanged internal constructor(
-    val channel: Channel.Ref,
-) : UserEvent
+    @ConsistentCopyVisibility
+    data class ChannelSubscribersChanged internal constructor(
+        val channel: Channel.Ref,
+    ) : UserEvent
 
-@ConsistentCopyVisibility
-data class UserMessageCreated internal constructor(
-    val message: Message.Ref,
-    val isCiting: Boolean,
-) : UserEvent
+    @ConsistentCopyVisibility
+    data class MessageCreated internal constructor(
+        val message: Message.Ref,
+        val isCiting: Boolean,
+    ) : UserEvent
 
-@ConsistentCopyVisibility
-data class UserMessageUpdated internal constructor(
-    val message: Message.Ref,
-) : UserEvent
+    @ConsistentCopyVisibility
+    data class MessageUpdated internal constructor(
+        val message: Message.Ref,
+    ) : UserEvent
 
-@ConsistentCopyVisibility
-data class UserMessageDeleted internal constructor(
-    val message: Message.Ref,
-) : UserEvent
+    @ConsistentCopyVisibility
+    data class MessageDeleted internal constructor(
+        val message: Message.Ref,
+    ) : UserEvent
 
-@ConsistentCopyVisibility
-data class UserMessageStamped internal constructor(
-    val message: Message.Ref,
-    val user: User.Ref,
-    val stamp: Stamp.Ref,
-    val count: Int,
-    val createdAt: Instant,
-) : UserEvent
+    @ConsistentCopyVisibility
+    data class MessageStamped internal constructor(
+        val message: Message.Ref,
+        val user: User.Ref,
+        val stamp: Stamp.Ref,
+        val count: Int,
+        val createdAt: Instant,
+    ) : UserEvent
 
-@ConsistentCopyVisibility
-data class UserMessageUnstamped internal constructor(
-    val message: Message.Ref,
-    val user: User.Ref,
-    val stamp: Stamp.Ref,
-) : UserEvent
+    @ConsistentCopyVisibility
+    data class MessageUnstamped internal constructor(
+        val message: Message.Ref,
+        val user: User.Ref,
+        val stamp: Stamp.Ref,
+    ) : UserEvent
 
-@ConsistentCopyVisibility
-data class UserMessagePinned internal constructor(
-    val message: Message.Ref,
-    val channel: Channel.Ref,
-) : UserEvent
+    @ConsistentCopyVisibility
+    data class MessagePinned internal constructor(
+        val message: Message.Ref,
+        val channel: Channel.Ref,
+    ) : UserEvent
 
-@ConsistentCopyVisibility
-data class UserMessageUnpinned internal constructor(
-    val message: Message.Ref,
-    val channel: Channel.Ref,
-) : UserEvent
+    @ConsistentCopyVisibility
+    data class MessageUnpinned internal constructor(
+        val message: Message.Ref,
+        val channel: Channel.Ref,
+    ) : UserEvent
 
-@ConsistentCopyVisibility
-data class UserMessageRead internal constructor(
-    val message: Message.Ref,
-) : UserEvent
+    @ConsistentCopyVisibility
+    data class MessageRead internal constructor(
+        val message: Message.Ref,
+    ) : UserEvent
 
-@ConsistentCopyVisibility
-data class UserStampCreated internal constructor(
-    val stamp: Stamp.Ref,
-) : UserEvent
+    @ConsistentCopyVisibility
+    data class StampCreated internal constructor(
+        val stamp: Stamp.Ref,
+    ) : UserEvent
 
-@ConsistentCopyVisibility
-data class UserStampUpdated internal constructor(
-    val stamp: Stamp.Ref,
-) : UserEvent
+    @ConsistentCopyVisibility
+    data class StampUpdated internal constructor(
+        val stamp: Stamp.Ref,
+    ) : UserEvent
 
-@ConsistentCopyVisibility
-data class UserStampDeleted internal constructor(
-    val stamp: Stamp.Ref,
-) : UserEvent
+    @ConsistentCopyVisibility
+    data class StampDeleted internal constructor(
+        val stamp: Stamp.Ref,
+    ) : UserEvent
 
-@ConsistentCopyVisibility
-data class UserStampPaletteCreated internal constructor(
-    val stampPalette: StampPalette.Ref,
-) : UserEvent
+    @ConsistentCopyVisibility
+    data class StampPaletteCreated internal constructor(
+        val stampPalette: StampPalette.Ref,
+    ) : UserEvent
 
-@ConsistentCopyVisibility
-data class UserStampPaletteUpdated internal constructor(
-    val stampPalette: StampPalette.Ref,
-) : UserEvent
+    @ConsistentCopyVisibility
+    data class StampPaletteUpdated internal constructor(
+        val stampPalette: StampPalette.Ref,
+    ) : UserEvent
 
-@ConsistentCopyVisibility
-data class UserStampPaletteDeleted internal constructor(
-    val stampPalette: StampPalette.Ref,
-) : UserEvent
+    @ConsistentCopyVisibility
+    data class StampPaletteDeleted internal constructor(
+        val stampPalette: StampPalette.Ref,
+    ) : UserEvent
 
-@ConsistentCopyVisibility
-data class UserClipFolderCreated internal constructor(
-    val folder: ClipFolder.Ref,
-) : UserEvent
+    @ConsistentCopyVisibility
+    data class ClipFolderCreated internal constructor(
+        val folder: ClipFolder.Ref,
+    ) : UserEvent
 
-@ConsistentCopyVisibility
-data class UserClipFolderUpdated internal constructor(
-    val folder: ClipFolder.Ref,
-) : UserEvent
+    @ConsistentCopyVisibility
+    data class ClipFolderUpdated internal constructor(
+        val folder: ClipFolder.Ref,
+    ) : UserEvent
 
-@ConsistentCopyVisibility
-data class UserClipFolderDeleted internal constructor(
-    val folder: ClipFolder.Ref,
-) : UserEvent
+    @ConsistentCopyVisibility
+    data class ClipFolderDeleted internal constructor(
+        val folder: ClipFolder.Ref,
+    ) : UserEvent
 
-@ConsistentCopyVisibility
-data class UserClipFolderMessageDeleted internal constructor(
-    val folder: ClipFolder.Ref,
-    val message: Message.Ref,
-) : UserEvent
+    @ConsistentCopyVisibility
+    data class ClipFolderMessageDeleted internal constructor(
+        val folder: ClipFolder.Ref,
+        val message: Message.Ref,
+    ) : UserEvent
 
-@ConsistentCopyVisibility
-data class UserClipFolderMessageAdded internal constructor(
-    val folder: ClipFolder.Ref,
-    val message: Message.Ref,
-) : UserEvent
+    @ConsistentCopyVisibility
+    data class ClipFolderMessageAdded internal constructor(
+        val folder: ClipFolder.Ref,
+        val message: Message.Ref,
+    ) : UserEvent
 
-@ConsistentCopyVisibility
-data class UserQallRoomStateChanged internal constructor(
-    val roomStates: List<QallRoomWithParticipants>,
-) : UserEvent
+    @ConsistentCopyVisibility
+    data class QallRoomStateChanged internal constructor(
+        val roomStates: List<QallRoomWithParticipants>,
+    ) : UserEvent
 
-@ConsistentCopyVisibility
-data class UserQallSoundboardItemCreated internal constructor(
-    val sound: QallSound.Ref,
-    val name: String,
-    val creator: User.Ref,
-) : UserEvent
+    @ConsistentCopyVisibility
+    data class QallSoundboardItemCreated internal constructor(
+        val sound: QallSound.Ref,
+        val name: String,
+        val creator: User.Ref,
+    ) : UserEvent
 
-@ConsistentCopyVisibility
-data class UserQallSoundboardItemDeleted internal constructor(
-    val sound: QallSound.Ref,
-) : UserEvent
+    @ConsistentCopyVisibility
+    data class QallSoundboardItemDeleted internal constructor(
+        val sound: QallSound.Ref,
+    ) : UserEvent
+}
+
+typealias UserJoined = UserEvents.Joined
+typealias UserUpdated = UserEvents.Updated
+typealias UserTagsUpdated = UserEvents.TagsUpdated
+typealias UserIconUpdated = UserEvents.IconUpdated
+typealias UserWebRtcStateChanged = UserEvents.WebRtcStateChanged
+typealias UserViewStateChanged = UserEvents.ViewStateChanged
+typealias UserOnline = UserEvents.Online
+typealias UserOffline = UserEvents.Offline
+typealias UserGroupCreated = UserEvents.GroupCreated
+typealias UserGroupUpdated = UserEvents.GroupUpdated
+typealias UserGroupDeleted = UserEvents.GroupDeleted
+typealias UserChannelCreated = UserEvents.ChannelCreated
+typealias UserChannelUpdated = UserEvents.ChannelUpdated
+typealias UserChannelDeleted = UserEvents.ChannelDeleted
+typealias UserChannelStared = UserEvents.ChannelStared
+typealias UserChannelUnstared = UserEvents.ChannelUnstared
+typealias UserChannelViewersChanged = UserEvents.ChannelViewersChanged
+typealias UserChannelSubscribersChanged = UserEvents.ChannelSubscribersChanged
+typealias UserMessageCreated = UserEvents.MessageCreated
+typealias UserMessageUpdated = UserEvents.MessageUpdated
+typealias UserMessageDeleted = UserEvents.MessageDeleted
+typealias UserMessageStamped = UserEvents.MessageStamped
+typealias UserMessageUnstamped = UserEvents.MessageUnstamped
+typealias UserMessagePinned = UserEvents.MessagePinned
+typealias UserMessageUnpinned = UserEvents.MessageUnpinned
+typealias UserMessageRead = UserEvents.MessageRead
+typealias UserStampCreated = UserEvents.StampCreated
+typealias UserStampUpdated = UserEvents.StampUpdated
+typealias UserStampDeleted = UserEvents.StampDeleted
+typealias UserStampPaletteCreated = UserEvents.StampPaletteCreated
+typealias UserStampPaletteUpdated = UserEvents.StampPaletteUpdated
+typealias UserStampPaletteDeleted = UserEvents.StampPaletteDeleted
+typealias UserClipFolderCreated = UserEvents.ClipFolderCreated
+typealias UserClipFolderUpdated = UserEvents.ClipFolderUpdated
+typealias UserClipFolderDeleted = UserEvents.ClipFolderDeleted
+typealias UserClipFolderMessageDeleted = UserEvents.ClipFolderMessageDeleted
+typealias UserClipFolderMessageAdded = UserEvents.ClipFolderMessageAdded
+typealias UserQallRoomStateChanged = UserEvents.QallRoomStateChanged
+typealias UserQallSoundboardItemCreated = UserEvents.QallSoundboardItemCreated
+typealias UserQallSoundboardItemDeleted = UserEvents.QallSoundboardItemDeleted

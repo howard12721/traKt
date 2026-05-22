@@ -388,8 +388,8 @@ class CommandRegistryTest {
         override fun unexpectedArgument(value: String): String = "unexpected:$value"
     }
 
-    private fun event(content: String): BotMessageCreated =
-        BotMessageCreated(
+    private fun event(content: String): BotEvents.MessageCreated =
+        BotEvents.MessageCreated(
             occurredAt = Instant.parse("2026-05-12T00:00:00Z"),
             message =
                 Message.Detail(

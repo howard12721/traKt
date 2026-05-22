@@ -24,23 +24,23 @@ import jp.xhw.trakt.websocket.bot.UserCreated as WsUserCreated
 internal fun WebSocketEvent.toEventOrNull(): BotEvent? =
     when (this) {
         is WsMessageCreated -> {
-            BotMessageCreated(occurredAt = eventTime, message = message.toModel())
+            BotEvents.MessageCreated(occurredAt = eventTime, message = message.toModel())
         }
 
         is WsMessageUpdated -> {
-            BotMessageUpdated(occurredAt = eventTime, message = message.toModel())
+            BotEvents.MessageUpdated(occurredAt = eventTime, message = message.toModel())
         }
 
         is WsDirectMessageCreated -> {
-            BotDirectMessageCreated(occurredAt = eventTime, message = message.toModel())
+            BotEvents.DirectMessageCreated(occurredAt = eventTime, message = message.toModel())
         }
 
         is WsDirectMessageUpdated -> {
-            BotDirectMessageUpdated(occurredAt = eventTime, message = message.toModel())
+            BotEvents.DirectMessageUpdated(occurredAt = eventTime, message = message.toModel())
         }
 
         is WsMessageDeleted -> {
-            BotMessageDeleted(
+            BotEvents.MessageDeleted(
                 occurredAt = eventTime,
                 message = Message.Ref(MessageId(message.id)),
                 channel = Channel.Ref(ChannelId(message.channelId)),
@@ -48,7 +48,7 @@ internal fun WebSocketEvent.toEventOrNull(): BotEvent? =
         }
 
         is WsDirectMessageDeleted -> {
-            BotDirectMessageDeleted(
+            BotEvents.DirectMessageDeleted(
                 occurredAt = eventTime,
                 message = Message.Ref(MessageId(message.id)),
                 channel = Channel.Ref(ChannelId(message.channelId)),
@@ -56,22 +56,22 @@ internal fun WebSocketEvent.toEventOrNull(): BotEvent? =
         }
 
         is WsJoined -> {
-            BotJoinedChannel(occurredAt = eventTime, channel = Channel.Ref(channel.id()))
+            BotEvents.JoinedChannel(occurredAt = eventTime, channel = Channel.Ref(channel.id()))
         }
 
         is WsLeft -> {
-            BotLeftChannel(occurredAt = eventTime, channel = Channel.Ref(channel.id()))
+            BotEvents.LeftChannel(occurredAt = eventTime, channel = Channel.Ref(channel.id()))
         }
 
         is WsChannelCreated -> {
-            BotChannelCreated(
+            BotEvents.ChannelCreated(
                 occurredAt = eventTime,
                 channel = channel.toModel(),
             )
         }
 
         is WsChannelTopicChanged -> {
-            BotChannelTopicChanged(
+            BotEvents.ChannelTopicChanged(
                 occurredAt = eventTime,
                 channel = channel.toModel(),
                 topic = topic,
@@ -80,21 +80,21 @@ internal fun WebSocketEvent.toEventOrNull(): BotEvent? =
         }
 
         is WsUserCreated -> {
-            BotUserCreated(
+            BotEvents.UserCreated(
                 occurredAt = eventTime,
                 user = user.toModel(),
             )
         }
 
         is WsUserActivated -> {
-            BotUserActivated(
+            BotEvents.UserActivated(
                 occurredAt = eventTime,
                 user = user.toModel(),
             )
         }
 
         is WsStampCreated -> {
-            BotStampCreated(
+            BotEvents.StampCreated(
                 occurredAt = eventTime,
                 stamp =
                     Stamp.Basic(
@@ -107,7 +107,7 @@ internal fun WebSocketEvent.toEventOrNull(): BotEvent? =
         }
 
         is WsTagAdded -> {
-            BotTagAdded(
+            BotEvents.TagAdded(
                 occurredAt = eventTime,
                 userTag = UserTag.Ref(UserTagId(tagId)),
                 tag = tag,
@@ -115,7 +115,7 @@ internal fun WebSocketEvent.toEventOrNull(): BotEvent? =
         }
 
         is WsTagRemoved -> {
-            BotTagRemoved(
+            BotEvents.TagRemoved(
                 occurredAt = eventTime,
                 userTag = UserTag.Ref(UserTagId(tagId)),
                 tag = tag,

@@ -4,7 +4,7 @@ import jp.xhw.trakt.bot.model.*
 
 /** コマンド実行時に executor へ渡される context。 */
 class CommandContext internal constructor(
-    val event: BotMessageCreated,
+    val event: BotEvents.MessageCreated,
     val message: Message.Detail,
     val commandName: String,
     val rawInput: String,

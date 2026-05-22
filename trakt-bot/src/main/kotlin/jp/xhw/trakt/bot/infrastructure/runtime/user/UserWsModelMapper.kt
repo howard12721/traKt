@@ -52,23 +52,23 @@ import jp.xhw.trakt.websocket.user.WebRtcSession as WsWebRtcSession
 internal fun WebSocketEvent.toEventOrNull(): UserEvent? =
     when (this) {
         is WsUserJoined -> {
-            UserJoined(user = id.userRef())
+            UserEvents.Joined(user = id.userRef())
         }
 
         is WsUserUpdated -> {
-            UserUpdated(user = id.userRef())
+            UserEvents.Updated(user = id.userRef())
         }
 
         is WsUserTagsUpdated -> {
-            UserTagsUpdated(user = id.userRef(), tag = UserTag.Ref(UserTagId(tagId)))
+            UserEvents.TagsUpdated(user = id.userRef(), tag = UserTag.Ref(UserTagId(tagId)))
         }
 
         is WsUserIconUpdated -> {
-            UserIconUpdated(user = id.userRef())
+            UserEvents.IconUpdated(user = id.userRef())
         }
 
         is WsUserWebRtcStateChanged -> {
-            UserWebRtcStateChanged(
+            UserEvents.WebRtcStateChanged(
                 user = userId.userRef(),
                 channel = channelId.channelRef(),
                 sessions = sessions.map { it.toModel() },
@@ -76,74 +76,74 @@ internal fun WebSocketEvent.toEventOrNull(): UserEvent? =
         }
 
         is WsUserViewStateChanged -> {
-            UserViewStateChanged(viewStates = viewStates.map { it.toModel() })
+            UserEvents.ViewStateChanged(viewStates = viewStates.map { it.toModel() })
         }
 
         is WsUserOnline -> {
-            UserOnline(user = id.userRef())
+            UserEvents.Online(user = id.userRef())
         }
 
         is WsUserOffline -> {
-            UserOffline(user = id.userRef())
+            UserEvents.Offline(user = id.userRef())
         }
 
         is WsUserGroupCreated -> {
-            UserGroupCreated(group = id.groupRef())
+            UserEvents.GroupCreated(group = id.groupRef())
         }
 
         is WsUserGroupUpdated -> {
-            UserGroupUpdated(group = id.groupRef())
+            UserEvents.GroupUpdated(group = id.groupRef())
         }
 
         is WsUserGroupDeleted -> {
-            UserGroupDeleted(group = id.groupRef())
+            UserEvents.GroupDeleted(group = id.groupRef())
         }
 
         is WsChannelCreated -> {
-            UserChannelCreated(channel = id.channelRef(), dmUser = dmUserId?.userRef())
+            UserEvents.ChannelCreated(channel = id.channelRef(), dmUser = dmUserId?.userRef())
         }
 
         is WsChannelUpdated -> {
-            UserChannelUpdated(channel = id.channelRef(), dmUser = dmUserId?.userRef())
+            UserEvents.ChannelUpdated(channel = id.channelRef(), dmUser = dmUserId?.userRef())
         }
 
         is WsChannelDeleted -> {
-            UserChannelDeleted(channel = id.channelRef(), dmUser = dmUserId?.userRef())
+            UserEvents.ChannelDeleted(channel = id.channelRef(), dmUser = dmUserId?.userRef())
         }
 
         is WsChannelStared -> {
-            UserChannelStared(channel = id.channelRef())
+            UserEvents.ChannelStared(channel = id.channelRef())
         }
 
         is WsChannelUnstared -> {
-            UserChannelUnstared(channel = id.channelRef())
+            UserEvents.ChannelUnstared(channel = id.channelRef())
         }
 
         is WsChannelViewersChanged -> {
-            UserChannelViewersChanged(
+            UserEvents.ChannelViewersChanged(
                 channel = id.channelRef(),
                 viewers = viewers.map { it.toModel() },
             )
         }
 
         is WsChannelSubscribersChanged -> {
-            UserChannelSubscribersChanged(channel = id.channelRef())
+            UserEvents.ChannelSubscribersChanged(channel = id.channelRef())
         }
 
         is WsMessageCreated -> {
-            UserMessageCreated(message = id.messageRef(), isCiting = isCiting)
+            UserEvents.MessageCreated(message = id.messageRef(), isCiting = isCiting)
         }
 
         is WsMessageUpdated -> {
-            UserMessageUpdated(message = id.messageRef())
+            UserEvents.MessageUpdated(message = id.messageRef())
         }
 
         is WsMessageDeleted -> {
-            UserMessageDeleted(message = id.messageRef())
+            UserEvents.MessageDeleted(message = id.messageRef())
         }
 
         is WsMessageStamped -> {
-            UserMessageStamped(
+            UserEvents.MessageStamped(
                 message = messageId.messageRef(),
                 user = userId.userRef(),
                 stamp = stampId.stampRef(),
@@ -153,7 +153,7 @@ internal fun WebSocketEvent.toEventOrNull(): UserEvent? =
         }
 
         is WsMessageUnstamped -> {
-            UserMessageUnstamped(
+            UserEvents.MessageUnstamped(
                 message = messageId.messageRef(),
                 user = userId.userRef(),
                 stamp = stampId.stampRef(),
@@ -161,76 +161,79 @@ internal fun WebSocketEvent.toEventOrNull(): UserEvent? =
         }
 
         is WsMessagePinned -> {
-            UserMessagePinned(message = messageId.messageRef(), channel = channelId.channelRef())
+            UserEvents.MessagePinned(
+                message = messageId.messageRef(),
+                channel = channelId.channelRef(),
+            )
         }
 
         is WsMessageUnpinned -> {
-            UserMessageUnpinned(
+            UserEvents.MessageUnpinned(
                 message = messageId.messageRef(),
                 channel = channelId.channelRef(),
             )
         }
 
         is WsMessageRead -> {
-            UserMessageRead(message = id.messageRef())
+            UserEvents.MessageRead(message = id.messageRef())
         }
 
         is WsStampCreated -> {
-            UserStampCreated(stamp = id.stampRef())
+            UserEvents.StampCreated(stamp = id.stampRef())
         }
 
         is WsStampUpdated -> {
-            UserStampUpdated(stamp = id.stampRef())
+            UserEvents.StampUpdated(stamp = id.stampRef())
         }
 
         is WsStampDeleted -> {
-            UserStampDeleted(stamp = id.stampRef())
+            UserEvents.StampDeleted(stamp = id.stampRef())
         }
 
         is WsStampPaletteCreated -> {
-            UserStampPaletteCreated(stampPalette = id.stampPaletteRef())
+            UserEvents.StampPaletteCreated(stampPalette = id.stampPaletteRef())
         }
 
         is WsStampPaletteUpdated -> {
-            UserStampPaletteUpdated(stampPalette = id.stampPaletteRef())
+            UserEvents.StampPaletteUpdated(stampPalette = id.stampPaletteRef())
         }
 
         is WsStampPaletteDeleted -> {
-            UserStampPaletteDeleted(stampPalette = id.stampPaletteRef())
+            UserEvents.StampPaletteDeleted(stampPalette = id.stampPaletteRef())
         }
 
         is WsClipFolderCreated -> {
-            UserClipFolderCreated(folder = id.clipFolderRef())
+            UserEvents.ClipFolderCreated(folder = id.clipFolderRef())
         }
 
         is WsClipFolderUpdated -> {
-            UserClipFolderUpdated(folder = id.clipFolderRef())
+            UserEvents.ClipFolderUpdated(folder = id.clipFolderRef())
         }
 
         is WsClipFolderDeleted -> {
-            UserClipFolderDeleted(folder = id.clipFolderRef())
+            UserEvents.ClipFolderDeleted(folder = id.clipFolderRef())
         }
 
         is WsClipFolderMessageDeleted -> {
-            UserClipFolderMessageDeleted(
+            UserEvents.ClipFolderMessageDeleted(
                 folder = folderId.clipFolderRef(),
                 message = messageId.messageRef(),
             )
         }
 
         is WsClipFolderMessageAdded -> {
-            UserClipFolderMessageAdded(
+            UserEvents.ClipFolderMessageAdded(
                 folder = folderId.clipFolderRef(),
                 message = messageId.messageRef(),
             )
         }
 
         is WsQallRoomStateChanged -> {
-            UserQallRoomStateChanged(roomStates = roomStates.map { it.toModel() })
+            UserEvents.QallRoomStateChanged(roomStates = roomStates.map { it.toModel() })
         }
 
         is WsQallSoundboardItemCreated -> {
-            UserQallSoundboardItemCreated(
+            UserEvents.QallSoundboardItemCreated(
                 sound = soundId.qallSoundRef(),
                 name = name,
                 creator = creatorId.userRef(),
@@ -238,7 +241,7 @@ internal fun WebSocketEvent.toEventOrNull(): UserEvent? =
         }
 
         is WsQallSoundboardItemDeleted -> {
-            UserQallSoundboardItemDeleted(sound = soundId.qallSoundRef())
+            UserEvents.QallSoundboardItemDeleted(sound = soundId.qallSoundRef())
         }
     }
 

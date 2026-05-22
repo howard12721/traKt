@@ -2,7 +2,7 @@ package jp.xhw.trakt.bot.command
 
 import jp.xhw.trakt.bot.context.base.reply
 import jp.xhw.trakt.bot.context.bot.BotContext
-import jp.xhw.trakt.bot.model.BotMessageCreated
+import jp.xhw.trakt.bot.model.BotEvents
 
 internal class CommandRegistry internal constructor(
     private val options: CommandOptions,
@@ -17,7 +17,7 @@ internal class CommandRegistry internal constructor(
 
     internal suspend fun handle(
         botContext: BotContext,
-        event: BotMessageCreated,
+        event: BotEvents.MessageCreated,
     ) {
         val commandInput = CommandTriggerParser.parse(event.message.content, options) ?: return
         val rawCommandInput = commandInput.body
@@ -153,7 +153,7 @@ internal class CommandRegistry internal constructor(
     }
 
     private suspend fun BotContext.replyError(
-        event: BotMessageCreated,
+        event: BotEvents.MessageCreated,
         message: String,
     ) {
         if (options.replyOnError) {
