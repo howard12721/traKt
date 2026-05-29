@@ -15,7 +15,7 @@ Gradle プロジェクトに以下の依存関係を追加してください。
 
 ```kotlin
 dependencies {
-    implementation("jp.xhw:trakt-bot:5.1.0")
+    implementation("jp.xhw:trakt-bot:5.1.1")
 }
 ```
 
