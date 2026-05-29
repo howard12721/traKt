@@ -166,7 +166,16 @@ class Runtime<R : RuntimeContext, E : Any> internal constructor(
         eventSubscription =
             ruleRegistry.subscribe(
                 merge(
-                    eventSource.mapNotNull(eventMapper),
+                    eventSource.mapNotNull { raw ->
+                        try {
+                            eventMapper(raw)
+                        } catch (e: CancellationException) {
+                            throw e
+                        } catch (e: Exception) {
+                            logger.warn("Failed to map websocket event, skipping: {}", e.message)
+                            null
+                        }
+                    },
                     lifecycleEvents.mapNotNull(::toRuntimeEvent),
                 ),
                 runtimeScope,

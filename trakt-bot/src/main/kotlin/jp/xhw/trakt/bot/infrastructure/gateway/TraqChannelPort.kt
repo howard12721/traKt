@@ -47,7 +47,7 @@ internal class TraqChannelPort(
 
     override suspend fun fetchChannelPath(channelId: ChannelId): ChannelPath {
         val response = apiGateway.channelApi.getChannelPath(channelId.value)
-        return ChannelPath(
+        return ChannelPath.parse(
             response.bodyOrThrow(operation = "fetchChannelPath(channelId=${channelId.value})").path,
         )
     }

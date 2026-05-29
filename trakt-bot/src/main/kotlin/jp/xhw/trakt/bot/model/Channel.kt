@@ -22,9 +22,15 @@ value class ChannelPath(
     val value: String,
 ) {
     init {
-        require(Regex("^[a-zA-Z0-9-_]+(/[a-zA-Z0-9-_]+)*$").matches(value)) {
+        require(CHANNEL_PATH_REGEX.matches(value)) {
             "Invalid channel path: $value"
         }
+    }
+
+    companion object {
+        private val CHANNEL_PATH_REGEX = Regex("^[a-zA-Z0-9-_]+(/[a-zA-Z0-9-_]+)*$")
+
+        fun parse(raw: String): ChannelPath = ChannelPath(raw.trim().removePrefix("#"))
     }
 }
 
@@ -64,14 +70,17 @@ sealed interface Channel {
     val id: ChannelId
 
     /** ID のみを持つチャンネル参照。 */
-    @JvmInline
-    value class Ref(
+    class Ref(
         override val id: ChannelId,
-    ) : Channel
+    ) : Channel {
+        override fun equals(other: Any?): Boolean = sameChannelId(this, other)
+
+        override fun hashCode(): Int = id.hashCode()
+    }
 
     /** パブリックチャンネル。 */
     sealed interface PublicChannel : Channel {
-        val parent: Channel.Ref?
+        val parent: Ref?
         val name: String
     }
 
@@ -80,12 +89,7 @@ sealed interface Channel {
         override val id: ChannelId,
         val user: User.Ref,
     ) : Channel {
-        override fun equals(other: Any?): Boolean {
-            if (this === other) return true
-            if (other !is Channel) return false
-
-            return this.id == other.id
-        }
+        override fun equals(other: Any?): Boolean = sameChannelId(this, other)
 
         override fun hashCode(): Int = id.hashCode()
     }
@@ -98,12 +102,7 @@ sealed interface Channel {
         val creator: User.Minimal,
         val path: ChannelPath,
     ) : PublicChannel {
-        override fun equals(other: Any?): Boolean {
-            if (this === other) return true
-            if (other !is Channel) return false
-
-            return this.id == other.id
-        }
+        override fun equals(other: Any?): Boolean = sameChannelId(this, other)
 
         override fun hashCode(): Int = id.hashCode()
     }
@@ -118,12 +117,7 @@ sealed interface Channel {
         val topic: ChannelTopic,
         val children: List<Ref>,
     ) : PublicChannel {
-        override fun equals(other: Any?): Boolean {
-            if (this === other) return true
-            if (other !is Channel) return false
-
-            return this.id == other.id
-        }
+        override fun equals(other: Any?): Boolean = sameChannelId(this, other)
 
         override fun hashCode(): Int = id.hashCode()
     }

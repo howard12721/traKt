@@ -116,7 +116,7 @@ class CommandArgumentResolver internal constructor(
         parseUuid(token)?.let { return resolveChannelId(ChannelId(it)) }
         CommandMentionParser.parseId(token, type = "channel")?.let { return resolveChannelId(ChannelId(it)) }
 
-        val path = runCatching { ChannelPath(token.removePrefix("#")) }.getOrNull() ?: return null
+        val path = runCatching { ChannelPath.parse(token) }.getOrNull() ?: return null
         return ctx.channelPort
             .fetchChannels(path = path.value)
             .publicChannels

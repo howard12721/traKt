@@ -3,12 +3,12 @@ package jp.xhw.trakt.bot.infrastructure.gateway
 import io.ktor.client.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.serialization.kotlinx.json.*
+import jp.xhw.trakt.core.client.createHttpClient
 import jp.xhw.trakt.rest.apis.*
 import jp.xhw.trakt.rest.infrastructure.ApiClient
 import jp.xhw.trakt.websocket.WebSocketClient
 import jp.xhw.trakt.websocket.WebSocketClientConfig
 import jp.xhw.trakt.websocket.bot.BotEvent
-import jp.xhw.trakt.core.client.createHttpClient
 import jp.xhw.trakt.websocket.user.UserEvent
 import kotlinx.serialization.json.Json
 

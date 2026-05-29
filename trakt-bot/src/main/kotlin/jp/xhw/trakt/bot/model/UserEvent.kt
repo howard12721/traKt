@@ -22,10 +22,13 @@ sealed interface StampPalette {
     val id: StampPaletteId
 
     /** ID のみを持つスタンプパレット参照。 */
-    @JvmInline
-    value class Ref(
+    class Ref(
         override val id: StampPaletteId,
-    ) : StampPalette
+    ) : StampPalette {
+        override fun equals(other: Any?): Boolean = sameStampPaletteId(this, other)
+
+        override fun hashCode(): Int = id.hashCode()
+    }
 }
 
 @JvmInline
@@ -55,10 +58,13 @@ sealed interface QallSound {
     val id: QallSoundId
 
     /** ID のみを持つ Qall サウンド参照。 */
-    @JvmInline
-    value class Ref(
+    class Ref(
         override val id: QallSoundId,
-    ) : QallSound
+    ) : QallSound {
+        override fun equals(other: Any?): Boolean = sameQallSoundId(this, other)
+
+        override fun hashCode(): Int = id.hashCode()
+    }
 }
 
 @JvmInline
@@ -77,10 +83,13 @@ sealed interface QallRoom {
     val id: QallRoomId
 
     /** ID のみを持つ Qall ルーム参照。 */
-    @JvmInline
-    value class Ref(
+    class Ref(
         override val id: QallRoomId,
-    ) : QallRoom
+    ) : QallRoom {
+        override fun equals(other: Any?): Boolean = sameQallRoomId(this, other)
+
+        override fun hashCode(): Int = id.hashCode()
+    }
 }
 
 @ConsistentCopyVisibility

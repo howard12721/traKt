@@ -21,10 +21,13 @@ sealed interface Group {
     val id: GroupId
 
     /** ID のみを持つグループ参照。 */
-    @JvmInline
-    value class Ref(
+    class Ref(
         override val id: GroupId,
-    ) : Group
+    ) : Group {
+        override fun equals(other: Any?): Boolean = sameGroupId(this, other)
+
+        override fun hashCode(): Int = id.hashCode()
+    }
 
     /** グループ詳細情報。 */
     class Detail internal constructor(
@@ -38,11 +41,7 @@ sealed interface Group {
         val updatedAt: Instant,
         val adminUsers: List<User.Ref>,
     ) : Group {
-        override fun equals(other: Any?): Boolean {
-            if (this === other) return true
-            if (other !is Group) return false
-            return this.id == other.id
-        }
+        override fun equals(other: Any?): Boolean = sameGroupId(this, other)
 
         override fun hashCode(): Int = id.hashCode()
     }

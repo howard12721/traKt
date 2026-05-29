@@ -21,10 +21,13 @@ sealed interface Webhook {
     val id: WebhookId
 
     /** ID のみを持つ Webhook 参照。 */
-    @JvmInline
-    value class Ref(
+    class Ref(
         override val id: WebhookId,
-    ) : Webhook
+    ) : Webhook {
+        override fun equals(other: Any?): Boolean = sameWebhookId(this, other)
+
+        override fun hashCode(): Int = id.hashCode()
+    }
 
     /** Webhook 情報。 */
     @ConsistentCopyVisibility
@@ -38,5 +41,9 @@ sealed interface Webhook {
         val owner: User.Ref,
         val createdAt: Instant,
         val updatedAt: Instant,
-    ) : Webhook
+    ) : Webhook {
+        override fun equals(other: Any?): Boolean = sameWebhookId(this, other)
+
+        override fun hashCode(): Int = id.hashCode()
+    }
 }

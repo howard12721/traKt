@@ -21,10 +21,13 @@ sealed interface Message {
     val id: MessageId
 
     /** ID のみを持つメッセージ参照。 */
-    @JvmInline
-    value class Ref(
+    class Ref(
         override val id: MessageId,
-    ) : Message
+    ) : Message {
+        override fun equals(other: Any?): Boolean = sameMessageId(this, other)
+
+        override fun hashCode(): Int = id.hashCode()
+    }
 
     /** メッセージ本文とメタ情報。 */
     class Detail internal constructor(
@@ -39,7 +42,7 @@ sealed interface Message {
         val threadId: Uuid?,
         val nonce: String? = null,
     ) : Message {
-        override fun equals(other: Any?): Boolean = other is Message && this.id == other.id
+        override fun equals(other: Any?): Boolean = sameMessageId(this, other)
 
         override fun hashCode(): Int = id.hashCode()
     }

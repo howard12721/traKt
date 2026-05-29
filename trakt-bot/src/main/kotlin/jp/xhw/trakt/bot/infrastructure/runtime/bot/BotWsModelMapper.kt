@@ -161,5 +161,5 @@ private fun WsChannel.toModel(): Channel.Meta =
         parent = Channel.Ref(ChannelId(parentId)),
         name = name,
         creator = creator.toModel(),
-        path = ChannelPath(path),
+        path = ChannelPath.parse(path),
     )

@@ -1,6 +1,5 @@
 package jp.xhw.trakt.bot.model
 
-import kotlin.jvm.JvmInline
 import kotlin.time.Instant
 
 /** クリップフォルダ。 */
@@ -8,10 +7,13 @@ sealed interface ClipFolder {
     val id: ClipFolderId
 
     /** ID のみを持つクリップフォルダ参照。 */
-    @JvmInline
-    value class Ref(
+    class Ref(
         override val id: ClipFolderId,
-    ) : ClipFolder
+    ) : ClipFolder {
+        override fun equals(other: Any?): Boolean = sameClipFolderId(this, other)
+
+        override fun hashCode(): Int = id.hashCode()
+    }
 
     /** クリップフォルダ詳細。 */
     @ConsistentCopyVisibility
@@ -21,7 +23,11 @@ sealed interface ClipFolder {
         val description: String,
         val owner: User.Ref,
         val createdAt: Instant,
-    ) : ClipFolder
+    ) : ClipFolder {
+        override fun equals(other: Any?): Boolean = sameClipFolderId(this, other)
+
+        override fun hashCode(): Int = id.hashCode()
+    }
 }
 
 /** クリップフォルダ内のメッセージ。 */

@@ -1,6 +1,5 @@
 package jp.xhw.trakt.bot.model
 
-import kotlin.jvm.JvmInline
 import kotlin.time.Instant
 
 /** Bot 動作モード。 */
@@ -47,10 +46,13 @@ sealed interface ManagedBot {
     val id: BotId
 
     /** ID のみを持つ Bot 参照。 */
-    @JvmInline
-    value class Ref(
+    class Ref(
         override val id: BotId,
-    ) : ManagedBot
+    ) : ManagedBot {
+        override fun equals(other: Any?): Boolean = sameManagedBotId(this, other)
+
+        override fun hashCode(): Int = id.hashCode()
+    }
 
     sealed interface WithMeta : ManagedBot {
         val botUser: User.Ref
@@ -74,11 +76,7 @@ sealed interface ManagedBot {
         override val createdAt: Instant,
         override val updatedAt: Instant,
     ) : WithMeta {
-        override fun equals(other: Any?): Boolean {
-            if (this === other) return true
-            if (other !is ManagedBot) return false
-            return id == other.id
-        }
+        override fun equals(other: Any?): Boolean = sameManagedBotId(this, other)
 
         override fun hashCode(): Int = id.hashCode()
     }
@@ -98,11 +96,7 @@ sealed interface ManagedBot {
         val privileged: Boolean,
         val channels: List<Channel.Ref>,
     ) : WithMeta {
-        override fun equals(other: Any?): Boolean {
-            if (this === other) return true
-            if (other !is ManagedBot) return false
-            return id == other.id
-        }
+        override fun equals(other: Any?): Boolean = sameManagedBotId(this, other)
 
         override fun hashCode(): Int = id.hashCode()
     }

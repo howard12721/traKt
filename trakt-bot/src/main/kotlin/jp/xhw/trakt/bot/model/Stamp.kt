@@ -21,10 +21,13 @@ sealed interface Stamp {
     val id: StampId
 
     /** ID のみを持つスタンプ参照。 */
-    @JvmInline
-    value class Ref(
+    class Ref(
         override val id: StampId,
-    ) : Stamp
+    ) : Stamp {
+        override fun equals(other: Any?): Boolean = sameStampId(this, other)
+
+        override fun hashCode(): Int = id.hashCode()
+    }
 
     sealed interface WithMeta : Stamp {
         val name: String
@@ -39,11 +42,7 @@ sealed interface Stamp {
         override val creator: User.Ref,
         override val file: File.Ref,
     ) : WithMeta {
-        override fun equals(other: Any?): Boolean {
-            if (this === other) return true
-            if (other !is Stamp) return false
-            return this.id == other.id
-        }
+        override fun equals(other: Any?): Boolean = sameStampId(this, other)
 
         override fun hashCode(): Int = id.hashCode()
     }
@@ -58,11 +57,7 @@ sealed interface Stamp {
         val updatedAt: Instant,
         val isUnicode: Boolean,
     ) : WithMeta {
-        override fun equals(other: Any?): Boolean {
-            if (this === other) return true
-            if (other !is Stamp) return false
-            return this.id == other.id
-        }
+        override fun equals(other: Any?): Boolean = sameStampId(this, other)
 
         override fun hashCode(): Int = id.hashCode()
     }

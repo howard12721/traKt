@@ -66,11 +66,7 @@ class CurrentUser internal constructor(
                     it.value.startsWith("access_others_")
             }
 
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (other !is User) return false
-        return id == other.id
-    }
+    override fun equals(other: Any?): Boolean = sameUserId(this, other)
 
     override fun hashCode(): Int = id.hashCode()
 }
@@ -120,17 +116,24 @@ sealed interface LoginSession {
     val id: LoginSessionId
 
     /** ID のみを持つログインセッション参照。 */
-    @JvmInline
-    value class Ref(
+    class Ref(
         override val id: LoginSessionId,
-    ) : LoginSession
+    ) : LoginSession {
+        override fun equals(other: Any?): Boolean = sameLoginSessionId(this, other)
+
+        override fun hashCode(): Int = id.hashCode()
+    }
 
     /** ログインセッション情報。 */
     @ConsistentCopyVisibility
     data class Detail internal constructor(
         override val id: LoginSessionId,
         val issuedAt: Instant,
-    ) : LoginSession
+    ) : LoginSession {
+        override fun equals(other: Any?): Boolean = sameLoginSessionId(this, other)
+
+        override fun hashCode(): Int = id.hashCode()
+    }
 }
 
 /** 有効な OAuth2 トークン。 */
@@ -138,10 +141,13 @@ sealed interface ActiveOAuth2Token {
     val id: OAuth2TokenId
 
     /** ID のみを持つ OAuth2 トークン参照。 */
-    @JvmInline
-    value class Ref(
+    class Ref(
         override val id: OAuth2TokenId,
-    ) : ActiveOAuth2Token
+    ) : ActiveOAuth2Token {
+        override fun equals(other: Any?): Boolean = sameActiveOAuth2TokenId(this, other)
+
+        override fun hashCode(): Int = id.hashCode()
+    }
 
     /** 有効な OAuth2 トークン情報。 */
     @ConsistentCopyVisibility
@@ -150,7 +156,11 @@ sealed interface ActiveOAuth2Token {
         val clientId: String,
         val scopes: List<OAuth2Scope>,
         val issuedAt: Instant,
-    ) : ActiveOAuth2Token
+    ) : ActiveOAuth2Token {
+        override fun equals(other: Any?): Boolean = sameActiveOAuth2TokenId(this, other)
+
+        override fun hashCode(): Int = id.hashCode()
+    }
 }
 
 /** 外部ログインアカウント。 */

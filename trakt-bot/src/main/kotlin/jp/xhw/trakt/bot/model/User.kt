@@ -61,10 +61,13 @@ sealed interface User {
     val id: UserId
 
     /** ID のみを持つユーザー参照。 */
-    @JvmInline
-    value class Ref(
+    class Ref(
         override val id: UserId,
-    ) : User
+    ) : User {
+        override fun equals(other: Any?): Boolean = sameUserId(this, other)
+
+        override fun hashCode(): Int = id.hashCode()
+    }
 
     sealed interface Profile : User {
         val name: String
@@ -87,11 +90,7 @@ sealed interface User {
         override val iconFile: File.Ref,
         override val isBot: Boolean,
     ) : Profile {
-        override fun equals(other: Any?): Boolean {
-            if (this === other) return true
-            if (other !is User) return false
-            return this.id == other.id
-        }
+        override fun equals(other: Any?): Boolean = sameUserId(this, other)
 
         override fun hashCode(): Int = id.hashCode()
     }
@@ -106,11 +105,7 @@ sealed interface User {
         override val state: UserState,
         override val updatedAt: Instant,
     ) : StatefulUser {
-        override fun equals(other: Any?): Boolean {
-            if (this === other) return true
-            if (other !is User) return false
-            return this.id == other.id
-        }
+        override fun equals(other: Any?): Boolean = sameUserId(this, other)
 
         override fun hashCode(): Int = id.hashCode()
     }
@@ -131,11 +126,7 @@ sealed interface User {
         val bio: String,
         val homeChannel: Channel.Ref?,
     ) : StatefulUser {
-        override fun equals(other: Any?): Boolean {
-            if (this === other) return true
-            if (other !is User) return false
-            return this.id == other.id
-        }
+        override fun equals(other: Any?): Boolean = sameUserId(this, other)
 
         override fun hashCode(): Int = id.hashCode()
     }
@@ -146,10 +137,13 @@ sealed interface UserTag {
     val id: UserTagId
 
     /** ID のみを持つユーザータグ参照。 */
-    @JvmInline
-    value class Ref(
+    class Ref(
         override val id: UserTagId,
-    ) : UserTag
+    ) : UserTag {
+        override fun equals(other: Any?): Boolean = sameUserTagId(this, other)
+
+        override fun hashCode(): Int = id.hashCode()
+    }
 
     /** ユーザータグ情報。 */
     @ConsistentCopyVisibility
@@ -159,7 +153,11 @@ sealed interface UserTag {
         val isLocked: Boolean,
         val createdAt: Instant,
         val updatedAt: Instant,
-    ) : UserTag
+    ) : UserTag {
+        override fun equals(other: Any?): Boolean = sameUserTagId(this, other)
+
+        override fun hashCode(): Int = id.hashCode()
+    }
 }
 
 /**

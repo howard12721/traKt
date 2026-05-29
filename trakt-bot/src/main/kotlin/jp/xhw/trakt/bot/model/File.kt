@@ -21,10 +21,13 @@ sealed interface File {
     val id: FileId
 
     /** ID のみを持つファイル参照。 */
-    @JvmInline
-    value class Ref(
+    class Ref(
         override val id: FileId,
-    ) : File
+    ) : File {
+        override fun equals(other: Any?): Boolean = sameFileId(this, other)
+
+        override fun hashCode(): Int = id.hashCode()
+    }
 }
 
 /** ファイルメタ情報。 */
@@ -39,7 +42,11 @@ data class FileMeta internal constructor(
     val createdAt: Instant,
     val channel: Channel.Ref?,
     val uploader: User.Ref?,
-) : File
+) : File {
+    override fun equals(other: Any?): Boolean = sameFileId(this, other)
+
+    override fun hashCode(): Int = id.hashCode()
+}
 
 /** サムネイルの種類 */
 enum class ThumbnailType {
