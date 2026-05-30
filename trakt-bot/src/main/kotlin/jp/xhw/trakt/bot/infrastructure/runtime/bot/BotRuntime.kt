@@ -2,25 +2,23 @@ package jp.xhw.trakt.bot.infrastructure.runtime.bot
 
 import jp.xhw.trakt.bot.context.bot.BotContext
 import jp.xhw.trakt.bot.infrastructure.LoggerFactory
+import jp.xhw.trakt.bot.infrastructure.client.BaseRuntime
 import jp.xhw.trakt.bot.infrastructure.gateway.*
-import jp.xhw.trakt.bot.infrastructure.runtime.RuleRegistry
-import jp.xhw.trakt.bot.infrastructure.runtime.RuntimeBuilder
-import jp.xhw.trakt.bot.infrastructure.runtime.RuntimeLifecycle
-import jp.xhw.trakt.bot.infrastructure.runtime.TraktClientBuilder
+import jp.xhw.trakt.bot.infrastructure.runtime.Lifecycle
+import jp.xhw.trakt.bot.model.BotEvent
 import jp.xhw.trakt.bot.model.BotId
-import jp.xhw.trakt.websocket.bot.BotEvent
 import kotlinx.coroutines.Dispatchers
 import kotlin.coroutines.CoroutineContext
 import kotlin.uuid.Uuid
+import jp.xhw.trakt.websocket.bot.BotEvent as WsBotEvent
 
-/** Bot token 用の context、Port、イベントソース、lifecycle を組み立てます。 */
 internal fun createBotClient(
     token: String,
     botId: Uuid?,
     origin: String,
     coroutineContext: CoroutineContext = Dispatchers.Default,
     debugMode: Boolean = false,
-): TraktClientBuilder {
+): BaseRuntime<BotContext, BotEvent> {
     val apiGateway = TraqApiGateway(token = token, origin = origin, debugMode = debugMode)
     val selfPort = TraqBotSelfPort(apiGateway)
     val ctx =
@@ -38,7 +36,7 @@ internal fun createBotClient(
         )
     val logger = LoggerFactory.getLogger("jp.xhw.trakt.bot.BotRuntime")
     val lifecycle =
-        object : RuntimeLifecycle {
+        object : Lifecycle {
             override suspend fun start() {
                 apiGateway.botWs.start()
             }
@@ -59,12 +57,11 @@ internal fun createBotClient(
             }
         }
 
-    return RuntimeBuilder(
+    return BaseRuntime(
         context = ctx,
-        ruleRegistry = RuleRegistry(),
-        eventSource = apiGateway.botWs.events,
-        eventMapper = { event -> (event as? BotEvent)?.toEventOrNull() },
-        lifecycle = lifecycle,
         coroutineContext = coroutineContext,
+        eventSource = apiGateway.botWs.events,
+        eventMapper = { event -> (event as? WsBotEvent)?.toEventOrNull() },
+        lifecycle = lifecycle,
     )
 }

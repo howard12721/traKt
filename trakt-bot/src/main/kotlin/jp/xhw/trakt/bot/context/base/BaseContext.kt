@@ -1,6 +1,6 @@
 package jp.xhw.trakt.bot.context.base
 
-import jp.xhw.trakt.bot.context.RuntimeContext
+import jp.xhw.trakt.bot.context.ClientContext
 import jp.xhw.trakt.bot.port.*
 
 /**
@@ -16,4 +16,4 @@ abstract class BaseContext internal constructor(
     internal val stampPort: StampPort,
     internal val groupPort: GroupPort,
     internal val filePort: FilePort,
-) : RuntimeContext
+) : ClientContext

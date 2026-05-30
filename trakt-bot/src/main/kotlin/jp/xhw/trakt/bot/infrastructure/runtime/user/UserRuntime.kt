@@ -2,22 +2,20 @@ package jp.xhw.trakt.bot.infrastructure.runtime.user
 
 import jp.xhw.trakt.bot.context.user.UserContext
 import jp.xhw.trakt.bot.infrastructure.LoggerFactory
+import jp.xhw.trakt.bot.infrastructure.client.BaseRuntime
 import jp.xhw.trakt.bot.infrastructure.gateway.*
-import jp.xhw.trakt.bot.infrastructure.runtime.RuleRegistry
-import jp.xhw.trakt.bot.infrastructure.runtime.RuntimeBuilder
-import jp.xhw.trakt.bot.infrastructure.runtime.RuntimeLifecycle
-import jp.xhw.trakt.bot.infrastructure.runtime.SelfTraktClientBuilder
+import jp.xhw.trakt.bot.infrastructure.runtime.Lifecycle
+import jp.xhw.trakt.bot.model.UserEvent
 import kotlinx.coroutines.Dispatchers
 import kotlin.coroutines.CoroutineContext
 import jp.xhw.trakt.websocket.user.UserEvent as WebSocketUserEvent
 
-/** User token 用の context、Port、イベントソース、lifecycle を組み立てます。 */
 internal fun createUserClient(
     token: String,
     origin: String,
     coroutineContext: CoroutineContext = Dispatchers.Default,
     debugMode: Boolean = false,
-): SelfTraktClientBuilder {
+): BaseRuntime<UserContext, UserEvent> {
     val apiGateway = TraqApiGateway(token = token, origin = origin, debugMode = debugMode)
     val selfPort = TraqSelfPort(apiGateway)
     val ctx =
@@ -37,7 +35,7 @@ internal fun createUserClient(
         )
     val logger = LoggerFactory.getLogger("jp.xhw.trakt.bot.UserRuntime")
     val lifecycle =
-        object : RuntimeLifecycle {
+        object : Lifecycle {
             override suspend fun start() {
                 apiGateway.userWs.start()
             }
@@ -58,12 +56,11 @@ internal fun createUserClient(
             }
         }
 
-    return RuntimeBuilder(
+    return BaseRuntime(
         context = ctx,
-        ruleRegistry = RuleRegistry(),
+        coroutineContext = coroutineContext,
         eventSource = apiGateway.userWs.events,
         eventMapper = { event -> (event as? WebSocketUserEvent)?.toEventOrNull() },
         lifecycle = lifecycle,
-        coroutineContext = coroutineContext,
     )
 }

@@ -1,6 +1,6 @@
 package jp.xhw.trakt.bot.infrastructure.runtime
 
-import jp.xhw.trakt.bot.context.RuntimeContext
+import jp.xhw.trakt.bot.context.ClientContext
 import jp.xhw.trakt.bot.infrastructure.LoggerFactory
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
@@ -12,15 +12,15 @@ import kotlinx.coroutines.launch
 import kotlin.reflect.KClass
 
 /** domain event を登録された handler へ配送します。 */
-internal class RuleRegistry<R : RuntimeContext, E : Any> {
-    private val logger = LoggerFactory.getLogger("jp.xhw.trakt.bot.infrastructure.runtime.RuleRegistry")
+internal class EventDispatcher<C : ClientContext, E : Any> {
+    private val logger = LoggerFactory.getLogger("jp.xhw.trakt.bot.infrastructure.runtime.EventDispatcher")
 
     private val handlers = mutableListOf<suspend (E) -> Unit>()
 
     fun <T : E> on(
         eventClass: KClass<T>,
-        context: R,
-        handler: suspend R.(T) -> Unit,
+        context: C,
+        handler: suspend C.(T) -> Unit,
     ) {
         handlers += registeredHandler@{ event ->
             if (!eventClass.isInstance(event)) {

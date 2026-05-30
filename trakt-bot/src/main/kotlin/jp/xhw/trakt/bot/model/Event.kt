@@ -20,7 +20,7 @@ sealed interface BotMessageEvent :
     val message: Message.Detail
 }
 
-/** Runtime の初期化が完了したときのイベント。 */
+/** クライアントの初期化が完了したときのイベント。 */
 @ConsistentCopyVisibility
 data class Initialized internal constructor(
     override val occurredAt: Instant,
@@ -28,7 +28,7 @@ data class Initialized internal constructor(
     UserEvent,
     TimedEvent
 
-/** Runtime が停止したときのイベント。 */
+/** クライアントが停止したときのイベント。 */
 @ConsistentCopyVisibility
 data class Disposed internal constructor(
     override val occurredAt: Instant,
@@ -159,19 +159,3 @@ object BotEvents {
     ) : BotEvent,
         TimedEvent
 }
-
-typealias BotMessageCreated = BotEvents.MessageCreated
-typealias BotMessageUpdated = BotEvents.MessageUpdated
-typealias BotDirectMessageCreated = BotEvents.DirectMessageCreated
-typealias BotDirectMessageUpdated = BotEvents.DirectMessageUpdated
-typealias BotMessageDeleted = BotEvents.MessageDeleted
-typealias BotDirectMessageDeleted = BotEvents.DirectMessageDeleted
-typealias BotJoinedChannel = BotEvents.JoinedChannel
-typealias BotLeftChannel = BotEvents.LeftChannel
-typealias BotChannelCreated = BotEvents.ChannelCreated
-typealias BotChannelTopicChanged = BotEvents.ChannelTopicChanged
-typealias BotUserCreated = BotEvents.UserCreated
-typealias BotUserActivated = BotEvents.UserActivated
-typealias BotStampCreated = BotEvents.StampCreated
-typealias BotTagAdded = BotEvents.TagAdded
-typealias BotTagRemoved = BotEvents.TagRemoved

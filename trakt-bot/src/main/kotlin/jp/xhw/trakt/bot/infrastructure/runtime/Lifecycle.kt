@@ -1,7 +1,7 @@
 package jp.xhw.trakt.bot.infrastructure.runtime
 
-/** Runtime が所有する外部リソースの開始・停止処理。 */
-internal interface RuntimeLifecycle {
+/** クライアントが所有する外部リソースの開始・停止処理。 */
+internal interface Lifecycle {
     /** イベントソースや通信リソースを開始します。 */
     suspend fun start()
 
@@ -13,7 +13,7 @@ internal interface RuntimeLifecycle {
 
     companion object {
         val Noop =
-            object : RuntimeLifecycle {
+            object : Lifecycle {
                 override suspend fun start() = Unit
             }
     }
