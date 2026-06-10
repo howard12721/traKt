@@ -2,7 +2,6 @@ package jp.xhw.trakt.websocket.user
 
 import kotlinx.serialization.Serializable
 import kotlin.time.Instant
-import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
 @Serializable
@@ -12,7 +11,6 @@ data class WebRtcSession(
 )
 
 @Serializable
-@OptIn(ExperimentalUuidApi::class)
 data class ViewState(
     val key: String,
     val channelId: Uuid,
@@ -20,7 +18,6 @@ data class ViewState(
 )
 
 @Serializable
-@OptIn(ExperimentalUuidApi::class)
 data class ChannelViewer(
     val userId: Uuid,
     val state: String,
@@ -37,7 +34,6 @@ data class QallParticipant(
 )
 
 @Serializable
-@OptIn(ExperimentalUuidApi::class)
 data class QallRoomWithParticipants(
     val isWebinar: Boolean,
     val metadata: String? = null,

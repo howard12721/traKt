@@ -7,7 +7,6 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.decodeFromJsonElement
 import kotlin.time.Instant
-import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
 sealed interface UserEvent {
@@ -75,19 +74,16 @@ private data class UserEventEnvelope(
 )
 
 @Serializable
-@OptIn(ExperimentalUuidApi::class)
 data class UserJoined(
     val id: Uuid,
 ) : UserEvent
 
 @Serializable
-@OptIn(ExperimentalUuidApi::class)
 data class UserUpdated(
     val id: Uuid,
 ) : UserEvent
 
 @Serializable
-@OptIn(ExperimentalUuidApi::class)
 data class UserTagsUpdated(
     val id: Uuid,
     @SerialName("tag_id")
@@ -95,13 +91,11 @@ data class UserTagsUpdated(
 ) : UserEvent
 
 @Serializable
-@OptIn(ExperimentalUuidApi::class)
 data class UserIconUpdated(
     val id: Uuid,
 ) : UserEvent
 
 @Serializable
-@OptIn(ExperimentalUuidApi::class)
 data class UserWebRtcStateChanged(
     @SerialName("user_id")
     val userId: Uuid,
@@ -117,37 +111,31 @@ data class UserViewStateChanged(
 ) : UserEvent
 
 @Serializable
-@OptIn(ExperimentalUuidApi::class)
 data class UserOnline(
     val id: Uuid,
 ) : UserEvent
 
 @Serializable
-@OptIn(ExperimentalUuidApi::class)
 data class UserOffline(
     val id: Uuid,
 ) : UserEvent
 
 @Serializable
-@OptIn(ExperimentalUuidApi::class)
 data class UserGroupCreated(
     val id: Uuid,
 ) : UserEvent
 
 @Serializable
-@OptIn(ExperimentalUuidApi::class)
 data class UserGroupUpdated(
     val id: Uuid,
 ) : UserEvent
 
 @Serializable
-@OptIn(ExperimentalUuidApi::class)
 data class UserGroupDeleted(
     val id: Uuid,
 ) : UserEvent
 
 @Serializable
-@OptIn(ExperimentalUuidApi::class)
 data class ChannelCreated(
     val id: Uuid,
     @SerialName("dm_user_id")
@@ -155,7 +143,6 @@ data class ChannelCreated(
 ) : UserEvent
 
 @Serializable
-@OptIn(ExperimentalUuidApi::class)
 data class ChannelUpdated(
     val id: Uuid,
     @SerialName("dm_user_id")
@@ -163,7 +150,6 @@ data class ChannelUpdated(
 ) : UserEvent
 
 @Serializable
-@OptIn(ExperimentalUuidApi::class)
 data class ChannelDeleted(
     val id: Uuid,
     @SerialName("dm_user_id")
@@ -171,32 +157,27 @@ data class ChannelDeleted(
 ) : UserEvent
 
 @Serializable
-@OptIn(ExperimentalUuidApi::class)
 data class ChannelStared(
     val id: Uuid,
 ) : UserEvent
 
 @Serializable
-@OptIn(ExperimentalUuidApi::class)
 data class ChannelUnstared(
     val id: Uuid,
 ) : UserEvent
 
 @Serializable
-@OptIn(ExperimentalUuidApi::class)
 data class ChannelViewersChanged(
     val id: Uuid,
     val viewers: List<ChannelViewer>,
 ) : UserEvent
 
 @Serializable
-@OptIn(ExperimentalUuidApi::class)
 data class ChannelSubscribersChanged(
     val id: Uuid,
 ) : UserEvent
 
 @Serializable
-@OptIn(ExperimentalUuidApi::class)
 data class MessageCreated(
     val id: Uuid,
     @SerialName("is_citing")
@@ -204,19 +185,16 @@ data class MessageCreated(
 ) : UserEvent
 
 @Serializable
-@OptIn(ExperimentalUuidApi::class)
 data class MessageUpdated(
     val id: Uuid,
 ) : UserEvent
 
 @Serializable
-@OptIn(ExperimentalUuidApi::class)
 data class MessageDeleted(
     val id: Uuid,
 ) : UserEvent
 
 @Serializable
-@OptIn(ExperimentalUuidApi::class)
 data class MessageStamped(
     @SerialName("message_id")
     val messageId: Uuid,
@@ -230,7 +208,6 @@ data class MessageStamped(
 ) : UserEvent
 
 @Serializable
-@OptIn(ExperimentalUuidApi::class)
 data class MessageUnstamped(
     @SerialName("message_id")
     val messageId: Uuid,
@@ -241,7 +218,6 @@ data class MessageUnstamped(
 ) : UserEvent
 
 @Serializable
-@OptIn(ExperimentalUuidApi::class)
 data class MessagePinned(
     @SerialName("message_id")
     val messageId: Uuid,
@@ -250,7 +226,6 @@ data class MessagePinned(
 ) : UserEvent
 
 @Serializable
-@OptIn(ExperimentalUuidApi::class)
 data class MessageUnpinned(
     @SerialName("message_id")
     val messageId: Uuid,
@@ -259,67 +234,56 @@ data class MessageUnpinned(
 ) : UserEvent
 
 @Serializable
-@OptIn(ExperimentalUuidApi::class)
 data class MessageRead(
     val id: Uuid,
 ) : UserEvent
 
 @Serializable
-@OptIn(ExperimentalUuidApi::class)
 data class StampCreated(
     val id: Uuid,
 ) : UserEvent
 
 @Serializable
-@OptIn(ExperimentalUuidApi::class)
 data class StampUpdated(
     val id: Uuid,
 ) : UserEvent
 
 @Serializable
-@OptIn(ExperimentalUuidApi::class)
 data class StampDeleted(
     val id: Uuid,
 ) : UserEvent
 
 @Serializable
-@OptIn(ExperimentalUuidApi::class)
 data class StampPaletteCreated(
     val id: Uuid,
 ) : UserEvent
 
 @Serializable
-@OptIn(ExperimentalUuidApi::class)
 data class StampPaletteUpdated(
     val id: Uuid,
 ) : UserEvent
 
 @Serializable
-@OptIn(ExperimentalUuidApi::class)
 data class StampPaletteDeleted(
     val id: Uuid,
 ) : UserEvent
 
 @Serializable
-@OptIn(ExperimentalUuidApi::class)
 data class ClipFolderCreated(
     val id: Uuid,
 ) : UserEvent
 
 @Serializable
-@OptIn(ExperimentalUuidApi::class)
 data class ClipFolderUpdated(
     val id: Uuid,
 ) : UserEvent
 
 @Serializable
-@OptIn(ExperimentalUuidApi::class)
 data class ClipFolderDeleted(
     val id: Uuid,
 ) : UserEvent
 
 @Serializable
-@OptIn(ExperimentalUuidApi::class)
 data class ClipFolderMessageDeleted(
     @SerialName("folder_id")
     val folderId: Uuid,
@@ -328,7 +292,6 @@ data class ClipFolderMessageDeleted(
 ) : UserEvent
 
 @Serializable
-@OptIn(ExperimentalUuidApi::class)
 data class ClipFolderMessageAdded(
     @SerialName("folder_id")
     val folderId: Uuid,
@@ -342,7 +305,6 @@ data class QallRoomStateChanged(
 ) : UserEvent
 
 @Serializable
-@OptIn(ExperimentalUuidApi::class)
 data class QallSoundboardItemCreated(
     @SerialName("sound_id")
     val soundId: Uuid,
@@ -352,7 +314,6 @@ data class QallSoundboardItemCreated(
 ) : UserEvent
 
 @Serializable
-@OptIn(ExperimentalUuidApi::class)
 data class QallSoundboardItemDeleted(
     @SerialName("sound_id")
     val soundId: Uuid,

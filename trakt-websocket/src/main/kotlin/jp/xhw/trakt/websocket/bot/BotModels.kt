@@ -2,18 +2,15 @@ package jp.xhw.trakt.websocket.bot
 
 import kotlinx.serialization.Serializable
 import kotlin.time.Instant
-import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
 @Serializable
-@OptIn(ExperimentalUuidApi::class)
 data class UserGroupMember(
     val groupId: Uuid,
     val userId: Uuid,
 )
 
 @Serializable
-@OptIn(ExperimentalUuidApi::class)
 data class UserGroupMemberWithRole(
     val groupId: Uuid,
     val userId: Uuid,
@@ -21,7 +18,6 @@ data class UserGroupMemberWithRole(
 )
 
 @Serializable
-@OptIn(ExperimentalUuidApi::class)
 data class User(
     val id: Uuid,
     val name: String,
@@ -31,7 +27,6 @@ data class User(
 )
 
 @Serializable
-@OptIn(ExperimentalUuidApi::class)
 data class Embedded(
     val raw: String,
     val type: String,
@@ -39,14 +34,12 @@ data class Embedded(
 )
 
 @Serializable
-@OptIn(ExperimentalUuidApi::class)
 data class DeletedMessage(
     val id: Uuid,
     val channelId: Uuid,
 )
 
 @Serializable
-@OptIn(ExperimentalUuidApi::class)
 data class DeletedDirectMessage(
     val id: Uuid,
     val userId: Uuid,
@@ -54,7 +47,6 @@ data class DeletedDirectMessage(
 )
 
 @Serializable
-@OptIn(ExperimentalUuidApi::class)
 data class ReactionStamp(
     val stampId: Uuid,
     val userId: Uuid,
@@ -64,7 +56,6 @@ data class ReactionStamp(
 )
 
 @Serializable
-@OptIn(ExperimentalUuidApi::class)
 data class UserGroup(
     val id: Uuid,
     val name: String,
@@ -78,7 +69,6 @@ data class UserGroup(
 )
 
 @Serializable
-@OptIn(ExperimentalUuidApi::class)
 data class Channel(
     val id: Uuid,
     val name: String,
@@ -90,7 +80,6 @@ data class Channel(
 )
 
 @Serializable
-@OptIn(ExperimentalUuidApi::class)
 data class Message(
     val id: Uuid,
     val user: User,

@@ -6,7 +6,6 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.decodeFromJsonElement
 import kotlin.time.Instant
-import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
 sealed interface BotEvent {
@@ -53,7 +52,6 @@ sealed interface BotEvent {
 }
 
 @Serializable
-@OptIn(ExperimentalUuidApi::class)
 private data class BotEventEnvelope(
     val type: String,
     val reqId: Uuid,
@@ -114,7 +112,6 @@ data class DirectMessageUpdated(
 ) : BotEvent
 
 @Serializable
-@OptIn(ExperimentalUuidApi::class)
 data class BotMessageStampsUpdated(
     val eventTime: Instant,
     val messageId: Uuid,
@@ -154,14 +151,12 @@ data class UserGroupCreated(
 ) : BotEvent
 
 @Serializable
-@OptIn(ExperimentalUuidApi::class)
 data class UserGroupUpdated(
     val eventTime: Instant,
     val groupId: Uuid,
 ) : BotEvent
 
 @Serializable
-@OptIn(ExperimentalUuidApi::class)
 data class UserGroupDeleted(
     val eventTime: Instant,
     val groupId: Uuid,
@@ -198,7 +193,6 @@ data class UserGroupAdminRemoved(
 ) : BotEvent
 
 @Serializable
-@OptIn(ExperimentalUuidApi::class)
 data class StampCreated(
     val eventTime: Instant,
     val id: Uuid,
@@ -208,7 +202,6 @@ data class StampCreated(
 ) : BotEvent
 
 @Serializable
-@OptIn(ExperimentalUuidApi::class)
 data class TagAdded(
     val eventTime: Instant,
     val tagId: Uuid,
@@ -216,7 +209,6 @@ data class TagAdded(
 ) : BotEvent
 
 @Serializable
-@OptIn(ExperimentalUuidApi::class)
 data class TagRemoved(
     val eventTime: Instant,
     val tagId: Uuid,

@@ -137,7 +137,7 @@ dokka {
 
 kotlin {
     jvm()
-    js(IR) {
+    this.js {
         browser()
         nodejs()
     }
@@ -148,9 +148,7 @@ kotlin {
 
     compilerOptions {
         freeCompilerArgs.add("-opt-in=kotlin.time.ExperimentalTime")
-        freeCompilerArgs.add("-opt-in=kotlin.uuid.ExperimentalUuidApi")
         freeCompilerArgs.add("-opt-in=io.ktor.utils.io.InternalAPI")
-        freeCompilerArgs.add("-Xcontext-parameters")
     }
     jvmToolchain(21)
 
