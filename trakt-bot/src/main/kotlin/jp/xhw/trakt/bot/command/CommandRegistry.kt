@@ -63,9 +63,9 @@ internal class CommandRegistry internal constructor(
                         message = event.message,
                         commandName = root.name,
                         rawInput = rawCommandInput,
-                        args = CommandArguments(match.arguments),
+                        values = match.arguments,
                     )
-                match.executor(botContext, commandContext)
+                match.executor.invoke(botContext, commandContext)
             }
 
             is CommandMatch.Failure -> {

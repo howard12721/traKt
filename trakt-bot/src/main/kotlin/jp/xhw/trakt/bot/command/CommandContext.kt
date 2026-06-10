@@ -8,31 +8,10 @@ class CommandContext internal constructor(
     val message: Message.Detail,
     val commandName: String,
     val rawInput: String,
-    val args: CommandArguments,
-)
-
-/** DSL で定義した名前から参照できるパース済みコマンド引数。 */
-class CommandArguments internal constructor(
     private val values: Map<String, Any?>,
 ) {
+    operator fun <T> get(argument: CommandArgument<T>): T = value(argument)
+
     @Suppress("UNCHECKED_CAST")
-    fun <T> get(name: String): T = values.getValue(name) as T
-
-    fun string(name: String): String = get(name)
-
-    fun int(name: String): Int = get(name)
-
-    fun long(name: String): Long = get(name)
-
-    fun boolean(name: String): Boolean = get(name)
-
-    fun user(name: String): User.Detail = get(name)
-
-    fun channel(name: String): Channel.Detail = get(name)
-
-    fun group(name: String): Group.Detail = get(name)
-
-    fun message(name: String): Message.Detail = get(name)
-
-    operator fun contains(name: String): Boolean = name in values
+    fun <T> value(argument: CommandArgument<T>): T = values.getValue(argument.name) as T
 }

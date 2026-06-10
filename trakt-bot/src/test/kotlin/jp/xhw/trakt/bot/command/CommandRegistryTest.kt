@@ -47,8 +47,8 @@ class CommandRegistryTest {
             val registry =
                 registry(prefix = "!", botUserId = botUserId) {
                     command("help") {
-                        executes {
-                            handled = it.commandName
+                        executes { command ->
+                            handled = command.commandName
                         }
                     }
                 }
@@ -69,9 +69,9 @@ class CommandRegistryTest {
                 registry {
                     command("admin") {
                         literal("ban") {
-                            string("name") {
+                            string("name") { name ->
                                 executes { command ->
-                                    handled = command.args.string("name")
+                                    handled = command[name]
                                 }
                             }
                         }
@@ -117,9 +117,9 @@ class CommandRegistryTest {
                     command("user") {
                         literal("me") {
                         }
-                        string("name") {
+                        string("name") { name ->
                             executes { command ->
-                                handled = command.args.string("name")
+                                handled = command[name]
                             }
                         }
                     }
@@ -179,9 +179,9 @@ class CommandRegistryTest {
             val registry =
                 registry {
                     command("say") {
-                        greedyString("text") {
+                        greedyString("text") { text ->
                             executes { command ->
-                                handled = command.args.string("text")
+                                handled = command[text]
                             }
                         }
                     }
@@ -217,9 +217,9 @@ class CommandRegistryTest {
             val registry =
                 registry {
                     command("user") {
-                        user("user") {
+                        user("user") { user ->
                             executes { command ->
-                                resolved += command.args.user("user").name
+                                resolved += command[user].name
                             }
                         }
                     }
@@ -242,9 +242,9 @@ class CommandRegistryTest {
             val registry =
                 registry {
                     command("channel") {
-                        channel("channel") {
+                        channel("channel") { channel ->
                             executes { command ->
-                                resolved += command.args.channel("channel").name
+                                resolved += command[channel].name
                             }
                         }
                     }
@@ -270,11 +270,11 @@ class CommandRegistryTest {
             val registry =
                 registry {
                     command("refs") {
-                        group("group") {
-                            message("message") {
+                        group("group") { group ->
+                            message("message") { message ->
                                 executes { command ->
-                                    groups += command.args.group("group").name
-                                    messages += command.args.message("message").content
+                                    groups += command[group].name
+                                    messages += command[message].content
                                 }
                             }
                         }

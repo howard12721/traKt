@@ -1,6 +1,10 @@
 package jp.xhw.trakt.bot.command
 
 import jp.xhw.trakt.bot.dsl.TraktDsl
+import jp.xhw.trakt.bot.model.Channel
+import jp.xhw.trakt.bot.model.Group
+import jp.xhw.trakt.bot.model.Message
+import jp.xhw.trakt.bot.model.User
 
 @TraktDsl
 class CommandRegistryBuilder internal constructor(
@@ -32,57 +36,57 @@ class CommandNodeBuilder internal constructor(
     fun <T> argument(
         name: String,
         type: CommandArgumentType<T>,
-        block: CommandNodeBuilder.() -> Unit,
+        block: CommandNodeBuilder.(CommandArgument<T>) -> Unit,
     ) {
         require(name.isNotBlank()) { "Argument name must not be blank" }
         val child = ArgumentCommandNode(name, type)
         node.addArgumentChild(child)
-        CommandNodeBuilder(child).block()
+        CommandNodeBuilder(child).block(CommandArgument(name))
     }
 
     fun string(
         name: String,
-        block: CommandNodeBuilder.() -> Unit,
+        block: CommandNodeBuilder.(CommandArgument<String>) -> Unit,
     ) = argument(name, StringArgumentType, block)
 
     fun greedyString(
         name: String,
-        block: CommandNodeBuilder.() -> Unit,
+        block: CommandNodeBuilder.(CommandArgument<String>) -> Unit,
     ) = argument(name, GreedyStringArgumentType, block)
 
     fun int(
         name: String,
-        block: CommandNodeBuilder.() -> Unit,
+        block: CommandNodeBuilder.(CommandArgument<Int>) -> Unit,
     ) = argument(name, IntArgumentType, block)
 
     fun long(
         name: String,
-        block: CommandNodeBuilder.() -> Unit,
+        block: CommandNodeBuilder.(CommandArgument<Long>) -> Unit,
     ) = argument(name, LongArgumentType, block)
 
     fun boolean(
         name: String,
-        block: CommandNodeBuilder.() -> Unit,
+        block: CommandNodeBuilder.(CommandArgument<Boolean>) -> Unit,
     ) = argument(name, BooleanArgumentType, block)
 
     fun user(
         name: String,
-        block: CommandNodeBuilder.() -> Unit,
+        block: CommandNodeBuilder.(CommandArgument<User.Detail>) -> Unit,
     ) = argument(name, UserArgumentType, block)
 
     fun channel(
         name: String,
-        block: CommandNodeBuilder.() -> Unit,
+        block: CommandNodeBuilder.(CommandArgument<Channel.Detail>) -> Unit,
     ) = argument(name, ChannelArgumentType, block)
 
     fun group(
         name: String,
-        block: CommandNodeBuilder.() -> Unit,
+        block: CommandNodeBuilder.(CommandArgument<Group.Detail>) -> Unit,
     ) = argument(name, GroupArgumentType, block)
 
     fun message(
         name: String,
-        block: CommandNodeBuilder.() -> Unit,
+        block: CommandNodeBuilder.(CommandArgument<Message.Detail>) -> Unit,
     ) = argument(name, MessageArgumentType, block)
 
     fun executes(executor: CommandExecutor) {
@@ -94,3 +98,7 @@ class CommandNodeBuilder internal constructor(
         return addLiteralChild(LiteralCommandNode(name))
     }
 }
+
+class CommandArgument<T> internal constructor(
+    internal val name: String,
+)
