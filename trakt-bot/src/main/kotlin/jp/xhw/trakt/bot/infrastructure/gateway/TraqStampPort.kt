@@ -10,25 +10,31 @@ import jp.xhw.trakt.bot.port.StampPort
 import jp.xhw.trakt.rest.apis.StampApi
 
 internal class TraqStampPort(
-    private val apiGateway: TraqApiGateway,
+    private val stampApi: StampApi,
 ) : StampPort {
+    constructor(apiGateway: TraqApiGateway) : this(apiGateway.stampApi)
+
     override suspend fun fetchStamp(stampId: StampId): Stamp.Detail {
-        val response = apiGateway.stampApi.getStamp(stampId.value)
+        val response = stampApi.getStamp(stampId.value)
         return response.bodyOrThrow(operation = "fetchStamp(stampId=${stampId.value})").toModel()
     }
 
     override suspend fun fetchStampOrNull(stampId: StampId): Stamp.Detail? {
-        val response = apiGateway.stampApi.getStamp(stampId.value)
+        val response = stampApi.getStamp(stampId.value)
         return response.bodyOrNullIfNotFound(operation = "fetchStampOrNull(stampId=${stampId.value})")?.toModel()
     }
 
     override suspend fun fetchStamps(type: StampType?): List<Stamp.Detail> {
-        val response = apiGateway.stampApi.getStamps(type = type?.toApiModel())
+        val response =
+            stampApi.getStamps(
+                includeUnicode = if (type == null) true else null,
+                type = type?.toApiModel(),
+            )
         return response.bodyOrThrow(operation = "fetchStamps(type=$type)").map { it.toModel() }
     }
 
     override suspend fun fetchStampStats(stampId: StampId): StampStats {
-        val response = apiGateway.stampApi.getStampStats(stampId.value)
+        val response = stampApi.getStampStats(stampId.value)
         return response.bodyOrThrow(operation = "fetchStampStats(stampId=${stampId.value})").toStatsModel()
     }
 }
