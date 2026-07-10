@@ -13,6 +13,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.merge
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import kotlin.time.Clock
 import kotlin.time.Duration
 import kotlin.time.TimeSource
@@ -29,7 +31,6 @@ class EventRuntime<C : ClientContext, E : Any> internal constructor(
     private val eventMapper: (Any?) -> E?,
     private val lifecycle: Lifecycle,
     scheduledTasks: List<ScheduledTask<C>>,
-    private val onClose: (suspend () -> Unit)?,
 ) {
     internal val context: C get() = base.context
 
@@ -45,12 +46,14 @@ class EventRuntime<C : ClientContext, E : Any> internal constructor(
     private var eventSubscription: Job? = null
     private var scheduledTaskJobs = emptyList<Job>()
     private var started = false
+    private val stopMutex = Mutex()
 
     suspend fun execute(block: suspend C.() -> Unit) = base.execute(block)
 
     fun launchAndExecute(block: suspend C.() -> Unit): Job = base.launchAndExecute(block)
 
     suspend fun start() {
+        base.ensureOpen()
         check(!started) { "Client is already started" }
         started = true
         eventSubscription =
@@ -89,15 +92,29 @@ class EventRuntime<C : ClientContext, E : Any> internal constructor(
     }
 
     suspend fun stop() {
-        scheduledTaskJobs.forEach { it.cancel() }
-        scheduledTaskJobs = emptyList()
-        lifecycle.stop()
-        lifecycleEvents.emit(Disposed(occurredAt = Clock.System.now()))
-        eventSubscription?.cancel()
-        eventSubscription = null
-        started = false
-        onClose?.invoke()
-        base.supervisorJob.cancel()
+        withContext(NonCancellable) {
+            stopMutex.withLock {
+                if (base.isClosed) {
+                    return@withLock
+                }
+
+                val wasStarted = started
+                started = false
+                scheduledTaskJobs.forEach { it.cancel() }
+                scheduledTaskJobs = emptyList()
+
+                try {
+                    if (wasStarted) {
+                        lifecycle.stop()
+                        lifecycleEvents.emit(Disposed(occurredAt = Clock.System.now()))
+                    }
+                } finally {
+                    eventSubscription?.cancel()
+                    eventSubscription = null
+                    base.close()
+                }
+            }
+        }
     }
 
     @Suppress("UNCHECKED_CAST")

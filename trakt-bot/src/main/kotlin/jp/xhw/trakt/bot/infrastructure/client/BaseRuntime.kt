@@ -1,3 +1,5 @@
+@file:OptIn(kotlin.concurrent.atomics.ExperimentalAtomicApi::class)
+
 package jp.xhw.trakt.bot.infrastructure.client
 
 import jp.xhw.trakt.bot.context.ClientContext
@@ -12,6 +14,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
+import kotlin.concurrent.atomics.AtomicBoolean
 import kotlin.coroutines.CoroutineContext
 import kotlin.jvm.JvmName
 
@@ -30,22 +33,38 @@ class BaseRuntime<C : ClientContext, E : Any> internal constructor(
     internal val eventSource: Flow<*>? = null,
     internal val eventMapper: ((Any?) -> E?)? = null,
     internal val lifecycle: Lifecycle? = null,
-    internal val onClose: (suspend () -> Unit)? = null,
-) {
+    private val onClose: (() -> Unit)? = null,
+) : AutoCloseable {
     internal val supervisorJob = SupervisorJob()
     internal val scope = CoroutineScope(supervisorJob + coroutineContext)
     private var runtimeInvoked = false
+    private val closed = AtomicBoolean(false)
+    internal val isClosed: Boolean get() = closed.load()
 
     suspend fun execute(block: suspend C.() -> Unit) {
+        ensureOpen()
         context.block()
     }
 
-    fun launchAndExecute(block: suspend C.() -> Unit): Job =
-        scope.launch {
+    fun launchAndExecute(block: suspend C.() -> Unit): Job {
+        ensureOpen()
+        return scope.launch {
             context.block()
         }
+    }
+
+    /** このクライアントが所有するコルーチンと通信リソースを解放します。 */
+    override fun close() {
+        if (!closed.compareAndSet(expectedValue = false, newValue = true)) {
+            return
+        }
+
+        supervisorJob.cancel()
+        onClose?.invoke()
+    }
 
     internal fun buildEventRuntime(block: EventRegistrar<C, E>.() -> Unit): EventRuntime<C, E> {
+        ensureOpen()
         check(!runtimeInvoked) { "runtime() can only be called once" }
         check(eventSource != null && eventMapper != null && lifecycle != null) {
             "Event infrastructure is not available on this client"
@@ -64,8 +83,11 @@ class BaseRuntime<C : ClientContext, E : Any> internal constructor(
             eventMapper = eventMapper,
             lifecycle = lifecycle,
             scheduledTasks = registrar.scheduledTasks,
-            onClose = onClose,
         )
+    }
+
+    internal fun ensureOpen() {
+        check(!isClosed) { "Client is closed" }
     }
 }
 

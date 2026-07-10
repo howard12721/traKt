@@ -52,8 +52,6 @@ internal fun createBotClient(
 
             override suspend fun stop() {
                 apiGateway.botWs.stop()
-                apiGateway.botWs.close()
-                apiGateway.httpClient.close()
             }
         }
 
@@ -63,5 +61,6 @@ internal fun createBotClient(
         eventSource = apiGateway.botWs.events,
         eventMapper = { event -> (event as? WsBotEvent)?.toEventOrNull() },
         lifecycle = lifecycle,
+        onClose = apiGateway::close,
     )
 }

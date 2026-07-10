@@ -51,8 +51,6 @@ internal fun createUserClient(
 
             override suspend fun stop() {
                 apiGateway.userWs.stop()
-                apiGateway.userWs.close()
-                apiGateway.httpClient.close()
             }
         }
 
@@ -62,5 +60,6 @@ internal fun createUserClient(
         eventSource = apiGateway.userWs.events,
         eventMapper = { event -> (event as? WebSocketUserEvent)?.toEventOrNull() },
         lifecycle = lifecycle,
+        onClose = apiGateway::close,
     )
 }

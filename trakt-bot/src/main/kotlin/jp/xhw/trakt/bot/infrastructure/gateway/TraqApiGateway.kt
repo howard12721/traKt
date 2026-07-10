@@ -16,7 +16,7 @@ internal class TraqApiGateway(
     private val token: String,
     private val origin: String = "q.trap.jp",
     private val debugMode: Boolean = false,
-) {
+) : AutoCloseable {
     val serializer =
         Json {
             prettyPrint = true
@@ -79,4 +79,10 @@ internal class TraqApiGateway(
             HttpClient,
         ) -> T,
     ): T = factory("https://$origin/api/v3", httpClient).also { it.setBearerToken(token) }
+
+    override fun close() {
+        botWs.close()
+        userWs.close()
+        httpClient.close()
+    }
 }
