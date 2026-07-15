@@ -10,9 +10,11 @@ import kotlin.uuid.Uuid
 
 sealed interface BotEvent {
     companion object {
+        private val json = Json { ignoreUnknownKeys = true }
+
         val decoder: WsEventDecoder<BotEvent> =
             WsEventDecoder { frameData ->
-                val envelope = Json.decodeFromString<BotEventEnvelope>(frameData)
+                val envelope = json.decodeFromString<BotEventEnvelope>(frameData)
                 decodeEventOrNull(envelope.type, envelope.body)
             }
 
@@ -21,31 +23,31 @@ sealed interface BotEvent {
             body: JsonElement,
         ): BotEvent? =
             when (type) {
-                "PING" -> Json.decodeFromJsonElement<Ping>(body)
-                "JOINED" -> Json.decodeFromJsonElement<Joined>(body)
-                "LEFT" -> Json.decodeFromJsonElement<Left>(body)
-                "MESSAGE_CREATED" -> Json.decodeFromJsonElement<MessageCreated>(body)
-                "MESSAGE_DELETED" -> Json.decodeFromJsonElement<MessageDeleted>(body)
-                "MESSAGE_UPDATED" -> Json.decodeFromJsonElement<MessageUpdated>(body)
-                "DIRECT_MESSAGE_CREATED" -> Json.decodeFromJsonElement<DirectMessageCreated>(body)
-                "DIRECT_MESSAGE_DELETED" -> Json.decodeFromJsonElement<DirectMessageDeleted>(body)
-                "DIRECT_MESSAGE_UPDATED" -> Json.decodeFromJsonElement<DirectMessageUpdated>(body)
-                "BOT_MESSAGE_STAMPS_UPDATED" -> Json.decodeFromJsonElement<BotMessageStampsUpdated>(body)
-                "CHANNEL_CREATED" -> Json.decodeFromJsonElement<ChannelCreated>(body)
-                "CHANNEL_TOPIC_CHANGED" -> Json.decodeFromJsonElement<ChannelTopicChanged>(body)
-                "USER_CREATED" -> Json.decodeFromJsonElement<UserCreated>(body)
-                "USER_ACTIVATED" -> Json.decodeFromJsonElement<UserActivated>(body)
-                "USER_GROUP_CREATED" -> Json.decodeFromJsonElement<UserGroupCreated>(body)
-                "USER_GROUP_UPDATED" -> Json.decodeFromJsonElement<UserGroupUpdated>(body)
-                "USER_GROUP_DELETED" -> Json.decodeFromJsonElement<UserGroupDeleted>(body)
-                "USER_GROUP_MEMBER_ADDED" -> Json.decodeFromJsonElement<UserGroupMemberAdded>(body)
-                "USER_GROUP_MEMBER_UPDATED" -> Json.decodeFromJsonElement<UserGroupMemberUpdated>(body)
-                "USER_GROUP_MEMBER_REMOVED" -> Json.decodeFromJsonElement<UserGroupMemberRemoved>(body)
-                "USER_GROUP_ADMIN_ADDED" -> Json.decodeFromJsonElement<UserGroupAdminAdded>(body)
-                "USER_GROUP_ADMIN_REMOVED" -> Json.decodeFromJsonElement<UserGroupAdminRemoved>(body)
-                "STAMP_CREATED" -> Json.decodeFromJsonElement<StampCreated>(body)
-                "TAG_ADDED" -> Json.decodeFromJsonElement<TagAdded>(body)
-                "TAG_REMOVED" -> Json.decodeFromJsonElement<TagRemoved>(body)
+                "PING" -> json.decodeFromJsonElement<Ping>(body)
+                "JOINED" -> json.decodeFromJsonElement<Joined>(body)
+                "LEFT" -> json.decodeFromJsonElement<Left>(body)
+                "MESSAGE_CREATED" -> json.decodeFromJsonElement<MessageCreated>(body)
+                "MESSAGE_DELETED" -> json.decodeFromJsonElement<MessageDeleted>(body)
+                "MESSAGE_UPDATED" -> json.decodeFromJsonElement<MessageUpdated>(body)
+                "DIRECT_MESSAGE_CREATED" -> json.decodeFromJsonElement<DirectMessageCreated>(body)
+                "DIRECT_MESSAGE_DELETED" -> json.decodeFromJsonElement<DirectMessageDeleted>(body)
+                "DIRECT_MESSAGE_UPDATED" -> json.decodeFromJsonElement<DirectMessageUpdated>(body)
+                "BOT_MESSAGE_STAMPS_UPDATED" -> json.decodeFromJsonElement<BotMessageStampsUpdated>(body)
+                "CHANNEL_CREATED" -> json.decodeFromJsonElement<ChannelCreated>(body)
+                "CHANNEL_TOPIC_CHANGED" -> json.decodeFromJsonElement<ChannelTopicChanged>(body)
+                "USER_CREATED" -> json.decodeFromJsonElement<UserCreated>(body)
+                "USER_ACTIVATED" -> json.decodeFromJsonElement<UserActivated>(body)
+                "USER_GROUP_CREATED" -> json.decodeFromJsonElement<UserGroupCreated>(body)
+                "USER_GROUP_UPDATED" -> json.decodeFromJsonElement<UserGroupUpdated>(body)
+                "USER_GROUP_DELETED" -> json.decodeFromJsonElement<UserGroupDeleted>(body)
+                "USER_GROUP_MEMBER_ADDED" -> json.decodeFromJsonElement<UserGroupMemberAdded>(body)
+                "USER_GROUP_MEMBER_UPDATED" -> json.decodeFromJsonElement<UserGroupMemberUpdated>(body)
+                "USER_GROUP_MEMBER_REMOVED" -> json.decodeFromJsonElement<UserGroupMemberRemoved>(body)
+                "USER_GROUP_ADMIN_ADDED" -> json.decodeFromJsonElement<UserGroupAdminAdded>(body)
+                "USER_GROUP_ADMIN_REMOVED" -> json.decodeFromJsonElement<UserGroupAdminRemoved>(body)
+                "STAMP_CREATED" -> json.decodeFromJsonElement<StampCreated>(body)
+                "TAG_ADDED" -> json.decodeFromJsonElement<TagAdded>(body)
+                "TAG_REMOVED" -> json.decodeFromJsonElement<TagRemoved>(body)
                 else -> null
             }
     }
@@ -183,13 +185,13 @@ data class UserGroupMemberRemoved(
 @Serializable
 data class UserGroupAdminAdded(
     val eventTime: Instant,
-    val member: UserGroupMember,
+    val groupMember: UserGroupMember,
 ) : BotEvent
 
 @Serializable
 data class UserGroupAdminRemoved(
     val eventTime: Instant,
-    val member: UserGroupMember,
+    val groupMember: UserGroupMember,
 ) : BotEvent
 
 @Serializable
