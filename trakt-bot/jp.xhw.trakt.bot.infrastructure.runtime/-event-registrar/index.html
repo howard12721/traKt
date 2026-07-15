@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>EventRegistrar</title>
+    <link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">
+        <script>var pathToRoot = "../../../";</script>
+    <script>document.documentElement.classList.replace("no-js", "js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+      if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+      } else {
+        const savedDarkMode = JSON.parse(storage)
+        if (savedDarkMode === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+      }
+    </script>
+<script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async="async"></script>
+<link href="../../../styles/style.css" rel="Stylesheet">
+<link href="../../../styles/main.css" rel="Stylesheet">
+<link href="../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../../ui-kit/ui-kit.min.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../scripts/safe-local-storage_blocking.js"></script>
+<script type="text/javascript" src="../../../scripts/navigation-loader.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/platform-content-handler.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/main.js" defer="defer"></script>
+<script type="text/javascript" src="../../../scripts/prism.js" async="async"></script>
+<script type="text/javascript" src="../../../ui-kit/ui-kit.min.js" defer="defer"></script>
+</head>
+<body>
+<div class="root">
+    <header class="navigation theme-dark" id="navigation-wrapper" role="banner">
+            <a class="library-name--link" href="../../../index.html" tabindex="1">
+                    trakt-bot
+            </a>
+        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle"
+                type="button">Toggle table of contents
+        </button>
+        <div class="navigation-controls--break ui-kit_mobile-only"></div>
+        <div class="library-version" id="library-version">
+1.0.0-SNAPSHOT        </div>
+        <div class="navigation-controls">
+        <ul class="filter-section filter-section_loading" id="filter-section" aria-label="Target filter">
+                <button class="platform-tag platform-selector common-like" data-active="" aria-pressed="true"
+                        data-filter=":trakt-bot/commonMain">common</button>
+            <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
+                <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox"
+                        data-role="dropdown-toggle"
+                        aria-controls="platform-tags-listbox"
+                        aria-haspopup="listbox"
+                        aria-expanded="false"
+                        aria-label="Toggle source sets"
+                ></button>
+                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox" aria-label="Target filter">
+                    <div class="dropdown--header"><span>Target filter</span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close target filter">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                        <li role="option" class="dropdown--option platform-selector-option common-like" tabindex="0">
+                            <label class="checkbox">
+                                <input type="checkbox" class="checkbox--input" id=":trakt-bot/commonMain"
+                                       data-filter=":trakt-bot/commonMain"/>
+                                <span class="checkbox--icon"></span>
+                                common
+                            </label>
+                        </li>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </ul>
+            <button class="navigation-controls--btn navigation-controls--btn_theme" id="theme-toggle-button"
+                    type="button">Switch theme
+            </button>
+            <div class="navigation-controls--btn navigation-controls--btn_search" id="searchBar" role="button">Search in
+                API
+            </div>
+        </div>
+    </header>
+    <div id="container">
+        <nav id="leftColumn" class="sidebar" data-item-type="SECTION" data-item-config='{"defaultSize": 280, "minSize": 200, "maxSize": 400}'>
+            <a class="toc--skip-link" href="#main">Skip to content</a>
+            <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
+                <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list"
+                    data-role="dropdown-listbox" aria-label="Table of contents">
+                    <div class="dropdown--header">
+                            <span>
+                                    trakt-bot
+                            </span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                    <div class="sidebar--inner" id="sideMenu"></div>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </nav>
+        <div id="resizer" class="resizer" data-item-type="BAR"></div>
+        <div id="main" data-item-type="SECTION" role="main">
+<div class="main-content" data-page-type="classlike" id="content" pageIds="trakt-bot::jp.xhw.trakt.bot.infrastructure.runtime/EventRegistrar///PointingToDeclaration//-855546369">
+  <div class="breadcrumbs"><a href="../../../index.html">trakt-bot</a><span class="delimiter">/</span><a href="../index.html">jp.xhw.trakt.bot.infrastructure.runtime</a><span class="delimiter">/</span><span class="current">EventRegistrar</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span>Event</span><wbr></wbr><span><span>Registrar</span></span></h1>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">class </span><a href="index.html">EventRegistrar</a><span class="token operator">&lt;</span><a href="index.html">C</a><span class="token operator"> : </span><a href="../../jp.xhw.trakt.bot.context/-client-context/index.html">ClientContext</a><span class="token punctuation">, </span><a href="index.html">E</a><span class="token operator"> : </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-any/index.html">Any</a><span class="token operator">&gt;</span></div></div></div>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button><button class="section-tab" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION,EXTENSION_PROPERTY,EXTENSION_FUNCTION">Members &amp; Extensions</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="FUNCTION">
+        <h2 class="tableheader">Functions</h2>
+        <div class="table"><a data-name="1967194517%2FFunctions%2F-855546369" anchor-label="commands" id="1967194517%2FFunctions%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../jp.xhw.trakt.bot.command/commands.html"><span><span>commands</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1967194517%2FFunctions%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../jp.xhw.trakt.bot.infrastructure.client/-bot-event-registrar/index.html">BotEventRegistrar</a><span class="token punctuation">.</span><a href="../../jp.xhw.trakt.bot.command/commands.html"><span class="token function">commands</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">prefix<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">replyOnError<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">true</span><span class="token punctuation">, </span></span><span class="parameter ">errorMessages<span class="token operator">: </span><a href="../../jp.xhw.trakt.bot.command/-command-error-messages/index.html">CommandErrorMessages</a><span class="token operator"> = </span>DefaultCommandErrorMessages<span class="token punctuation">, </span></span><span class="parameter ">block<span class="token operator">: </span><a href="../../jp.xhw.trakt.bot.command/-command-registry-builder/index.html">CommandRegistryBuilder</a><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Bot のメッセージ作成イベントを処理するコマンドツリーを登録します。</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="876588885%2FFunctions%2F-855546369" anchor-label="every" id="876588885%2FFunctions%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="every.html"><span><span>every</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="876588885%2FFunctions%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="every.html"><span class="token function">every</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">interval<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.time/-duration/index.html">Duration</a><span class="token punctuation">, </span></span><span class="parameter ">initialDelay<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.time/-duration/index.html">Duration</a><span class="token operator"> = </span>interval<span class="token punctuation">, </span></span><span class="parameter ">block<span class="token operator">: </span><span class="token keyword">suspend </span><a href="index.html">C</a><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1493829543%2FFunctions%2F-855546369" anchor-label="on" id="-1493829543%2FFunctions%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="on.html"><span><span>on</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1493829543%2FFunctions%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">inline </span><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="on.html">T</a><span class="token operator"> : </span><a href="index.html">E</a><span class="token operator">&gt; </span><a href="on.html"><span class="token function">on</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">noinline </span>handler<span class="token operator">: </span><span class="token keyword">suspend </span><a href="index.html">C</a><span class="token punctuation">.</span><span class="token punctuation">(</span><a href="on.html">T</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-2044928262%2FFunctions%2F-855546369" anchor-label="onChannelCreated" id="-2044928262%2FFunctions%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../jp.xhw.trakt.bot/on-channel-created.html"><span>on</span><wbr></wbr><span>Channel</span><wbr></wbr><span><span>Created</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2044928262%2FFunctions%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-name/index.html"><span class="token annotation builtin">JvmName</span></a><span class="token punctuation">(</span><span>name<span class="token operator"> = </span><span class="breakable-word"><span class="token string">&quot;onBotChannelCreated&quot;</span></span></span><wbr></wbr><span class="token punctuation">)</span></div></div><span class="token keyword">fun </span><a href="../../jp.xhw.trakt.bot.infrastructure.client/-bot-event-registrar/index.html">BotEventRegistrar</a><span class="token punctuation">.</span><a href="../../jp.xhw.trakt.bot/on-channel-created.html"><span class="token function">onChannelCreated</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">handler<span class="token operator">: </span><span class="token keyword">suspend </span><a href="../../jp.xhw.trakt.bot.context.bot/-bot-context/index.html">BotContext</a><span class="token punctuation">.</span><span class="token punctuation">(</span><a href="../../jp.xhw.trakt.bot.model/-bot-events/-channel-created/index.html">BotEvents.ChannelCreated</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-name/index.html"><span class="token annotation builtin">JvmName</span></a><span class="token punctuation">(</span><span>name<span class="token operator"> = </span><span class="breakable-word"><span class="token string">&quot;onUserChannelCreated&quot;</span></span></span><wbr></wbr><span class="token punctuation">)</span></div></div><span class="token keyword">fun </span><a href="../../jp.xhw.trakt.bot.infrastructure.client/-self-event-registrar/index.html">SelfEventRegistrar</a><span class="token punctuation">.</span><a href="../../jp.xhw.trakt.bot/on-channel-created.html"><span class="token function">onChannelCreated</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">handler<span class="token operator">: </span><span class="token keyword">suspend </span><a href="../../jp.xhw.trakt.bot.context.user/-user-context/index.html">UserContext</a><span class="token punctuation">.</span><span class="token punctuation">(</span><a href="../../jp.xhw.trakt.bot.model/-user-events/-channel-created/index.html">UserEvents.ChannelCreated</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="347534208%2FFunctions%2F-855546369" anchor-label="onChannelDeleted" id="347534208%2FFunctions%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../jp.xhw.trakt.bot/on-channel-deleted.html"><span>on</span><wbr></wbr><span>Channel</span><wbr></wbr><span><span>Deleted</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="347534208%2FFunctions%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../jp.xhw.trakt.bot.infrastructure.client/-self-event-registrar/index.html">SelfEventRegistrar</a><span class="token punctuation">.</span><a href="../../jp.xhw.trakt.bot/on-channel-deleted.html"><span class="token function">onChannelDeleted</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">handler<span class="token operator">: </span><span class="token keyword">suspend </span><a href="../../jp.xhw.trakt.bot.context.user/-user-context/index.html">UserContext</a><span class="token punctuation">.</span><span class="token punctuation">(</span><a href="../../jp.xhw.trakt.bot.model/-user-events/-channel-deleted/index.html">UserEvents.ChannelDeleted</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1215668432%2FFunctions%2F-855546369" anchor-label="onChannelStared" id="-1215668432%2FFunctions%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../jp.xhw.trakt.bot/on-channel-stared.html"><span>on</span><wbr></wbr><span>Channel</span><wbr></wbr><span><span>Stared</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1215668432%2FFunctions%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../jp.xhw.trakt.bot.infrastructure.client/-self-event-registrar/index.html">SelfEventRegistrar</a><span class="token punctuation">.</span><a href="../../jp.xhw.trakt.bot/on-channel-stared.html"><span class="token function">onChannelStared</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">handler<span class="token operator">: </span><span class="token keyword">suspend </span><a href="../../jp.xhw.trakt.bot.context.user/-user-context/index.html">UserContext</a><span class="token punctuation">.</span><span class="token punctuation">(</span><a href="../../jp.xhw.trakt.bot.model/-user-events/-channel-stared/index.html">UserEvents.ChannelStared</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1565959840%2FFunctions%2F-855546369" anchor-label="onChannelSubscribersChanged" id="1565959840%2FFunctions%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../jp.xhw.trakt.bot/on-channel-subscribers-changed.html"><span>on</span><wbr></wbr><span>Channel</span><wbr></wbr><span>Subscribers</span><wbr></wbr><span><span>Changed</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1565959840%2FFunctions%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../jp.xhw.trakt.bot.infrastructure.client/-self-event-registrar/index.html">SelfEventRegistrar</a><span class="token punctuation">.</span><a href="../../jp.xhw.trakt.bot/on-channel-subscribers-changed.html"><span class="token function">onChannelSubscribersChanged</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">handler<span class="token operator">: </span><span class="token keyword">suspend </span><a href="../../jp.xhw.trakt.bot.context.user/-user-context/index.html">UserContext</a><span class="token punctuation">.</span><span class="token punctuation">(</span><a href="../../jp.xhw.trakt.bot.model/-user-events/-channel-subscribers-changed/index.html">UserEvents.ChannelSubscribersChanged</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-701286906%2FFunctions%2F-855546369" anchor-label="onChannelTopicChanged" id="-701286906%2FFunctions%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../jp.xhw.trakt.bot/on-channel-topic-changed.html"><span>on</span><wbr></wbr><span>Channel</span><wbr></wbr><span>Topic</span><wbr></wbr><span><span>Changed</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-701286906%2FFunctions%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../jp.xhw.trakt.bot.infrastructure.client/-bot-event-registrar/index.html">BotEventRegistrar</a><span class="token punctuation">.</span><a href="../../jp.xhw.trakt.bot/on-channel-topic-changed.html"><span class="token function">onChannelTopicChanged</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">handler<span class="token operator">: </span><span class="token keyword">suspend </span><a href="../../jp.xhw.trakt.bot.context.bot/-bot-context/index.html">BotContext</a><span class="token punctuation">.</span><span class="token punctuation">(</span><a href="../../jp.xhw.trakt.bot.model/-bot-events/-channel-topic-changed/index.html">BotEvents.ChannelTopicChanged</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1559900510%2FFunctions%2F-855546369" anchor-label="onChannelUnstared" id="-1559900510%2FFunctions%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../jp.xhw.trakt.bot/on-channel-unstared.html"><span>on</span><wbr></wbr><span>Channel</span><wbr></wbr><span><span>Unstared</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1559900510%2FFunctions%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../jp.xhw.trakt.bot.infrastructure.client/-self-event-registrar/index.html">SelfEventRegistrar</a><span class="token punctuation">.</span><a href="../../jp.xhw.trakt.bot/on-channel-unstared.html"><span class="token function">onChannelUnstared</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">handler<span class="token operator">: </span><span class="token keyword">suspend </span><a href="../../jp.xhw.trakt.bot.context.user/-user-context/index.html">UserContext</a><span class="token punctuation">.</span><span class="token punctuation">(</span><a href="../../jp.xhw.trakt.bot.model/-user-events/-channel-unstared/index.html">UserEvents.ChannelUnstared</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-738711616%2FFunctions%2F-855546369" anchor-label="onChannelUpdated" id="-738711616%2FFunctions%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../jp.xhw.trakt.bot/on-channel-updated.html"><span>on</span><wbr></wbr><span>Channel</span><wbr></wbr><span><span>Updated</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-738711616%2FFunctions%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../jp.xhw.trakt.bot.infrastructure.client/-self-event-registrar/index.html">SelfEventRegistrar</a><span class="token punctuation">.</span><a href="../../jp.xhw.trakt.bot/on-channel-updated.html"><span class="token function">onChannelUpdated</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">handler<span class="token operator">: </span><span class="token keyword">suspend </span><a href="../../jp.xhw.trakt.bot.context.user/-user-context/index.html">UserContext</a><span class="token punctuation">.</span><span class="token punctuation">(</span><a href="../../jp.xhw.trakt.bot.model/-user-events/-channel-updated/index.html">UserEvents.ChannelUpdated</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="795103220%2FFunctions%2F-855546369" anchor-label="onChannelViewersChanged" id="795103220%2FFunctions%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../jp.xhw.trakt.bot/on-channel-viewers-changed.html"><span>on</span><wbr></wbr><span>Channel</span><wbr></wbr><span>Viewers</span><wbr></wbr><span><span>Changed</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="795103220%2FFunctions%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../jp.xhw.trakt.bot.infrastructure.client/-self-event-registrar/index.html">SelfEventRegistrar</a><span class="token punctuation">.</span><a href="../../jp.xhw.trakt.bot/on-channel-viewers-changed.html"><span class="token function">onChannelViewersChanged</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">handler<span class="token operator">: </span><span class="token keyword">suspend </span><a href="../../jp.xhw.trakt.bot.context.user/-user-context/index.html">UserContext</a><span class="token punctuation">.</span><span class="token punctuation">(</span><a href="../../jp.xhw.trakt.bot.model/-user-events/-channel-viewers-changed/index.html">UserEvents.ChannelViewersChanged</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-479717668%2FFunctions%2F-855546369" anchor-label="onClipFolderCreated" id="-479717668%2FFunctions%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../jp.xhw.trakt.bot/on-clip-folder-created.html"><span>on</span><wbr></wbr><span>Clip</span><wbr></wbr><span>Folder</span><wbr></wbr><span><span>Created</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-479717668%2FFunctions%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../jp.xhw.trakt.bot.infrastructure.client/-self-event-registrar/index.html">SelfEventRegistrar</a><span class="token punctuation">.</span><a href="../../jp.xhw.trakt.bot/on-clip-folder-created.html"><span class="token function">onClipFolderCreated</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">handler<span class="token operator">: </span><span class="token keyword">suspend </span><a href="../../jp.xhw.trakt.bot.context.user/-user-context/index.html">UserContext</a><span class="token punctuation">.</span><span class="token punctuation">(</span><a href="../../jp.xhw.trakt.bot.model/-user-events/-clip-folder-created/index.html">UserEvents.ClipFolderCreated</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1200255042%2FFunctions%2F-855546369" anchor-label="onClipFolderDeleted" id="-1200255042%2FFunctions%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../jp.xhw.trakt.bot/on-clip-folder-deleted.html"><span>on</span><wbr></wbr><span>Clip</span><wbr></wbr><span>Folder</span><wbr></wbr><span><span>Deleted</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1200255042%2FFunctions%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../jp.xhw.trakt.bot.infrastructure.client/-self-event-registrar/index.html">SelfEventRegistrar</a><span class="token punctuation">.</span><a href="../../jp.xhw.trakt.bot/on-clip-folder-deleted.html"><span class="token function">onClipFolderDeleted</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">handler<span class="token operator">: </span><span class="token keyword">suspend </span><a href="../../jp.xhw.trakt.bot.context.user/-user-context/index.html">UserContext</a><span class="token punctuation">.</span><span class="token punctuation">(</span><a href="../../jp.xhw.trakt.bot.model/-user-events/-clip-folder-deleted/index.html">UserEvents.ClipFolderDeleted</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="69889184%2FFunctions%2F-855546369" anchor-label="onClipFolderMessageAdded" id="69889184%2FFunctions%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../jp.xhw.trakt.bot/on-clip-folder-message-added.html"><span>on</span><wbr></wbr><span>Clip</span><wbr></wbr><span>Folder</span><wbr></wbr><span>Message</span><wbr></wbr><span><span>Added</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="69889184%2FFunctions%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../jp.xhw.trakt.bot.infrastructure.client/-self-event-registrar/index.html">SelfEventRegistrar</a><span class="token punctuation">.</span><a href="../../jp.xhw.trakt.bot/on-clip-folder-message-added.html"><span class="token function">onClipFolderMessageAdded</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">handler<span class="token operator">: </span><span class="token keyword">suspend </span><a href="../../jp.xhw.trakt.bot.context.user/-user-context/index.html">UserContext</a><span class="token punctuation">.</span><span class="token punctuation">(</span><a href="../../jp.xhw.trakt.bot.model/-user-events/-clip-folder-message-added/index.html">UserEvents.ClipFolderMessageAdded</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1194096576%2FFunctions%2F-855546369" anchor-label="onClipFolderMessageDeleted" id="-1194096576%2FFunctions%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../jp.xhw.trakt.bot/on-clip-folder-message-deleted.html"><span>on</span><wbr></wbr><span>Clip</span><wbr></wbr><span>Folder</span><wbr></wbr><span>Message</span><wbr></wbr><span><span>Deleted</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1194096576%2FFunctions%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../jp.xhw.trakt.bot.infrastructure.client/-self-event-registrar/index.html">SelfEventRegistrar</a><span class="token punctuation">.</span><a href="../../jp.xhw.trakt.bot/on-clip-folder-message-deleted.html"><span class="token function">onClipFolderMessageDeleted</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">handler<span class="token operator">: </span><span class="token keyword">suspend </span><a href="../../jp.xhw.trakt.bot.context.user/-user-context/index.html">UserContext</a><span class="token punctuation">.</span><span class="token punctuation">(</span><a href="../../jp.xhw.trakt.bot.model/-user-events/-clip-folder-message-deleted/index.html">UserEvents.ClipFolderMessageDeleted</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1122124286%2FFunctions%2F-855546369" anchor-label="onClipFolderUpdated" id="-1122124286%2FFunctions%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../jp.xhw.trakt.bot/on-clip-folder-updated.html"><span>on</span><wbr></wbr><span>Clip</span><wbr></wbr><span>Folder</span><wbr></wbr><span><span>Updated</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1122124286%2FFunctions%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../jp.xhw.trakt.bot.infrastructure.client/-self-event-registrar/index.html">SelfEventRegistrar</a><span class="token punctuation">.</span><a href="../../jp.xhw.trakt.bot/on-clip-folder-updated.html"><span class="token function">onClipFolderUpdated</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">handler<span class="token operator">: </span><span class="token keyword">suspend </span><a href="../../jp.xhw.trakt.bot.context.user/-user-context/index.html">UserContext</a><span class="token punctuation">.</span><span class="token punctuation">(</span><a href="../../jp.xhw.trakt.bot.model/-user-events/-clip-folder-updated/index.html">UserEvents.ClipFolderUpdated</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-2079720430%2FFunctions%2F-855546369" anchor-label="onDirectMessageCreated" id="-2079720430%2FFunctions%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../jp.xhw.trakt.bot/on-direct-message-created.html"><span>on</span><wbr></wbr><span>Direct</span><wbr></wbr><span>Message</span><wbr></wbr><span><span>Created</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2079720430%2FFunctions%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-name/index.html"><span class="token annotation builtin">JvmName</span></a><span class="token punctuation">(</span><span>name<span class="token operator"> = </span><span class="breakable-word"><span class="token string">&quot;onBotDirectMessageCreated&quot;</span></span></span><wbr></wbr><span class="token punctuation">)</span></div></div><span class="token keyword">fun </span><a href="../../jp.xhw.trakt.bot.infrastructure.client/-bot-event-registrar/index.html">BotEventRegistrar</a><span class="token punctuation">.</span><a href="../../jp.xhw.trakt.bot/on-direct-message-created.html"><span class="token function">onDirectMessageCreated</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">handler<span class="token operator">: </span><span class="token keyword">suspend </span><a href="../../jp.xhw.trakt.bot.context.bot/-bot-context/index.html">BotContext</a><span class="token punctuation">.</span><span class="token punctuation">(</span><a href="../../jp.xhw.trakt.bot.model/-bot-events/-direct-message-created/index.html">BotEvents.DirectMessageCreated</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1649652274%2FFunctions%2F-855546369" anchor-label="onDirectMessageDeleted" id="1649652274%2FFunctions%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../jp.xhw.trakt.bot/on-direct-message-deleted.html"><span>on</span><wbr></wbr><span>Direct</span><wbr></wbr><span>Message</span><wbr></wbr><span><span>Deleted</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1649652274%2FFunctions%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-name/index.html"><span class="token annotation builtin">JvmName</span></a><span class="token punctuation">(</span><span>name<span class="token operator"> = </span><span class="breakable-word"><span class="token string">&quot;onBotDirectMessageDeleted&quot;</span></span></span><wbr></wbr><span class="token punctuation">)</span></div></div><span class="token keyword">fun </span><a href="../../jp.xhw.trakt.bot.infrastructure.client/-bot-event-registrar/index.html">BotEventRegistrar</a><span class="token punctuation">.</span><a href="../../jp.xhw.trakt.bot/on-direct-message-deleted.html"><span class="token function">onDirectMessageDeleted</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">handler<span class="token operator">: </span><span class="token keyword">suspend </span><a href="../../jp.xhw.trakt.bot.context.bot/-bot-context/index.html">BotContext</a><span class="token punctuation">.</span><span class="token punctuation">(</span><a href="../../jp.xhw.trakt.bot.model/-bot-events/-direct-message-deleted/index.html">BotEvents.DirectMessageDeleted</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="563406450%2FFunctions%2F-855546369" anchor-label="onDirectMessageUpdated" id="563406450%2FFunctions%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../jp.xhw.trakt.bot/on-direct-message-updated.html"><span>on</span><wbr></wbr><span>Direct</span><wbr></wbr><span>Message</span><wbr></wbr><span><span>Updated</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="563406450%2FFunctions%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-name/index.html"><span class="token annotation builtin">JvmName</span></a><span class="token punctuation">(</span><span>name<span class="token operator"> = </span><span class="breakable-word"><span class="token string">&quot;onBotDirectMessageUpdated&quot;</span></span></span><wbr></wbr><span class="token punctuation">)</span></div></div><span class="token keyword">fun </span><a href="../../jp.xhw.trakt.bot.infrastructure.client/-bot-event-registrar/index.html">BotEventRegistrar</a><span class="token punctuation">.</span><a href="../../jp.xhw.trakt.bot/on-direct-message-updated.html"><span class="token function">onDirectMessageUpdated</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">handler<span class="token operator">: </span><span class="token keyword">suspend </span><a href="../../jp.xhw.trakt.bot.context.bot/-bot-context/index.html">BotContext</a><span class="token punctuation">.</span><span class="token punctuation">(</span><a href="../../jp.xhw.trakt.bot.model/-bot-events/-direct-message-updated/index.html">BotEvents.DirectMessageUpdated</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1977298370%2FFunctions%2F-855546369" anchor-label="onDisposed" id="-1977298370%2FFunctions%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../jp.xhw.trakt.bot/on-disposed.html"><span>on</span><wbr></wbr><span><span>Disposed</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1977298370%2FFunctions%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-name/index.html"><span class="token annotation builtin">JvmName</span></a><span class="token punctuation">(</span><span>name<span class="token operator"> = </span><span class="breakable-word"><span class="token string">&quot;onBotDisposed&quot;</span></span></span><wbr></wbr><span class="token punctuation">)</span></div></div><span class="token keyword">fun </span><a href="../../jp.xhw.trakt.bot.infrastructure.client/-bot-event-registrar/index.html">BotEventRegistrar</a><span class="token punctuation">.</span><a href="../../jp.xhw.trakt.bot/on-disposed.html"><span class="token function">onDisposed</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">handler<span class="token operator">: </span><span class="token keyword">suspend </span><a href="../../jp.xhw.trakt.bot.context.bot/-bot-context/index.html">BotContext</a><span class="token punctuation">.</span><span class="token punctuation">(</span><a href="../../jp.xhw.trakt.bot.model/-disposed/index.html">Disposed</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-name/index.html"><span class="token annotation builtin">JvmName</span></a><span class="token punctuation">(</span><span>name<span class="token operator"> = </span><span class="breakable-word"><span class="token string">&quot;onUserDisposed&quot;</span></span></span><wbr></wbr><span class="token punctuation">)</span></div></div><span class="token keyword">fun </span><a href="../../jp.xhw.trakt.bot.infrastructure.client/-self-event-registrar/index.html">SelfEventRegistrar</a><span class="token punctuation">.</span><a href="../../jp.xhw.trakt.bot/on-disposed.html"><span class="token function">onDisposed</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">handler<span class="token operator">: </span><span class="token keyword">suspend </span><a href="../../jp.xhw.trakt.bot.context.user/-user-context/index.html">UserContext</a><span class="token punctuation">.</span><span class="token punctuation">(</span><a href="../../jp.xhw.trakt.bot.model/-disposed/index.html">Disposed</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1189311456%2FFunctions%2F-855546369" anchor-label="onGroupCreated" id="-1189311456%2FFunctions%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../jp.xhw.trakt.bot/on-group-created.html"><span>on</span><wbr></wbr><span>Group</span><wbr></wbr><span><span>Created</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1189311456%2FFunctions%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../jp.xhw.trakt.bot.infrastructure.client/-self-event-registrar/index.html">SelfEventRegistrar</a><span class="token punctuation">.</span><a href="../../jp.xhw.trakt.bot/on-group-created.html"><span class="token function">onGroupCreated</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">handler<span class="token operator">: </span><span class="token keyword">suspend </span><a href="../../jp.xhw.trakt.bot.context.user/-user-context/index.html">UserContext</a><span class="token punctuation">.</span><span class="token punctuation">(</span><a href="../../jp.xhw.trakt.bot.model/-user-events/-group-created/index.html">UserEvents.GroupCreated</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="170381824%2FFunctions%2F-855546369" anchor-label="onGroupDeleted" id="170381824%2FFunctions%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../jp.xhw.trakt.bot/on-group-deleted.html"><span>on</span><wbr></wbr><span>Group</span><wbr></wbr><span><span>Deleted</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="170381824%2FFunctions%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../jp.xhw.trakt.bot.infrastructure.client/-self-event-registrar/index.html">SelfEventRegistrar</a><span class="token punctuation">.</span><a href="../../jp.xhw.trakt.bot/on-group-deleted.html"><span class="token function">onGroupDeleted</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">handler<span class="token operator">: </span><span class="token keyword">suspend </span><a href="../../jp.xhw.trakt.bot.context.user/-user-context/index.html">UserContext</a><span class="token punctuation">.</span><span class="token punctuation">(</span><a href="../../jp.xhw.trakt.bot.model/-user-events/-group-deleted/index.html">UserEvents.GroupDeleted</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-431516224%2FFunctions%2F-855546369" anchor-label="onGroupUpdated" id="-431516224%2FFunctions%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../jp.xhw.trakt.bot/on-group-updated.html"><span>on</span><wbr></wbr><span>Group</span><wbr></wbr><span><span>Updated</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-431516224%2FFunctions%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../jp.xhw.trakt.bot.infrastructure.client/-self-event-registrar/index.html">SelfEventRegistrar</a><span class="token punctuation">.</span><a href="../../jp.xhw.trakt.bot/on-group-updated.html"><span class="token function">onGroupUpdated</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">handler<span class="token operator">: </span><span class="token keyword">suspend </span><a href="../../jp.xhw.trakt.bot.context.user/-user-context/index.html">UserContext</a><span class="token punctuation">.</span><span class="token punctuation">(</span><a href="../../jp.xhw.trakt.bot.model/-user-events/-group-updated/index.html">UserEvents.GroupUpdated</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-801527412%2FFunctions%2F-855546369" anchor-label="onIconUpdated" id="-801527412%2FFunctions%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../jp.xhw.trakt.bot/on-icon-updated.html"><span>on</span><wbr></wbr><span>Icon</span><wbr></wbr><span><span>Updated</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-801527412%2FFunctions%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../jp.xhw.trakt.bot.infrastructure.client/-self-event-registrar/index.html">SelfEventRegistrar</a><span class="token punctuation">.</span><a href="../../jp.xhw.trakt.bot/on-icon-updated.html"><span class="token function">onIconUpdated</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">handler<span class="token operator">: </span><span class="token keyword">suspend </span><a href="../../jp.xhw.trakt.bot.context.user/-user-context/index.html">UserContext</a><span class="token punctuation">.</span><span class="token punctuation">(</span><a href="../../jp.xhw.trakt.bot.model/-user-events/-icon-updated/index.html">UserEvents.IconUpdated</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-2017624736%2FFunctions%2F-855546369" anchor-label="onInitialized" id="-2017624736%2FFunctions%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../jp.xhw.trakt.bot/on-initialized.html"><span>on</span><wbr></wbr><span><span>Initialized</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2017624736%2FFunctions%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-name/index.html"><span class="token annotation builtin">JvmName</span></a><span class="token punctuation">(</span><span>name<span class="token operator"> = </span><span class="breakable-word"><span class="token string">&quot;onBotInitialized&quot;</span></span></span><wbr></wbr><span class="token punctuation">)</span></div></div><span class="token keyword">fun </span><a href="../../jp.xhw.trakt.bot.infrastructure.client/-bot-event-registrar/index.html">BotEventRegistrar</a><span class="token punctuation">.</span><a href="../../jp.xhw.trakt.bot/on-initialized.html"><span class="token function">onInitialized</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">handler<span class="token operator">: </span><span class="token keyword">suspend </span><a href="../../jp.xhw.trakt.bot.context.bot/-bot-context/index.html">BotContext</a><span class="token punctuation">.</span><span class="token punctuation">(</span><a href="../../jp.xhw.trakt.bot.model/-initialized/index.html">Initialized</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-name/index.html"><span class="token annotation builtin">JvmName</span></a><span class="token punctuation">(</span><span>name<span class="token operator"> = </span><span class="breakable-word"><span class="token string">&quot;onUserInitialized&quot;</span></span></span><wbr></wbr><span class="token punctuation">)</span></div></div><span class="token keyword">fun </span><a href="../../jp.xhw.trakt.bot.infrastructure.client/-self-event-registrar/index.html">SelfEventRegistrar</a><span class="token punctuation">.</span><a href="../../jp.xhw.trakt.bot/on-initialized.html"><span class="token function">onInitialized</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">handler<span class="token operator">: </span><span class="token keyword">suspend </span><a href="../../jp.xhw.trakt.bot.context.user/-user-context/index.html">UserContext</a><span class="token punctuation">.</span><span class="token punctuation">(</span><a href="../../jp.xhw.trakt.bot.model/-initialized/index.html">Initialized</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1228221728%2FFunctions%2F-855546369" anchor-label="onJoined" id="-1228221728%2FFunctions%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../jp.xhw.trakt.bot/on-joined.html"><span>on</span><wbr></wbr><span><span>Joined</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1228221728%2FFunctions%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../jp.xhw.trakt.bot.infrastructure.client/-self-event-registrar/index.html">SelfEventRegistrar</a><span class="token punctuation">.</span><a href="../../jp.xhw.trakt.bot/on-joined.html"><span class="token function">onJoined</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">handler<span class="token operator">: </span><span class="token keyword">suspend </span><a href="../../jp.xhw.trakt.bot.context.user/-user-context/index.html">UserContext</a><span class="token punctuation">.</span><span class="token punctuation">(</span><a href="../../jp.xhw.trakt.bot.model/-user-events/-joined/index.html">UserEvents.Joined</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1965220394%2FFunctions%2F-855546369" anchor-label="onJoinedChannel" id="1965220394%2FFunctions%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../jp.xhw.trakt.bot/on-joined-channel.html"><span>on</span><wbr></wbr><span>Joined</span><wbr></wbr><span><span>Channel</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1965220394%2FFunctions%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../jp.xhw.trakt.bot.infrastructure.client/-bot-event-registrar/index.html">BotEventRegistrar</a><span class="token punctuation">.</span><a href="../../jp.xhw.trakt.bot/on-joined-channel.html"><span class="token function">onJoinedChannel</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">handler<span class="token operator">: </span><span class="token keyword">suspend </span><a href="../../jp.xhw.trakt.bot.context.bot/-bot-context/index.html">BotContext</a><span class="token punctuation">.</span><span class="token punctuation">(</span><a href="../../jp.xhw.trakt.bot.model/-bot-events/-joined-channel/index.html">BotEvents.JoinedChannel</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-960313938%2FFunctions%2F-855546369" anchor-label="onLeftChannel" id="-960313938%2FFunctions%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../jp.xhw.trakt.bot/on-left-channel.html"><span>on</span><wbr></wbr><span>Left</span><wbr></wbr><span><span>Channel</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-960313938%2FFunctions%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../jp.xhw.trakt.bot.infrastructure.client/-bot-event-registrar/index.html">BotEventRegistrar</a><span class="token punctuation">.</span><a href="../../jp.xhw.trakt.bot/on-left-channel.html"><span class="token function">onLeftChannel</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">handler<span class="token operator">: </span><span class="token keyword">suspend </span><a href="../../jp.xhw.trakt.bot.context.bot/-bot-context/index.html">BotContext</a><span class="token punctuation">.</span><span class="token punctuation">(</span><a href="../../jp.xhw.trakt.bot.model/-bot-events/-left-channel/index.html">BotEvents.LeftChannel</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1077451770%2FFunctions%2F-855546369" anchor-label="onMessageCreated" id="1077451770%2FFunctions%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../jp.xhw.trakt.bot/on-message-created.html"><span>on</span><wbr></wbr><span>Message</span><wbr></wbr><span><span>Created</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1077451770%2FFunctions%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-name/index.html"><span class="token annotation builtin">JvmName</span></a><span class="token punctuation">(</span><span>name<span class="token operator"> = </span><span class="breakable-word"><span class="token string">&quot;onBotMessageCreated&quot;</span></span></span><wbr></wbr><span class="token punctuation">)</span></div></div><span class="token keyword">fun </span><a href="../../jp.xhw.trakt.bot.infrastructure.client/-bot-event-registrar/index.html">BotEventRegistrar</a><span class="token punctuation">.</span><a href="../../jp.xhw.trakt.bot/on-message-created.html"><span class="token function">onMessageCreated</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">handler<span class="token operator">: </span><span class="token keyword">suspend </span><a href="../../jp.xhw.trakt.bot.context.bot/-bot-context/index.html">BotContext</a><span class="token punctuation">.</span><span class="token punctuation">(</span><a href="../../jp.xhw.trakt.bot.model/-bot-events/-message-created/index.html">BotEvents.MessageCreated</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-name/index.html"><span class="token annotation builtin">JvmName</span></a><span class="token punctuation">(</span><span>name<span class="token operator"> = </span><span class="breakable-word"><span class="token string">&quot;onUserMessageCreated&quot;</span></span></span><wbr></wbr><span class="token punctuation">)</span></div></div><span class="token keyword">fun </span><a href="../../jp.xhw.trakt.bot.infrastructure.client/-self-event-registrar/index.html">SelfEventRegistrar</a><span class="token punctuation">.</span><a href="../../jp.xhw.trakt.bot/on-message-created.html"><span class="token function">onMessageCreated</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">handler<span class="token operator">: </span><span class="token keyword">suspend </span><a href="../../jp.xhw.trakt.bot.context.user/-user-context/index.html">UserContext</a><span class="token punctuation">.</span><span class="token punctuation">(</span><a href="../../jp.xhw.trakt.bot.model/-user-events/-message-created/index.html">UserEvents.MessageCreated</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="554838202%2FFunctions%2F-855546369" anchor-label="onMessageDeleted" id="554838202%2FFunctions%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../jp.xhw.trakt.bot/on-message-deleted.html"><span>on</span><wbr></wbr><span>Message</span><wbr></wbr><span><span>Deleted</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="554838202%2FFunctions%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-name/index.html"><span class="token annotation builtin">JvmName</span></a><span class="token punctuation">(</span><span>name<span class="token operator"> = </span><span class="breakable-word"><span class="token string">&quot;onBotMessageDeleted&quot;</span></span></span><wbr></wbr><span class="token punctuation">)</span></div></div><span class="token keyword">fun </span><a href="../../jp.xhw.trakt.bot.infrastructure.client/-bot-event-registrar/index.html">BotEventRegistrar</a><span class="token punctuation">.</span><a href="../../jp.xhw.trakt.bot/on-message-deleted.html"><span class="token function">onMessageDeleted</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">handler<span class="token operator">: </span><span class="token keyword">suspend </span><a href="../../jp.xhw.trakt.bot.context.bot/-bot-context/index.html">BotContext</a><span class="token punctuation">.</span><span class="token punctuation">(</span><a href="../../jp.xhw.trakt.bot.model/-bot-events/-message-deleted/index.html">BotEvents.MessageDeleted</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-name/index.html"><span class="token annotation builtin">JvmName</span></a><span class="token punctuation">(</span><span>name<span class="token operator"> = </span><span class="breakable-word"><span class="token string">&quot;onUserMessageDeleted&quot;</span></span></span><wbr></wbr><span class="token punctuation">)</span></div></div><span class="token keyword">fun </span><a href="../../jp.xhw.trakt.bot.infrastructure.client/-self-event-registrar/index.html">SelfEventRegistrar</a><span class="token punctuation">.</span><a href="../../jp.xhw.trakt.bot/on-message-deleted.html"><span class="token function">onMessageDeleted</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">handler<span class="token operator">: </span><span class="token keyword">suspend </span><a href="../../jp.xhw.trakt.bot.context.user/-user-context/index.html">UserContext</a><span class="token punctuation">.</span><span class="token punctuation">(</span><a href="../../jp.xhw.trakt.bot.model/-user-events/-message-deleted/index.html">UserEvents.MessageDeleted</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="758761222%2FFunctions%2F-855546369" anchor-label="onMessagePinned" id="758761222%2FFunctions%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../jp.xhw.trakt.bot/on-message-pinned.html"><span>on</span><wbr></wbr><span>Message</span><wbr></wbr><span><span>Pinned</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="758761222%2FFunctions%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../jp.xhw.trakt.bot.infrastructure.client/-self-event-registrar/index.html">SelfEventRegistrar</a><span class="token punctuation">.</span><a href="../../jp.xhw.trakt.bot/on-message-pinned.html"><span class="token function">onMessagePinned</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">handler<span class="token operator">: </span><span class="token keyword">suspend </span><a href="../../jp.xhw.trakt.bot.context.user/-user-context/index.html">UserContext</a><span class="token punctuation">.</span><span class="token punctuation">(</span><a href="../../jp.xhw.trakt.bot.model/-user-events/-message-pinned/index.html">UserEvents.MessagePinned</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="532494786%2FFunctions%2F-855546369" anchor-label="onMessageRead" id="532494786%2FFunctions%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../jp.xhw.trakt.bot/on-message-read.html"><span>on</span><wbr></wbr><span>Message</span><wbr></wbr><span><span>Read</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="532494786%2FFunctions%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../jp.xhw.trakt.bot.infrastructure.client/-self-event-registrar/index.html">SelfEventRegistrar</a><span class="token punctuation">.</span><a href="../../jp.xhw.trakt.bot/on-message-read.html"><span class="token function">onMessageRead</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">handler<span class="token operator">: </span><span class="token keyword">suspend </span><a href="../../jp.xhw.trakt.bot.context.user/-user-context/index.html">UserContext</a><span class="token punctuation">.</span><span class="token punctuation">(</span><a href="../../jp.xhw.trakt.bot.model/-user-events/-message-read/index.html">UserEvents.MessageRead</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="957563936%2FFunctions%2F-855546369" anchor-label="onMessageStamped" id="957563936%2FFunctions%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../jp.xhw.trakt.bot/on-message-stamped.html"><span>on</span><wbr></wbr><span>Message</span><wbr></wbr><span><span>Stamped</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="957563936%2FFunctions%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../jp.xhw.trakt.bot.infrastructure.client/-self-event-registrar/index.html">SelfEventRegistrar</a><span class="token punctuation">.</span><a href="../../jp.xhw.trakt.bot/on-message-stamped.html"><span class="token function">onMessageStamped</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">handler<span class="token operator">: </span><span class="token keyword">suspend </span><a href="../../jp.xhw.trakt.bot.context.user/-user-context/index.html">UserContext</a><span class="token punctuation">.</span><span class="token punctuation">(</span><a href="../../jp.xhw.trakt.bot.model/-user-events/-message-stamped/index.html">UserEvents.MessageStamped</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-592624200%2FFunctions%2F-855546369" anchor-label="onMessageUnpinned" id="-592624200%2FFunctions%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../jp.xhw.trakt.bot/on-message-unpinned.html"><span>on</span><wbr></wbr><span>Message</span><wbr></wbr><span><span>Unpinned</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-592624200%2FFunctions%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../jp.xhw.trakt.bot.infrastructure.client/-self-event-registrar/index.html">SelfEventRegistrar</a><span class="token punctuation">.</span><a href="../../jp.xhw.trakt.bot/on-message-unpinned.html"><span class="token function">onMessageUnpinned</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">handler<span class="token operator">: </span><span class="token keyword">suspend </span><a href="../../jp.xhw.trakt.bot.context.user/-user-context/index.html">UserContext</a><span class="token punctuation">.</span><span class="token punctuation">(</span><a href="../../jp.xhw.trakt.bot.model/-user-events/-message-unpinned/index.html">UserEvents.MessageUnpinned</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="105257216%2FFunctions%2F-855546369" anchor-label="onMessageUnstamped" id="105257216%2FFunctions%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../jp.xhw.trakt.bot/on-message-unstamped.html"><span>on</span><wbr></wbr><span>Message</span><wbr></wbr><span><span>Unstamped</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="105257216%2FFunctions%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../jp.xhw.trakt.bot.infrastructure.client/-self-event-registrar/index.html">SelfEventRegistrar</a><span class="token punctuation">.</span><a href="../../jp.xhw.trakt.bot/on-message-unstamped.html"><span class="token function">onMessageUnstamped</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">handler<span class="token operator">: </span><span class="token keyword">suspend </span><a href="../../jp.xhw.trakt.bot.context.user/-user-context/index.html">UserContext</a><span class="token punctuation">.</span><span class="token punctuation">(</span><a href="../../jp.xhw.trakt.bot.model/-user-events/-message-unstamped/index.html">UserEvents.MessageUnstamped</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1178202682%2FFunctions%2F-855546369" anchor-label="onMessageUpdated" id="1178202682%2FFunctions%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../jp.xhw.trakt.bot/on-message-updated.html"><span>on</span><wbr></wbr><span>Message</span><wbr></wbr><span><span>Updated</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1178202682%2FFunctions%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-name/index.html"><span class="token annotation builtin">JvmName</span></a><span class="token punctuation">(</span><span>name<span class="token operator"> = </span><span class="breakable-word"><span class="token string">&quot;onBotMessageUpdated&quot;</span></span></span><wbr></wbr><span class="token punctuation">)</span></div></div><span class="token keyword">fun </span><a href="../../jp.xhw.trakt.bot.infrastructure.client/-bot-event-registrar/index.html">BotEventRegistrar</a><span class="token punctuation">.</span><a href="../../jp.xhw.trakt.bot/on-message-updated.html"><span class="token function">onMessageUpdated</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">handler<span class="token operator">: </span><span class="token keyword">suspend </span><a href="../../jp.xhw.trakt.bot.context.bot/-bot-context/index.html">BotContext</a><span class="token punctuation">.</span><span class="token punctuation">(</span><a href="../../jp.xhw.trakt.bot.model/-bot-events/-message-updated/index.html">BotEvents.MessageUpdated</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-name/index.html"><span class="token annotation builtin">JvmName</span></a><span class="token punctuation">(</span><span>name<span class="token operator"> = </span><span class="breakable-word"><span class="token string">&quot;onUserMessageUpdated&quot;</span></span></span><wbr></wbr><span class="token punctuation">)</span></div></div><span class="token keyword">fun </span><a href="../../jp.xhw.trakt.bot.infrastructure.client/-self-event-registrar/index.html">SelfEventRegistrar</a><span class="token punctuation">.</span><a href="../../jp.xhw.trakt.bot/on-message-updated.html"><span class="token function">onMessageUpdated</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">handler<span class="token operator">: </span><span class="token keyword">suspend </span><a href="../../jp.xhw.trakt.bot.context.user/-user-context/index.html">UserContext</a><span class="token punctuation">.</span><span class="token punctuation">(</span><a href="../../jp.xhw.trakt.bot.model/-user-events/-message-updated/index.html">UserEvents.MessageUpdated</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1927353102%2FFunctions%2F-855546369" anchor-label="onOffline" id="1927353102%2FFunctions%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../jp.xhw.trakt.bot/on-offline.html"><span>on</span><wbr></wbr><span><span>Offline</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1927353102%2FFunctions%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../jp.xhw.trakt.bot.infrastructure.client/-self-event-registrar/index.html">SelfEventRegistrar</a><span class="token punctuation">.</span><a href="../../jp.xhw.trakt.bot/on-offline.html"><span class="token function">onOffline</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">handler<span class="token operator">: </span><span class="token keyword">suspend </span><a href="../../jp.xhw.trakt.bot.context.user/-user-context/index.html">UserContext</a><span class="token punctuation">.</span><span class="token punctuation">(</span><a href="../../jp.xhw.trakt.bot.model/-user-events/-offline/index.html">UserEvents.Offline</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-981210592%2FFunctions%2F-855546369" anchor-label="onOnline" id="-981210592%2FFunctions%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../jp.xhw.trakt.bot/on-online.html"><span>on</span><wbr></wbr><span><span>Online</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-981210592%2FFunctions%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../jp.xhw.trakt.bot.infrastructure.client/-self-event-registrar/index.html">SelfEventRegistrar</a><span class="token punctuation">.</span><a href="../../jp.xhw.trakt.bot/on-online.html"><span class="token function">onOnline</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">handler<span class="token operator">: </span><span class="token keyword">suspend </span><a href="../../jp.xhw.trakt.bot.context.user/-user-context/index.html">UserContext</a><span class="token punctuation">.</span><span class="token punctuation">(</span><a href="../../jp.xhw.trakt.bot.model/-user-events/-online/index.html">UserEvents.Online</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-214651008%2FFunctions%2F-855546369" anchor-label="onQallRoomStateChanged" id="-214651008%2FFunctions%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../jp.xhw.trakt.bot/on-qall-room-state-changed.html"><span>on</span><wbr></wbr><span>Qall</span><wbr></wbr><span>Room</span><wbr></wbr><span>State</span><wbr></wbr><span><span>Changed</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-214651008%2FFunctions%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../jp.xhw.trakt.bot.infrastructure.client/-self-event-registrar/index.html">SelfEventRegistrar</a><span class="token punctuation">.</span><a href="../../jp.xhw.trakt.bot/on-qall-room-state-changed.html"><span class="token function">onQallRoomStateChanged</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">handler<span class="token operator">: </span><span class="token keyword">suspend </span><a href="../../jp.xhw.trakt.bot.context.user/-user-context/index.html">UserContext</a><span class="token punctuation">.</span><span class="token punctuation">(</span><a href="../../jp.xhw.trakt.bot.model/-user-events/-qall-room-state-changed/index.html">UserEvents.QallRoomStateChanged</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1966144612%2FFunctions%2F-855546369" anchor-label="onQallSoundboardItemCreated" id="1966144612%2FFunctions%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../jp.xhw.trakt.bot/on-qall-soundboard-item-created.html"><span>on</span><wbr></wbr><span>Qall</span><wbr></wbr><span>Soundboard</span><wbr></wbr><span>Item</span><wbr></wbr><span><span>Created</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1966144612%2FFunctions%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../jp.xhw.trakt.bot.infrastructure.client/-self-event-registrar/index.html">SelfEventRegistrar</a><span class="token punctuation">.</span><a href="../../jp.xhw.trakt.bot/on-qall-soundboard-item-created.html"><span class="token function">onQallSoundboardItemCreated</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">handler<span class="token operator">: </span><span class="token keyword">suspend </span><a href="../../jp.xhw.trakt.bot.context.user/-user-context/index.html">UserContext</a><span class="token punctuation">.</span><span class="token punctuation">(</span><a href="../../jp.xhw.trakt.bot.model/-user-events/-qall-soundboard-item-created/index.html">UserEvents.QallSoundboardItemCreated</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1110723514%2FFunctions%2F-855546369" anchor-label="onQallSoundboardItemDeleted" id="-1110723514%2FFunctions%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../jp.xhw.trakt.bot/on-qall-soundboard-item-deleted.html"><span>on</span><wbr></wbr><span>Qall</span><wbr></wbr><span>Soundboard</span><wbr></wbr><span>Item</span><wbr></wbr><span><span>Deleted</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1110723514%2FFunctions%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../jp.xhw.trakt.bot.infrastructure.client/-self-event-registrar/index.html">SelfEventRegistrar</a><span class="token punctuation">.</span><a href="../../jp.xhw.trakt.bot/on-qall-soundboard-item-deleted.html"><span class="token function">onQallSoundboardItemDeleted</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">handler<span class="token operator">: </span><span class="token keyword">suspend </span><a href="../../jp.xhw.trakt.bot.context.user/-user-context/index.html">UserContext</a><span class="token punctuation">.</span><span class="token punctuation">(</span><a href="../../jp.xhw.trakt.bot.model/-user-events/-qall-soundboard-item-deleted/index.html">UserEvents.QallSoundboardItemDeleted</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="518768506%2FFunctions%2F-855546369" anchor-label="onStampCreated" id="518768506%2FFunctions%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../jp.xhw.trakt.bot/on-stamp-created.html"><span>on</span><wbr></wbr><span>Stamp</span><wbr></wbr><span><span>Created</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="518768506%2FFunctions%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-name/index.html"><span class="token annotation builtin">JvmName</span></a><span class="token punctuation">(</span><span>name<span class="token operator"> = </span><span class="breakable-word"><span class="token string">&quot;onBotStampCreated&quot;</span></span></span><wbr></wbr><span class="token punctuation">)</span></div></div><span class="token keyword">fun </span><a href="../../jp.xhw.trakt.bot.infrastructure.client/-bot-event-registrar/index.html">BotEventRegistrar</a><span class="token punctuation">.</span><a href="../../jp.xhw.trakt.bot/on-stamp-created.html"><span class="token function">onStampCreated</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">handler<span class="token operator">: </span><span class="token keyword">suspend </span><a href="../../jp.xhw.trakt.bot.context.bot/-bot-context/index.html">BotContext</a><span class="token punctuation">.</span><span class="token punctuation">(</span><a href="../../jp.xhw.trakt.bot.model/-bot-events/-stamp-created/index.html">BotEvents.StampCreated</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-name/index.html"><span class="token annotation builtin">JvmName</span></a><span class="token punctuation">(</span><span>name<span class="token operator"> = </span><span class="breakable-word"><span class="token string">&quot;onUserStampCreated&quot;</span></span></span><wbr></wbr><span class="token punctuation">)</span></div></div><span class="token keyword">fun </span><a href="../../jp.xhw.trakt.bot.infrastructure.client/-self-event-registrar/index.html">SelfEventRegistrar</a><span class="token punctuation">.</span><a href="../../jp.xhw.trakt.bot/on-stamp-created.html"><span class="token function">onStampCreated</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">handler<span class="token operator">: </span><span class="token keyword">suspend </span><a href="../../jp.xhw.trakt.bot.context.user/-user-context/index.html">UserContext</a><span class="token punctuation">.</span><span class="token punctuation">(</span><a href="../../jp.xhw.trakt.bot.model/-user-events/-stamp-created/index.html">UserEvents.StampCreated</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1946789248%2FFunctions%2F-855546369" anchor-label="onStampDeleted" id="-1946789248%2FFunctions%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../jp.xhw.trakt.bot/on-stamp-deleted.html"><span>on</span><wbr></wbr><span>Stamp</span><wbr></wbr><span><span>Deleted</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1946789248%2FFunctions%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../jp.xhw.trakt.bot.infrastructure.client/-self-event-registrar/index.html">SelfEventRegistrar</a><span class="token punctuation">.</span><a href="../../jp.xhw.trakt.bot/on-stamp-deleted.html"><span class="token function">onStampDeleted</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">handler<span class="token operator">: </span><span class="token keyword">suspend </span><a href="../../jp.xhw.trakt.bot.context.user/-user-context/index.html">UserContext</a><span class="token punctuation">.</span><span class="token punctuation">(</span><a href="../../jp.xhw.trakt.bot.model/-user-events/-stamp-deleted/index.html">UserEvents.StampDeleted</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="723387944%2FFunctions%2F-855546369" anchor-label="onStampPaletteCreated" id="723387944%2FFunctions%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../jp.xhw.trakt.bot/on-stamp-palette-created.html"><span>on</span><wbr></wbr><span>Stamp</span><wbr></wbr><span>Palette</span><wbr></wbr><span><span>Created</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="723387944%2FFunctions%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../jp.xhw.trakt.bot.infrastructure.client/-self-event-registrar/index.html">SelfEventRegistrar</a><span class="token punctuation">.</span><a href="../../jp.xhw.trakt.bot/on-stamp-palette-created.html"><span class="token function">onStampPaletteCreated</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">handler<span class="token operator">: </span><span class="token keyword">suspend </span><a href="../../jp.xhw.trakt.bot.context.user/-user-context/index.html">UserContext</a><span class="token punctuation">.</span><span class="token punctuation">(</span><a href="../../jp.xhw.trakt.bot.model/-user-events/-stamp-palette-created/index.html">UserEvents.StampPaletteCreated</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1784072502%2FFunctions%2F-855546369" anchor-label="onStampPaletteDeleted" id="-1784072502%2FFunctions%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../jp.xhw.trakt.bot/on-stamp-palette-deleted.html"><span>on</span><wbr></wbr><span>Stamp</span><wbr></wbr><span>Palette</span><wbr></wbr><span><span>Deleted</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1784072502%2FFunctions%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../jp.xhw.trakt.bot.infrastructure.client/-self-event-registrar/index.html">SelfEventRegistrar</a><span class="token punctuation">.</span><a href="../../jp.xhw.trakt.bot/on-stamp-palette-deleted.html"><span class="token function">onStampPaletteDeleted</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">handler<span class="token operator">: </span><span class="token keyword">suspend </span><a href="../../jp.xhw.trakt.bot.context.user/-user-context/index.html">UserContext</a><span class="token punctuation">.</span><span class="token punctuation">(</span><a href="../../jp.xhw.trakt.bot.model/-user-events/-stamp-palette-deleted/index.html">UserEvents.StampPaletteDeleted</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="2097300622%2FFunctions%2F-855546369" anchor-label="onStampPaletteUpdated" id="2097300622%2FFunctions%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../jp.xhw.trakt.bot/on-stamp-palette-updated.html"><span>on</span><wbr></wbr><span>Stamp</span><wbr></wbr><span>Palette</span><wbr></wbr><span><span>Updated</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2097300622%2FFunctions%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../jp.xhw.trakt.bot.infrastructure.client/-self-event-registrar/index.html">SelfEventRegistrar</a><span class="token punctuation">.</span><a href="../../jp.xhw.trakt.bot/on-stamp-palette-updated.html"><span class="token function">onStampPaletteUpdated</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">handler<span class="token operator">: </span><span class="token keyword">suspend </span><a href="../../jp.xhw.trakt.bot.context.user/-user-context/index.html">UserContext</a><span class="token punctuation">.</span><span class="token punctuation">(</span><a href="../../jp.xhw.trakt.bot.model/-user-events/-stamp-palette-updated/index.html">UserEvents.StampPaletteUpdated</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1746280000%2FFunctions%2F-855546369" anchor-label="onStampUpdated" id="1746280000%2FFunctions%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../jp.xhw.trakt.bot/on-stamp-updated.html"><span>on</span><wbr></wbr><span>Stamp</span><wbr></wbr><span><span>Updated</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1746280000%2FFunctions%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../jp.xhw.trakt.bot.infrastructure.client/-self-event-registrar/index.html">SelfEventRegistrar</a><span class="token punctuation">.</span><a href="../../jp.xhw.trakt.bot/on-stamp-updated.html"><span class="token function">onStampUpdated</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">handler<span class="token operator">: </span><span class="token keyword">suspend </span><a href="../../jp.xhw.trakt.bot.context.user/-user-context/index.html">UserContext</a><span class="token punctuation">.</span><span class="token punctuation">(</span><a href="../../jp.xhw.trakt.bot.model/-user-events/-stamp-updated/index.html">UserEvents.StampUpdated</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-92552046%2FFunctions%2F-855546369" anchor-label="onTagAdded" id="-92552046%2FFunctions%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../jp.xhw.trakt.bot/on-tag-added.html"><span>on</span><wbr></wbr><span>Tag</span><wbr></wbr><span><span>Added</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-92552046%2FFunctions%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../jp.xhw.trakt.bot.infrastructure.client/-bot-event-registrar/index.html">BotEventRegistrar</a><span class="token punctuation">.</span><a href="../../jp.xhw.trakt.bot/on-tag-added.html"><span class="token function">onTagAdded</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">handler<span class="token operator">: </span><span class="token keyword">suspend </span><a href="../../jp.xhw.trakt.bot.context.bot/-bot-context/index.html">BotContext</a><span class="token punctuation">.</span><span class="token punctuation">(</span><a href="../../jp.xhw.trakt.bot.model/-bot-events/-tag-added/index.html">BotEvents.TagAdded</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-2067969774%2FFunctions%2F-855546369" anchor-label="onTagRemoved" id="-2067969774%2FFunctions%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../jp.xhw.trakt.bot/on-tag-removed.html"><span>on</span><wbr></wbr><span>Tag</span><wbr></wbr><span><span>Removed</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2067969774%2FFunctions%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../jp.xhw.trakt.bot.infrastructure.client/-bot-event-registrar/index.html">BotEventRegistrar</a><span class="token punctuation">.</span><a href="../../jp.xhw.trakt.bot/on-tag-removed.html"><span class="token function">onTagRemoved</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">handler<span class="token operator">: </span><span class="token keyword">suspend </span><a href="../../jp.xhw.trakt.bot.context.bot/-bot-context/index.html">BotContext</a><span class="token punctuation">.</span><span class="token punctuation">(</span><a href="../../jp.xhw.trakt.bot.model/-bot-events/-tag-removed/index.html">BotEvents.TagRemoved</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1328264628%2FFunctions%2F-855546369" anchor-label="onTagsUpdated" id="-1328264628%2FFunctions%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../jp.xhw.trakt.bot/on-tags-updated.html"><span>on</span><wbr></wbr><span>Tags</span><wbr></wbr><span><span>Updated</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1328264628%2FFunctions%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../jp.xhw.trakt.bot.infrastructure.client/-self-event-registrar/index.html">SelfEventRegistrar</a><span class="token punctuation">.</span><a href="../../jp.xhw.trakt.bot/on-tags-updated.html"><span class="token function">onTagsUpdated</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">handler<span class="token operator">: </span><span class="token keyword">suspend </span><a href="../../jp.xhw.trakt.bot.context.user/-user-context/index.html">UserContext</a><span class="token punctuation">.</span><span class="token punctuation">(</span><a href="../../jp.xhw.trakt.bot.model/-user-events/-tags-updated/index.html">UserEvents.TagsUpdated</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-712596802%2FFunctions%2F-855546369" anchor-label="onUpdated" id="-712596802%2FFunctions%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../jp.xhw.trakt.bot/on-updated.html"><span>on</span><wbr></wbr><span><span>Updated</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-712596802%2FFunctions%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../jp.xhw.trakt.bot.infrastructure.client/-self-event-registrar/index.html">SelfEventRegistrar</a><span class="token punctuation">.</span><a href="../../jp.xhw.trakt.bot/on-updated.html"><span class="token function">onUpdated</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">handler<span class="token operator">: </span><span class="token keyword">suspend </span><a href="../../jp.xhw.trakt.bot.context.user/-user-context/index.html">UserContext</a><span class="token punctuation">.</span><span class="token punctuation">(</span><a href="../../jp.xhw.trakt.bot.model/-user-events/-updated/index.html">UserEvents.Updated</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1226584258%2FFunctions%2F-855546369" anchor-label="onUserActivated" id="1226584258%2FFunctions%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../jp.xhw.trakt.bot/on-user-activated.html"><span>on</span><wbr></wbr><span>User</span><wbr></wbr><span><span>Activated</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1226584258%2FFunctions%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../jp.xhw.trakt.bot.infrastructure.client/-bot-event-registrar/index.html">BotEventRegistrar</a><span class="token punctuation">.</span><a href="../../jp.xhw.trakt.bot/on-user-activated.html"><span class="token function">onUserActivated</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">handler<span class="token operator">: </span><span class="token keyword">suspend </span><a href="../../jp.xhw.trakt.bot.context.bot/-bot-context/index.html">BotContext</a><span class="token punctuation">.</span><span class="token punctuation">(</span><a href="../../jp.xhw.trakt.bot.model/-bot-events/-user-activated/index.html">BotEvents.UserActivated</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1898659600%2FFunctions%2F-855546369" anchor-label="onUserCreated" id="-1898659600%2FFunctions%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../jp.xhw.trakt.bot/on-user-created.html"><span>on</span><wbr></wbr><span>User</span><wbr></wbr><span><span>Created</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1898659600%2FFunctions%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../jp.xhw.trakt.bot.infrastructure.client/-bot-event-registrar/index.html">BotEventRegistrar</a><span class="token punctuation">.</span><a href="../../jp.xhw.trakt.bot/on-user-created.html"><span class="token function">onUserCreated</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">handler<span class="token operator">: </span><span class="token keyword">suspend </span><a href="../../jp.xhw.trakt.bot.context.bot/-bot-context/index.html">BotContext</a><span class="token punctuation">.</span><span class="token punctuation">(</span><a href="../../jp.xhw.trakt.bot.model/-bot-events/-user-created/index.html">BotEvents.UserCreated</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-907476160%2FFunctions%2F-855546369" anchor-label="onViewStateChanged" id="-907476160%2FFunctions%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../jp.xhw.trakt.bot/on-view-state-changed.html"><span>on</span><wbr></wbr><span>View</span><wbr></wbr><span>State</span><wbr></wbr><span><span>Changed</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-907476160%2FFunctions%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../jp.xhw.trakt.bot.infrastructure.client/-self-event-registrar/index.html">SelfEventRegistrar</a><span class="token punctuation">.</span><a href="../../jp.xhw.trakt.bot/on-view-state-changed.html"><span class="token function">onViewStateChanged</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">handler<span class="token operator">: </span><span class="token keyword">suspend </span><a href="../../jp.xhw.trakt.bot.context.user/-user-context/index.html">UserContext</a><span class="token punctuation">.</span><span class="token punctuation">(</span><a href="../../jp.xhw.trakt.bot.model/-user-events/-view-state-changed/index.html">UserEvents.ViewStateChanged</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1762278848%2FFunctions%2F-855546369" anchor-label="onWebRtcStateChanged" id="1762278848%2FFunctions%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../jp.xhw.trakt.bot/on-web-rtc-state-changed.html"><span>on</span><wbr></wbr><span>Web</span><wbr></wbr><span>Rtc</span><wbr></wbr><span>State</span><wbr></wbr><span><span>Changed</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1762278848%2FFunctions%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../jp.xhw.trakt.bot.infrastructure.client/-self-event-registrar/index.html">SelfEventRegistrar</a><span class="token punctuation">.</span><a href="../../jp.xhw.trakt.bot/on-web-rtc-state-changed.html"><span class="token function">onWebRtcStateChanged</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">handler<span class="token operator">: </span><span class="token keyword">suspend </span><a href="../../jp.xhw.trakt.bot.context.user/-user-context/index.html">UserContext</a><span class="token punctuation">.</span><span class="token punctuation">(</span><a href="../../jp.xhw.trakt.bot.model/-user-events/-web-rtc-state-changed/index.html">UserEvents.WebRtcStateChanged</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    <div class="footer">
+        <div class="footer--container">
+            <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
+            <div class="footer--content">
+                <div>
+                    <span>Generated by </span>
+                    <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
+                        Dokka
+                    </a>
+                    <div>© 2026 Copyright</div>
+                </div>
+            </div>
+        </div>
+    </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

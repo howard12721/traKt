@@ -1,0 +1,1369 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>jp.xhw.trakt.bot.model</title>
+    <link href="../../images/logo-icon.svg" rel="icon" type="image/svg">
+        <script>var pathToRoot = "../../";</script>
+    <script>document.documentElement.classList.replace("no-js", "js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+      if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+      } else {
+        const savedDarkMode = JSON.parse(storage)
+        if (savedDarkMode === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+      }
+    </script>
+<script type="text/javascript" src="../../scripts/sourceset_dependencies.js" async="async"></script>
+<link href="../../styles/style.css" rel="Stylesheet">
+<link href="../../styles/main.css" rel="Stylesheet">
+<link href="../../styles/prism.css" rel="Stylesheet">
+<link href="../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../ui-kit/ui-kit.min.css" rel="Stylesheet">
+<script type="text/javascript" src="../../scripts/safe-local-storage_blocking.js"></script>
+<script type="text/javascript" src="../../scripts/navigation-loader.js" async="async"></script>
+<script type="text/javascript" src="../../scripts/platform-content-handler.js" async="async"></script>
+<script type="text/javascript" src="../../scripts/main.js" defer="defer"></script>
+<script type="text/javascript" src="../../scripts/prism.js" async="async"></script>
+<script type="text/javascript" src="../../ui-kit/ui-kit.min.js" defer="defer"></script>
+</head>
+<body>
+<div class="root">
+    <header class="navigation theme-dark" id="navigation-wrapper" role="banner">
+            <a class="library-name--link" href="../../index.html" tabindex="1">
+                    trakt-bot
+            </a>
+        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle"
+                type="button">Toggle table of contents
+        </button>
+        <div class="navigation-controls--break ui-kit_mobile-only"></div>
+        <div class="library-version" id="library-version">
+1.0.0-SNAPSHOT        </div>
+        <div class="navigation-controls">
+        <ul class="filter-section filter-section_loading" id="filter-section" aria-label="Target filter">
+                <button class="platform-tag platform-selector common-like" data-active="" aria-pressed="true"
+                        data-filter=":trakt-bot/commonMain">common</button>
+            <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
+                <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox"
+                        data-role="dropdown-toggle"
+                        aria-controls="platform-tags-listbox"
+                        aria-haspopup="listbox"
+                        aria-expanded="false"
+                        aria-label="Toggle source sets"
+                ></button>
+                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox" aria-label="Target filter">
+                    <div class="dropdown--header"><span>Target filter</span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close target filter">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                        <li role="option" class="dropdown--option platform-selector-option common-like" tabindex="0">
+                            <label class="checkbox">
+                                <input type="checkbox" class="checkbox--input" id=":trakt-bot/commonMain"
+                                       data-filter=":trakt-bot/commonMain"/>
+                                <span class="checkbox--icon"></span>
+                                common
+                            </label>
+                        </li>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </ul>
+            <button class="navigation-controls--btn navigation-controls--btn_theme" id="theme-toggle-button"
+                    type="button">Switch theme
+            </button>
+            <div class="navigation-controls--btn navigation-controls--btn_search" id="searchBar" role="button">Search in
+                API
+            </div>
+        </div>
+    </header>
+    <div id="container">
+        <nav id="leftColumn" class="sidebar" data-item-type="SECTION" data-item-config='{"defaultSize": 280, "minSize": 200, "maxSize": 400}'>
+            <a class="toc--skip-link" href="#main">Skip to content</a>
+            <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
+                <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list"
+                    data-role="dropdown-listbox" aria-label="Table of contents">
+                    <div class="dropdown--header">
+                            <span>
+                                    trakt-bot
+                            </span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                    <div class="sidebar--inner" id="sideMenu"></div>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </nav>
+        <div id="resizer" class="resizer" data-item-type="BAR"></div>
+        <div id="main" data-item-type="SECTION" role="main">
+<div class="main-content" data-page-type="package" id="content" pageIds="trakt-bot::jp.xhw.trakt.bot.model////PointingToDeclaration//-855546369">
+  <div class="breadcrumbs"><a href="../../index.html">trakt-bot</a><span class="delimiter">/</span><span class="current">jp.xhw.trakt.bot.model</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span><span>Package-level</span></span> <span><span>declarations</span></span></h1>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="TYPE">Types</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="TYPE">
+        <h2 class="tableheader">Types</h2>
+        <div class="table"><a data-name="-287604585%2FClasslikes%2F-855546369" anchor-label="ActiveOAuth2Token" id="-287604585%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-active-o-auth2-token/index.html"><span>Active</span><wbr></wbr><span><span>OAuth2Token</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-287604585%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">interface </span><a href="-active-o-auth2-token/index.html">ActiveOAuth2Token</a></div><div class="brief "><p class="paragraph">有効な OAuth2 トークン。</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-761739864%2FClasslikes%2F-855546369" anchor-label="Bot" id="-761739864%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-bot/index.html"><span><span>Bot</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-761739864%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-bot/index.html">Bot</a></div><div class="brief "><p class="paragraph">Bot と対応ユーザーの紐付け情報。</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1239526432%2FClasslikes%2F-855546369" anchor-label="BotEvent" id="-1239526432%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-bot-event/index.html"><span>Bot</span><wbr></wbr><span><span>Event</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1239526432%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">interface </span><a href="-bot-event/index.html">BotEvent</a> : <a href="-event/index.html">Event</a></div><div class="brief "><p class="paragraph">Bot token の WebSocket から配信されるイベントの共通型。</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-422728834%2FClasslikes%2F-855546369" anchor-label="BotEventLog" id="-422728834%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-bot-event-log/index.html"><span>Bot</span><wbr></wbr><span>Event</span><wbr></wbr><span><span>Log</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-422728834%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-bot-event-log/index.html">BotEventLog</a></div><div class="brief "><p class="paragraph">Bot イベントログ。</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-812142845%2FClasslikes%2F-855546369" anchor-label="BotEventResult" id="-812142845%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-bot-event-result/index.html"><span>Bot</span><wbr></wbr><span>Event</span><wbr></wbr><span><span>Result</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-812142845%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">enum </span><a href="-bot-event-result/index.html">BotEventResult</a> : <a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-enum/index.html">Enum</a><span class="token operator">&lt;</span><a href="-bot-event-result/index.html">BotEventResult</a><span class="token operator">&gt; </span></div><div class="brief "><p class="paragraph">Bot イベントログ配送結果。</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="148268367%2FClasslikes%2F-855546369" anchor-label="BotEvents" id="148268367%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-bot-events/index.html"><span>Bot</span><wbr></wbr><span><span>Events</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="148268367%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">object </span><a href="-bot-events/index.html">BotEvents</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1908212493%2FClasslikes%2F-855546369" anchor-label="BotId" id="1908212493%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-bot-id/index.html"><span>Bot</span><wbr></wbr><span><span>Id</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1908212493%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-inline/index.html"><span class="token annotation builtin">JvmInline</span></a></div></div><span class="token keyword">value </span><span class="token keyword">class </span><a href="-bot-id/index.html">BotId</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>value<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.uuid/-uuid/index.html">Uuid</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">BotID。</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-930828395%2FClasslikes%2F-855546369" anchor-label="BotMessageEvent" id="-930828395%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-bot-message-event/index.html"><span>Bot</span><wbr></wbr><span>Message</span><wbr></wbr><span><span>Event</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-930828395%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">interface </span><a href="-bot-message-event/index.html">BotMessageEvent</a> : <a href="-bot-event/index.html">BotEvent</a>, <a href="-timed-event/index.html">TimedEvent</a></div><div class="brief "><p class="paragraph">Bot token のメッセージ本体を含むイベントの共通型。</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1717642222%2FClasslikes%2F-855546369" anchor-label="BotTokens" id="1717642222%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-bot-tokens/index.html"><span>Bot</span><wbr></wbr><span><span>Tokens</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1717642222%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-bot-tokens/index.html">BotTokens</a></div><div class="brief "><p class="paragraph">Bot トークン。</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1982350060%2FClasslikes%2F-855546369" anchor-label="Channel" id="1982350060%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-channel/index.html"><span><span>Channel</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1982350060%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">interface </span><a href="-channel/index.html">Channel</a></div><div class="brief "><p class="paragraph">チャンネル。</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="317263401%2FClasslikes%2F-855546369" anchor-label="ChannelDirectory" id="317263401%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-channel-directory/index.html"><span>Channel</span><wbr></wbr><span><span>Directory</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="317263401%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-channel-directory/index.html">ChannelDirectory</a></div><div class="brief "><p class="paragraph">チャンネル一覧取得結果。</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1868709713%2FClasslikes%2F-855546369" anchor-label="ChannelId" id="1868709713%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-channel-id/index.html"><span>Channel</span><wbr></wbr><span><span>Id</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1868709713%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-inline/index.html"><span class="token annotation builtin">JvmInline</span></a></div></div><span class="token keyword">value </span><span class="token keyword">class </span><a href="-channel-id/index.html">ChannelId</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>value<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.uuid/-uuid/index.html">Uuid</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">チャンネルID。</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-120718137%2FClasslikes%2F-855546369" anchor-label="ChannelPath" id="-120718137%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-channel-path/index.html"><span>Channel</span><wbr></wbr><span><span>Path</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-120718137%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-inline/index.html"><span class="token annotation builtin">JvmInline</span></a></div></div><span class="token keyword">value </span><span class="token keyword">class </span><a href="-channel-path/index.html">ChannelPath</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>value<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">チャンネルのフルパス。</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-10940745%2FClasslikes%2F-855546369" anchor-label="ChannelStats" id="-10940745%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-channel-stats/index.html"><span>Channel</span><wbr></wbr><span><span>Stats</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-10940745%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-channel-stats/index.html">ChannelStats</a></div><div class="brief "><p class="paragraph">チャンネルの統計情報。</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1387281457%2FClasslikes%2F-855546369" anchor-label="ChannelSubscription" id="-1387281457%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-channel-subscription/index.html"><span>Channel</span><wbr></wbr><span><span>Subscription</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1387281457%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-channel-subscription/index.html">ChannelSubscription</a></div><div class="brief "><p class="paragraph">自分のチャンネル購読状態。</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="4909167%2FClasslikes%2F-855546369" anchor-label="ChannelSubscriptionLevel" id="4909167%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-channel-subscription-level/index.html"><span>Channel</span><wbr></wbr><span>Subscription</span><wbr></wbr><span><span>Level</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="4909167%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">enum </span><a href="-channel-subscription-level/index.html">ChannelSubscriptionLevel</a> : <a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-enum/index.html">Enum</a><span class="token operator">&lt;</span><a href="-channel-subscription-level/index.html">ChannelSubscriptionLevel</a><span class="token operator">&gt; </span></div><div class="brief "><p class="paragraph">チャンネル購読レベル。</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1180383193%2FClasslikes%2F-855546369" anchor-label="ChannelTopic" id="-1180383193%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-channel-topic/index.html"><span>Channel</span><wbr></wbr><span><span>Topic</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1180383193%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-inline/index.html"><span class="token annotation builtin">JvmInline</span></a></div></div><span class="token keyword">value </span><span class="token keyword">class </span><a href="-channel-topic/index.html">ChannelTopic</a></div><div class="brief "><p class="paragraph">チャンネルのトピック。</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1907124410%2FClasslikes%2F-855546369" anchor-label="ChannelViewer" id="1907124410%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-channel-viewer/index.html"><span>Channel</span><wbr></wbr><span><span>Viewer</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1907124410%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-channel-viewer/index.html">ChannelViewer</a></div><div class="brief "><p class="paragraph">チャンネル閲覧者情報。</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="75378826%2FClasslikes%2F-855546369" anchor-label="ChannelViewState" id="75378826%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-channel-view-state/index.html"><span>Channel</span><wbr></wbr><span>View</span><wbr></wbr><span><span>State</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="75378826%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">enum </span><a href="-channel-view-state/index.html">ChannelViewState</a> : <a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-enum/index.html">Enum</a><span class="token operator">&lt;</span><a href="-channel-view-state/index.html">ChannelViewState</a><span class="token operator">&gt; </span></div><div class="brief "><p class="paragraph">チャンネル閲覧状態。</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-879737099%2FClasslikes%2F-855546369" anchor-label="ClipFolder" id="-879737099%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-clip-folder/index.html"><span>Clip</span><wbr></wbr><span><span>Folder</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-879737099%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">interface </span><a href="-clip-folder/index.html">ClipFolder</a></div><div class="brief "><p class="paragraph">クリップフォルダ。</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="182019354%2FClasslikes%2F-855546369" anchor-label="ClipFolderId" id="182019354%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-clip-folder-id/index.html"><span>Clip</span><wbr></wbr><span>Folder</span><wbr></wbr><span><span>Id</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="182019354%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-inline/index.html"><span class="token annotation builtin">JvmInline</span></a></div></div><span class="token keyword">value </span><span class="token keyword">class </span><a href="-clip-folder-id/index.html">ClipFolderId</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>value<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.uuid/-uuid/index.html">Uuid</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1673520693%2FClasslikes%2F-855546369" anchor-label="ClippedMessage" id="-1673520693%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-clipped-message/index.html"><span>Clipped</span><wbr></wbr><span><span>Message</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1673520693%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-clipped-message/index.html">ClippedMessage</a></div><div class="brief "><p class="paragraph">クリップフォルダ内のメッセージ。</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1540614357%2FClasslikes%2F-855546369" anchor-label="CurrentUser" id="-1540614357%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-current-user/index.html"><span>Current</span><wbr></wbr><span><span>User</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1540614357%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">class </span><a href="-current-user/index.html">CurrentUser</a> : <a href="-user/-stateful-user/index.html">User.StatefulUser</a></div><div class="brief "><p class="paragraph">自分自身の詳細情報。</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1905571598%2FClasslikes%2F-855546369" anchor-label="Disposed" id="1905571598%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-disposed/index.html"><span><span>Disposed</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1905571598%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-disposed/index.html">Disposed</a> : <a href="-bot-event/index.html">BotEvent</a>, <a href="-user-event/index.html">UserEvent</a>, <a href="-timed-event/index.html">TimedEvent</a></div><div class="brief "><p class="paragraph">クライアントが停止したときのイベント。</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-553683787%2FClasslikes%2F-855546369" anchor-label="Event" id="-553683787%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-event/index.html"><span><span>Event</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-553683787%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">interface </span><a href="-event/index.html">Event</a></div><div class="brief "><p class="paragraph">WebSocket から配信されるイベントの共通型。</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1455994605%2FClasslikes%2F-855546369" anchor-label="ExternalAccount" id="1455994605%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-external-account/index.html"><span>External</span><wbr></wbr><span><span>Account</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1455994605%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-external-account/index.html">ExternalAccount</a></div><div class="brief "><p class="paragraph">外部ログインアカウント。</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1751613289%2FClasslikes%2F-855546369" anchor-label="File" id="-1751613289%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-file/index.html"><span><span>File</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1751613289%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">interface </span><a href="-file/index.html">File</a></div><div class="brief "><p class="paragraph">ファイル。</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-172376516%2FClasslikes%2F-855546369" anchor-label="FileId" id="-172376516%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-file-id/index.html"><span>File</span><wbr></wbr><span><span>Id</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-172376516%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-inline/index.html"><span class="token annotation builtin">JvmInline</span></a></div></div><span class="token keyword">value </span><span class="token keyword">class </span><a href="-file-id/index.html">FileId</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>value<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.uuid/-uuid/index.html">Uuid</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">ファイルID。</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-2119919854%2FClasslikes%2F-855546369" anchor-label="FileMeta" id="-2119919854%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-file-meta/index.html"><span>File</span><wbr></wbr><span><span>Meta</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2119919854%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-file-meta/index.html">FileMeta</a> : <a href="-file/index.html">File</a></div><div class="brief "><p class="paragraph">ファイルメタ情報。</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="756395120%2FClasslikes%2F-855546369" anchor-label="Group" id="756395120%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-group/index.html"><span><span>Group</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="756395120%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">interface </span><a href="-group/index.html">Group</a></div><div class="brief "><p class="paragraph">グループ。</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="547051477%2FClasslikes%2F-855546369" anchor-label="GroupId" id="547051477%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-group-id/index.html"><span>Group</span><wbr></wbr><span><span>Id</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="547051477%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-inline/index.html"><span class="token annotation builtin">JvmInline</span></a></div></div><span class="token keyword">value </span><span class="token keyword">class </span><a href="-group-id/index.html">GroupId</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>value<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.uuid/-uuid/index.html">Uuid</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">グループID。</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="39153590%2FClasslikes%2F-855546369" anchor-label="GroupMember" id="39153590%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-group-member/index.html"><span>Group</span><wbr></wbr><span><span>Member</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="39153590%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-group-member/index.html">GroupMember</a></div><div class="brief "><p class="paragraph">グループメンバー情報。</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="619165499%2FClasslikes%2F-855546369" anchor-label="Initialized" id="619165499%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-initialized/index.html"><span><span>Initialized</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="619165499%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-initialized/index.html">Initialized</a> : <a href="-bot-event/index.html">BotEvent</a>, <a href="-user-event/index.html">UserEvent</a>, <a href="-timed-event/index.html">TimedEvent</a></div><div class="brief "><p class="paragraph">クライアントの初期化が完了したときのイベント。</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="984060486%2FClasslikes%2F-855546369" anchor-label="LoginSession" id="984060486%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-login-session/index.html"><span>Login</span><wbr></wbr><span><span>Session</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="984060486%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">interface </span><a href="-login-session/index.html">LoginSession</a></div><div class="brief "><p class="paragraph">ログインセッション。</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="290136107%2FClasslikes%2F-855546369" anchor-label="LoginSessionId" id="290136107%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-login-session-id/index.html"><span>Login</span><wbr></wbr><span>Session</span><wbr></wbr><span><span>Id</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="290136107%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-inline/index.html"><span class="token annotation builtin">JvmInline</span></a></div></div><span class="token keyword">value </span><span class="token keyword">class </span><a href="-login-session-id/index.html">LoginSessionId</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>value<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.uuid/-uuid/index.html">Uuid</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">ログインセッションID。</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1340837995%2FClasslikes%2F-855546369" anchor-label="ManagedBot" id="1340837995%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-managed-bot/index.html"><span>Managed</span><wbr></wbr><span><span>Bot</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1340837995%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">interface </span><a href="-managed-bot/index.html">ManagedBot</a></div><div class="brief "><p class="paragraph">管理 API で扱う Bot 情報。</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1845352696%2FClasslikes%2F-855546369" anchor-label="ManagedBotMode" id="-1845352696%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-managed-bot-mode/index.html"><span>Managed</span><wbr></wbr><span>Bot</span><wbr></wbr><span><span>Mode</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1845352696%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">enum </span><a href="-managed-bot-mode/index.html">ManagedBotMode</a> : <a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-enum/index.html">Enum</a><span class="token operator">&lt;</span><a href="-managed-bot-mode/index.html">ManagedBotMode</a><span class="token operator">&gt; </span></div><div class="brief "><p class="paragraph">Bot 動作モード。</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-344797978%2FClasslikes%2F-855546369" anchor-label="ManagedBotState" id="-344797978%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-managed-bot-state/index.html"><span>Managed</span><wbr></wbr><span>Bot</span><wbr></wbr><span><span>State</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-344797978%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">enum </span><a href="-managed-bot-state/index.html">ManagedBotState</a> : <a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-enum/index.html">Enum</a><span class="token operator">&lt;</span><a href="-managed-bot-state/index.html">ManagedBotState</a><span class="token operator">&gt; </span></div><div class="brief "><p class="paragraph">Bot 状態。</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1894290328%2FClasslikes%2F-855546369" anchor-label="Message" id="-1894290328%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-message/index.html"><span><span>Message</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1894290328%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">interface </span><a href="-message/index.html">Message</a></div><div class="brief "><p class="paragraph">メッセージ。</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="588226424%2FClasslikes%2F-855546369" anchor-label="MessageClip" id="588226424%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-message-clip/index.html"><span>Message</span><wbr></wbr><span><span>Clip</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="588226424%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-message-clip/index.html">MessageClip</a></div><div class="brief "><p class="paragraph">メッセージが自分によりクリップされている先。</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="153942477%2FClasslikes%2F-855546369" anchor-label="MessageId" id="153942477%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-message-id/index.html"><span>Message</span><wbr></wbr><span><span>Id</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="153942477%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-inline/index.html"><span class="token annotation builtin">JvmInline</span></a></div></div><span class="token keyword">value </span><span class="token keyword">class </span><a href="-message-id/index.html">MessageId</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>value<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.uuid/-uuid/index.html">Uuid</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">メッセージID。</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1464927255%2FClasslikes%2F-855546369" anchor-label="MessageStamp" id="1464927255%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-message-stamp/index.html"><span>Message</span><wbr></wbr><span><span>Stamp</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1464927255%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-message-stamp/index.html">MessageStamp</a></div><div class="brief "><p class="paragraph">メッセージへ付与されたスタンプ情報。</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1080181694%2FClasslikes%2F-855546369" anchor-label="MyChannelViewState" id="1080181694%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-my-channel-view-state/index.html"><span>My</span><wbr></wbr><span>Channel</span><wbr></wbr><span>View</span><wbr></wbr><span><span>State</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1080181694%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-my-channel-view-state/index.html">MyChannelViewState</a></div><div class="brief "><p class="paragraph">自分の WebSocket セッションごとの閲覧状態。</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1601642230%2FClasslikes%2F-855546369" anchor-label="OAuth2Scope" id="1601642230%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-o-auth2-scope/index.html"><span><span>OAuth2Scope</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1601642230%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-inline/index.html"><span class="token annotation builtin">JvmInline</span></a></div></div><span class="token keyword">value </span><span class="token keyword">class </span><a href="-o-auth2-scope/index.html">OAuth2Scope</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>value<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">OAuth2 スコープ。</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1908123158%2FClasslikes%2F-855546369" anchor-label="OAuth2TokenId" id="1908123158%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-o-auth2-token-id/index.html"><span>OAuth2Token</span><wbr></wbr><span><span>Id</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1908123158%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-inline/index.html"><span class="token annotation builtin">JvmInline</span></a></div></div><span class="token keyword">value </span><span class="token keyword">class </span><a href="-o-auth2-token-id/index.html">OAuth2TokenId</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>value<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.uuid/-uuid/index.html">Uuid</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">OAuth2 トークンID。</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1693919846%2FClasslikes%2F-855546369" anchor-label="Pin" id="-1693919846%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-pin/index.html"><span><span>Pin</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1693919846%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-pin/index.html">Pin</a></div><div class="brief "><p class="paragraph">チャンネルにピン留めされたメッセージ情報。</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-996539380%2FClasslikes%2F-855546369" anchor-label="PinInfo" id="-996539380%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-pin-info/index.html"><span>Pin</span><wbr></wbr><span><span>Info</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-996539380%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-pin-info/index.html">PinInfo</a></div><div class="brief "><p class="paragraph">メッセージのピン情報。</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-719344532%2FClasslikes%2F-855546369" anchor-label="QallParticipant" id="-719344532%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-qall-participant/index.html"><span>Qall</span><wbr></wbr><span><span>Participant</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-719344532%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-qall-participant/index.html">QallParticipant</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-613109912%2FClasslikes%2F-855546369" anchor-label="QallRoom" id="-613109912%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-qall-room/index.html"><span>Qall</span><wbr></wbr><span><span>Room</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-613109912%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">interface </span><a href="-qall-room/index.html">QallRoom</a></div><div class="brief "><p class="paragraph">Qall ルーム。</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1287291699%2FClasslikes%2F-855546369" anchor-label="QallRoomId" id="-1287291699%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-qall-room-id/index.html"><span>Qall</span><wbr></wbr><span>Room</span><wbr></wbr><span><span>Id</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1287291699%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-inline/index.html"><span class="token annotation builtin">JvmInline</span></a></div></div><span class="token keyword">value </span><span class="token keyword">class </span><a href="-qall-room-id/index.html">QallRoomId</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>value<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.uuid/-uuid/index.html">Uuid</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-758849406%2FClasslikes%2F-855546369" anchor-label="QallRoomWithParticipants" id="-758849406%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-qall-room-with-participants/index.html"><span>Qall</span><wbr></wbr><span>Room</span><wbr></wbr><span>With</span><wbr></wbr><span><span>Participants</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-758849406%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-qall-room-with-participants/index.html">QallRoomWithParticipants</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1366525072%2FClasslikes%2F-855546369" anchor-label="QallSound" id="1366525072%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-qall-sound/index.html"><span>Qall</span><wbr></wbr><span><span>Sound</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1366525072%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">interface </span><a href="-qall-sound/index.html">QallSound</a></div><div class="brief "><p class="paragraph">Qall サウンド。</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1528584203%2FClasslikes%2F-855546369" anchor-label="QallSoundId" id="-1528584203%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-qall-sound-id/index.html"><span>Qall</span><wbr></wbr><span>Sound</span><wbr></wbr><span><span>Id</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1528584203%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-inline/index.html"><span class="token annotation builtin">JvmInline</span></a></div></div><span class="token keyword">value </span><span class="token keyword">class </span><a href="-qall-sound-id/index.html">QallSoundId</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>value<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.uuid/-uuid/index.html">Uuid</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-860319666%2FClasslikes%2F-855546369" anchor-label="SearchResult" id="-860319666%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-search-result/index.html"><span>Search</span><wbr></wbr><span><span>Result</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-860319666%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-search-result/index.html">SearchResult</a></div><div class="brief "><p class="paragraph">メッセージ検索結果。</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-23361618%2FClasslikes%2F-855546369" anchor-label="SortDirection" id="-23361618%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-sort-direction/index.html"><span>Sort</span><wbr></wbr><span><span>Direction</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-23361618%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">enum </span><a href="-sort-direction/index.html">SortDirection</a> : <a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-enum/index.html">Enum</a><span class="token operator">&lt;</span><a href="-sort-direction/index.html">SortDirection</a><span class="token operator">&gt; </span></div><div class="brief "><p class="paragraph">メッセージ取得・検索時の並び順。</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1848208468%2FClasslikes%2F-855546369" anchor-label="Stamp" id="-1848208468%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-stamp/index.html"><span><span>Stamp</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1848208468%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">interface </span><a href="-stamp/index.html">Stamp</a></div><div class="brief "><p class="paragraph">スタンプ。</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-2018446194%2FClasslikes%2F-855546369" anchor-label="StampHistoryEntry" id="-2018446194%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-stamp-history-entry/index.html"><span>Stamp</span><wbr></wbr><span>History</span><wbr></wbr><span><span>Entry</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2018446194%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-stamp-history-entry/index.html">StampHistoryEntry</a></div><div class="brief "><p class="paragraph">スタンプ利用履歴。</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1488936977%2FClasslikes%2F-855546369" anchor-label="StampId" id="1488936977%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-stamp-id/index.html"><span>Stamp</span><wbr></wbr><span><span>Id</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1488936977%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-inline/index.html"><span class="token annotation builtin">JvmInline</span></a></div></div><span class="token keyword">value </span><span class="token keyword">class </span><a href="-stamp-id/index.html">StampId</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>value<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.uuid/-uuid/index.html">Uuid</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">スタンプID。</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1003084197%2FClasslikes%2F-855546369" anchor-label="StampPalette" id="-1003084197%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-stamp-palette/index.html"><span>Stamp</span><wbr></wbr><span><span>Palette</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1003084197%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">interface </span><a href="-stamp-palette/index.html">StampPalette</a></div><div class="brief "><p class="paragraph">スタンプパレット。</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1904542464%2FClasslikes%2F-855546369" anchor-label="StampPaletteId" id="1904542464%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-stamp-palette-id/index.html"><span>Stamp</span><wbr></wbr><span>Palette</span><wbr></wbr><span><span>Id</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1904542464%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-inline/index.html"><span class="token annotation builtin">JvmInline</span></a></div></div><span class="token keyword">value </span><span class="token keyword">class </span><a href="-stamp-palette-id/index.html">StampPaletteId</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>value<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.uuid/-uuid/index.html">Uuid</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="239512243%2FClasslikes%2F-855546369" anchor-label="StampRecommendation" id="239512243%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-stamp-recommendation/index.html"><span>Stamp</span><wbr></wbr><span><span>Recommendation</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="239512243%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-stamp-recommendation/index.html">StampRecommendation</a></div><div class="brief "><p class="paragraph">スタンプレコメンド。</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-876661257%2FClasslikes%2F-855546369" anchor-label="StampStats" id="-876661257%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-stamp-stats/index.html"><span>Stamp</span><wbr></wbr><span><span>Stats</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-876661257%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-stamp-stats/index.html">StampStats</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1299051538%2FClasslikes%2F-855546369" anchor-label="StampType" id="1299051538%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-stamp-type/index.html"><span>Stamp</span><wbr></wbr><span><span>Type</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1299051538%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">enum </span><a href="-stamp-type/index.html">StampType</a> : <a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-enum/index.html">Enum</a><span class="token operator">&lt;</span><a href="-stamp-type/index.html">StampType</a><span class="token operator">&gt; </span></div><div class="brief "><p class="paragraph">スタンプ種別。</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1549362313%2FClasslikes%2F-855546369" anchor-label="ThumbnailType" id="1549362313%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-thumbnail-type/index.html"><span>Thumbnail</span><wbr></wbr><span><span>Type</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1549362313%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">enum </span><a href="-thumbnail-type/index.html">ThumbnailType</a> : <a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-enum/index.html">Enum</a><span class="token operator">&lt;</span><a href="-thumbnail-type/index.html">ThumbnailType</a><span class="token operator">&gt; </span></div><div class="brief "><p class="paragraph">サムネイルの種類</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-229545776%2FClasslikes%2F-855546369" anchor-label="TimedEvent" id="-229545776%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-timed-event/index.html"><span>Timed</span><wbr></wbr><span><span>Event</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-229545776%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">interface </span><a href="-timed-event/index.html">TimedEvent</a> : <a href="-event/index.html">Event</a></div><div class="brief "><p class="paragraph">発生時刻を持つイベントの共通型。</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-702152645%2FClasslikes%2F-855546369" anchor-label="UnreadChannel" id="-702152645%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-unread-channel/index.html"><span>Unread</span><wbr></wbr><span><span>Channel</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-702152645%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-unread-channel/index.html">UnreadChannel</a></div><div class="brief "><p class="paragraph">自分の未読チャンネル情報。</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-230493912%2FClasslikes%2F-855546369" anchor-label="User" id="-230493912%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-user/index.html"><span><span>User</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-230493912%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">interface </span><a href="-user/index.html">User</a></div><div class="brief "><p class="paragraph">ユーザー。</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1587026945%2FClasslikes%2F-855546369" anchor-label="UserChannelViewState" id="-1587026945%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-user-channel-view-state/index.html"><span>User</span><wbr></wbr><span>Channel</span><wbr></wbr><span>View</span><wbr></wbr><span><span>State</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1587026945%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-user-channel-view-state/index.html">UserChannelViewState</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="193157216%2FClasslikes%2F-855546369" anchor-label="UserEvent" id="193157216%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-user-event/index.html"><span>User</span><wbr></wbr><span><span>Event</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="193157216%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">interface </span><a href="-user-event/index.html">UserEvent</a> : <a href="-event/index.html">Event</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1611788495%2FClasslikes%2F-855546369" anchor-label="UserEvents" id="1611788495%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-user-events/index.html"><span>User</span><wbr></wbr><span><span>Events</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1611788495%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">object </span><a href="-user-events/index.html">UserEvents</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1334464141%2FClasslikes%2F-855546369" anchor-label="UserId" id="1334464141%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-user-id/index.html"><span>User</span><wbr></wbr><span><span>Id</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1334464141%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-inline/index.html"><span class="token annotation builtin">JvmInline</span></a></div></div><span class="token keyword">value </span><span class="token keyword">class </span><a href="-user-id/index.html">UserId</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>value<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.uuid/-uuid/index.html">Uuid</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">ユーザーID。</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1014562471%2FClasslikes%2F-855546369" anchor-label="UserPermission" id="-1014562471%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-user-permission/index.html"><span>User</span><wbr></wbr><span><span>Permission</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1014562471%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-inline/index.html"><span class="token annotation builtin">JvmInline</span></a></div></div><span class="token keyword">value </span><span class="token keyword">class </span><a href="-user-permission/index.html">UserPermission</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>value<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">現在のユーザーが持つ traQ 権限。</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-224941243%2FClasslikes%2F-855546369" anchor-label="UserSettings" id="-224941243%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-user-settings/index.html"><span>User</span><wbr></wbr><span><span>Settings</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-224941243%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-user-settings/index.html">UserSettings</a></div><div class="brief "><p class="paragraph">ユーザー設定。</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="2029905196%2FClasslikes%2F-855546369" anchor-label="UserStampStats" id="2029905196%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-user-stamp-stats/index.html"><span>User</span><wbr></wbr><span>Stamp</span><wbr></wbr><span><span>Stats</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2029905196%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-user-stamp-stats/index.html">UserStampStats</a></div><div class="brief "><p class="paragraph">ユーザーのスタンプ使用統計。</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="993745481%2FClasslikes%2F-855546369" anchor-label="UserState" id="993745481%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-user-state/index.html"><span>User</span><wbr></wbr><span><span>State</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="993745481%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">enum </span><a href="-user-state/index.html">UserState</a> : <a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-enum/index.html">Enum</a><span class="token operator">&lt;</span><a href="-user-state/index.html">UserState</a><span class="token operator">&gt; </span></div><div class="brief "><p class="paragraph">ユーザーアカウント状態。</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1428022779%2FClasslikes%2F-855546369" anchor-label="UserStats" id="1428022779%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-user-stats/index.html"><span>User</span><wbr></wbr><span><span>Stats</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1428022779%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-user-stats/index.html">UserStats</a></div><div class="brief "><p class="paragraph">ユーザー統計情報。</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="868350368%2FClasslikes%2F-855546369" anchor-label="UserTag" id="868350368%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-user-tag/index.html"><span>User</span><wbr></wbr><span><span>Tag</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="868350368%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">interface </span><a href="-user-tag/index.html">UserTag</a></div><div class="brief "><p class="paragraph">ユーザータグ。</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="761862405%2FClasslikes%2F-855546369" anchor-label="UserTagId" id="761862405%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-user-tag-id/index.html"><span>User</span><wbr></wbr><span>Tag</span><wbr></wbr><span><span>Id</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="761862405%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-inline/index.html"><span class="token annotation builtin">JvmInline</span></a></div></div><span class="token keyword">value </span><span class="token keyword">class </span><a href="-user-tag-id/index.html">UserTagId</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>value<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.uuid/-uuid/index.html">Uuid</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">ユーザータグID。</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="270701560%2FClasslikes%2F-855546369" anchor-label="Webhook" id="270701560%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-webhook/index.html"><span><span>Webhook</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="270701560%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">interface </span><a href="-webhook/index.html">Webhook</a></div><div class="brief "><p class="paragraph">Webhook。</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1946975581%2FClasslikes%2F-855546369" anchor-label="WebhookId" id="1946975581%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-webhook-id/index.html"><span>Webhook</span><wbr></wbr><span><span>Id</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1946975581%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-inline/index.html"><span class="token annotation builtin">JvmInline</span></a></div></div><span class="token keyword">value </span><span class="token keyword">class </span><a href="-webhook-id/index.html">WebhookId</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>value<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.uuid/-uuid/index.html">Uuid</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Webhook ID。</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1188810554%2FClasslikes%2F-855546369" anchor-label="WebRtcSession" id="-1188810554%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-web-rtc-session/index.html"><span>Web</span><wbr></wbr><span>Rtc</span><wbr></wbr><span><span>Session</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1188810554%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-web-rtc-session/index.html">WebRtcSession</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="316583403%2FClasslikes%2F-855546369" anchor-label="WebRtcState" id="316583403%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-web-rtc-state/index.html"><span>Web</span><wbr></wbr><span>Rtc</span><wbr></wbr><span><span>State</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="316583403%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-web-rtc-state/index.html">WebRtcState</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>state<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>sessionId<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">WebSocket に通知する WebRTC セッション状態。</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    <div class="footer">
+        <div class="footer--container">
+            <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
+            <div class="footer--content">
+                <div>
+                    <span>Generated by </span>
+                    <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
+                        Dokka
+                    </a>
+                    <div>© 2026 Copyright</div>
+                </div>
+            </div>
+        </div>
+    </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

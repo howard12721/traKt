@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>UserEvents</title>
+    <link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">
+        <script>var pathToRoot = "../../../";</script>
+    <script>document.documentElement.classList.replace("no-js", "js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+      if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+      } else {
+        const savedDarkMode = JSON.parse(storage)
+        if (savedDarkMode === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+      }
+    </script>
+<script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async="async"></script>
+<link href="../../../styles/style.css" rel="Stylesheet">
+<link href="../../../styles/main.css" rel="Stylesheet">
+<link href="../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../../ui-kit/ui-kit.min.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../scripts/safe-local-storage_blocking.js"></script>
+<script type="text/javascript" src="../../../scripts/navigation-loader.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/platform-content-handler.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/main.js" defer="defer"></script>
+<script type="text/javascript" src="../../../scripts/prism.js" async="async"></script>
+<script type="text/javascript" src="../../../ui-kit/ui-kit.min.js" defer="defer"></script>
+</head>
+<body>
+<div class="root">
+    <header class="navigation theme-dark" id="navigation-wrapper" role="banner">
+            <a class="library-name--link" href="../../../index.html" tabindex="1">
+                    trakt-bot
+            </a>
+        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle"
+                type="button">Toggle table of contents
+        </button>
+        <div class="navigation-controls--break ui-kit_mobile-only"></div>
+        <div class="library-version" id="library-version">
+1.0.0-SNAPSHOT        </div>
+        <div class="navigation-controls">
+        <ul class="filter-section filter-section_loading" id="filter-section" aria-label="Target filter">
+                <button class="platform-tag platform-selector common-like" data-active="" aria-pressed="true"
+                        data-filter=":trakt-bot/commonMain">common</button>
+            <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
+                <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox"
+                        data-role="dropdown-toggle"
+                        aria-controls="platform-tags-listbox"
+                        aria-haspopup="listbox"
+                        aria-expanded="false"
+                        aria-label="Toggle source sets"
+                ></button>
+                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox" aria-label="Target filter">
+                    <div class="dropdown--header"><span>Target filter</span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close target filter">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                        <li role="option" class="dropdown--option platform-selector-option common-like" tabindex="0">
+                            <label class="checkbox">
+                                <input type="checkbox" class="checkbox--input" id=":trakt-bot/commonMain"
+                                       data-filter=":trakt-bot/commonMain"/>
+                                <span class="checkbox--icon"></span>
+                                common
+                            </label>
+                        </li>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </ul>
+            <button class="navigation-controls--btn navigation-controls--btn_theme" id="theme-toggle-button"
+                    type="button">Switch theme
+            </button>
+            <div class="navigation-controls--btn navigation-controls--btn_search" id="searchBar" role="button">Search in
+                API
+            </div>
+        </div>
+    </header>
+    <div id="container">
+        <nav id="leftColumn" class="sidebar" data-item-type="SECTION" data-item-config='{"defaultSize": 280, "minSize": 200, "maxSize": 400}'>
+            <a class="toc--skip-link" href="#main">Skip to content</a>
+            <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
+                <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list"
+                    data-role="dropdown-listbox" aria-label="Table of contents">
+                    <div class="dropdown--header">
+                            <span>
+                                    trakt-bot
+                            </span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                    <div class="sidebar--inner" id="sideMenu"></div>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </nav>
+        <div id="resizer" class="resizer" data-item-type="BAR"></div>
+        <div id="main" data-item-type="SECTION" role="main">
+<div class="main-content" data-page-type="classlike" id="content" pageIds="trakt-bot::jp.xhw.trakt.bot.model/UserEvents///PointingToDeclaration//-855546369">
+  <div class="breadcrumbs"><a href="../../../index.html">trakt-bot</a><span class="delimiter">/</span><a href="../index.html">jp.xhw.trakt.bot.model</a><span class="delimiter">/</span><span class="current">UserEvents</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span>User</span><wbr></wbr><span><span>Events</span></span></h1>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">object </span><a href="index.html">UserEvents</a></div></div></div>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="TYPE">
+        <h2 class="tableheader">Types</h2>
+        <div class="table"><a data-name="-196471040%2FClasslikes%2F-855546369" anchor-label="ChannelCreated" id="-196471040%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-channel-created/index.html"><span>Channel</span><wbr></wbr><span><span>Created</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-196471040%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-channel-created/index.html">ChannelCreated</a> : <a href="../-user-event/index.html">UserEvent</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="379612911%2FClasslikes%2F-855546369" anchor-label="ChannelDeleted" id="379612911%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-channel-deleted/index.html"><span>Channel</span><wbr></wbr><span><span>Deleted</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="379612911%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-channel-deleted/index.html">ChannelDeleted</a> : <a href="../-user-event/index.html">UserEvent</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="21504841%2FClasslikes%2F-855546369" anchor-label="ChannelStared" id="21504841%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-channel-stared/index.html"><span>Channel</span><wbr></wbr><span><span>Stared</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="21504841%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-channel-stared/index.html">ChannelStared</a> : <a href="../-user-event/index.html">UserEvent</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="343165969%2FClasslikes%2F-855546369" anchor-label="ChannelSubscribersChanged" id="343165969%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-channel-subscribers-changed/index.html"><span>Channel</span><wbr></wbr><span>Subscribers</span><wbr></wbr><span><span>Changed</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="343165969%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-channel-subscribers-changed/index.html">ChannelSubscribersChanged</a> : <a href="../-user-event/index.html">UserEvent</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1050834096%2FClasslikes%2F-855546369" anchor-label="ChannelUnstared" id="-1050834096%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-channel-unstared/index.html"><span>Channel</span><wbr></wbr><span><span>Unstared</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1050834096%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-channel-unstared/index.html">ChannelUnstared</a> : <a href="../-user-event/index.html">UserEvent</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1563449485%2FClasslikes%2F-855546369" anchor-label="ChannelUpdated" id="1563449485%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-channel-updated/index.html"><span>Channel</span><wbr></wbr><span><span>Updated</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1563449485%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-channel-updated/index.html">ChannelUpdated</a> : <a href="../-user-event/index.html">UserEvent</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="108699687%2FClasslikes%2F-855546369" anchor-label="ChannelViewersChanged" id="108699687%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-channel-viewers-changed/index.html"><span>Channel</span><wbr></wbr><span>Viewers</span><wbr></wbr><span><span>Changed</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="108699687%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-channel-viewers-changed/index.html">ChannelViewersChanged</a> : <a href="../-user-event/index.html">UserEvent</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="677354035%2FClasslikes%2F-855546369" anchor-label="ClipFolderCreated" id="677354035%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-clip-folder-created/index.html"><span>Clip</span><wbr></wbr><span>Folder</span><wbr></wbr><span><span>Created</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="677354035%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-clip-folder-created/index.html">ClipFolderCreated</a> : <a href="../-user-event/index.html">UserEvent</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1253437986%2FClasslikes%2F-855546369" anchor-label="ClipFolderDeleted" id="1253437986%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-clip-folder-deleted/index.html"><span>Clip</span><wbr></wbr><span>Folder</span><wbr></wbr><span><span>Deleted</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1253437986%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-clip-folder-deleted/index.html">ClipFolderDeleted</a> : <a href="../-user-event/index.html">UserEvent</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1473384302%2FClasslikes%2F-855546369" anchor-label="ClipFolderMessageAdded" id="1473384302%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-clip-folder-message-added/index.html"><span>Clip</span><wbr></wbr><span>Folder</span><wbr></wbr><span>Message</span><wbr></wbr><span><span>Added</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1473384302%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-clip-folder-message-added/index.html">ClipFolderMessageAdded</a> : <a href="../-user-event/index.html">UserEvent</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1835523275%2FClasslikes%2F-855546369" anchor-label="ClipFolderMessageDeleted" id="-1835523275%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-clip-folder-message-deleted/index.html"><span>Clip</span><wbr></wbr><span>Folder</span><wbr></wbr><span>Message</span><wbr></wbr><span><span>Deleted</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1835523275%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-clip-folder-message-deleted/index.html">ClipFolderMessageDeleted</a> : <a href="../-user-event/index.html">UserEvent</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1857692736%2FClasslikes%2F-855546369" anchor-label="ClipFolderUpdated" id="-1857692736%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-clip-folder-updated/index.html"><span>Clip</span><wbr></wbr><span>Folder</span><wbr></wbr><span><span>Updated</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1857692736%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-clip-folder-updated/index.html">ClipFolderUpdated</a> : <a href="../-user-event/index.html">UserEvent</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-335350404%2FClasslikes%2F-855546369" anchor-label="GroupCreated" id="-335350404%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-group-created/index.html"><span>Group</span><wbr></wbr><span><span>Created</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-335350404%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-group-created/index.html">GroupCreated</a> : <a href="../-user-event/index.html">UserEvent</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="240733547%2FClasslikes%2F-855546369" anchor-label="GroupDeleted" id="240733547%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-group-deleted/index.html"><span>Group</span><wbr></wbr><span><span>Deleted</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="240733547%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-group-deleted/index.html">GroupDeleted</a> : <a href="../-user-event/index.html">UserEvent</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1424570121%2FClasslikes%2F-855546369" anchor-label="GroupUpdated" id="1424570121%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-group-updated/index.html"><span>Group</span><wbr></wbr><span><span>Updated</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1424570121%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-group-updated/index.html">GroupUpdated</a> : <a href="../-user-event/index.html">UserEvent</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="687856987%2FClasslikes%2F-855546369" anchor-label="IconUpdated" id="687856987%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-icon-updated/index.html"><span>Icon</span><wbr></wbr><span><span>Updated</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="687856987%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-icon-updated/index.html">IconUpdated</a> : <a href="../-user-event/index.html">UserEvent</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1009052828%2FClasslikes%2F-855546369" anchor-label="Joined" id="1009052828%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-joined/index.html"><span><span>Joined</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1009052828%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-joined/index.html">Joined</a> : <a href="../-user-event/index.html">UserEvent</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="566004228%2FClasslikes%2F-855546369" anchor-label="MessageCreated" id="566004228%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-message-created/index.html"><span>Message</span><wbr></wbr><span><span>Created</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="566004228%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-message-created/index.html">MessageCreated</a> : <a href="../-user-event/index.html">UserEvent</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1142088179%2FClasslikes%2F-855546369" anchor-label="MessageDeleted" id="1142088179%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-message-deleted/index.html"><span>Message</span><wbr></wbr><span><span>Deleted</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1142088179%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-message-deleted/index.html">MessageDeleted</a> : <a href="../-user-event/index.html">UserEvent</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-107084738%2FClasslikes%2F-855546369" anchor-label="MessagePinned" id="-107084738%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-message-pinned/index.html"><span>Message</span><wbr></wbr><span><span>Pinned</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-107084738%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-message-pinned/index.html">MessagePinned</a> : <a href="../-user-event/index.html">UserEvent</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1794278784%2FClasslikes%2F-855546369" anchor-label="MessageRead" id="1794278784%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-message-read/index.html"><span>Message</span><wbr></wbr><span><span>Read</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1794278784%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-message-read/index.html">MessageRead</a> : <a href="../-user-event/index.html">UserEvent</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-128318838%2FClasslikes%2F-855546369" anchor-label="MessageStamped" id="-128318838%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-message-stamped/index.html"><span>Message</span><wbr></wbr><span><span>Stamped</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-128318838%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-message-stamped/index.html">MessageStamped</a> : <a href="../-user-event/index.html">UserEvent</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1373519173%2FClasslikes%2F-855546369" anchor-label="MessageUnpinned" id="1373519173%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-message-unpinned/index.html"><span>Message</span><wbr></wbr><span><span>Unpinned</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1373519173%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-message-unpinned/index.html">MessageUnpinned</a> : <a href="../-user-event/index.html">UserEvent</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1474237853%2FClasslikes%2F-855546369" anchor-label="MessageUnstamped" id="-1474237853%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-message-unstamped/index.html"><span>Message</span><wbr></wbr><span><span>Unstamped</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1474237853%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-message-unstamped/index.html">MessageUnstamped</a> : <a href="../-user-event/index.html">UserEvent</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1969042543%2FClasslikes%2F-855546369" anchor-label="MessageUpdated" id="-1969042543%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-message-updated/index.html"><span>Message</span><wbr></wbr><span><span>Updated</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1969042543%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-message-updated/index.html">MessageUpdated</a> : <a href="../-user-event/index.html">UserEvent</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1035237734%2FClasslikes%2F-855546369" anchor-label="Offline" id="-1035237734%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-offline/index.html"><span><span>Offline</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1035237734%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-offline/index.html">Offline</a> : <a href="../-user-event/index.html">UserEvent</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1905368274%2FClasslikes%2F-855546369" anchor-label="Online" id="1905368274%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-online/index.html"><span><span>Online</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1905368274%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-online/index.html">Online</a> : <a href="../-user-event/index.html">UserEvent</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1045792905%2FClasslikes%2F-855546369" anchor-label="QallRoomStateChanged" id="-1045792905%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-qall-room-state-changed/index.html"><span>Qall</span><wbr></wbr><span>Room</span><wbr></wbr><span>State</span><wbr></wbr><span><span>Changed</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1045792905%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-qall-room-state-changed/index.html">QallRoomStateChanged</a> : <a href="../-user-event/index.html">UserEvent</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="676735215%2FClasslikes%2F-855546369" anchor-label="QallSoundboardItemCreated" id="676735215%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-qall-soundboard-item-created/index.html"><span>Qall</span><wbr></wbr><span>Soundboard</span><wbr></wbr><span>Item</span><wbr></wbr><span><span>Created</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="676735215%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-qall-soundboard-item-created/index.html">QallSoundboardItemCreated</a> : <a href="../-user-event/index.html">UserEvent</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1252819166%2FClasslikes%2F-855546369" anchor-label="QallSoundboardItemDeleted" id="1252819166%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-qall-soundboard-item-deleted/index.html"><span>Qall</span><wbr></wbr><span>Soundboard</span><wbr></wbr><span>Item</span><wbr></wbr><span><span>Deleted</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1252819166%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-qall-soundboard-item-deleted/index.html">QallSoundboardItemDeleted</a> : <a href="../-user-event/index.html">UserEvent</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="931574464%2FClasslikes%2F-855546369" anchor-label="StampCreated" id="931574464%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-stamp-created/index.html"><span>Stamp</span><wbr></wbr><span><span>Created</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="931574464%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-stamp-created/index.html">StampCreated</a> : <a href="../-user-event/index.html">UserEvent</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1507658415%2FClasslikes%2F-855546369" anchor-label="StampDeleted" id="1507658415%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-stamp-deleted/index.html"><span>Stamp</span><wbr></wbr><span><span>Deleted</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1507658415%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-stamp-deleted/index.html">StampDeleted</a> : <a href="../-user-event/index.html">UserEvent</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1473589389%2FClasslikes%2F-855546369" anchor-label="StampPaletteCreated" id="1473589389%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-stamp-palette-created/index.html"><span>Stamp</span><wbr></wbr><span>Palette</span><wbr></wbr><span><span>Created</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1473589389%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-stamp-palette-created/index.html">StampPaletteCreated</a> : <a href="../-user-event/index.html">UserEvent</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="2049673340%2FClasslikes%2F-855546369" anchor-label="StampPaletteDeleted" id="2049673340%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-stamp-palette-deleted/index.html"><span>Stamp</span><wbr></wbr><span>Palette</span><wbr></wbr><span><span>Deleted</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2049673340%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-stamp-palette-deleted/index.html">StampPaletteDeleted</a> : <a href="../-user-event/index.html">UserEvent</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1061457382%2FClasslikes%2F-855546369" anchor-label="StampPaletteUpdated" id="-1061457382%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-stamp-palette-updated/index.html"><span>Stamp</span><wbr></wbr><span>Palette</span><wbr></wbr><span><span>Updated</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1061457382%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-stamp-palette-updated/index.html">StampPaletteUpdated</a> : <a href="../-user-event/index.html">UserEvent</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1603472307%2FClasslikes%2F-855546369" anchor-label="StampUpdated" id="-1603472307%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-stamp-updated/index.html"><span>Stamp</span><wbr></wbr><span><span>Updated</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1603472307%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-stamp-updated/index.html">StampUpdated</a> : <a href="../-user-event/index.html">UserEvent</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-432122629%2FClasslikes%2F-855546369" anchor-label="TagsUpdated" id="-432122629%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-tags-updated/index.html"><span>Tags</span><wbr></wbr><span><span>Updated</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-432122629%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-tags-updated/index.html">TagsUpdated</a> : <a href="../-user-event/index.html">UserEvent</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1342510786%2FClasslikes%2F-855546369" anchor-label="Updated" id="1342510786%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-updated/index.html"><span><span>Updated</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1342510786%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-updated/index.html">Updated</a> : <a href="../-user-event/index.html">UserEvent</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-564079715%2FClasslikes%2F-855546369" anchor-label="ViewStateChanged" id="-564079715%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-view-state-changed/index.html"><span>View</span><wbr></wbr><span>State</span><wbr></wbr><span><span>Changed</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-564079715%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-view-state-changed/index.html">ViewStateChanged</a> : <a href="../-user-event/index.html">UserEvent</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1204400085%2FClasslikes%2F-855546369" anchor-label="WebRtcStateChanged" id="1204400085%2FClasslikes%2F-855546369" data-filterable-set=":trakt-bot/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":trakt-bot/commonMain" data-filterable-set=":trakt-bot/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-web-rtc-state-changed/index.html"><span>Web</span><wbr></wbr><span>Rtc</span><wbr></wbr><span>State</span><wbr></wbr><span><span>Changed</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1204400085%2FClasslikes%2F-855546369"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":trakt-bot/commonMain"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-web-rtc-state-changed/index.html">WebRtcStateChanged</a> : <a href="../-user-event/index.html">UserEvent</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    <div class="footer">
+        <div class="footer--container">
+            <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
+            <div class="footer--content">
+                <div>
+                    <span>Generated by </span>
+                    <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
+                        Dokka
+                    </a>
+                    <div>© 2026 Copyright</div>
+                </div>
+            </div>
+        </div>
+    </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
