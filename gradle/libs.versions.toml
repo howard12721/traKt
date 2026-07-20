@@ -1,10 +1,10 @@
 [versions]
-kotlin = "2.4.0"
+kotlin = "2.4.10"
 ktor = "3.5.1"
 kotlinx-datetime = "0.8.0-0.6.x-compat"
 kotlinx-serialization = "1.11.0"
 kotlinx-coroutines = "1.11.0"
-openapi = "7.23.0"
+openapi = "7.24.0"
 dokka = "2.2.0"
 vanniktech-maven-publish = "0.37.0"
 
